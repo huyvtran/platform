@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>News list</title>
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1,user-scalable=no" />
+    <link rel="Stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body class="payment-page">
+<section id="wrapper">
+    <article class="content">
+        <div id="payment_scroller">
+            <div id="scroller">
+                <ul class="payment-item-list">
+                    <li class="payment-item">
+                        <a href="#">
+                            <span class="t">Túi giàu sang nhỏ</span>
+                            <span class="cost"><i></i>180</span>
+                            <span class="price" href="#">$10.00</span>
+                        </a>
+                    </li>
+                    <li class="payment-item">
+                        <a href="#">
+                            <span class="t">Túi giàu sang nhỏ</span>
+                            <span class="cost"><i></i>180</span>
+                            <span class="price" href="#">$10.00</span>
+                        </a>
+                    </li>
+                    <li class="payment-item">
+                        <a href="#">
+                            <span class="t">Túi giàu sang nhỏ</span>
+                            <span class="cost"><i></i>180</span>
+                            <span class="price" href="#">$10.00</span>
+                        </a>
+                    </li>
+                    <li class="payment-item">
+                        <a href="#">
+                            <span class="t">Túi giàu sang nhỏ</span>
+                            <span class="cost"><i></i>180</span>
+                            <span class="price" href="#">$10.00</span>
+                        </a>
+                    </li>
+                    <li class="payment-item">
+                        <a href="#">
+                            <span class="t">Túi giàu sang nhỏ</span>
+                            <span class="cost"><i></i>180</span>
+                            <span class="price" href="#">$10.00</span>
+                        </a>
+                    </li>
+                    <li class="payment-item">
+                        <a href="#">
+                            <span class="t">Túi giàu sang nhỏ</span>
+                            <span class="cost"><i></i>180</span>
+                            <span class="price" href="#">$10.00</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </article>
+</section>
+<script src="js/zepto.min.js"></script>
+<script src="js/swipe.js"></script>
+<script src="js/iscroll.js"></script>
+<script>
+
+    // pure JS
+    /*var elem = document.getElementById('mySwipe');
+    window.mySwipe = Swipe(elem, {
+        // startSlide: 4,
+        // auto: 3000,
+        continuous: true,
+        disableScroll: true
+        // stopPropagation: true,
+        // callback: function(index, element) {},
+        // transitionEnd: function(index, element) {}
+    });*/
+
+    // with jQuery
+    // window.mySwipe = $('#mySwipe').Swipe().data('Swipe');
+
+    var myScroll;
+    function loaded() {
+        myScroll = new iScroll('wrapper');
+    }
+
+    document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+    document.addEventListener('DOMContentLoaded', loaded, false);
+
+</script>
+<script src="js/retina.js"></script>
+</body>
+</html>

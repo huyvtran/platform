@@ -1,0 +1,85 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2017-03-31 14:59+0700\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: Model/Article.php:validation for field title
+msgid "Bạn chưa nhập tiêu đề"
+msgstr ""
+
+#: Model/Article.php:validation for field body
+msgid "Nột dung phải có ít nhất 30 kí tự"
+msgstr ""
+
+#: Model/Article.php:validation for field body
+msgid "Nội dung không thể dài quá 60000 kí tự"
+msgstr ""
+
+#: Model/EmailMarketing.php:validation for field title
+msgid "The title is empty"
+msgstr ""
+
+#: Model/EmailMarketing.php:validation for field game_id
+msgid "Please choose a game."
+msgstr ""
+
+#: Model/FBUserLogin.php:validation for field user_id;validation for field fanpage_id
+#: Model/Game.php:validation for field os
+msgid "rule"
+msgstr ""
+
+#: Model/FBUserLogin.php:validation for field user_id;validation for field fanpage_id
+#: Model/Game.php:validation for field os
+msgid "required"
+msgstr ""
+
+#: Model/FBUserLogin.php:validation for field user_id;validation for field fanpage_id
+#: Model/Game.php:validation for field os
+msgid "allowEmpty"
+msgstr ""
+
+#: Model/Genre.php:validation for field title
+#: Model/Image.php:validation for field foreign_key;validation for field model;validation for field type
+#: Model/Website.php:validation for field url;validation for field title
+msgid "notEmpty"
+msgstr ""
+
+#: Model/Image.php:validation for field name
+msgid "You only can upload GIF, JPEG, JPG, PNG file"
+msgstr ""
+
+#: Model/Image.php:validation for field file
+msgid "You don't choose file to upload"
+msgstr ""
+
+#: Model/Image.php:validation for field file
+msgid "File's dimensions is invalid"
+msgstr ""
+
+#: Model/Image.php:validation for field file
+msgid "File's size is invalid"
+msgstr ""
+
+#: Model/Image.php:validation for field file
+msgid "File's ratio dimensions is invalid"
+msgstr ""
+
+#: Model/Notification.php:validation for field content
+msgid "This notification is same as last notification, please delete it, if not yet published or uncheck input that create new notification"
+msgstr ""
+
+#: Model/Website.php:validation for field url;validation for field title
+msgid "unique"
+msgstr ""
+

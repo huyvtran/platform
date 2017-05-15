@@ -1,0 +1,10 @@
+Lib/Resque_Job_Creator.php
+
+self::$rootFolder = dirname(dirname(dirname(__DIR__))) . DS;
+->
+self::$rootFolder = APP;
+
+
+sprintf(">> %s \\\n", escapeshellarg($logFile)),
+->
+// sprintf(">> %s \\\n", escapeshellarg($logFile)),

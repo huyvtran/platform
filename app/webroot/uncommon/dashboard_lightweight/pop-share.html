@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Dashboard Lightweight Home</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css?ver=5">
+    <script src="js/less-1.3.3.min.js" type="text/javascript"></script>
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1,user-scalable=no" />
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+
+</head>
+<body>
+<section id="wrapper">
+    <div class="content-wrap">
+        <article class="content">
+            <ul class="news-list">
+                <li class="mail-acc"><a href="#">Verify your email now! <span class="ico-warrning"></span></a></li>
+                <li class="account"><a href="#">Nâng cấp tài khoản <span class="ico-warrning"></span></a></li>
+                <li class="event"><a href="D_004.html">Phong Thần Bảng tưng bừng sự kiện chào đón máy chủ mới Bàn Cổ</a></li>
+                <li class="event"><a href="D_004.html">Đón tháng 3 rực lửa cùng SBET888 </a></li>
+                <li class="news"><a href="D_004.html">Lục Mạch Thần Kiếm khai mở máy chủ Đường Minh Hổ</a></li>
+                <li class="mess-invi"><a href="D_004.html">Bạn vừa mời <strong>jacovala</strong> chơi game Vua Hải Tặc. Bạn đã nhận <strong>+250MPoints</strong></a></li>
+                <li class="mess-invi"><a href="D_004.html">Bạn bắt đầu chơi game Vua Hải Tặc. Bạn nhận được <strong>+150MPoints</strong></a></li>
+                <li class="readmore"><a href="/">Xem Thêm</a></li>
+            </ul>
+        </article>
+        <article class="invite">
+            <ul>
+                <li class="inviteFb"><a href="#">Mời bạn chơi game<span class="ico-email"></span><span class="ico-fb"></span></a></li>
+            </ul>
+        </article>
+        <article class="game-nav">
+            <ul>
+                <li class="news"><a href="#">Tin tức &amp; Sự kiện</a></li>
+                <li class="home"><a href="#">Trang chủ</a></li>
+                <li class="facebook"><a href="#">Facebook fanpage</a></li>
+                <li class="chat"><a href="https://www.facebook.com/groups/gamehaitac/members/">Thảo luận chung</a></li>
+                <li class="group"><a href="#">Hội nhóm</a></li>
+            </ul>
+        </article>
+        <article class="function">
+            <ul>
+                <li class="payment"><a href="#">Nạp xu</a></li>
+                <li class="help"><a href="#">Hướng dẫn</a></li>
+                <li class="report"><a href="#">Báo lỗi</a></li>
+                <li class="contact"><a href="#">Liên hệ</a></li>
+                <li class="giftcode"><a href="#">Nhận giftcode</a></li>
+                <li class="mpoints"><a href="#">Đổi thưởng MPoints</a></li>
+            </ul>
+        </article>
+        <article class="info">
+            <ul>
+                <li class="infoMe"><a href="#">Tôi</a></li>
+                <!--<li class="money"><a href="#">Nhận xu</a></li>-->
+            </ul>
+        </article>
+    </div>
+    <div class="lb-overlay">
+        <div class="pop">
+            <p class="rs">Enjoy the game?</p>
+            <p class="rs">Tell it to your friends now!</p>
+            <a href="javascript:void(0)" class="btnShare"><i class="fb-ico"></i> Share now!</a>
+            <a href="javascript:void(0)" class="btnShareGPlus"><i class="gg-ico"></i> Share now!</a>
+            <a href="javascript:void(0)" class="lb-close btnclose">No, thanks!</a>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    $(document).ready(function() {$('#wrapper').find('.lb-overlay').addClass('showShare')});
+    $('.btnclose').on('click', function(){
+        $('#wrapper').find('.showShare').removeClass('showShare');
+    });
+
+
+</script>
+</body>
+</html>

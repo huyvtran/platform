@@ -1,0 +1,36 @@
+h3:target{
+	background-color: #DEF;
+}
+
+.col-detail{
+    display:none;
+    background-color: #FBF9EA ;
+    padding: 20px 0;
+    border-top: 1px dotted #CCC;
+    border-bottom: 1px dotted #CCC;
+}
+.spaces{
+    background-color: #CFF;
+}
+.hi{
+    background-color: #FFC;
+}
+#scroller{
+    padding: 10px;
+}
+@media (min-width: 980px) {
+  .scroll-fixed {
+    position: fixed;
+    top: 88px;
+    z-index: 1020; /* 10 less than .navbar-fixed to prevent any overlap */
+    border-color: #000;
+    border-width: 0 0 1px; /* drop the border on the fixed edges */
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
+    -webkit-box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0,0,0,.3);
+       -moz-box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0,0,0,.3);
+            box-shadow: inset 0 1px 0 #fff, 0 1px 5px rgba(0,0,0,.3);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false); /* IE6-9 */
+  }
+}

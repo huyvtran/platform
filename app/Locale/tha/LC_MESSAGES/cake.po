@@ -1,0 +1,223 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2013-05-14 00:25+0700\n"
+"PO-Revision-Date: 2013-05-15 17:57+0700\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.5.5\n"
+
+#: View/Common/error400.ctp:21
+msgid "Error"
+msgstr "ผิดพลาด"
+
+#: View/Common/error400.ctp:23
+msgid "The requested address %s was not found on this server."
+msgstr "ไม่พบที่อยู่ที่คุณร้องขอบนเซิร์ฟเวอร์นี้ %s"
+
+#: View/Helper/NavHelper.php:41 Utility/CakeTime.php:395
+msgid "Today, %s"
+msgstr "วันนี้, %s"
+
+#: View/Helper/NavHelper.php:44 Utility/CakeTime.php:398
+msgid "Yesterday, %s"
+msgstr "เมื่อวาน, %s"
+
+#: View/Helper/NavHelper.php:56 Utility/CakeTime.php:859
+msgid "%s ago"
+msgstr "%s ที่ผ่านมา"
+
+#: Controller/Component/AuthComponent.php:377
+msgid "You are not authorized to access that location."
+msgstr "คุณไม่ได้รับอนุญาตให้เข้าถึงตำแหน่งนี้"
+
+#: Error/ExceptionRenderer.php:210
+msgid "Not Found"
+msgstr "ไม่พบ"
+
+#: Error/ExceptionRenderer.php:232
+msgid "An Internal Error Has Occurred."
+msgstr "เกิดข้อผิดพลาดภายใน"
+
+#: Network/CakeResponse.php:1233
+msgid "The requested file was not found"
+msgstr "ไม่พบแฟ้มที่คุณร้องขอ"
+
+#: Utility/CakeNumber.php:102
+msgid "%d KB"
+msgstr "%d กิโลไบต์"
+
+#: Utility/CakeNumber.php:104
+msgid "%.2f MB"
+msgstr "%.2f เมกะไบต์"
+
+#: Utility/CakeNumber.php:106
+msgid "%.2f GB"
+msgstr "%.2f กิกะไบต์"
+
+#: Utility/CakeNumber.php:108
+msgid "%.2f TB"
+msgstr "%.2f เทระไบต์"
+
+#: Utility/CakeNumber.php:100
+msgid "%d Byte"
+msgid_plural "%d Bytes"
+msgstr[0] "%d ไบต์"
+msgstr[1] "%d ไบต์"
+
+#: Utility/CakeTime.php:401
+msgid "Tomorrow, %s"
+msgstr "พรุ่งนี้, %s"
+
+#: Utility/CakeTime.php:406
+msgid "Sunday"
+msgstr "วันอาทิตย์"
+
+#: Utility/CakeTime.php:407
+msgid "Monday"
+msgstr "วันจันทร์"
+
+#: Utility/CakeTime.php:408
+msgid "Tuesday"
+msgstr "วันอังคาร"
+
+#: Utility/CakeTime.php:409
+msgid "Wednesday"
+msgstr "วันพุธ"
+
+#: Utility/CakeTime.php:410
+msgid "Thursday"
+msgstr "วันพฤหัสบดี"
+
+#: Utility/CakeTime.php:411
+msgid "Friday"
+msgstr "วันศุกร์"
+
+#: Utility/CakeTime.php:412
+msgid "Saturday"
+msgstr "วันเสาร์"
+
+#: Utility/CakeTime.php:418
+msgid "On %s %s"
+msgstr "เมื่อ %s %s"
+
+#: Utility/CakeTime.php:811
+msgid "just now"
+msgstr "เมื่อกี้"
+
+#: Utility/CakeTime.php:815
+msgid "on %s"
+msgstr "เมื่อ %s"
+
+#: Utility/CakeTime.php:878;900
+msgid "days"
+msgstr "วัน"
+
+#: Utility/CakeTime.php:155
+msgid "abday"
+msgstr ""
+
+#: Utility/CakeTime.php:161
+msgid "day"
+msgstr "วัน"
+
+#: Utility/CakeTime.php:837
+msgid "%d year"
+msgid_plural "%d years"
+msgstr[0] "%d ปี"
+msgstr[1] "%d ปี"
+
+#: Utility/CakeTime.php:840
+msgid "%d month"
+msgid_plural "%d months"
+msgstr[0] "%d เดือน"
+msgstr[1] "%d เดือน"
+
+#: Utility/CakeTime.php:843
+msgid "%d week"
+msgid_plural "%d weeks"
+msgstr[0] "%d สัปดาห์"
+msgstr[1] "%d สัปดาห์"
+
+#: Utility/CakeTime.php:846
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] "%d วัน"
+msgstr[1] "%d วัน"
+
+#: Utility/CakeTime.php:849
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] "%d ช.ม."
+msgstr[1] "%d ช.ม."
+
+#: Utility/CakeTime.php:852
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] "%d นาที"
+msgstr[1] "%d นาที"
+
+#: Utility/CakeTime.php:855
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d วินาที"
+msgstr[1] "%d วินาที"
+
+#: View/Helper/FormHelper.php:2737
+msgid "January"
+msgstr "มกราคม"
+
+#: View/Helper/FormHelper.php:2738
+msgid "February"
+msgstr "กุมภาพันธ์"
+
+#: View/Helper/FormHelper.php:2739
+msgid "March"
+msgstr "มีนาคม"
+
+#: View/Helper/FormHelper.php:2740
+msgid "April"
+msgstr "เมษายน"
+
+#: View/Helper/FormHelper.php:2741
+msgid "May"
+msgstr "พฤษภาคม"
+
+#: View/Helper/FormHelper.php:2742
+msgid "June"
+msgstr "มิถุนายน"
+
+#: View/Helper/FormHelper.php:2743
+msgid "July"
+msgstr "กรกฎาคม"
+
+#: View/Helper/FormHelper.php:2744
+msgid "August"
+msgstr "สิงหาคม"
+
+#: View/Helper/FormHelper.php:2745
+msgid "September"
+msgstr "กันยายน"
+
+#: View/Helper/FormHelper.php:2746
+msgid "October"
+msgstr "ตุลาคม"
+
+#: View/Helper/FormHelper.php:2747
+msgid "November"
+msgstr "พฤศจิกายน"
+
+#: View/Helper/FormHelper.php:2748
+msgid "December"
+msgstr "ธันวาคม"
+
+#: View/Helper/HtmlHelper.php:751
+msgid "Home"
+msgstr "บ้าน"

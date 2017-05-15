@@ -1,0 +1,1 @@
+<?php echo $currentGame['data']['invite']['sms']; ?>

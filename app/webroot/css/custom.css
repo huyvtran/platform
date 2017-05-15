@@ -1,0 +1,455 @@
+.content-inner {
+    padding: 0 .95em;
+}
+h1 {
+    margin: 0.625em 0;
+    font-size: 1.125em;
+    font-weight: bold;
+}
+a.button, .button {
+    border: 1px solid #d1d2d3;
+    border-top-color: #d1d2d3;
+    border-bottom-color: #b1b2b3;
+    color: #789;
+    text-shadow: 0 1px 0 #fff;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f7f8f9), color-stop(100%, #eaebec));
+    background-image: -webkit-linear-gradient(#f7f8f9, #eaebec);
+    background-image: linear-gradient(#f7f8f9, #eaebec);
+    -webkit-box-shadow: 0 1px 1px #ddd, 0 1px 0 transparent inset;
+    box-shadow: 0 1px 1px #ddd, 0 1px 0 transparent inset;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: none;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    padding: 6px 5px;
+    font-size: 12px;
+    margin: 0;
+    display: inline-block;
+    line-height: 1.2;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    overflow: hidden
+}
+
+a.button.facebook, .button.facebook {
+    border: 1px solid #67b;
+    border-top-color: #459;
+    border-bottom-color: #459;
+    color: #fff;
+    text-shadow: 0 -1px 0 #348;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #6677bb), color-stop(100%, #445599));
+    background-image: -webkit-linear-gradient(#6677bb, #445599);
+    background-image: linear-gradient(#6677bb, #445599);
+    -webkit-box-shadow: 0 1px 1px #348, 0 1px 0 transparent inset;
+    box-shadow: 0 1px 1px #348, 0 1px 0 transparent inset;
+    text-shadow: 0 -1px 0 #348
+}
+
+a.button.facebook.tapped, a.button.facebook:active, a.button.facebook:focus, .button.facebook.tapped, .button.facebook:active, .button.facebook:focus {
+    border: 1px solid #459;
+    border-top-color: #459;
+    border-bottom-color: #237;
+    color: #fff;
+    text-shadow: 0 -1px 0 #348;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #445599), color-stop(100%, #223377));
+    background-image: -webkit-linear-gradient(#445599, #223377);
+    background-image: linear-gradient(#445599, #223377);
+    -webkit-box-shadow: 0 1px 1px #348, 0 1px 0 transparent inset;
+    box-shadow: 0 1px 1px #348, 0 1px 0 transparent inset;
+    text-shadow: 0 -1px 0 #348
+}
+
+a.button.facebook.medium, .button.facebook.medium {
+    text-indent: 0
+}
+a.button .sprite, .button .sprite {
+    margin: 0 4px 0 0
+}
+
+a.button.loading, .button.loading {
+    position: relative;
+    overflow: hidden
+}
+
+a.button.loading div, .button.loading div {
+    margin: 0 auto;
+    position: relative;
+    top: -5px
+}
+
+a.button.active, .button.active {
+    border: 1px solid #d1d2d3;
+    background: #f7f8f9
+}
+
+a.button.tapped, a.button:active, a.button:focus, .button.tapped, .button:active, .button:focus {
+    border: 1px solid #8a8b8c;
+    border-top-color: #8a8b8c;
+    border-bottom-color: #a7a8a9;
+    color: #789;
+    text-shadow: 0 1px 0 #f1f2f3;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d1d2d3), color-stop(100%, #b7b8b9));
+    background-image: -webkit-linear-gradient(#d1d2d3, #b7b8b9);
+    background-image: linear-gradient(#d1d2d3, #b7b8b9);
+    -webkit-box-shadow: 0 1px 1px #ddd, 0 1px 0 transparent inset;
+    box-shadow: 0 1px 1px #ddd, 0 1px 0 transparent inset
+}
+
+a.button.primary, .button.primary {
+    border: 1px solid #00a0e6;
+    border-top-color: #00bef0;
+    border-bottom-color: #1873a0;
+    color: #fff;
+    text-shadow: 0 -1px 0 #0c7aaf;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #00bef0), color-stop(100%, #00a0dc));
+    background-image: -webkit-linear-gradient(#00bef0, #00a0dc);
+    background-image: linear-gradient(#00bef0, #00a0dc);
+    -webkit-box-shadow: 0 1px 1px #ddd, 0 1px 0 #00bef0 inset;
+    box-shadow: 0 1px 1px #ddd, 0 1px 0 #00bef0 inset
+}
+
+a.button.primary.tapped, a.button.primary:active, a.button.primary:focus, .button.primary.tapped, .button.primary:active, .button.primary:focus {
+    border: 1px solid #0c648c;
+    border-top-color: #0c4664;
+    border-bottom-color: #0c648c;
+    color: #fff;
+    text-shadow: 0 -1px 0 #0c4664;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #0c7aaf), color-stop(100%, #0c648c));
+    background-image: -webkit-linear-gradient(#0c7aaf, #0c648c);
+    background-image: linear-gradient(#0c7aaf, #0c648c);
+    -webkit-box-shadow: 0 1px 1px transparent, 0 1px 0 transparent inset;
+    box-shadow: 0 1px 1px transparent, 0 1px 0 transparent inset
+}
+
+a.button.primary_green, .button.primary_green {
+    border: 1px solid #00d200;
+    border-top-color: #00d200;
+    border-bottom-color: #008200;
+    color: #fff;
+    text-shadow: 0 -1px 0 #008200;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #00d200), color-stop(100%, #00b400));
+    background-image: -webkit-linear-gradient(#00d200, #00b400);
+    background-image: linear-gradient(#00d200, #00b400);
+    -webkit-box-shadow: 0 1px 1px transparent, 0 1px 0 transparent inset;
+    box-shadow: 0 1px 1px transparent, 0 1px 0 transparent inset
+}
+
+a.button.primary_green.tapped, a.button.primary_green:active, a.button.primary_green:focus, .button.primary_green.tapped, .button.primary_green:active, .button.primary_green:focus {
+    border: 1px solid #509628;
+    border-top-color: #007800;
+    border-bottom-color: #46821e;
+    color: #fff;
+    text-shadow: 0 -1px 0 #003200;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #509628), color-stop(100%, #46821e));
+    background-image: -webkit-linear-gradient(#509628, #46821e);
+    background-image: linear-gradient(#509628, #46821e);
+    -webkit-box-shadow: 0 1px 1px transparent, 0 1px 0 transparent inset;
+    box-shadow: 0 1px 1px transparent, 0 1px 0 transparent inset
+}
+
+a.button.primary_orange, .button.primary_orange {
+    border: 1px solid #fa8c14;
+    border-top-color: #fa8c14;
+    border-bottom-color: #d25a00;
+    color: #fff;
+    text-shadow: 0 -1px 0 #d25a00;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fa8c14), color-stop(100%, #f06e00));
+    background-image: -webkit-linear-gradient(#fa8c14, #f06e00);
+    background-image: linear-gradient(#fa8c14, #f06e00);
+    -webkit-box-shadow: 0 1px 1px transparent, 0 1px 0 transparent inset;
+    box-shadow: 0 1px 1px transparent, 0 1px 0 transparent inset
+}
+
+a.button.primary_orange.tapped, a.button.primary_orange:active, a.button.primary_orange:focus, .button.primary_orange.tapped, .button.primary_orange:active, .button.primary_orange:focus {
+    border: 1px solid #d27814;
+    border-top-color: #461e00;
+    border-bottom-color: #be6414;
+    color: #fff;
+    text-shadow: 0 -1px 0 #461e00;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d27814), color-stop(100%, #be6414));
+    background-image: -webkit-linear-gradient(#d27814, #be6414);
+    background-image: linear-gradient(#d27814, #be6414);
+    -webkit-box-shadow: 0 1px 1px transparent, 0 1px 0 transparent inset;
+    box-shadow: 0 1px 1px transparent, 0 1px 0 transparent inset
+}
+
+a.button.primary_yellow, .button.primary_yellow {
+    border: 1px solid #e6d200;
+    border-top-color: #e6d200;
+    border-bottom-color: #968200;
+    color: #543;
+    text-shadow: 0 -1px 0 transparent;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e6d200), color-stop(100%, #d2b400));
+    background-image: -webkit-linear-gradient(#e6d200, #d2b400);
+    background-image: linear-gradient(#e6d200, #d2b400);
+    -webkit-box-shadow: 0 1px 1px transparent, 0 1px 0 transparent inset;
+    box-shadow: 0 1px 1px transparent, 0 1px 0 transparent inset
+}
+
+a.button.primary_yellow.tapped, a.button.primary_yellow:active, a.button.primary_yellow:focus, .button.primary_yellow.tapped, .button.primary_yellow:active, .button.primary_yellow:focus {
+    border: 1px solid #b4a028;
+    border-top-color: #463c00;
+    border-bottom-color: #96821e;
+    color: #281e14;
+    text-shadow: 0 -1px 0 transparent;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b4a028), color-stop(100%, #96821e));
+    background-image: -webkit-linear-gradient(#b4a028, #96821e);
+    background-image: linear-gradient(#b4a028, #96821e);
+    -webkit-box-shadow: 0 1px 1px transparent, 0 1px 0 transparent inset;
+    box-shadow: 0 1px 1px transparent, 0 1px 0 transparent inset
+}
+
+a.button.large, a.button.large.tapped, .button.large, .button.large.tapped {
+    font-size: 16px !important;
+    height: 40px;
+    padding: 9px 8px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px
+}
+
+a.button.large>.flexible, a.button.large.tapped>.flexible, .button.large>.flexible, .button.large.tapped>.flexible {
+    margin: -9px 0 -19px -8px;
+    line-height: 1
+}
+
+a.button.large.loading div, a.button.large.tapped.loading div, .button.large.loading div, .button.large.tapped.loading div {
+    top: -1px
+}
+
+a.button.medium, .button.medium {
+    padding-top: 8px;
+    padding-right: 10px;
+    padding-left: 10px;
+    font-size: 15px;
+    height: 34px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px
+}
+
+a.button.medium.tapped, .button.medium.tapped {
+    height: 34px !important
+}
+
+a.button.small, .button.small {
+    font-size: 10px
+}
+
+a.button.with-icon, .button.with-icon {
+    -webkit-border-radius: 5px;
+    border-radius: 5px
+}
+
+a.button+p, .button+p {
+    padding-top: 10px
+}
+
+a.button.hide, .button.hide {
+    display: none !important
+}
+
+.flexible {
+    width: 100%;
+    position: relative;
+    display: table;
+    table-layout: fixed;
+    border-collapse: collapse
+}
+
+.flexible>div {
+    display: table-cell;
+    table-layout: fixed;
+    border-collapse: collapse;
+    vertical-align: top;
+    position: relative
+}
+
+.flexible .middle {
+    vertical-align: middle
+}
+
+.flexible .bottom {
+    vertical-align: bottom
+}
+
+.flexible .item-content {
+    position: relative;
+    width: 100%
+}
+
+.flexible .item-content.auto {
+    width: auto
+}
+
+.flexible .item-content.item-badge {
+    width: 60px;
+    vertical-align: middle;
+    text-align: right
+}
+
+.flexible .item-content.item-button {
+    width: 75px;
+    text-align: right
+}
+
+.flexible .item-content.item-button+.item-button {
+    padding-left: 5px
+}
+
+.flexible .item-content.item-button.wide {
+    width: 85px
+}
+
+.flexible .item-content.item-button .form-1_1, .flexible .item-content.item-button .form-5_1 {
+    margin: 0 0 0 auto
+}
+
+.flexible .item-content.width40 {
+    width: 50px
+}
+
+.flexible .item-content+.item-content {
+    padding-left: 10px
+}
+
+.flexible .item-content.width20 {
+    width: 30px;
+    padding-left: 0
+}
+
+.flexible .item-content.width20 .sprite.symbol-17_1 {
+    float: right
+}
+
+.flexible .item-content.no-padding {
+    padding-left: 0;
+    padding: 0
+}
+
+.flexible .icon.width20 {
+    width: 20px
+}
+
+.flexible .screenshot {
+    text-align: center
+}
+
+.flexible .screenshot+.item-content, .flexible .icon+.item-content, .flexible .icons+.item-content, .flexible .icon+script+.item-content, .flexible .icons+script+.item-content {
+    padding-left: 10px
+}
+
+.flexible .icon+.icon, .flexible .icon.width14+.item-content {
+    padding-left: 5px
+}
+
+.flexible .icon input {
+    margin-top: 3px
+}
+
+.flexible+p {
+    padding-top: 10px
+}
+
+.flexible+.unit {
+    margin-top: 10px
+}
+
+.flexible+.meta {
+    padding-top: 3px
+}
+
+.flexible .arrow-area {
+    width: 20px !important;
+    vertical-align: middle !important
+}
+
+.flexible .arrow-area>.sprite {
+    float: right
+}
+
+.flexible .selected-area {
+    padding-left: 10px;
+    width: 30px;
+    vertical-align: middle
+}
+
+.flexible .status-area {
+    padding-left: 8px;
+    width: 18px !important;
+    vertical-align: middle !important
+}
+
+.flexible .status-number-area {
+    color: #789;
+    font-weight: normal;
+    line-height: 1.35
+}
+
+.flexible .status-number-area.inline-list {
+    padding-top: 2px;
+    line-height: 1.2
+}
+[class*='icon'] {
+    margin-right: auto;
+    margin-left: auto;
+    background-position: center center;
+    background-repeat: no-repeat
+}
+
+[class*='icon'].left {
+    margin-left: 0
+}
+.sprite {
+    color: transparent;
+    text-shadow: none;
+    background-repeat: no-repeat;
+    vertical-align: middle
+}
+.sprite[class*='service'] {
+    background-image: url(../images/sprite_service.png);
+}
+.service-7_1 {
+    width: 40px;
+    height: 40px;
+    background-position: -216px 0;
+}
+
+/* Jquery Mobile Theme override */
+.ui-btn-up-mg-button-default, .ui-btn-up-hover-mg-button-default {
+    -webkit-border-radius:0.2em;
+    border-radius:0.2em;
+}
+
+.guest-login {
+    background: #5a4423; /* old browsers */
+    background: -moz-linear-gradient(top, #5a4423 0%, #423117 100%); /* firefox */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5a4423), color-stop(100%,#423117)); /* webkit */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5a4423', endColorstr='#423117',GradientType=0 ); /* ie */
+    display: block;
+    -webkit-border-radius: .2em;-khtml-border-radius: .2em;-moz-border-radius: .2em;border-radius: .2em;
+    text-align: center;
+    padding: .6em 20px;
+}
+
+.list-item.round.sink {
+    border-color:#e1e2e3;
+    border-top:none;
+    border-bottom:1px solid #e1e2e3;
+    background-color:#fff
+}
+.list-item.round.sink input.reset {
+    margin:-12px 0;
+    padding:10px 27px 10px 10px;
+    height:42px;
+    font-size:18px
+}
+.list-item.round>input.reset {
+    min-height:39px;
+    -webkit-border-radius:0;
+    border-radius:0
+}
+div.ui-input-text.ui-body-mg {
+    margin: 0 !important;
+}
+.message {margin-bottom: 15px;}
+.msg-error {background: url(../images/msg-error-icon.png) no-repeat scroll 0 0;color: #f00;padding: 0 0 0 25px;line-height: 18px}

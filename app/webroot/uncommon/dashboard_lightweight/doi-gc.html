@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>info</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1,user-scalable=no" />
+<script type="text/javascript" src="js/zepto.min.js"></script>
+</head>
+<body>
+<section id="wrapper">
+    <div class="page-gc">
+        <article class="header">
+            <h4 class="rs spr">Tài khoản hiện có 600 MP</h4>
+        </article>
+        <article class="listcode">
+            <p class="rs">Chọn phần thưởng bạn muốn đổi</p>
+
+                <ul class="rs lstgc">
+                    <li>
+                        <span class="change-gc" >
+                            <img src="images/demo1@2x.png" width="40" height="40" class="avatagc">
+                            <span class="info-gc">
+                                 <span class="name-gc">Giftcode Kiêu hùng</span>
+                                <span>3 bít tết + 4 vỏ sò + Siêu pháo ánh sáng + 100 ốc sên</span>
+                            </span>
+                            <span class="point-gc have">
+                                <span class="point">200</span>
+                                <span class="text">MP</span>
+                            </span>
+                        </span>
+                        <div class="lb-overlay">
+                            <div class="over-inner">
+                                <span>Đồng ý đổi xxx MP lấy phần thưởng này?</span>
+                                <a href="/" class="gcyes">Có</a><a href="javascript:void(0)" class="gcNo btnclose">Không</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="change-gc" href="javascript:void(0)">
+                            <img src="images/demo1@2x.png" width="40" height="40" class="avatagc">
+                        <span class="info-gc">
+                             <span class="name-gc">Giftcode Kiêu hùng</span>
+                            <span>3 bít tết + 4 vỏ sò + Siêu pháo ánh sáng + 100 ốc sên</span>
+                        </span>
+                        <span class="point-gc have">
+                            <span class="point">200</span>
+                            <span class="text">MP</span>
+                        </span>
+                        </span>
+                        <div class="lb-overlay">
+                            <div class="over-inner">
+                                <span>Bạn không đủ MP. Hãy tích lũy thêm!</span>
+                                <a href="javascript:void(0)" class="lb-close btnclose">Đóng</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="change-gc">
+                            <img src="images/demo1@2x.png" width="40" height="40" class="avatagc">
+                            <span class="info-gc">
+                                <span class="name-gc">Giftcode Kiêu hùng</span>
+                                <span>3 bít tết + 4 vỏ sò + Siêu pháo ánh sáng + 100 ốc sên</span>
+                            </span>
+                            <span class="point-gc ">
+                                <span class="point">200</span>
+                                <span class="text">MP</span>
+                            </span>
+                        </span>
+                    </li>
+                </ul>
+
+        </article>
+        <article class="boxCode">
+            <a href="" class="enter-code ">Nhập mã giới thiệu</a>
+            <a href="" class="code-received">Phần thưởng đã đổi</a>
+        </article>
+        <p class="notice">** Hệ thống điểm thưởng MPoints (MP) là gì? Xem thêm <a href="/">tại đây</a> </p>
+
+    </div>
+</section>
+<script type="text/javascript">
+    $('.lstgc li .change-gc').on('click', function(){
+       $(this).parent().find('.lb-overlay').addClass('showGC');
+    });
+    $('.btnclose').on('click', function(){
+       $(this).parents().find('.showGC').removeClass('showGC');
+    });
+</script>
+
+</body>
+</html>
