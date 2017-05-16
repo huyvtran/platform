@@ -1,0 +1,1137 @@
+2017-05-13 18:18:18 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => ff3b7d0489244777c9d73de4edd40ffc
+)
+
+2017-05-13 18:18:18 Info: output api register:Array
+(
+    [status] => 3
+    [message] => The sign is incorrect
+)
+
+2017-05-13 18:19:09 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => ff3b7d0489244777c9d73de4edd40ffc
+)
+
+2017-05-13 18:19:09 Info: output api register:Array
+(
+    [status] => 3
+    [message] => The sign is incorrect
+)
+
+2017-05-13 18:19:43 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:20:11 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:20:42 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:20:55 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:21:05 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:21:38 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:21:46 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:22:22 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:24:07 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:24:23 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:24:41 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:24:47 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:25:03 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:26:54 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:27:24 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:27:31 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:28:15 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:28:36 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:29:56 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:31:28 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:32:05 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:34:47 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:35:17 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:35:37 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:35:44 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:36:22 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:38:53 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:41:55 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:42:02 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:42:03 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:42:04 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:42:05 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:42:06 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:42:07 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 18:45:41 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 20:57:27 Info: input api register:Array
+(
+    [username] => test01
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 20:57:27 Info: output api register:Array
+(
+    [status] => 2
+    [message] => Necessary data is missing
+)
+
+2017-05-13 21:04:45 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 21:04:45 Info: output api register:Array
+(
+    [status] => 3
+    [message] => The sign is incorrect
+)
+
+2017-05-13 21:04:55 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 21:04:55 Info: output api register:Array
+(
+    [status] => 3
+    [message] => The sign is incorrect
+)
+
+2017-05-13 21:05:20 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => cc8e612754fe16dd0816396f3302e793
+)
+
+2017-05-13 21:05:21 Info: output api register:Array
+(
+    [status] => 3
+    [message] => The sign is incorrect
+)
+
+2017-05-13 21:05:34 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:06:20 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:07:33 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:08:21 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:08:51 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:09:12 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:09:28 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:09:36 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:10:44 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:11:05 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:11:22 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:18:53 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:20:17 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:20:18 Info: output api register:Array
+(
+    [status] => 4
+    [message] => The username is in use
+)
+
+2017-05-13 21:22:32 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:24:30 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:25:10 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:26:54 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:32:59 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:34:18 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:36:09 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:43:28 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:45:43 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 21:48:52 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 22:27:28 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 22:28:28 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 22:33:29 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 22:38:35 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 22:41:45 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 22:51:10 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 22:53:13 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 22:55:35 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 22:55:58 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 22:56:55 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 22:58:02 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 22:58:17 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 22:59:30 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 22:59:49 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 22:59:58 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:00:14 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:05:28 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:06:49 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:07:13 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:07:49 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:16:30 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:16:44 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:16:48 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:16:50 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:16:52 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:17:04 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:18:11 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:18:13 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:18:13 Info: output api register:Array
+(
+    [status] => 0
+    [messsage] => Register successfully
+    [data] => {"User":{"username":"test01","account_id":"23"},"access_token":"36E2F91F4F737E095DB9B016349449C7BE3A69CE","token_expire":"2147483647"}
+)
+
+2017-05-13 23:23:12 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:23:16 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:23:16 Info: output api register:Array
+(
+    [status] => 0
+    [messsage] => Register successfully
+    [data] => {"User":{"username":"test01","account_id":"23"},"access_token":"A5869733BA943C78C5D860627373BEA71616AF40","token_expire":"2147483647"}
+)
+
+2017-05-13 23:23:22 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:23:23 Info: output api register:Array
+(
+    [status] => 4
+    [message] => The username is in use
+)
+
+2017-05-13 23:30:15 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:31:21 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:31:21 Info: output api register:Array
+(
+    [status] => 0
+    [messsage] => Register successfully
+    [data] => {"User":{"username":"test01","account_id":"25"},"access_token":"2EA1F7773FB2758588AD561E8BB90AA19531AF6D","token_expire":"2147483647"}
+)
+
+2017-05-13 23:32:08 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:32:08 Info: output api register:Array
+(
+    [status] => 4
+    [message] => The username is in use
+)
+
+2017-05-13 23:35:25 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-13 23:35:25 Info: output api register:Array
+(
+    [status] => 4
+    [message] => The username is in use
+)
+
+2017-05-14 22:51:13 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-14 22:51:49 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-14 22:51:49 Info: output api register:Array
+(
+    [status] => 0
+    [messsage] => Register successfully
+    [data] => {"User":{"username":"test01","account_id":"24"},"access_token":"C25FA6D276F4AF1BA4BAAC41BD10E1DF686D38A1","token_expire":"2147483647"}
+)
+
+2017-05-14 23:53:32 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-14 23:57:02 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-14 23:57:02 Info: output api register:Array
+(
+    [status] => 0
+    [messsage] => Register successfully
+    [data] => {"User":{"username":"test01","account_id":"26"},"access_token":"2416F708B3F7765545F6DC000C87C4198B87F4E6","token_expire":"2147483647"}
+)
+
+2017-05-15 00:02:23 Info: input api register:Array
+(
+    [username] => test02
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-15 00:02:23 Info: output api register:Array
+(
+    [status] => 3
+    [message] => The sign is incorrect
+)
+
+2017-05-15 00:03:11 Info: input api register:Array
+(
+    [username] => test02
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-15 00:03:11 Info: sign register:1293c11dc9b5162c0c79b9b1088ef9fb
+2017-05-15 00:03:11 Info: output api register:Array
+(
+    [status] => 3
+    [message] => The sign is incorrect
+)
+
+2017-05-15 00:03:43 Info: input api register:Array
+(
+    [username] => test02
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 1293c11dc9b5162c0c79b9b1088ef9fb
+)
+
+2017-05-15 00:03:43 Info: output api register:Array
+(
+    [status] => 0
+    [messsage] => Register successfully
+    [data] => {"User":{"username":"test02","account_id":"58"},"access_token":"546B6151BECE1FD7606C01911DB01029D52EE32F","token_expire":"2147483647"}
+)
+
+2017-05-15 00:05:37 Info: input api register:Array
+(
+    [username] => test02
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 1293c11dc9b5162c0c79b9b1088ef9fb
+)
+
+2017-05-15 00:05:37 Info: output api register:Array
+(
+    [status] => 0
+    [messsage] => Register successfully
+    [data] => {"User":{"username":"test02","account_id":"23"},"access_token":"B844D61795D36C5A52B742C8C1EBD4CCFF11D569","token_expire":"2147483647"}
+)
+
+2017-05-15 00:08:25 Info: input api register:Array
+(
+    [username] => test02
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 1293c11dc9b5162c0c79b9b1088ef9fb
+)
+
+2017-05-15 00:08:26 Info: output api register:Array
+(
+    [status] => 0
+    [messsage] => Register successfully
+    [data] => {"User":{"username":"test02","account_id":"21"},"access_token":"D674B40C98BED799FE9608E76D06D87619F8FFB1","token_expire":"2147483647"}
+)
+
+2017-05-15 00:10:05 Info: input api register:Array
+(
+    [username] => test02
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 1293c11dc9b5162c0c79b9b1088ef9fb
+)
+
+2017-05-15 00:10:06 Info: output api register:Array
+(
+    [status] => 0
+    [messsage] => Register successfully
+    [data] => {"User":{"username":"test02","account_id":"28"},"access_token":"D09848C78CC7EAE9A0AFC1C022F4BAE5ED7D1D80","token_expire":"2147483647"}
+)
+
+2017-05-15 00:13:03 Info: input api register:Array
+(
+    [username] => test02
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 1293c11dc9b5162c0c79b9b1088ef9fb
+)
+
+2017-05-15 00:13:03 Info: output api register:Array
+(
+    [status] => 0
+    [messsage] => Register successfully
+    [data] => {"User":{"username":"test02","account_id":"23"},"access_token":"4C8BF88561AA03FC822EADE9B0491A6845E061CE","token_expire":"2147483647"}
+)
+
+2017-05-15 00:15:18 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 1293c11dc9b5162c0c79b9b1088ef9fb
+)
+
+2017-05-15 00:15:18 Info: sign register:99f6b44a9f2ddc46688957a49e0a661f
+2017-05-15 00:15:18 Info: output api register:Array
+(
+    [status] => 3
+    [message] => The sign is incorrect
+)
+
+2017-05-15 00:15:39 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-15 00:15:39 Info: output api register:Array
+(
+    [status] => 5
+    [messsage] => Register successfully
+    [data] => {"User":{"username":"test02","account_id":"23"},"access_token":"4C8BF88561AA03FC822EADE9B0491A6845E061CE","token_expire":"2147483647"}
+)
+
+2017-05-15 00:16:56 Info: input api register:Array
+(
+    [username] => test01
+    [password] => 123456
+    [phone] => 0985005412
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-15 00:16:56 Info: output api register:Array
+(
+    [status] => 0
+    [messsage] => Register successfully
+    [data] => {"User":{"username":"test01","account_id":"33"},"access_token":"923CBC3A6D70FB82FB3EB6387440D4BEF1280D85","token_expire":"2147483647"}
+)
+
+2017-05-15 23:13:23 Info: input api login:Array
+(
+    [username] => test01
+    [password] => 123456
+    [sign] => 99f6b44a9f2ddc46688957a49e0a661f
+)
+
+2017-05-15 23:13:23 Info: sign login:48ba1d60351db7b72f10f33fb1940576
+2017-05-15 23:13:23 Info: output api login:Array
+(
+    [status] => 3
+    [message] => The sign is incorrect
+)
+
+2017-05-15 23:14:26 Info: input api login:Array
+(
+    [username] => test01
+    [password] => 123456
+    [sign] => 48ba1d60351db7b72f10f33fb1940576
+)
+
+2017-05-15 23:14:26 Info: output api login:Array
+(
+    [status] => 0
+    [messsage] => login successfully
+    [data] => {"User":{"username":"test01","account_id":"33"},"access_token":"923CBC3A6D70FB82FB3EB6387440D4BEF1280D85","token_expire":"2147483647"}
+)
+
+2017-05-15 23:17:24 Info: input api login:Array
+(
+    [username] => test01
+    [password] => 123456
+    [sign] => 48ba1d60351db7b72f10f33fb1940576
+)
+
+2017-05-15 23:17:24 Info: output api login:Array
+(
+    [status] => 0
+    [messsage] => login successfully
+    [data] => {"User":{"username":"test01","account_id":"33"},"access_token":"923CBC3A6D70FB82FB3EB6387440D4BEF1280D85","token_expire":"2147483647"}
+)
+
+2017-05-15 23:19:01 Info: input api login:Array
+(
+    [username] => test01
+    [password] => 123456
+    [sign] => 48ba1d60351db7b72f10f33fb1940576
+)
+
+2017-05-15 23:19:01 Info: sign login:adebe0cefbb9f300782a3c699d689ff7
+2017-05-15 23:19:01 Info: output api login:Array
+(
+    [status] => 3
+    [message] => The sign is incorrect
+)
+
+2017-05-15 23:19:49 Info: input api login:Array
+(
+    [username] => test01
+    [password] => 123456
+    [sign] => adebe0cefbb9f300782a3c699d689ff7
+)
+
+2017-05-15 23:19:49 Info: output api login:Array
+(
+    [status] => 0
+    [messsage] => login successfully
+    [data] => {"User":{"username":"test01","account_id":"33"},"access_token":"558BFD26A6AF54064427A4FC61EC12A0F5E0EBC6","token_expire":"2147483647"}
+)
+
