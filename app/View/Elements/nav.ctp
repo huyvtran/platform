@@ -125,7 +125,7 @@
 				<?php
 				if (env('SERVER_NAME') != 'localhost') {
 				?>
-					<a href="http://stats.smobgame.com">(Stats)</a>
+					<a href="#">(Stats)</a>
 				<?php
 				} else {
 				?>
