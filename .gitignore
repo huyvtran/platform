@@ -6,3 +6,6 @@
 /app/Config/database.php
 /app/Config/email.php
 /hiddenconfig.php
+core.php
+database.php
+email.php
