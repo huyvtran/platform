@@ -430,47 +430,40 @@ class UsersController extends AppController {
 		}
 
 		if ($this->Auth->user()) {
-			if ( !in_array($this->Auth->user('role'), array('Admin', 'Content', 'Marketing', 'Developer')) ) {
-				# if user login in the game
-				if ($this->Common->currentGame()) {
-					$dataSource = $this->User->getDataSource();
-					$dataSource->begin();
-					$this->User->Account->query("SELECT * FROM accounts LIMIT 1 FOR UPDATE");
-					$accountExist = $this->User->Account->find('first', array(
-						'conditions' => array(
-							'user_id' => $this->Auth->user('id'),
-							'game_id' => $this->Common->currentGame('id')
-						),
-						'recursive' => -1
-					));
+			# if user login in the game
+			if ($this->Common->currentGame()) {
+				$dataSource = $this->User->getDataSource();
+				$dataSource->begin();
+				$this->User->Account->query("SELECT * FROM accounts LIMIT 1 FOR UPDATE");
+				$accountExist = $this->User->Account->find('first', array(
+					'conditions' => array(
+						'user_id' => $this->Auth->user('id'),
+						'game_id' => $this->Common->currentGame('id')
+					),
+					'recursive' => -1
+				));
 
-					if (empty($accountExist)) {
-						$this->Session->write(AuthComponent::$sessionKey . '.new_account', 1);
+				if (empty($accountExist)) {
+					$this->Session->write(AuthComponent::$sessionKey . '.new_account', 1);
 
-						$this->User->Account->recursive = -1;
-						$this->User->createAccount(
-							$this->Common->currentGame(),
-							$this->Auth->user('id')
-						);
-					}
-					$dataSource->commit();
-					$data = $this->Command->authen('login', true);
-					$this->Log->logLogin();
-
-					$result = array(
-						'status' => 0,
-						'messsage' => 'login successfully',
-						'data' => $data
+					$this->User->Account->recursive = -1;
+					$this->User->createAccount(
+						$this->Common->currentGame(),
+						$this->Auth->user('id')
 					);
-				} else {
-					$this->Session->setFlash('You has been logged in successfully', 'success');
-					$this->redirect(array('action' => 'login_successful'));
 				}
+				$dataSource->commit();
+				$data = $this->Command->authen('login', true);
+				$this->Log->logLogin();
 
+				$result = array(
+					'status' => 0,
+					'messsage' => 'login successfully',
+					'data' => $data
+				);
 			} else {
-				$this->Session->delete('Message.auth');
 				$this->Session->setFlash('You has been logged in successfully', 'success');
-				$this->redirect(array('controller' => 'admin'));
+				$this->redirect(array('action' => 'login_successful'));
 			}
 		} else {
 			$result = array(
