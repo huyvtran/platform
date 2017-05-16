@@ -48,7 +48,7 @@ class CommonComponent extends Component {
 					'conditions' => array(
 						'website_id' => $websiteId
 					),
-					'contain' => array('Website', 'Avatar')
+					'contain' => array('Website')
 				));
 				if (!empty($games)) {
 					if (count($games) > 1) {
