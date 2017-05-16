@@ -539,11 +539,23 @@ class UsersController extends AppController {
 									$user['User']['id'],
 									$this->Common->currentGame('id')
 								);
+
+								if (empty($account['Account'])) {
+									$this->User->Account->recursive = -1;
+									$account2 = $this->User->createAccount(
+										$this->Common->currentGame(),
+										$this->Auth->user('id')
+									);
+									$account_id = $account2['Account']['account_id'];
+								}else{
+									$account_id = $account['Account']['account_id'];
+								}
+
 								$data = array_merge(
 									array(
 										'User' => array(
 											'username' => $user['User']['username'],
-											'account_id' => $account['Account']['account_id']
+											'account_id' => $account_id
 										)),
 									array(
 										'access_token' => $token['AccessToken']['token'],

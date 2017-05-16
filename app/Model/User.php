@@ -578,7 +578,7 @@ class User extends AppModel {
 				$accountId = (int)(($lastAccount['Account']['id'] + 1) . rand(1, 9)); # append rand number avoid duplicate character if admin want to test delete account
 			}
 			
-			if ($this->Account->save(array(
+			if ($account = $this->Account->save(array(
 				'Account' => array(
 					'game_id' => $game['id'],
 					'user_id' => $this->id,
@@ -589,7 +589,7 @@ class User extends AppModel {
 				)
 			))
 			) {
-				return true;
+				return $account;
 			}
 			return false;
 		}catch (Exception $e){
