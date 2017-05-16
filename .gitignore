@@ -5,3 +5,4 @@
 /app/Config/core.php
 /app/Config/database.php
 /app/Config/email.php
+/hiddenconfig.php
