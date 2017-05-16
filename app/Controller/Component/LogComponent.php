@@ -31,7 +31,7 @@ class LogComponent extends Component {
 		if (	empty($data['user_id'])
 			||	empty($data['game_id'])
 		) {
-			CakeLog::warning('error save log login');
+			CakeLog::info('error save log login');
 			return false;
 		}
 
