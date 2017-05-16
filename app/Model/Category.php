@@ -4,9 +4,6 @@ App::uses('AppModel', 'Model');
 
 class Category extends AppModel {
 
-    const SUPPORT_WEBSITE_MOBGAME_ID = 36;
-    const SUPPORT_WEBSITE_FUNTAP_ID  = 37;
-
 	public $actsAs = array(
 		'Tree' => array('parent' => 'category_id'),
 		'Utils.Sluggable' => array(
