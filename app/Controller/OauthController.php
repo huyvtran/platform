@@ -18,7 +18,7 @@ class OauthController extends AppController {
 		$data['User'] = $data['user'];
 		unset($data['user']);
 		$result = array(
-			'code' => 1,
+			'status' => 0,
 			'message' => 'OK',
 			'data' => $data
 		);
