@@ -30,7 +30,7 @@ class LogShell extends AppShell {
 				if ($log == false && !empty($_SERVER['testing'])) {
 					break;
 				}
-				$this->out("Redis pop");
+				$this->out(date('Y-m-d H:i:s') . " - Redis pop");
 				# run this command 60s only
 				if ((time() - $starttime) > 60) {
 					break;
