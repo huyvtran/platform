@@ -1,11 +1,9 @@
-/.idea
+/.idea/
 /Vendor
 /vendors
 /app/tmp
 /app/Config/core.php
 /app/Config/database.php
 /app/Config/email.php
-/hiddenconfig.php
-core.php
-database.php
-email.php
+hiddenconfig.php
+/app/webroot/img/Upload/
