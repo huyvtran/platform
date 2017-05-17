@@ -41,6 +41,13 @@ class AppController extends Controller {
 			),
 			'activeMenu' => array('users')
 		),
+        'CMS' => array(
+            'categories' => array(
+                'Websites - Index'	=> '/admin/websites',
+                'Websites - Add'	=> '/admin/websites/add',
+            ),
+            'activeMenu' => array('users')
+        ),
 		'Games' => array(
 			'categories' => array(
 				'Games - Add'	=> '/admin/games/add',

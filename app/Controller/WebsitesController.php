@@ -58,4 +58,12 @@ class WebsitesController extends AppController {
 
 		$this->set(compact('websites'));
 	}
+
+    public function admin_index()
+    {
+        $this->Website->contain(array('Game'));
+        $this->Paginator->settings['Website']['order'] = array('Website.id' => 'desc');
+        $websites = $this->paginate();
+        $this->set(compact('websites'));
+    }
 }
