@@ -43,6 +43,8 @@ class AppController extends Controller {
 		),
         'CMS' => array(
             'categories' => array(
+                'Categories - Index'	=> '/admin/categories',
+                'Categories - Add'		=> '/admin/categories/add',
                 'Websites - Index'	=> '/admin/websites',
                 'Websites - Add'	=> '/admin/websites/add',
             ),
