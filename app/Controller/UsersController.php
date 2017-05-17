@@ -686,7 +686,7 @@ class UsersController extends AppController {
         $this->redirect($this->referer());
     }
 
-	public function api_register_new()
+	public function api_register_takan()
 	{
 		$result = array(
 			'status' => 1,
@@ -810,6 +810,115 @@ class UsersController extends AppController {
 
 		end:
 		CakeLog::info('output api register:' . print_r($result,true));
+		$this->set('result', $result);
+		$this->set('_serialize', 'result');
+	}
+
+	public function api_login_takan(){
+		$result = array(
+			'status' => 1,
+			'messsage' => 'error'
+		);
+
+		CakeLog::info('input api login:' . print_r($this->request->data,true));
+
+//		if (!isset(
+//			$this->request->data['username'],
+//			$this->request->data['password'],
+//			$this->request->data['sign']
+//		)) {
+//			$result = array(
+//				'status' => 2,
+//				'message' => 'Necessary data is missing'
+//			);
+//			goto end;
+//		}
+//
+//		$sign = md5(
+//			$this->request->data['username']
+//			. $this->request->data['password']
+//			. $this->Common->currentGame('secret_key')
+//			. $this->Common->currentGame('app')
+//		);
+//
+//		if( $this->request->data['sign'] !== $sign ){
+//			CakeLog::info('sign login:' . print_r($sign,true));
+//			$result = array(
+//				'status' => 3,
+//				'message' => 'The sign is incorrect'
+//			);
+//			goto end;
+//		}
+//
+//		# Nếu user không thể login bằng email , check username
+//		$this->request->data['User']['email'] = $this->request->data['username'];
+//		$this->request->data['User']['password'] = $this->request->data['password'];
+//		if (!$this->Auth->user() && !empty($this->request->data['User']['email'])) {
+//			$tempEmail = $this->request->data['User']['email'];
+//			$this->User->contain();
+//			#login by username
+//			if ($user = $this->User->findByUsername($this->request->data['User']['email'])) {
+//				$this->request->data['User']['email'] = $user['User']['email'];
+//				$this->Auth->login();
+//			}
+//
+//			if (!$this->Auth->user()) {
+//				if ($user = $this->User->findByPhone($this->request->data['User']['email'])) {
+//					$this->request->data['User']['email'] = $user['User']['email'];
+//					$this->Auth->login();
+//					if (!$this->Auth->user()) {
+//						$this->request->data['User']['email'] = $tempEmail;
+//					}
+//				}
+//			}
+//		}
+//
+//		if ($this->Auth->user()) {
+//			# if user login in the game
+//			if ($this->Common->currentGame()) {
+//				$dataSource = $this->User->getDataSource();
+//				$dataSource->begin();
+//				$this->User->Account->query("SELECT * FROM accounts LIMIT 1 FOR UPDATE");
+//				$accountExist = $this->User->Account->find('first', array(
+//					'conditions' => array(
+//						'user_id' => $this->Auth->user('id'),
+//						'game_id' => $this->Common->currentGame('id')
+//					),
+//					'recursive' => -1
+//				));
+//
+//				if (empty($accountExist)) {
+//					$this->Session->write(AuthComponent::$sessionKey . '.new_account', 1);
+//
+//					$this->User->Account->recursive = -1;
+//					$this->User->createAccount(
+//						$this->Common->currentGame(),
+//						$this->Auth->user('id')
+//					);
+//				}
+//				$dataSource->commit();
+//				$data = $this->Command->authen('login', true);
+//				$this->Log->logLogin();
+//
+//				$result = array(
+//					'status' => 0,
+//					'messsage' => 'login successfully',
+//					'data' => $data
+//				);
+//			} else {
+//				$this->Session->setFlash('You has been logged in successfully', 'success');
+//				$this->redirect(array('action' => 'login_successful'));
+//			}
+//		} else {
+//			$result = array(
+//				'status' => 4,
+//				'message' => __('Tên đăng nhập và/hoặc mật khẩu không đúng!')
+//			);
+//			goto end;
+//		}
+
+		end:
+		CakeLog::info('output api login:' . print_r($result,true));
 		$this->set('result', $result);
 		$this->set('_serialize', 'result');
 	}
