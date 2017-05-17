@@ -600,4 +600,21 @@ class UsersController extends AppController {
 		$this->set('result', $result);
 		$this->set('_serialize', 'result');
 	}
+
+    public function admin_edit($id = null)
+    {
+        if (!empty($this->request->data)) {
+            $this->request->data['User']['active'] = 1;
+            $this->User->validator()->remove('password');
+            $this->User->validator()->remove('phone');
+
+            if ($this->User->add($this->request->data, false)) {
+                $this->Session->setFlash('The User has been saved');
+                $this->redirect(array('action' => 'index'));
+            }
+            $this->redirect(array('action' => 'index', 'admin' => true));
+        }
+        $this->request->data = $this->User->findById($id);
+        $this->layout = 'default_bootstrap';
+    }
 }
