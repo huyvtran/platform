@@ -139,13 +139,6 @@ $this->extend('/Common/blank');
 						<?php
 						}
 						?>
-
-						<?php $role = $this->Session->read('Auth.User.role'); ?>
-						<?php if (in_array($role, array('Admin','Developer'))) { ?>
-							<li><?php echo $this->Html->link('Delete', array('action' => 'delete', $user['User']['id']), array(), sprintf('Are you sure you want to delete # %s?', $user['User']['id'])); ?></li>
-						<?php } ?>
-
-
 						</li>
 					</ul>
 				</div>				
