@@ -617,4 +617,57 @@ class UsersController extends AppController {
         $this->request->data = $this->User->findById($id);
         $this->layout = 'default_bootstrap';
     }
+
+    public function admin_view($id)
+    {
+        $id_game = $this->Auth->user('permission_game_default');
+        $this->User->bindModel(array(
+            'hasOne' => array(
+                'LogUpdatedAccount'
+            )
+        ));
+        $this->loadModel('Game');
+        $appkeyToGame = $this->Game->find('list', array(
+            'fields' => array('app', 'title_os'),
+            'conditions' => array('id' => $id_game)
+        ));
+
+        $this->User->contain( array(
+            'Account' => array(
+                'Game', 'conditions' => array(
+                    'Account.game_id' => $id_game
+                )
+            )
+        ));
+        $user = $this->User->find('first', array(
+            'conditions' => array('User.id' => $id, 'Account.game_id' => $id_game),
+            'joins' => array(
+                array(
+                    'type' => 'LEFT',
+                    "table" => "accounts",
+                    "alias" => "Account",
+                    "conditions" => array("User.id = Account.user_id"),
+                ),
+            ),
+            'contain' => array('Profile'),
+        ));
+        if (empty($user)) {
+            throw new NotFoundException("Can not find this user");
+        }
+
+        $this->loadModel('LogEntergame');
+        $this->LogEntergame->bindModel(array('belongsTo' => array('Game')));
+        $areaRoles = $this->LogEntergame->find('all', array(
+            'fields' => array('DISTINCT area_id', 'role_id', 'Game.id', 'Game.title', 'Game.os'),
+            'conditions' => array(
+                'user_id' => $id,
+                'Game.id' => $id_game,
+            ),
+            'contain' => array('Game'),
+            'limit' => 1000
+        ));
+
+        $this->set(compact('appkeyToGame', 'user', 'areaRoles'));
+        $this->layout = 'default_bootstrap';
+    }
 }
