@@ -153,4 +153,27 @@ class WebsitesController extends AppController {
         $this->set(compact('games'));
         $this->render('admin_add');
     }
+
+    public function admin_edit($id = null)
+    {
+        if (!$this->Website->exists($id)) {
+            throw new NotFoundException('Invalid website');
+        }
+        $this->admin_add($id);
+    }
+
+    public function admin_delete($id = null)
+    {
+        $this->Website->id = $id;
+        if (!$this->Website->exists()) {
+            throw new NotFoundException('Invalid website');
+        }
+        $this->request->onlyAllow('post', 'delete');
+        if ($this->Website->delete()) {
+            $this->Session->setFlash('Website deleted', 'success');
+            $this->redirect(array('action' => 'index'));
+        }
+        $this->Session->setFlash('Website was not deleted', 'error');
+        $this->redirect(array('action' => 'index'));
+    }
 }
