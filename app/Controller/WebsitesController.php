@@ -66,4 +66,91 @@ class WebsitesController extends AppController {
         $websites = $this->paginate();
         $this->set(compact('websites'));
     }
+
+    public function admin_add($id = null)
+    {
+        if ($this->request->is('post') || $this->request->is('put')) {
+
+            $lang = 'eng';
+            if(isset($this->request->data['Website']['lang']))
+                $lang = $this->request->data['Website']['lang'];
+
+            if (empty($id)) {
+                $websites = $this->Website->find('all',
+                    array(
+                        'contain' => array(
+                            'Category' => array(
+                                'Article',
+                                'conditions' => array(
+                                    'Category.slug' => 'faq',
+                                    'Category.type' => 'Help',
+                                )
+                            )
+                        ),
+                        'conditions' => array('lang' => $lang),
+                        'order' => array('created' => 'DESC')
+                    )
+                );
+
+                foreach($websites as $website){
+                    if(isset($website['Category'][0]['Article']) && !empty($website['Category'][0]['Article']) ){
+                        $category_data = array(
+                            'Category'=>array(
+                                'title' => $website['Category'][0]['title'],
+                                'slug' => $website['Category'][0]['slug'],
+                                'description' => $website['Category'][0]['description'],
+                                'type' => $website['Category'][0]['type'],
+                            )
+                        );
+                        $articles_data = $website['Category'][0]['Article'];
+                        break;
+                    }
+                }
+            }
+
+            if ( $websites_new = $this->Website->save($this->request->data)) {
+
+                // create category and articles
+                if(isset($category_data) && isset($articles_data)){
+                    $category_data['Category']['website_id'] = $websites_new['Website']['id'];
+
+                    $this->loadModel('Category');
+                    $category_new = $this->Category->save($category_data);
+
+                    $this->loadModel('Article');
+                    foreach($articles_data as $article){
+                        $art = array(
+                            'Article' => array(
+                                'title' => $article['title'],
+                                'body' => $article['body'],
+                                'parsed_body' => $article['parsed_body'],
+                                'summary' => $article['summary'],
+                                'user_id' => $article['user_id'],
+                                'category_id' => $category_new['Category']['id'],
+                                'slug' => $article['slug'],
+                                'is_hot' => $article['is_hot'],
+                                'is_new' => $article['is_new'],
+                                'is_event' => $article['is_event'],
+                                'website_id' => $websites_new['Website']['id']
+                            )
+                        );
+                        $this->Article->create();
+                        $this->Article->save($art);
+                    }
+                }
+
+                $this->Session->setFlash('The website has been saved', 'success');
+                $this->redirect(array('action' => 'index'));
+            } else {
+                $this->Session->setFlash($this->Website->validationErrors, 'error');
+            }
+        }
+        if (!empty($id)) {
+            $this->Website->contain('Game');
+            $this->request->data = $this->Website->findById($id);
+        }
+        $games = $this->Website->Game->find('list');
+        $this->set(compact('games'));
+        $this->render('admin_add');
+    }
 }
