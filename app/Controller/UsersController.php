@@ -670,4 +670,19 @@ class UsersController extends AppController {
         $this->set(compact('appkeyToGame', 'user', 'areaRoles'));
         $this->layout = 'default_bootstrap';
     }
+
+    public function admin_deactive($userId = null, $active = 0)
+    {
+        if (!$userId) {
+            throw new BadRequestException();
+        }
+        $this->User->id = $userId;
+        if ($this->User->saveField('active', $active)) {
+            $this->Session->setFlash('Deactived the user.');
+        } else {
+            $this->Session->setFlash('Error happen');
+        }
+
+        $this->redirect($this->referer());
+    }
 }
