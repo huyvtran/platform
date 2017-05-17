@@ -38,7 +38,8 @@ class UsersController extends AppController {
 	{
 		parent::beforeFilter();
 		$this->Auth->allow( 
-			'logout', 'api_register', 'api_login', 'api_change_password'
+			'logout', 'api_register', 'api_login', 'api_change_password',
+			'api_login_takan', 'api_register_takan'
 		);
 	}
 
