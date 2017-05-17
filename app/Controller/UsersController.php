@@ -818,7 +818,7 @@ class UsersController extends AppController {
 			);
 			goto end;
 		}
-		$this->request->data['username'] = $this->request->data['account'] ;
+		$this->request->data['username'] = 'tanka_' . $this->request->data['account'] ;
 		$this->request->data['password'] = $this->request->data['pwd'];
 
 		# Nếu user không thể login bằng email , check username
