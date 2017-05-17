@@ -111,7 +111,7 @@ class CommandComponent extends Component {
 		$data = array(
 			'token' => $token['AccessToken']['token'],
 			'uid'	=> $this->Auth->user('id'),
-			'username' => $this->Auth->user('username')
+			'username' => substr($this->Auth->user('username'),6)
 		);
 
 		$this->Session->write('Auth.Account.id', $accountId);
