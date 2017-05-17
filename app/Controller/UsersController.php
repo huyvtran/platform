@@ -690,124 +690,109 @@ class UsersController extends AppController {
 	public function api_register_takan()
 	{
 		$result = array(
-			'status' => 1,
-			'messsage' => 'error'
+			'ret' => 1,
+			'msg' => 'error'
 		);
 
 		CakeLog::info('input api register:' . print_r($this->request->data,true));
 
-//		if (!isset(
-//			$this->request->data['username'],
-//			$this->request->data['password'],
-//			$this->request->data['sign']
-//		)) {
-//			$result = array(
-//				'status' => 2,
-//				'message' => 'Necessary data is missing'
-//			);
-//			goto end;
-//		}
-//
-//		$sign = md5(
-//			$this->request->data['username']
-//			. $this->request->data['password']
-//			. $this->Common->currentGame('secret_key')
-//			. $this->Common->currentGame('app')
-//		);
-//
-//		if( $this->request->data['sign'] !== $sign ){
-//			CakeLog::info('sign register:' . print_r($sign,true));
-//			$result = array(
-//				'status' => 3,
-//				'message' => 'The sign is incorrect'
-//			);
-//			goto end;
-//		}
-//
-//		unset($this->request->data['sign']);
-//		$this->request->data['User'] = $this->request->data;
-//		$this->request->data['User']['email'] = time().'@myapp.com';
-//		$this->request->data['User']['role'] = 'User';
-//		$this->request->data['User']['active'] = true;
-//		$this->request->data['User']['username'] = $this->request->data['username'];
-//
-//		$userCheck = $this->User->findByUsername($this->request->data['User']['username']);
-//		if( !empty($userCheck['User']) ){
-//			$result = array(
-//				'status' => 4,
-//				'message' => 'The username is in use'
-//			);
-//			goto end;
-//		}
-//
-//		$this->User->validator()->remove('email')->remove('password', 'confirmPassword');
-//		$this->User->validator()->remove('phone');
-//
-//		if ($this->Auth->user()) {
-//			$data = $this->Command->authen('login', true);
-//			$this->Log->logLogin();
-//			$result = array(
-//				'status' => 5,
-//				'messsage' => 'Register successfully',
-//				'data' => $data
-//			);
-//			goto end;
-//		}
-//
-//		if ($this->request->is('post')) {
-//			if ($this->Auth->user()) {
-//				$data = $this->Command->authen('login', true);
-//				$this->Log->logLogin();
-//				$result = array(
-//					'status' => 0,
-//					'messsage' => 'Register successfully',
-//					'data' => $data
-//				);
-//				goto end;
-//			}
-//
-//			$dataSource = $this->User->getDataSource();
-//			$dataSource->begin();
-//			# lock users
-//			$this->User->query("SELECT * FROM users LIMIT 1 FOR UPDATE");
-//			# lock accounts
-//			$this->User->query("SELECT * FROM accounts LIMIT 1 FOR UPDATE");
-//
-//			$user = $this->User->register($this->request->data);
-//			if ($user !== false) {
-//				$this->User->createAccount($this->Common->currentGame());
-//				$dataSource->commit();
-//
-//				$this->User->read();
-//				$this->Auth->login($this->User->data['User']);
-//
-//				$data = $this->Command->authen('login', true);
-//				$this->Log->logLogin();
-//
-//				$result = array(
-//					'status' => 0,
-//					'messsage' => 'Register successfully',
-//					'data' => $data
-//				);
-//			} else {
-//				$dataSource->rollback();
-//				unset($this->request->data[$this->modelClass]['password']);
-//
-//				$messageError = 'Validation errors';
-//				if( !empty($this->User->validationErrors['password'][0])
-//					&& is_string($this->User->validationErrors['password'][0])
-//				){
-//					$messageError = $this->User->validationErrors['password'][0] ;
-//				}
-//				$result = array(
-//					'status' => 6,
-//					'message' => $messageError,
-//					'data' => $this->User->validationErrors
-//				);
-//
-//				CakeLog::info('check validate register: '. print_r($result,true));
-//			}
-//		}
+		if (!isset(
+			$this->request->data['username'],
+			$this->request->data['pwd']
+		)) {
+			$result = array(
+				'ret' => 2,
+				'msg' => 'Necessary data is missing'
+			);
+			goto end;
+		}
+
+		$this->request->data['User'] = $this->request->data;
+		$this->request->data['User']['email'] = time().'@myapp.com';
+		$this->request->data['User']['role'] = 'User';
+		$this->request->data['User']['active'] = true;
+		$this->request->data['User']['password'] = $this->request->data['pwd'];
+		$this->request->data['User']['username'] = 'tanka_' . $this->request->data['username'];
+
+		$userCheck = $this->User->findByUsername($this->request->data['User']['username']);
+		if( !empty($userCheck['User']) ){
+			$result = array(
+				'ret' => 4,
+				'msg' => 'The username is in use'
+			);
+			goto end;
+		}
+
+		$this->User->validator()->remove('email')->remove('password', 'confirmPassword');
+		$this->User->validator()->remove('phone');
+
+		if ($this->Auth->user()) {
+			$data = $this->Command->authen_takan('login', true);
+			$this->Log->logLogin();
+			$result = array(
+				'ret' => 0,
+				'msg' => 'Register successfully',
+				'data' => $data
+			);
+			goto end;
+		}
+
+		if ($this->request->is('post')) {
+			if ($this->Auth->user()) {
+				$data = $this->Command->authen_takan('login', true);
+				$this->Log->logLogin_takan();
+				$result = array(
+					'ret' => 0,
+					'msg' => 'Register successfully',
+					'data' => $data
+				);
+				goto end;
+			}
+
+			$dataSource = $this->User->getDataSource();
+			$dataSource->begin();
+			# lock users
+			$this->User->query("SELECT * FROM users LIMIT 1 FOR UPDATE");
+			# lock accounts
+			$this->User->query("SELECT * FROM accounts LIMIT 1 FOR UPDATE");
+
+			$user = $this->User->register($this->request->data);
+			if ($user !== false) {
+				$this->User->createAccount($this->Common->currentGame());
+				$dataSource->commit();
+
+				$this->User->read();
+				$this->Auth->login($this->User->data['User']);
+
+				$data = $this->Command->authen_takan('login', true);
+				$this->Log->logLogin();
+
+				$result = array(
+					'ret' => 0,
+					'msg' => 'Register successfully',
+					'data' => $data
+				);
+				goto end;
+			} else {
+				$dataSource->rollback();
+				unset($this->request->data[$this->modelClass]['password']);
+
+				$messageError = 'Validation errors';
+				if( !empty($this->User->validationErrors['password'][0])
+					&& is_string($this->User->validationErrors['password'][0])
+				){
+					$messageError = $this->User->validationErrors['password'][0] ;
+				}
+				$result = array(
+					'ret' => 6,
+					'msg' => 'Register successfully',
+					'data' => $this->User->validationErrors
+				);
+				goto end;
+
+				CakeLog::info('check validate register: '. print_r($result,true));
+			}
+		}
 
 		end:
 		CakeLog::info('output api register:' . print_r($result,true));
