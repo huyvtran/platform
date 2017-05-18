@@ -245,81 +245,76 @@ class ArticlesController extends AppController {
 		$this->redirect($this->referer(array('action' => 'index'), true));
 	}
 
-//	public function admin_moveToTop($id = null)
-//	{
-//		$this->Article->id = $id;
-//		if (!$this->Article->exists()) {
-//			throw new NotFoundException();
-//		}
-//
-//		$this->Article->recursive = -1;
-//		if ($this->Article->moveToBottom($this->Article->id)) {
-//			$this->Article->__clearCache($this->Article->id);
-//			$this->Session->setFlash('Đã di chuyển bài viết lên trên đầu', "success");
-//		} else {
-//			$this->Session->setFlash('Không thể di chuyên lên hoặc bài viết đã ở vị trí đầu tiên',
-//				"error");
-//		}
-//
-//		$this->redirect($this->referer(array('action' => 'index'), true));
-//
-//	}
-//
-//	public function admin_moveup($id = null) {
-//		$this->Article->id = $id;
-//		if (!$this->Article->exists()) {
-//			throw new NotFoundException();
-//		}
-//
-//		$this->Article->recursive = -1;
-//		if ($this->Article->moveDown($this->Article->id)) {
-//			$this->Article->__clearCache($this->Article->id);
-//			$this->Session->setFlash('Đã di chuyển bài viết lên', "success");
-//		} else {
-//			$this->Session->setFlash('Không thể di chuyên lên hoặc bài viết đã ở vị trí đầu tiên',
-//				"error");
-//		}
-//
-//		$this->redirect($this->referer(array('action' => 'index'), true));
-//	}
-//
-//	public function admin_movedown($id = null) {
-//		$this->Article->id = $id;
-//		if (!$this->Article->exists()) {
-//			throw new NotFoundException();
-//		}
-//		$this->Article->recursive = -1;
-//
-//		if ($this->Article->moveUp($this->Article->id)) {
-//			$this->Article->__clearCache($this->Article->id);
-//			$this->Session->setFlash('Đã di chuyển bài viết xuống', "success");
-//		} else {
-//			$this->Session->setFlash('Không thể di xuống lên hoặc bài viết đã ở vị trí cuối cùng',
-//				"error");
-//		}
-//
-//		$this->redirect($this->referer(array('action' => 'index'), true));
-//	}
-//
+	public function admin_moveToTop($id = null)
+	{
+		$this->Article->id = $id;
+		if (!$this->Article->exists()) {
+			throw new NotFoundException();
+		}
 
-//
-//	public function user_edit($id = null) {
-//		$this->admin_add($id);
-//	}
-//
-//	public function admin_delete($id) {
-//		$article = $this->Article->findById($id);
-//		if (empty($article)) {
-//			throw new NotFoundException("Bài viết này không tồn tại");
-//		}
-//		if ($this->Article->delete($id)) {
-//			$this->Session->setFlash('Bài viết <strong>' . h($article['Article']['title']) . '</strong> đã xóa',
-//				'success');
-//		} else {
-//			$this->Session->setFlash('Không thể xóa bài viết', 'error');
-//		}
-//		$this->redirect($this->referer(array('action' => 'index'), true));
-//	}
+		$this->Article->recursive = -1;
+		if ($this->Article->moveToBottom($this->Article->id)) {
+			$this->Article->__clearCache($this->Article->id);
+			$this->Session->setFlash('Đã di chuyển bài viết lên trên đầu', "success");
+		} else {
+			$this->Session->setFlash('Không thể di chuyên lên hoặc bài viết đã ở vị trí đầu tiên',
+				"error");
+		}
+
+		$this->redirect($this->referer(array('action' => 'index'), true));
+
+	}
+
+	public function admin_moveup($id = null) {
+		$this->Article->id = $id;
+		if (!$this->Article->exists()) {
+			throw new NotFoundException();
+		}
+
+		$this->Article->recursive = -1;
+		if ($this->Article->moveDown($this->Article->id)) {
+			$this->Article->__clearCache($this->Article->id);
+			$this->Session->setFlash('Đã di chuyển bài viết lên', "success");
+		} else {
+			$this->Session->setFlash('Không thể di chuyên lên hoặc bài viết đã ở vị trí đầu tiên',
+				"error");
+		}
+
+		$this->redirect($this->referer(array('action' => 'index'), true));
+	}
+
+	public function admin_movedown($id = null) {
+		$this->Article->id = $id;
+		if (!$this->Article->exists()) {
+			throw new NotFoundException();
+		}
+		$this->Article->recursive = -1;
+
+		if ($this->Article->moveUp($this->Article->id)) {
+			$this->Article->__clearCache($this->Article->id);
+			$this->Session->setFlash('Đã di chuyển bài viết xuống', "success");
+		} else {
+			$this->Session->setFlash('Không thể di xuống lên hoặc bài viết đã ở vị trí cuối cùng',
+				"error");
+		}
+
+		$this->redirect($this->referer(array('action' => 'index'), true));
+	}
+
+
+	public function admin_delete($id) {
+		$article = $this->Article->findById($id);
+		if (empty($article)) {
+			throw new NotFoundException("Bài viết này không tồn tại");
+		}
+		if ($this->Article->delete($id)) {
+			$this->Session->setFlash('Bài viết <strong>' . h($article['Article']['title']) . '</strong> đã xóa',
+				'success');
+		} else {
+			$this->Session->setFlash('Không thể xóa bài viết', 'error');
+		}
+		$this->redirect($this->referer(array('action' => 'index'), true));
+	}
 
 	public function isAuthorized() {
 		return true;
