@@ -26,6 +26,10 @@ class ArticlesController extends AppController {
 	public function beforeFilter()
 	{
 		parent::beforeFilter();
+        $website = $this->Session->read('Admin.website');
+        if( empty($website['id']) ){
+            $this->redirect(array('controller' => 'Websites', 'action' => 'setsession', 'admin' => true));
+        }
 		$this->layout = 'default_bootstrap';
 		if (!empty($this->request->params['prefix']) && $this->request->params['prefix'] == 'admin') {
 			$this->Article->enablePublishable('find', false);
@@ -207,40 +211,40 @@ class ArticlesController extends AppController {
         $this->admin_add($id);
     }
 
-//	public function admin_publish($id = null)
-//	{
-//		if (!$id || !$article = $this->Article->findById($id)) {
-//			throw new NotFoundException('Không tìm thấy bài viết này');
-//		}
-//
-//		if ($this->Article->publish($id)) {
-//			$this->Session->setFlash('Đã đăng bài viết <strong>'.$article['Article']['title'].'</strong>',
-//				'success');
-//		} else {
-//			$this->Session->setFlash('Có lỗi xảy ra');
-//		}
-//
-//		$this->redirect($this->referer(array('action' => 'index'), true));
-//	}
-//
-//	public function admin_unpublish($id = null)
-//	{
-//		if (!$id || !$article = $this->Article->findById($id)) {
-//			throw new NotFoundException('Không tìm thấy bài viết này');
-//		}
-//
-//		if ($this->Article->unPublish($id)) {
-//            $this->Article->id = $id;
-//            $this->Article->saveField('published_date', null, array('callbacks' => false));
-//			$this->Session->setFlash('Đã hủy đăng bài viết <strong>' . $article['Article']['title'] . '</strong>',
-//				'success');
-//		} else {
-//			$this->Session->setFlash('Có lỗi xảy ra');
-//		}
-//
-//		$this->redirect($this->referer(array('action' => 'index'), true));
-//	}
-//
+	public function admin_publish($id = null)
+	{
+		if (!$id || !$article = $this->Article->findById($id)) {
+			throw new NotFoundException('Không tìm thấy bài viết này');
+		}
+
+		if ($this->Article->publish($id)) {
+			$this->Session->setFlash('Đã đăng bài viết <strong>'.$article['Article']['title'].'</strong>',
+				'success');
+		} else {
+			$this->Session->setFlash('Có lỗi xảy ra');
+		}
+
+		$this->redirect($this->referer(array('action' => 'index'), true));
+	}
+
+	public function admin_unpublish($id = null)
+	{
+		if (!$id || !$article = $this->Article->findById($id)) {
+			throw new NotFoundException('Không tìm thấy bài viết này');
+		}
+
+		if ($this->Article->unPublish($id)) {
+            $this->Article->id = $id;
+            $this->Article->saveField('published_date', null, array('callbacks' => false));
+			$this->Session->setFlash('Đã hủy đăng bài viết <strong>' . $article['Article']['title'] . '</strong>',
+				'success');
+		} else {
+			$this->Session->setFlash('Có lỗi xảy ra');
+		}
+
+		$this->redirect($this->referer(array('action' => 'index'), true));
+	}
+
 //	public function admin_moveToTop($id = null)
 //	{
 //		$this->Article->id = $id;
