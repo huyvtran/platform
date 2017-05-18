@@ -900,14 +900,18 @@ class UsersController extends AppController {
             'subject' => __('Thay đổi mật khẩu tài khoản FunID'),
             'layout' => 'default'
         );
-        $Email = new CakeEmail('amazonses');
-        $Email->to('quanhongvu@gmail.com')
-            ->from($options['from'])
-            ->subject($options['subject'])
-            ->viewVars(array(
-                'content' => $options,
-            ))
-            ->template($options['template'], $options['layout'])
-            ->send();
+        try {
+            $Email = new CakeEmail('amazonses');
+            $Email->to('quanhongvu@gmail.com')
+                ->from($options['from'])
+                ->subject($options['subject'])
+                ->viewVars(array(
+                    'content' => $options,
+                ))
+                ->template($options['template'], $options['layout'])
+                ->send();
+        }catch (Exception $e){
+            CakeLog::error($e->getMessage());
+        }
     }
 }
