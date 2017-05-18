@@ -110,7 +110,7 @@ class CommandComponent extends Component {
 
 		$data = array(
 			'token' => $token['AccessToken']['token'],
-			'uid'	=> $this->Auth->user('id'),
+			'uid'	=> $accountId,
 			'username' => substr($this->Auth->user('username'),6)
 		);
 
