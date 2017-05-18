@@ -58,5 +58,47 @@ class Article extends AppModel {
 			'allowEmpty' => false
 		)
 	);
+
+    public function afterSave($created)
+    {
+        $this->__clearCache($this->data[$this->alias]['id']);
+    }
+
+    public function afterDelete()
+    {
+        $this->__clearCache($this->id);
+    }
+
+    public function __clearCache($id)
+    {
+        $this->contain(array('Website' => array('Game'), 'Category'));
+        $article = $this->findById($id);
+
+        if (isset($article['Website']['url'])) {
+            $prefixes[] = preg_replace('/\./', '_', $article['Website']['url']);
+            $prefixes[] = preg_replace('/\./', '_', $article['Website']['url']) . '_mobile';
+
+            if (!empty($article['Website']['Game'])) {
+                foreach($article['Website']['Game'] as $game) {
+                    $prefixes[] = $game['app_key'] . '_plf';
+                    clearCachefile($game['app_key']);
+                    clearCachefile('smobgame_com_plf_');
+                }
+            }
+
+            $cacheKey = array('home', 'pages_home', 'games_dashboard',
+                'news_' . $article['Category']['slug'],
+                'news_' . $article['Category']['slug'] . '_' . $article['Article']['slug']
+            );
+
+            foreach ($cacheKey as $key) {
+                foreach ($prefixes as $prefix) {
+                    clearCachefile($prefix . '_' . $key);
+                    @unlink(CACHE . 'views' . DS . $prefix . 'news.php');
+                }
+            }
+        }
+        clearCachefile(preg_replace('/\./', '_', $article['Website']['url']));
+    }
 }
 ?>
