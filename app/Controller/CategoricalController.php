@@ -25,4 +25,9 @@ class CategoricalController extends AppController{
             $this->redirect(array('action' => 'index'));
         }
     }
+
+    public function isAuthorized()
+    {
+        return true;
+    }
 }
