@@ -12,7 +12,7 @@ $this->extend('/Common/blank');
 		<th><?php echo $this->Paginator->sort('theme'); ?></th>
 		<th><?php echo $this->Paginator->sort('theme_mobile'); ?></th>
 		<th><?php echo $this->Paginator->sort('lang'); ?></th>
-        <th><?php echo $this->Paginator->sort('status'); ?></th>
+        <th><?php echo $this->Paginator->sort('published'); ?></th>
 		<th class="actions">Actions</th>
 	</tr>
 
@@ -36,7 +36,7 @@ $this->extend('/Common/blank');
 		<td><?php echo $website['Website']['lang']; ?>&nbsp;</td>
         <td>
             <?php
-            if ( empty($website['Website']['status']) ) {
+            if ( empty($website['Website']['published']) ) {
                 echo '<span style="color:red">No</span>';
             } else {
                 echo '<span style="color:green">Yes</span>';
