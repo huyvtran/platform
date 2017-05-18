@@ -65,12 +65,147 @@ class ArticlesController extends AppController {
         $this->set(compact('articles', 'categories'));
     }
 
-//    public function admin_edit($id = null)
-//    {
-//        $this->Article->enablePublishable('find', false);
-//        $this->admin_add($id);
-//    }
-//
+    public function admin_add($id = null)
+    {
+        if (!empty($this->request->data)) {
+            if ($userid = $this->Auth->user('id')) {
+                $this->request->data['Article']['user_id'] = $userid;
+            }
+            if ($this->request->data['Article']['body_markdown'] != null && $this->request->data['Article']['markup'] == 'markdown') {
+                $this->request->data['Article']['body'] = $this->request->data['Article']['body_markdown'];
+            }
+            try {
+                $dataSource = $this->Article->getDatasource();
+                $dataSource->begin();
+
+                $this->request->data['Article']['website_id'] = $this->Session->read('Admin.website.id');
+
+                $time_noti = null;
+                if(isset($this->request->data['Article']['published_date_date']) && $this->request->data['Article']['published_date_date'] != '' &&
+                    isset($this->request->data['Article']['published_date_hour']) && $this->request->data['Article']['published_date_hour'] != ''){
+                    $this->request->data['Article']['published_date'] = $this->request->data['Article']['published_date_date'] ." ". $this->request->data['Article']['published_date_hour'].':00';
+                    $time_noti = $this->request->data['Article']['published_date'];
+
+                    if (!empty($id)) {
+                        $article = $this->Article->findById($id);
+                        if (empty($article)) {
+                            throw new NotFoundException('Không tìm thấy bài viết này');
+                        }
+                        if($article['Article']['published'] && strtotime($time_noti) >= strtotime($article['Article']['published_date']))
+                            $this->request->data['Article']['published_date'] = $article['Article']['published_date'];
+                    }
+                }
+                // add time start and finished for event
+                if(isset($this->request->data['Article']['category_id']) && $this->request->data['Article']['category_id']!= ''){
+                    $this->loadModel('Categories');
+                    $category_id = $this->request->data['Article']['category_id'];
+                    $category = $this->Categories->findById($category_id);
+                    if($category['Categories']['slug'] == 'events'){
+                        if(isset($this->request->data['Article']['event_start_hour']) && $this->request->data['Article']['event_start_hour'] != '' &&
+                            isset($this->request->data['Article']['event_start_date']) && $this->request->data['Article']['event_start_date'] != ''){
+                            $this->request->data['Article']['event_start'] = $this->request->data['Article']['event_start_date'] ." ". $this->request->data['Article']['event_start_hour'].':00';
+                        }else{
+                            $this->Session->setFlash('Không thành công - Bài viết của bạn là sự kiện nên phải có ngày bắt đầu và kết thúc sự kiện!', 'error');
+                            $this->redirect(array('action' => 'index'));
+                        }
+                        if(isset($this->request->data['Article']['event_end_hour']) && $this->request->data['Article']['event_end_hour'] != '' &&
+                            isset($this->request->data['Article']['event_end_date']) && $this->request->data['Article']['event_end_date'] != ''){
+                            $this->request->data['Article']['event_end'] = $this->request->data['Article']['event_end_date'] ." ". $this->request->data['Article']['event_end_hour'].':00';
+                        }else{
+                            $this->Session->setFlash('Không thành công - Bài viết của bạn là sự kiện nên phải có ngày bắt đầu và kết thúc sự kiện!', 'error');
+                            $this->redirect(array('action' => 'index'));
+                        }
+                    }
+                }
+                if(isset($this->request->data['Article']['published_date'])) {
+                    $time_future = $this->request->data['Article']['published_date'];
+                    $time_now = date('Y-m-d H:i:s');
+                    $time_end = strtotime($time_now) + 3*24*3600;
+                    $time_end = date('Y-m-d H:i:s',$time_end);
+                }
+
+                if(isset($this->request->data['Article']['published_date']) &&
+                    isset($time_now) && isset($time_end) &&
+                    strtotime($time_future) >= strtotime($time_end)
+                ){
+                    $this->Session->setFlash('không thành công - giới hạn auto public là 3 ngày sau ngày hiện tại', 'error');
+                    $this->redirect(array('action' => 'index'));
+                }
+
+                if ($this->Article->save($this->request->data)) {
+                    # setNotification
+//                    if (	!empty($this->request->data['Article']['notify'])
+//                        || 	!empty($this->request->data['Article']['notify_all'])
+//                    ) {
+//                        if (empty($this->request->data['Article']['category_id'])) {
+//                            $dataSource->rollback();
+//                            throw new Exception("You need choose category, if you want to create notification from this article.");
+//                        }
+//                        if (!empty($this->request->data['Article']['notify_all'])) {
+//                            $gameId = 99999999;
+//                            $this->Article->setNft($this->Article->id, $gameId, $time_noti);
+//                        } else {
+//                            $this->loadModel('Game');
+//                            $this->Game->contain();
+//                            $games = $this->Game->findAllByWebsiteId($this->Session->read('Admin.website.id'));
+//                            foreach ($games as $game) {
+//                                if (in_array($game['Game']['os'], array('android', 'ios', 'wp'))) {
+//                                    $this->Article->setNft($this->Article->id, $game['Game']['id'],$time_noti);
+//                                }
+//                            }
+//                        }
+//                    }
+
+                    $dataSource->commit();
+                    $this->Session->setFlash("Bài viết <strong>" . $this->request->data['Article']['title'] . "</strong> đã được lưu lại",
+                        "success");
+                    $this->redirect(array('action' => 'index'));
+                } else {
+                    throw new Exception(current(current($this->Article->validationErrors)));
+                }
+            } catch (Exception $e) {
+                $this->Session->setFlash($e->getMessage(), "error");
+            }
+        }
+
+        if (!empty($id)) {
+            $this->request->data = $this->Article->findById($id);
+            if(isset($this->request->data['Article']['published_date'])) {
+                $public_date_int = strtotime($this->request->data['Article']['published_date']);
+                $this->request->data['Article']['published_date_date'] = date('Y-m-d', $public_date_int);
+                $this->request->data['Article']['published_date_hour'] = date('H:i', $public_date_int);
+            }
+            if(isset($this->request->data['Article']['event_start'])) {
+                $public_date_int = strtotime($this->request->data['Article']['event_start']);
+                $this->request->data['Article']['event_start_date'] = date('Y-m-d', $public_date_int);
+                $this->request->data['Article']['event_start_hour'] = date('H:i', $public_date_int);
+            }
+            if(isset($this->request->data['Article']['event_end'])) {
+                $public_date_int = strtotime($this->request->data['Article']['event_end']);
+                $this->request->data['Article']['event_end_date'] = date('Y-m-d', $public_date_int);
+                $this->request->data['Article']['event_end_hour'] = date('H:i', $public_date_int);
+            }
+            if(isset($this->request->data['Article']['tags'])){
+                $tags = str_replace(' ','',$this->request->data['Article']['tags']);
+                $this->request->data['Article']['tag_values'] = explode(',',$tags);
+            }
+            if (empty($this->request->data)) {
+                throw new NotFoundException('Không tìm thấy bài viết này');
+            }
+        }
+
+        $categories = $this->Article->Category->generateTreeList(array('website_id' => $this->Session->read('Admin.website.id')), null, null, '-- ');
+
+        $this->set('categories', $categories);
+        $this->render('admin_add');
+    }
+
+    public function admin_edit($id = null)
+    {
+        $this->Article->enablePublishable('find', false);
+        $this->admin_add($id);
+    }
+
 //	public function admin_publish($id = null)
 //	{
 //		if (!$id || !$article = $this->Article->findById($id)) {
@@ -161,185 +296,7 @@ class ArticlesController extends AppController {
 //		$this->redirect($this->referer(array('action' => 'index'), true));
 //	}
 //
-//	public function admin_add($id = null)
-//	{
-//		if (!empty($this->request->data)) {
-//			if ($userid = $this->Auth->user('id')) {
-//				$this->request->data['Article']['user_id'] = $userid;
-//			}
-//            if ($this->request->data['Article']['body_markdown'] != null && $this->request->data['Article']['markup'] == 'markdown') {
-//                $this->request->data['Article']['body'] = $this->request->data['Article']['body_markdown'];
-//            }
-//			try {
-//				$dataSource = $this->Article->getDatasource();
-//				$dataSource->begin();
-//
-//                $this->request->data['Article']['website_id'] = $this->Session->read('Admin.website.id');
-//
-//                $time_noti = null;
-//                if(isset($this->request->data['Article']['published_date_date']) && $this->request->data['Article']['published_date_date'] != '' &&
-//                    isset($this->request->data['Article']['published_date_hour']) && $this->request->data['Article']['published_date_hour'] != ''){
-//                        $this->request->data['Article']['published_date'] = $this->request->data['Article']['published_date_date'] ." ". $this->request->data['Article']['published_date_hour'].':00';
-//                        $time_noti = $this->request->data['Article']['published_date'];
-//
-//                        if (!empty($id)) {
-//                            $article = $this->Article->findById($id);
-//                            if (empty($article)) {
-//                                throw new NotFoundException('Không tìm thấy bài viết này');
-//                            }
-//                            if($article['Article']['published'] && strtotime($time_noti) >= strtotime($article['Article']['published_date']))
-//                                $this->request->data['Article']['published_date'] = $article['Article']['published_date'];
-//                        }
-//                }
-//                // add time start and finished for event
-//                if(isset($this->request->data['Article']['category_id']) && $this->request->data['Article']['category_id']!= ''){
-//                    $this->loadModel('Categories');
-//                    $category_id = $this->request->data['Article']['category_id'];
-//                    $category = $this->Categories->findById($category_id);
-//                    if($category['Categories']['slug'] == 'events'){
-//                        if(isset($this->request->data['Article']['event_start_hour']) && $this->request->data['Article']['event_start_hour'] != '' &&
-//                            isset($this->request->data['Article']['event_start_date']) && $this->request->data['Article']['event_start_date'] != ''){
-//                            $this->request->data['Article']['event_start'] = $this->request->data['Article']['event_start_date'] ." ". $this->request->data['Article']['event_start_hour'].':00';
-//                        }else{
-//                            $this->Session->setFlash('Không thành công - Bài viết của bạn là sự kiện nên phải có ngày bắt đầu và kết thúc sự kiện!', 'error');
-//                            $this->redirect(array('action' => 'index'));
-//                        }
-//                        if(isset($this->request->data['Article']['event_end_hour']) && $this->request->data['Article']['event_end_hour'] != '' &&
-//                            isset($this->request->data['Article']['event_end_date']) && $this->request->data['Article']['event_end_date'] != ''){
-//                            $this->request->data['Article']['event_end'] = $this->request->data['Article']['event_end_date'] ." ". $this->request->data['Article']['event_end_hour'].':00';
-//                        }else{
-//                            $this->Session->setFlash('Không thành công - Bài viết của bạn là sự kiện nên phải có ngày bắt đầu và kết thúc sự kiện!', 'error');
-//                            $this->redirect(array('action' => 'index'));
-//                        }
-//                    }
-//                }
-//                if(isset($this->request->data['Article']['published_date'])) {
-//                    $time_future = $this->request->data['Article']['published_date'];
-//                    $time_now = date('Y-m-d H:i:s');
-//                    $time_end = strtotime($time_now) + 3*24*3600;
-//                    $time_end = date('Y-m-d H:i:s',$time_end);
-//                }
-//
-//                if(isset($this->request->data['Article']['published_date']) &&
-//                    isset($time_now) && isset($time_end) &&
-//                    strtotime($time_future) >= strtotime($time_end)
-//                ){
-//                    $this->Session->setFlash('không thành công - giới hạn auto public là 3 ngày sau ngày hiện tại', 'error');
-//                    $this->redirect(array('action' => 'index'));
-//                }
-//                // add tags
-//                $word_tags = '';
-//                $this->request->data['Article']['tags']='';
-//                if(isset($this->request->data['Article']['tag_values']) && $this->request->data['Article']['tag_values'] != ''){
-//                    $word_tags = implode(',',$this->request->data['Article']['tag_values']);
-//                }
-//                if( $word_tags != ''){
-//                    $this->request->data['Article']['tags'] = $word_tags;
-//                }
-//                // remove all tags
-//                if($id != null && $word_tags == '' ){
-////                    $this->loadModel('Tagged');
-//                    $tags = $this->Article->Tagged->find('all',
-//                        array('conditions'=>array('foreign_key'=>$id)));
-//                    if(count($tags) > 0){
-//                        $this->loadModel('Tag');
-//                        foreach($tags as $tag){
-//                            if($tag['Tag']['occurrence'] == 1 || $tag['Tag']['occurrence'] == 0){
-//                                $this->Tag->deleteAll(array('id' => $tag['Tag']['id']), false);
-//                            }elseif($tag['Tag']['occurrence'] > 1){
-//                                $this->Tag->read(null,$tag['Tag']['id'] );
-//                                $this->Tag->set('occurrence',$tag['Tag']['occurrence'] -1 );
-//                                $this->Tag->save();
-//                            }
-//                        }
-//                        $this->Article->Tagged->deleteAll(array('foreign_key' => $id), false);
-//                    }
-//                }
-//
-//				if ($this->Article->save($this->request->data)) {
-//					if (!empty($this->request->data['Article']['file']['name'])) {
-//						$this->Article->Avatar->upload(array(
-//							'file' => $this->request->data['Article']['file']['tmp_name'],
-//							'name' => $this->request->data['Article']['file']['name'],
-//							'model' => 'Article',
-//							'foreign_key' => $this->Article->id,
-//							'type' => 'Avatar'
-//						));
-//					}
-//
-//					# setNotification
-//					if (	!empty($this->request->data['Article']['notify'])
-//						|| 	!empty($this->request->data['Article']['notify_all'])
-//					) {
-//						if (empty($this->request->data['Article']['category_id'])) {
-//							$dataSource->rollback();
-//							throw new Exception("You need choose category, if you want to create notification from this article.");
-//						}
-//						if (!empty($this->request->data['Article']['notify_all'])) {
-//							$gameId = 99999999;
-//							$this->Article->setNft($this->Article->id, $gameId, $time_noti);
-//						} else {
-//							$this->loadModel('Game');
-//							$this->Game->contain();
-//							$games = $this->Game->findAllByWebsiteId($this->Session->read('Admin.website.id'));
-//							foreach ($games as $game) {
-//								if (in_array($game['Game']['os'], array('android', 'ios', 'wp'))) {
-//									$this->Article->setNft($this->Article->id, $game['Game']['id'],$time_noti);
-//								}
-//							}
-//						}
-//					}
-//
-//					$dataSource->commit();
-//					$this->Session->setFlash("Bài viết <strong>" . $this->request->data['Article']['title'] . "</strong> đã được lưu lại",
-//						"success");
-//					$this->redirect(array('action' => 'index'));
-//				} else {
-//					throw new Exception(current(current($this->Article->validationErrors)));
-//				}
-//			} catch (Exception $e) {
-//				$this->Session->setFlash($e->getMessage(), "error");
-//			}
-//		}
-//
-//		if (!empty($id)) {
-//			$this->request->data = $this->Article->findById($id);
-//            if(isset($this->request->data['Article']['published_date'])) {
-//                $public_date_int = strtotime($this->request->data['Article']['published_date']);
-//                $this->request->data['Article']['published_date_date'] = date('Y-m-d', $public_date_int);
-//                $this->request->data['Article']['published_date_hour'] = date('H:i', $public_date_int);
-//            }
-//            if(isset($this->request->data['Article']['event_start'])) {
-//                $public_date_int = strtotime($this->request->data['Article']['event_start']);
-//                $this->request->data['Article']['event_start_date'] = date('Y-m-d', $public_date_int);
-//                $this->request->data['Article']['event_start_hour'] = date('H:i', $public_date_int);
-//            }
-//            if(isset($this->request->data['Article']['event_end'])) {
-//                $public_date_int = strtotime($this->request->data['Article']['event_end']);
-//                $this->request->data['Article']['event_end_date'] = date('Y-m-d', $public_date_int);
-//                $this->request->data['Article']['event_end_hour'] = date('H:i', $public_date_int);
-//            }
-//            if(isset($this->request->data['Article']['tags'])){
-//                $tags = str_replace(' ','',$this->request->data['Article']['tags']);
-//                $this->request->data['Article']['tag_values'] = explode(',',$tags);
-//            }
-//			if (empty($this->request->data)) {
-//				throw new NotFoundException('Không tìm thấy bài viết này');
-//			}
-//		}
-//
-//		$categories = $this->Article->Category->generateTreeList(array('website_id' => $this->Session->read('Admin.website.id')), null, null, '-- ');
-//        // tags for artice
-//        $this->loadModel('Tag');
-//        $listTag = $this->Tag->find('list',array(
-//            'conditions'=>array('occurrence !=' => 0),
-//            'fields'=>'keyname,name',
-//            'limit' =>30
-//        ));
-//		$this->set('categories', $categories);
-//		$this->set('listTag', $listTag);
-//		$this->render('admin_add');
-//	}
+
 //
 //	public function user_edit($id = null) {
 //		$this->admin_add($id);
