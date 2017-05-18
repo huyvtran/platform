@@ -12,6 +12,7 @@ $this->extend('/Common/blank');
 		<th><?php echo $this->Paginator->sort('theme'); ?></th>
 		<th><?php echo $this->Paginator->sort('theme_mobile'); ?></th>
 		<th><?php echo $this->Paginator->sort('lang'); ?></th>
+        <th><?php echo $this->Paginator->sort('status'); ?></th>
 		<th class="actions">Actions</th>
 	</tr>
 
@@ -33,6 +34,16 @@ $this->extend('/Common/blank');
 		<td><?php echo h($website['Website']['theme']); ?>&nbsp;</td>
 		<td><?php echo h($website['Website']['theme_mobile']); ?>&nbsp;</td>
 		<td><?php echo $website['Website']['lang']; ?>&nbsp;</td>
+        <td>
+            <?php
+            if ( empty($website['Website']['status']) ) {
+                echo '<span style="color:red">No</span>';
+            } else {
+                echo '<span style="color:green">Yes</span>';
+            }
+            ?>
+            &nbsp;
+        </td>
 		
 		<td class="actions btn-group">
 			<?php echo $this->Html->link('Xem', array('action' => 'view', $website['Website']['id'], 'admin' => false), array('class' => 'btn btn-mini')); ?>
