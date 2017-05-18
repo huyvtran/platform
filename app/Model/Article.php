@@ -80,13 +80,13 @@ class Article extends AppModel {
 
             if (!empty($article['Website']['Game'])) {
                 foreach($article['Website']['Game'] as $game) {
-                    $prefixes[] = $game['app_key'] . '_plf';
-                    clearCachefile($game['app_key']);
-                    clearCachefile('smobgame_com_plf_');
+                    $prefixes[] = $game['app'] . '_plf';
+                    clearCachefile($game['app']);
+                    clearCachefile('localhost_com_plf_');
                 }
             }
 
-            $cacheKey = array('home', 'pages_home', 'games_dashboard',
+            $cacheKey = array('home', 'pages_home',
                 'news_' . $article['Category']['slug'],
                 'news_' . $article['Category']['slug'] . '_' . $article['Article']['slug']
             );
