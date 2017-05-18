@@ -41,23 +41,17 @@ if (empty($articles)) {
 <table class="table table-striped">
 	<thead>
 		<tr>
-			<th><?php echo 'Avatar' ?></th>
 			<th><?php echo $this->Paginator->sort('title', 'Title');?></th>
 			<th><?php echo $this->Paginator->sort('created');?></th>
-			
 			<th><?php echo $this->Paginator->sort('position');?></th>
-			
 			<th><?php echo $this->Paginator->sort('User.id', 'last edit');?></th>
 			<th><?php echo $this->Paginator->sort('published_date');?></th>
 			<th class="actions">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
-		<?php
-foreach ($articles as $article):
-		?>
+		<?php foreach ($articles as $article): ?>
 		<tr>
-			<td><?php echo $this->Nav->image($article['Avatar'], 20, 20, array('empty' => 'transparent.gif')) ?></td>
 			<td>
 				<?php
 				echo $this->Html->link($article['Article']['title'],
@@ -77,7 +71,6 @@ foreach ($articles as $article):
 					echo ' <span class="label-warning label"> New </span>';
 				}
 				?>
-
 			</td>
 			<td>
 				<?php 
@@ -87,14 +80,8 @@ foreach ($articles as $article):
 				));
 				?>
 			</td>
-			
-			<td><?php echo $article['Article']['position'] ?></td>
-			
-			<td>
-				<?php
-				echo $article['User']['username'];
-				?>
-			</td>			
+			<td> <?php echo $article['Article']['position'] ?></td>
+			<td> <?php echo $article['User']['username']; ?> </td>
 			<td>
 				<?php
 				if (empty($article['Article']['published'])) {
@@ -147,18 +134,12 @@ foreach ($articles as $article):
 echo $this->element('paging');
 e:
 ?>
+
 <div class='actions'>
-<?php
-echo $this->Html->link('Add Article', array('action' => 'add'), array('class' => 'btn'));
-?>
+    <?php echo $this->Html->link('Add Article', array('action' => 'add'), array('class' => 'btn')); ?>
 </div>
 <h4>Tips: </h4>
 <ul>
-<li>* Nếu trang hiển thị bài viết  của  2 categories trở lên thì sẽ order theo "published_date" (default)</li>
-<li>* Nếu hiển thị bài viết của 1 category thì sắp xếp theo "position" (default)</li>
+    <li>* Nếu trang hiển thị bài viết  của  2 categories trở lên thì sẽ order theo "published_date" (default)</li>
+    <li>* Nếu hiển thị bài viết của 1 category thì sắp xếp theo "position" (default)</li>
 </ul>
-
-<?php
-	// uncomment after update fluentd server
-	// echo $this->element('get_admin_logs');
-?>
