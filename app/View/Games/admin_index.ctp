@@ -76,6 +76,7 @@ $this->extend('/Common/blank');
 			<th><?php echo $this->Paginator->sort('slug'); ?></th>
 			<th><?php echo $this->Paginator->sort('alias'); ?></th>
             <th><?php echo 'language'; ?></th>
+            <th><?php echo 'status'; ?></th>
 			<th><?php echo 'Missing' ?></th>
             <th><?php echo 'Last update' ?></th>
 			<th class="actions">Actions</th>
@@ -141,6 +142,15 @@ $this->extend('/Common/blank');
 				<td><?php echo h($game['Game']['slug']); ?></td>
 				<td><?php echo h($game['Game']['alias']); ?></td>
                 <td><?php echo h($game['Game']['language_default']); ?></td>
+                <td>
+                    <?php
+                    if ( empty($game['Game']['status']) ) {
+                        echo '<span style="color:red">No</span>';
+                    } else {
+                        echo '<span style="color:green">Yes</span>';
+                    }
+                    ?>
+                </td>
 				<td><?php
 
 				if (!empty($game['Game']['errors'])) {
