@@ -39,10 +39,6 @@ foreach ($categories as $category):
 			<td><?php echo $category[$modelClass]['created'];?></td>
 			<td class="actions btn-group">
 				<?php 
-				echo $this->Html->link('View', array(
-					'action' => 'view',
-					$category[$modelClass]['id']
-				), array('class' => 'btn'));
 				echo $this->Html->link('Edit', array(
 					'action' => 'edit',
 					$category[$modelClass]['id']
