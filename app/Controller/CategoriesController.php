@@ -21,8 +21,11 @@ class CategoriesController extends CategoricalController {
 
 	public function beforeFilter()
 	{
-	    debug( $this->Session->read('Admin.website') );
 		parent::beforeFilter();
+        $website = $this->Session->read('Admin.website');
+        if( empty($website['id']) ){
+            $this->redirect(array('controller' => 'Websites', 'action' => 'setsession', 'admin' => true));
+        }
 		$this->layout = 'default_bootstrap';
 	}
 
