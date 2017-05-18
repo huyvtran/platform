@@ -58,7 +58,7 @@ $this->extend('/Common/blank');
 				<div class='row'>
 					<div class='span3'>
 						<?php
-//						echo 'Viết bởi ' . $this->request->data['User']['username'];
+						echo 'Viết bởi ' . $this->request->data['User']['username'];
 						?>
 					</div>
 				</div>

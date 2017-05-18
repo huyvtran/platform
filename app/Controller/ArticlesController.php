@@ -169,6 +169,7 @@ class ArticlesController extends AppController {
         }
 
         if (!empty($id)) {
+            $this->Article->contain(array('User', 'Website'));
             $this->request->data = $this->Article->findById($id);
             if(isset($this->request->data['Article']['published_date'])) {
                 $public_date_int = strtotime($this->request->data['Article']['published_date']);
