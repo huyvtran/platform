@@ -75,31 +75,15 @@ $appkey = isset($this->request->query['appkey']) ? array('appkey' => $this->requ
 					<a href="<?php echo $javascript ?>"><?php echo __('Thảo luận chung') ?></a>
 				</li>
 
-				<!--<li class="group">-->
-				<?php
-//						echo $this->Html->link(
-//								__('Hội nhóm'), array('controller' => 'clans', 'action' => 'index')
-//						);
-				?>
-				<!--</li>-->
 			</ul>
 		</article>
 		<article class="function">
 			<ul>
-<!--nocache-->
-<?php
-$gameVersion = $this->request->header('mobgame_app_version');
-if ($this->Nav->showFunction('hide_payment', $game['Game'])) {
-?>				
 				<li class="payment">
 					<?php
 					echo $this->Html->link(__('Mua xu'), "javascript:MobAppSDKexecute('mobBuyCoin', {})");
 					?>
 				</li>
-<?php
-}
-?>
-<!--/nocache-->
 				<li class="help">
 					<?php
 					echo $this->Html->link(__('Hướng dẫn'), array('controller' => 'categories', 'action' => 'dashboard'));
@@ -116,15 +100,9 @@ if ($this->Nav->showFunction('hide_payment', $game['Game'])) {
 					</a>
 				</li>
 				<!--nocache-->
-				<?php
-					if ($this->Nav->showFunction('hide_giftcode', $game['Game'])) {
-				?>						
-                 <li class="giftcode">
+				<li class="giftcode">
 					<?php echo $this->Html->link(__('Giftcode'), array('controller' => 'giftcodes', 'action' => 'view')) ?>
 				</li>
-				<?php
-				}
-				?>
 				<!--/nocache-->
 
 				<!--nocache-->
@@ -229,6 +207,3 @@ if ($this->Nav->showFunction('hide_payment', $game['Game'])) {
 
 </script>
 <!--/nocache-->
-<?php
-echo $this->element('dump');
-?>
