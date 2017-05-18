@@ -893,4 +893,21 @@ class UsersController extends AppController {
 		$this->set('result', $result);
 		$this->set('_serialize', 'result');
 	}
+
+	public function test_sendmail(){
+        $options = array(
+            'template' => 'default',
+            'subject' => __('Thay đổi mật khẩu tài khoản FunID'),
+            'layout' => 'default'
+        );
+        $Email = new CakeEmail('amazonses');
+        $Email->to('quanhongvu@gmail.com')
+            ->from($options['from'])
+            ->subject($options['subject'])
+            ->viewVars(array(
+                'content' => $options,
+            ))
+            ->template($options['template'], $options['layout'])
+            ->send();
+    }
 }
