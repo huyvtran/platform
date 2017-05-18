@@ -43,10 +43,15 @@ class AppController extends Controller {
 		),
         'CMS' => array(
             'categories' => array(
+                'Articles - Index'	=> '/admin/articles',
+                'Articles - Add'	=> '/admin/articles/add',
+
                 'Categories - Index'	=> '/admin/categories',
                 'Categories - Add'		=> '/admin/categories/add',
-                'Websites - Index'	=> '/admin/websites',
-                'Websites - Add'	=> '/admin/websites/add',
+
+                'Websites - Index'	    => '/admin/websites',
+                'Websites - Add'	    => '/admin/websites/add',
+                'Websites - Switch '	=> '/admin/websites/setsession',
             ),
             'activeMenu' => array('users')
         ),
