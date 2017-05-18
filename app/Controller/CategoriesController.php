@@ -21,6 +21,7 @@ class CategoriesController extends CategoricalController {
 
 	public function beforeFilter()
 	{
+	    debug( $this->Session->read('Admin.website') );
 		parent::beforeFilter();
 		$this->layout = 'default_bootstrap';
 	}
