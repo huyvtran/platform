@@ -301,7 +301,6 @@ class ArticlesController extends AppController {
 		$this->redirect($this->referer(array('action' => 'index'), true));
 	}
 
-
 	public function admin_delete($id) {
 		$article = $this->Article->findById($id);
 		if (empty($article)) {
