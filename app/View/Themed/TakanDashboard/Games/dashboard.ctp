@@ -50,13 +50,11 @@ $appkey = isset($this->request->query['app']) ? array('app' => $this->request->q
 		</article>
 		<article class="function">
 			<ul>
-				<!--nocache-->
 				<li class="payment">
 					<?php
 					echo $this->Html->link(__('Mua xu'), "javascript:MobAppSDKexecute('mobBuyCoin', {})");
 					?>
 				</li>
-				<!--/nocache-->
 				<li class="help">
 					<?php
 					echo $this->Html->link(__('Hướng dẫn'), array('controller' => 'categories', 'action' => 'dashboard'));
@@ -72,22 +70,41 @@ $appkey = isset($this->request->query['app']) ? array('app' => $this->request->q
 						<?php echo __('Liên hệ') ?>
 					</a>
 				</li>
-				<!--nocache-->
-				<?php
-					if ($this->Nav->showFunction('hide_giftcode', $game['Game'])) {
-				?>						
-                 <li class="giftcode">
+				<li class="giftcode">
 					<?php echo $this->Html->link(__('Giftcode'), array('controller' => 'giftcodes', 'action' => 'view')) ?>
 				</li>
-				<?php
-				}
-				?>
-				<!--/nocache-->
+			</ul>
+		</article>
+		<article class="info">
+			<ul>
+				<li class="infoMe">
+					<?php
+					echo $this->Html->link(
+						__('Cá nhân'), array('controller' => 'users', 'action' => 'view')
+					);
+					?>
+				</li>
 			</ul>
 		</article>
 	</div>
-
 </section>
+
+<!--nocache-->
+<script type="text/javascript">
+//		var shouldPopup = <?php // echo ($shouldPopup) ? 'true' : 'false'; ?>;
+	var shouldPopup = false;
+	$(document).ready(function() {
+		if (shouldPopup) {
+			$('#wrapper').find('.lb-overlay').addClass('showShare');
+		}
+	});
+
+	$('.btnclose').on('click', function() {
+		$('#wrapper').find('.showShare').removeClass('showShare');
+	});
+
+</script>
+<!--/nocache-->
 <?php
 echo $this->element('dump');
 ?>
