@@ -61,6 +61,5 @@ foreach ($categories as $category):
 </table>
 <?php echo $this->element('paging');?>
 <?php
-echo $this->Html->link('Add', array('action' => 'add')) . ' | '; 
-echo $this->Html->link('Index', array('action' => 'index'));
+echo $this->Html->link('Add', array('action' => 'add'))
 ?>
