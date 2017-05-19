@@ -20,7 +20,7 @@ class GamesController extends AppController {
         $this->layout = 'default_bootstrap';
         $this->Security->unlockedActions = array('admin_game_load', 'admin_index');
         $this->Auth->allow(array(
-            'news','thisGame','getCurrentGame'
+            'dashboard'
         ));
     }
 
@@ -416,5 +416,41 @@ class GamesController extends AppController {
         }
         $this->set(compact('users','title','alias'));
         $this->layout = 'blank';
+    }
+
+    public function dashboard()
+    {
+        if ($this->request->query('app_key')) {
+            $appKey = $this->request->query('app_key');
+        } elseif ($this->request->query('appkey')) {
+            $appKey = $this->request->query('appkey');
+        } elseif ($this->request->query('app')) {
+            $appKey = $this->request->query('app');
+        }
+        if (!isset($appKey)) {
+            throw new BadRequestException();
+        }
+        
+        $game = $this->Game->find('first', array(
+            'conditions' => array(
+                'app' => $appKey
+            ),
+            'contain' => array(
+                'Website'
+            )
+        ));
+        
+        if (empty($game)) {
+            throw new BadRequestException('Không tìm thấy game này');
+        }
+        $website = $this->Common->currentWebsite();
+
+        $this->set(compact('game', 'website'));
+
+        $this->Common->setTheme();
+        $this->layout = 'default';
+        # Set variable currentGame in View
+        $this->Common->currentGame();
+        $this->set('title_for_layout', 'Dashboard');
     }
 }
