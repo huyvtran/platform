@@ -720,7 +720,7 @@ class UsersController extends AppController {
 		$this->request->data['User']['role'] = 'User';
 		$this->request->data['User']['active'] = true;
 		$this->request->data['User']['password'] = $this->request->data['pwd'];
-		$this->request->data['User']['username'] = 'tanka_' . $this->request->data['username'];
+		$this->request->data['User']['username'] = 'takan_' . $this->request->data['username'];
 
 		$userCheck = $this->User->findByUsername($this->request->data['User']['username']);
 		if( !empty($userCheck['User']) ){
@@ -826,7 +826,7 @@ class UsersController extends AppController {
 			);
 			goto end;
 		}
-		$this->request->data['username'] = 'tanka_' . $this->request->data['account'] ;
+		$this->request->data['username'] = 'takan_' . $this->request->data['account'] ;
 		$this->request->data['password'] = $this->request->data['pwd'];
 
 		# Nếu user không thể login bằng email , check username
