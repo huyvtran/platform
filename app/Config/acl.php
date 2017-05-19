@@ -138,10 +138,12 @@ $config['rules'] = array(
 		'Oauth/*' => 'Role/User',
 
 		'users/admin_index' => 'Role/Content, Role/Marketing, Role/Developer',
+		'users/admin_editContent' => 'Role/Content',
 		'websites/admin_setsession' => 'Role/Content, Role/Marketing, Role/Developer',
 
 		'games/admin_editDescription' => 'Role/Content',
 		'games/admin_index' => 'Role/Content, Role/Marketing, Role/Developer',
+		
 		'permissions/*' => 'Role/Developer',
 		'permissions/admin_delete' => 'Role/Content',
 		'genres/*' => 'Role/Content',

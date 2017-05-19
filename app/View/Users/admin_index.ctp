@@ -126,8 +126,8 @@ $this->extend('/Common/blank');
 					</a>
 					<ul class="dropdown-menu">
 						<li><?php echo $this->Html->link('Add Permissions', '/admin/permissions/add?user_id=' . $user['User']['id']); ?></li>
+						<li><?php echo $this->Html->link('Change Password', '/admin/users/editContent/' . $user['User']['id']); ?></li>
 						<li><?php echo $this->Html->link('Edit', '/admin/users/edit/' . $user['User']['id']); ?></li>
-
                         <?php
 						if (!empty($user['User']['active'])) {
 						?>

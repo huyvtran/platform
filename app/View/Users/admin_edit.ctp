@@ -37,7 +37,6 @@ $this->extend('/Common/blank');
 </div>
 <div class="actions">
       <ul>
-            <li><?php echo $this->Html->link('Change password', array('action' => 'edit', 'admin' => true, $this->request->params['pass'][0], '?' => array('action' => 'changepassword'))); ?></li>
             <li><?php echo $this->Html->link('List Users', array('action' => 'index')); ?></li>
       </ul>
 </div>
