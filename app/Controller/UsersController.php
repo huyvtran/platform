@@ -602,22 +602,30 @@ class UsersController extends AppController {
 		$this->set('_serialize', 'result');
 	}
 
-    public function admin_edit($id = null)
-    {
-        if (!empty($this->request->data)) {
-            $this->request->data['User']['active'] = 1;
-            $this->User->validator()->remove('password');
-            $this->User->validator()->remove('phone');
+	public function admin_edit($id = null)
+	{
+		if (!$id || !$user = $this->User->findById($id)) {
+			throw new NotFoundException("Can not find this user");
+		}
 
-            if ($this->User->add($this->request->data, false)) {
-                $this->Session->setFlash('The User has been saved');
-                $this->redirect(array('action' => 'index'));
-            }
-            $this->redirect(array('action' => 'index', 'admin' => true));
-        }
-        $this->request->data = $this->User->findById($id);
-        $this->layout = 'default_bootstrap';
-    }
+		if (!empty($this->request->data)) {
+			$this->request->data['User']['active'] = 1;
+			$this->User->validator()->remove('password');
+			$this->User->validator()->remove('phone');
+
+			if ($this->User->add($this->request->data, false)) {
+				$this->Session->setFlash('The User has been saved');
+				$this->redirect(array('action' => 'index'));
+			}
+			$this->redirect(array('action' => 'index', 'admin' => true));
+		}
+		$this->request->data = $user;
+		$this->layout = 'default_bootstrap';
+	}
+
+	public function admin_editContent($id = null){
+		$this->admin_edit($id);
+	}
 
     public function admin_view($id)
     {
