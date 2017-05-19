@@ -902,16 +902,20 @@ class UsersController extends AppController {
         );
         try {
             $Email = new CakeEmail('amazonses');
-            $Email->to('quanhongvu@gmail.com')
-                ->from($options['from'])
+            $email = $Email->to('quanhongvu@gmail.com')
+//                ->from('quanhongvu1@gmail.com')
                 ->subject($options['subject'])
                 ->viewVars(array(
                     'content' => $options,
                 ))
                 ->template($options['template'], $options['layout'])
                 ->send();
+
+            debug($email);
         }catch (Exception $e){
             CakeLog::error($e->getMessage());
+            debug($e->getMessage());
         }
+        die;
     }
 }
