@@ -48,7 +48,7 @@ class AdministratorsController extends AppController{
 		if ($name) {
 			$lines = $this->request->query('lines');
 			if (empty($lines))
-				$lines = 100;
+				$lines = 500;
 
 			ob_start();
 			passthru("tail -n $lines " . TMP . 'logs' . DS . $name, $result);
