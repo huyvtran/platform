@@ -5,17 +5,14 @@
             <p class="desc"><strong>Thanh toán bằng thẻ cào</strong></p>
         </aside>
 
-        <form  action="" method="post" id="frmInvite" name="frmInvite">
+        <form  method="post" id="frmInvite" name="frmInvite">
             <label for="card_type" class="required">Loại thẻ</label>
             <div class="input-box">
-                <select id="card_type" name="vpc_Bank">
+                <select id="card_type" name="type">
                     <option selected="selected">-- Chọn loại thẻ --</option>
-                    <option value="VIETTEL">Viettel</option>
-                    <option value="VMS">Mobifone</option>
-                    <option value="VNP">Vinaphone</option>
-                    <option value="VCOIN">VCOIN</option>
-                    <option value="GATE">GATE</option>
-                    <option value="ZING">ZING</option>
+                    <option value="<?php echo Payment::TYPE_NETWORK_VIETTEL ; ?>">Viettel</option>
+                    <option value="<?php echo Payment::TYPE_NETWORK_MOBIFONE ; ?>">Mobifone</option>
+                    <option value="<?php echo Payment::TYPE_NETWORK_VINAPHONE ; ?>">Vinaphone</option>
                 </select>
             </div>
 
@@ -23,14 +20,9 @@
                 <ul class="form-list">
                     <li>
                         <div class="field">
-
-                        </div>
-                    </li>
-                    <li>
-                        <div class="field">
                             <label for="card_code" class="required">Mã thẻ</label>
                             <div class="input-box">
-                                <input type="text" name="card_number" id="card_code" />
+                                <input type="text" name="card_code" id="card_code" />
                             </div>
                         </div>
                     </li>
@@ -51,9 +43,8 @@
                     } ?>
                     <li>
                         <div class="form-button">
-                            <button class="button btn-common btn-next" type="submit" name="btn-continue"><span>Thanh toán</span></button>
+                            <button class="button btn-common btn-next" type="submit"><span>Thanh toán</span></button>
                         </div>
-                        <!--div style="height: 50px">&nbsp;</div-->
                     </li>
                 </ul>
             </div>
