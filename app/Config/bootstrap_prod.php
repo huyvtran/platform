@@ -94,7 +94,7 @@ foreach($cacheConfigs as $key => $config) {
 
 Configure::write('Session', array(
 	'defaults' => 'Memcache',
-	'cookie' => 'MYAPP_DEV',
+	'cookie' => 'MYAPP_PROD',
 	'timeout' => 360,
 	'checkAgent' => false,
 ));
