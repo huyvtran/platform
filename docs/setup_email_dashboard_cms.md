@@ -3,7 +3,7 @@ Setup Email + Dashboard + CMS:
 
 Warning: đọc phần này sau các phần khác.
 ## Game 
-0. Create game trong tool admin để lấy app_key or các thông tin đầu tiên , thường bên SDK đã tạo từ trước.
+0. Create game trong tool admin để lấy app_key or các thông tin đầu tiên.
 
 1. Clone View/Themed/[.*Dashboard] từ 1 themed cũ tới 1 themed mới.  
 Thay đổi nội dung code nếu cần, thường là thay đổi rất ít..
@@ -11,10 +11,10 @@ Thay đổi nội dung code nếu cần, thường là thay đổi rất ít..
 2. Clone Event/Themed/[.*Dashboard] từ 1 themed cũ tới 1 themed mới.  
 Thay đổi nội dung code nếu cần, thường là thay đổi rất ít..
 
-3. Edit gamne configs trong http://admin.smobgame.com/admin/games/edit/[game_id] ,  
+3. Edit gamne configs trong /admin/games/edit/[game_id] ,  
 một số cái như App Theme (value là tên của folder themed đã clone trên), language, website, logo ( sử dụng cho email )
 
-## Email 
+## Email (chưa làm)
 1. Nội dung Email , clone again trong View/Emails/html/games/[game_alias].
 Mục đích của game_alias là phân biệt tất cả các game trên nhiều OS ios, android, pc, window phone, ... là 1 game.
 	- Hiện tại có 6 loại emails cho việc auto gửi tới users , sau các action khác nhau :  
@@ -25,9 +25,6 @@ Mục đích của game_alias là phân biệt tất cả các game trên nhiề
 		- password_reseted: email gửi tới user sau khi thực hiện thành công reset password 
 		- auto_reply: khi user submit issue tới action /problem/[report|webreport].ctp
 	- Tên file đặt cùng với đuôi languge , locale ISO_3166 3 ký tự.
-2. Add nội dung cho invite email ở trên platfor.
-	- Vào link editSDK của game (http://admin.smobgame.com/plf/admin/games/editofsdk/34)
-	- Chọn phần Invite FB, sau đó thêm các nội dung tương ứng.
 
 ## Website 
 1. Tạo website trong tool admin để lấy thông tin cơ bản
