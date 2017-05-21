@@ -24,11 +24,10 @@ class PaymentsController extends AppController {
 		if( empty($game) || !$this->Auth->loggedIn() ){
 			throw new NotFoundException('Vui lòng login');
 		}
-
 		$user = $this->Auth->user();
 
 		$paymentLib = new PaymentLib();
-		//check to see if there is unresolved payment
+		# check to see if there is unresolved payment
 		$unresolvedPayment = $paymentLib->checkUnsolvedPayment($user['id'], $game['id']);
 
 		if( !empty($unresolvedPayment) ){
@@ -48,23 +47,49 @@ class PaymentsController extends AppController {
 				));
 
 				$this->loadModel('Payment');
-				$this->loadModel('PrePayment');
-
-				$dataSource = $this->Payment->getDataSource();
-				$dataSource->begin();
 				try {
-					$this->PrePayment->save($data);
 					$unresolvedPayment = $this->Payment->WaitingPayment->save($data);
-					$dataSource->commit();
 
-					# gọi đến api vippay và check thẻ 
-					$this->set('result', $unresolvedPayment);
-					$this->render('/Payments/order');
+					$dataSource = $this->CompenseOrder->getDataSource();
+					$dataSource->begin();
+
+					# gọi đến api cổng thanh toán và check thẻ (ghi log khi gọi api)
+					$result = $paymentLib->callPayApi($data);
+					if( !empty($result['status']) && $result['status'] == 0 && $data['order_id'] == $result['data']['order_id']){
+						# trạng thái thành công, lưu dữ liệu payment, gửi api tới game cộng xu
+						$user_test = 0; // default
+						$data_payment = array(
+							'waiting_id'	=> $unresolvedPayment['WaitingPayment']['id'],
+							
+							'time'  => $data['time'],
+							'type'  => $data['type'],
+							'test'	=> $user_test,
+							'chanel'    => $data['chanel'],
+
+							'order_id'  => $result['data']['order_id'],
+							'user_id' 	=> $user['id'],
+							'game_id' 	=> $game['id'],
+
+							'card_code' => $result['data']['card_code'],
+							'price'     => $result['data']['price'],
+							'card_serial'   => $result['data']['card_serial']
+						);
+						$paymentLib->add($data_payment);
+					}elseif (!empty($result['status']) && $result['status'] == 1){
+						# trạng thái lỗi, thẻ đã sử dụng, hoặc thẻ không đúng
+						$paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+					}else{
+						# chờ hệ thống cổng thanh toán
+						$paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_QUEUEING);
+					}
+
+					$dataSource->begin();
+
+					$this->render('/Payments/result');
 				} catch (Exception $e) {
 					CakeLog::error($e->getMessage());
 					$dataSource->rollback();
 				}
-				die;
 			}
 		}
 	}

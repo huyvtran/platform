@@ -1,1 +1,1 @@
-Xác nhận giao dịch
+Vui lòng chờ xác nhận giao dịch
