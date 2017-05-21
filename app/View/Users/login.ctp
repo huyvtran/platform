@@ -41,9 +41,6 @@ $this->extend('/Common/default');
         'class' => 'btn',
         'label' => false
     ));
-    echo '<br/>';
-    echo $this->Html->link('Forgot Password ?', array('controller' => 'users', 'action' => 'reset_password_web'));
-
     echo $this->Form->end();
     ?>
     <hr/>
