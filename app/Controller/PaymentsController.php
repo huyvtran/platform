@@ -56,7 +56,7 @@ class PaymentsController extends AppController {
 					# gọi đến api cổng thanh toán và check thẻ (ghi log khi gọi api)
 					$result = $paymentLib->callPayApi($data);
 					if( !empty($result['status']) && $result['status'] == 0 && $data['order_id'] == $result['data']['order_id']){
-						# trạng thái thành công, lưu dữ liệu payment, gửi api tới game cộng xu
+						# trạng thái thành công, lưu dữ liệu payment
 						$user_test = 0; // default
 						$data_payment = array(
 							'waiting_id'	=> $unresolvedPayment['WaitingPayment']['id'],
@@ -75,6 +75,9 @@ class PaymentsController extends AppController {
 							'card_serial'   => $result['data']['card_serial']
 						);
 						$paymentLib->add($data_payment);
+
+						# gửi api tới game cộng xu
+						
 					}elseif (!empty($result['status']) && $result['status'] == 1){
 						# trạng thái lỗi, thẻ đã sử dụng, hoặc thẻ không đúng
 						$paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
