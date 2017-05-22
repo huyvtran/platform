@@ -141,8 +141,6 @@ if (empty($_SERVER['APPLICATION_ENV'])) {
 	include 'bootstrap_prod.php';
 } elseif ($_SERVER['APPLICATION_ENV'] == 'development') {
 	include 'bootstrap_dev.php';
-} elseif ($_SERVER['APPLICATION_ENV'] == 'platform2') {
-	include 'bootstrap_plf2.php';
 }
 
 /**
