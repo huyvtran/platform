@@ -9,3 +9,8 @@ hiddenconfig.php
 /app/webroot/img/Upload/
 /hiddenconfig.php
 /stats/tmp
+/stats/Config/core.php
+/stats/Config/database.php
+/stats/Config/database_dev.php
+/stats/Config/database_plf2.php
+/stats/Config/database_prod.php
