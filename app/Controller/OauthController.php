@@ -8,7 +8,7 @@ class OauthController extends AppController {
 	{
 		parent::beforeFilter();
 		$this->Auth->allow(array(
-			'userInfo', 'api_userInfo',
+			'userInfo', 'api_userInfo', 'token', 'login'
 		));
 	}
 
@@ -140,5 +140,73 @@ class OauthController extends AppController {
 		$this->set('result', $result);
 		$this->set('_serialize', 'result');
 	}
+
+    public function login()
+    {
+        $this->loadModel('User');
+        $this->set('title_for_layout', 'Login');
+
+        if ($this->request->is('post')) {
+            $this->Auth->login();
+
+            # Nếu user không thể login bằng email , check username
+            if (!$this->Auth->user() && !empty($this->request->data['User']['email'])) {
+                $tempEmail = $this->request->data['User']['email'];
+                if ($user = $this->User->findByUsername($this->request->data['User']['email'])) {
+                    $this->request->data['User']['email'] = $user['User']['email'];
+
+                    $this->Auth->login();
+                    if (!$this->Auth->user()) {
+                        $this->request->data['User']['email'] = $tempEmail;
+                    }
+                }
+            }
+            if (!$this->Auth->user()) {
+                $this->User->validationErrors['email'] = 'jsdfljslfkj';
+                $this->User->validationErrors['password'] = 'jsdfljslfkj';
+                $this->Session->setFlash(__('Email/Tên đăng nhập và/hoặc mật khẩu không đúng'), 'error');
+                unset($this->request->data['User']['password']);
+                //Tên hoặc password nhập không đúng. Xin hãy thử lại.
+            }
+
+            if (isset($this->request->params['named']['return_to'])) {
+                $this->set('return_to', urldecode($this->request->params['named']['return_to']));
+            } else {
+                $this->set('return_to', false);
+            }
+        }
+
+        if ($this->Auth->user()) {
+            $this->loadModel('AuthorizationCode');
+            $this->loadModel('Game');
+            $this->Game->contain();
+            $app = $this->Game->findAllByTitleOrAlias($this->request->query('app'), $this->request->query('app'));
+
+            if (empty($app)) {
+                throw new InternalErrorException('This app has been created yet');
+            }
+
+            return $this->Common->oauthRedirect($app[0]['Game']['id'], $this->Auth->user('id'), $this->request->query('continue'));
+        }
+
+        $this->layout = 'default_bootstrap';
+    }
+
+    /**
+     * Request to this action to verify authorzation code and get info user
+     * GET:
+     * - code
+     **/
+    public function token()
+    {
+        if (!$this->request->is('get')) {
+            throw new BadRequestException('Required a get request.');
+        }
+
+        $result = $this->Common->oauthReturnUserInfo($this->request->query('code'), $this->request->query('secret'));
+
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
+    }
 }
 

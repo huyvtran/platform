@@ -236,4 +236,91 @@ class CommonComponent extends Component {
 
 		return false;
 	}
+
+    /**
+     * Generate code as token and redirect to location
+     * @param int $continueUrl redirect to this url and append code token query
+     **/
+    public function oauthRedirect($appId, $userId, $continueUrl)
+    {
+        $code = $this->oauthGenerateCode($appId, $userId);
+        if ($parsedUrl = parse_url($continueUrl)) {
+            if ($parsedUrl['path'] == null) {
+                $continueUrl .= '/';
+            }
+            $separator = empty($parsedUrl['query']) ? '?' : '&';
+            $continueUrl .= $separator . "code=$code";
+        }
+
+        return $this->Controller->redirect($continueUrl);
+    }
+
+    /**
+     * Generate code for Oauth flow
+     * @param int $appId game ID , use for check app secret after
+     * @param int $userId user currently login
+     **/
+    public function oauthGenerateCode($appId, $userId)
+    {
+        $this->Controller->loadModel('AuthorizationCode');
+        $code = $this->Controller->AuthorizationCode->generateCode($appId, $userId);
+        return $code;
+    }
+
+    /**
+     * Check code and secret use for server <-> server to get userInfo
+     * @param string $code generated at CommonComponent::oauthGenerateCode
+     * @param string $secret get from table games secret_key field,
+     * 						 app request userInfo, must provider this sercret
+     **/
+    public function oauthReturnUserInfo($code = null, $secret = null)
+    {
+        if (empty($code) || empty($secret)) {
+            return array();
+        }
+        $this->Controller->loadModel('AuthorizationCode');
+
+        $code = $this->Controller->AuthorizationCode->find('first', array(
+            'conditions' => array(
+                'code' => $this->Controller->request->query('code')
+            ),
+            'contain' => array(
+                'Game' => array('conditions' => array('secret_key' => $secret)),
+                'User' => array('Profile')
+            )
+        ));
+
+        if (empty($code)) {
+            throw new BadRequestException('Code is invalid');
+        }
+
+        if (!empty($code['Game']) && !empty($code['User'])) {
+            $check_profile = false;
+            if (!empty($code["User"]['Profile'])) {
+                if (	!empty($profile['Profile']['email_contact'])
+                    && 	!empty($profile['Profile']['fullname'])
+                    && 	!empty($profile['Profile']['birthday'])
+                ){
+                    $check_profile  = true;
+                }
+            }
+
+            # you can add additional info, but avoid to modify any field in here
+            return array(
+                'User' => array(
+                    'username' => $code['User']['username'],
+                    'name' => $code['User']['name'],
+                    'role' => $code['User']['role'],
+                    'email' => $code['User']['email'],
+                    'id' => $code['User']['id'],
+                    'facebook_uid' => $code['User']['facebook_uid'],
+                    'active' => $code['User']['active'],
+                    'avatar' => !empty($code['User']['facebook_uid']) ? 'https://graph.facebook.com/'.$code['User']['facebook_uid'].'/picture?type=large' : false,
+                    'created' => $code['User']['created'],
+                    'check_profile' => $check_profile
+                ));
+        }
+
+        return array();
+    }
 }
