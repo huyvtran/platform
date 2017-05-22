@@ -698,7 +698,7 @@ class UsersController extends AppController {
 	public function api_register_takan()
 	{
 		$result = array(
-			'ret' => 1,
+			'ret' => 903,
 			'msg' => 'error'
 		);
 
@@ -709,7 +709,7 @@ class UsersController extends AppController {
 			$this->request->data['pwd']
 		)) {
 			$result = array(
-				'ret' => 2,
+				'ret' => 903,
 				'msg' => 'Necessary data is missing'
 			);
 			goto end;
@@ -725,7 +725,7 @@ class UsersController extends AppController {
 		$userCheck = $this->User->findByUsername($this->request->data['User']['username']);
 		if( !empty($userCheck['User']) ){
 			$result = array(
-				'ret' => 4,
+				'ret' => 903,
 				'msg' => 'The username is in use'
 			);
 			goto end;
@@ -792,8 +792,8 @@ class UsersController extends AppController {
 					$messageError = $this->User->validationErrors['password'][0] ;
 				}
 				$result = array(
-					'ret' => 6,
-					'msg' => 'Register successfully',
+					'ret' => 903,
+					'msg' => $this->User->validationErrors[0],
 					'data' => $this->User->validationErrors
 				);
 				goto end;
@@ -810,7 +810,7 @@ class UsersController extends AppController {
 
 	public function api_login_takan(){
 		$result = array(
-			'ret' => 1,
+			'ret' => 903,
 			'msg' => 'error'
 		);
 
@@ -821,7 +821,7 @@ class UsersController extends AppController {
 			$this->request->data['pwd']
 		)) {
 			$result = array(
-				'ret' => 2,
+				'ret' => 903,
 				'msg' => 'Necessary data is missing'
 			);
 			goto end;
@@ -890,7 +890,7 @@ class UsersController extends AppController {
 			}
 		} else {
 			$result = array(
-				'ret' => 4,
+				'ret' => 903,
 				'msg' => __('Tên đăng nhập và/hoặc mật khẩu không đúng!')
 			);
 			goto end;
