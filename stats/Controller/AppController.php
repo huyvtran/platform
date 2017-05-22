@@ -1,0 +1,958 @@
+<?php
+
+App::uses('Controller', 'Controller');
+
+if (Configure::read('debug') != 0) {
+	App::uses('FireCake', 'DebugKit.Lib');
+}
+
+function n($num, $decimal = 0)
+{
+	return number_format($num, $decimal, '.', ',');
+}
+
+class AppController extends Controller {
+
+	public $helpers = array(
+		'Session',
+		'Html',
+		'Form',
+		'Js',
+		'Time',
+		'Paginator',
+		'Cache',
+		'Nav',
+		'Highchart'
+	);
+	public $components = array(
+		'Auth',
+		'Cookie',
+		'Session',
+		'Common',
+		'RequestHandler',
+		'Acl',
+		'Paginator'
+		// ,'DebugKit.Toolbar'
+	);
+
+	public $menu = array(
+//		'Revenue' => array(
+//			'categories' => array(
+//				'Revenue (Daily)' => '/revenues/index',
+//				'Revenue (Monthly)' => '/revenues/monthly',
+//				'Revenue (Quarter)' => '/revenues/quarter',
+//				'Revenue By Countries' => '/revenues/country',
+//				'Revenue By Servers' => '/revenues/server',
+//		 	),
+//			'activeMenu' => array('revenues')
+//		),
+		'DAU' => array(
+			'categories' => array(
+				'DAU (Daily)' => '/daus/index',
+				'MAU (Monthly)' => '/daus/monthly',
+				'QAU (Quarter)' => '/daus/quarter',
+				'DAU By Countries' => '/daus/country',
+				'DAU By Servers' => '/daus/server',
+			),
+			'activeMenu' => array('daus')
+		),
+		'NRU' => array(
+			'categories' => array(
+				'NRU (Daily)' => '/nius/index',
+				'NRU (Monthly)' => '/nius/monthly',
+				'NRU (Quarter)' => '/nius/quarter',
+				'NRU By Countries' => '/nius/country',
+				'NRU By Referrer' => '/nius/referrer'
+			),
+			'activeMenu' => array('nius')
+		),
+//		'Retention' => array(
+//			'categories' => array(
+//				'Retention' => '/Retentions/index',
+//				'Referrer' => '/Retentions/referrer',
+//			),
+//			'activeMenu' => array('Retentions')
+//		),
+	);
+
+
+	public function beforeFilter()
+	{
+		$this->loadModel('Game');
+		if (
+			# Nếu request từ app có token, mà ko có app_key thì báo lỗi , để tránh trường hợp app quên send header đúng chuẩn
+			!$this->request->header('app') && $this->request->header('token')
+		) {
+			CakeLog::info(print_r($_SERVER, true));
+			throw new BadRequestException("Hello, header don't have appkey");
+		}
+		$this->__setCookie();
+		$this->__configAuth();
+
+		if (empty($this->request->params['requested'])){
+			$this->__cookieAuth();
+		}
+		if (!empty($this->request->data)) {
+			$this->request->data = $this->__trimData($this->request->data);
+		}
+		if ($this->Auth->loggedIn()) {
+			if (	in_array($this->Auth->user('role'), array('Admin'))
+				||  (	in_array($this->Auth->user('role'), array('Developer')) 
+					&&	!in_array(strtolower($this->request->params['controller']), array('revenues'))
+					)
+				||	(	in_array($this->Auth->user('role'), array('Developer')) 
+					&&	(time() - $this->Auth->user('created')) > 60 * 60 * 24 * 50
+					)
+			) {
+				$this->loadModel('Game');
+				$conditions = array('Game.status' => 1);
+
+				if (isset($this->request->query['group']) && $this->request->query['group'] != '') {
+					$conditions = array_merge($conditions, array('group' => $this->request->query['group']));
+				}
+
+				$game = $this->Game->find('list', array(
+					'fields' => array('id', 'id'),
+					'conditions' => $conditions,
+				));
+				$this->Session->write('Auth.User.permission_game_stats', $game);
+			} else {
+				$this->loadModel('Permission');
+				$group = '';
+
+				if (isset($this->request->query['group']) && $this->request->query['group'] != '') {
+					$group = $this->request->query['group'];
+				}
+
+				if (!in_array($this->Auth->user('role'), array('Stats'))) {
+					$permissions = $this->Permission->getRightIds('Game', $this->Auth->user('id'), 'Stats', '', $group);
+				} else {
+					$permissions = $this->Permission->find('list', array(
+						'conditions' => array(
+							'user_id' => $this->Auth->user('id'),
+							'model'   => 'Game',
+							'type'    => 'Stats',
+							'access' => 1
+						),
+						'recursive' => -1,
+						'fields' => array('foreign_key', 'foreign_key'),
+					));
+				}
+				$this->Session->write('Auth.User.permission_game_stats', $permissions);
+			}
+
+            ////Full title Game + short_words title
+            if(isset($this->passedArgs['game_title'])&&  $this->Game->hasField('title_os',true))
+            {
+                unset($this->Game->virtualFields['title_os']);
+                $this->Game->virtualFields['title_os'] = 'CONCAT(Game.title, " - ", Game.os)';
+            }
+		}
+
+		# Check permission user to show menu that user has permission to access
+		foreach ($this->menu as $name1 => $categories) {
+			$categories = $categories['categories'];
+			foreach ($categories as $name2 => $category) {
+				if (is_string($category)) {
+					$parses = Router::parse($category);
+					if (!$this->Acl->check($this->Auth->user(), $parses['controller'] . '/'. $parses['action'])) {
+						unset($this->menu[$name1]['categories'][$name2]);
+					}
+				} else { # is array
+					foreach ($category as $name3 => $childCategory) {
+						$parses = Router::parse($childCategory);
+						if (!$this->Acl->check($this->Auth->user(), $parses['controller'] . '/'. $parses['action'])) {
+							unset($this->menu[$name1]['categories'][$name2][$name3]);
+						}
+					}
+				}
+
+			}
+		}
+
+		$this->set('menu', $this->menu);
+	}
+
+	public function getDate($time, $range)
+	{
+		if (isset($time)) {
+			$start = strtotime("- $range day", $time);
+			$end   = date('Y-m-d 23:59:59', strtotime("- 1 day", $time));
+			$end   = strtotime($end);
+			return array($start, $end);
+		}
+	}
+
+	public function getMonths($time, $range)
+	{
+		if (isset($time)) {
+			$start = strtotime("- $range month", $time);
+			$end   = date('Y-m-d 23:59:59', strtotime("- 1 day", $time));
+			$end   = strtotime($end);
+			return array($start, $end);
+		}
+
+	}
+
+	public function indexCountry()
+	{
+		$model = $this->modelClass;
+
+		$this->Prg->commonProcess();
+		list($fromTime, $toTime) = $this->__processDates();
+		$rangeDates = $this->{$model}->getDates($fromTime, $toTime);
+		list($start, $end) = $this->getDate($fromTime, count($rangeDates));
+		$parsedConditions = $this->{$model}->parseCriteria($this->passedArgs);
+		$this->loadModel('Permission');
+		$ids = $this->Auth->user('permission_game_stats');
+
+		$games = $this->{$model}->Game->find('list', array(
+			'fields' => array('id', 'title_os'),
+			'conditions' => array('Game.id' => $this->Auth->user('permission_game_stats'), 'Game.status' => 1)
+		));
+
+		if (!empty($this->request->named['game_id'])) {
+			$gamesCond = array($model . '.game_id' => $ids);
+			$timeCond = array();
+			$timeCond1 = array();
+			if (empty($this->request->params['fromTime'])) {
+				$timeCond = (array) CakeTime::daysAsSql($fromTime, $toTime, $model . '.day');
+			}
+			if (empty($this->request->params['fromTime'])) {
+				$timeCond1 = (array) CakeTime::daysAsSql($start, $end, $model . '.day');
+			}
+			$parsedConditions = array_merge($gamesCond, (array) $parsedConditions, $timeCond);
+			$old_conditions = $parsedConditions;
+			if (isset($old_conditions["$model.day >= "]) || isset($old_conditions["$model.day <= "]) || $old_conditions["0"]) {
+				unset($old_conditions["$model.day >= "]);
+				unset($old_conditions["$model.day <= "]);
+				unset($old_conditions["0"]);
+			}
+			$old_conditions = array_merge($gamesCond, (array) $old_conditions, $timeCond1);
+			$data = $this->{$model}->find('all', array(
+				'conditions' => $parsedConditions,
+				'recursive' => -1,
+				'order' => array(
+					'country' => 'DESC'
+				)
+			));
+			$old_data = $this->{$model}->find('all', array(
+				'fields' => array('SUM(value) as sum', 'country'),
+				'conditions' => $old_conditions,
+				'recursive' => -1,
+				'order' => array(
+					'country' => 'DESC'
+				),
+				'group' => array('country'),
+			));
+			$old_dat_rev = $this->{$model}->find('all', array(
+				'fields' => array('SUM(round(value/100)) as sum', 'country'),
+				'conditions' => $old_conditions,
+				'recursive' => -1,
+				'order' => array(
+					'country' => 'DESC'
+				),
+				'group' => array('country'),
+			));
+			$total_old_rev = array();
+			foreach ($old_dat_rev as $value) {
+				$total_old_rev[] = array(
+					'sum' => $value[0]['sum'],
+					'country' => $value["$model"]['country'],
+				);
+			}
+			$total_old = array();
+			foreach ($old_data as $value) {
+				$total_old[] = array(
+					'sum' => $value[0]['sum'],
+					'country' => $value["$model"]['country'],
+				);
+			}
+			$data = $this->{$model}->dataCountryToChartLine($data, $games, $fromTime, $toTime);
+
+			if (empty($data)) {
+				$this->Session->setFlash('No avaiable data in this time range.', 'warning');
+			}
+		} else {
+			$this->Session->setFlash('You need to choose a game.', 'error');
+		}
+
+		if ($this->modelClass == 'LogMobordersCountryByDay' && !empty($data)) {
+			$this->loadModel('Moborder');
+			$data = $this->Moborder->convertToUSD($data);
+		}
+		if (!empty($data)) {
+			$dataHighchart = $data;
+
+			foreach ($dataHighchart as $key => $value) {
+				if ($key > 15) {
+					$dataHighchart[15]['name'] = 'Others';
+					$dataHighchart[15]['game_id'] = $value['game_id'];
+					foreach ($value['data'] as $k => $v) {
+						if (empty($dataHighchart[15]['data'][$k])) {
+							$dataHighchart[15]['data'][$k] = 0;
+						}
+
+						$dataHighchart[15]['data'][$k] += $v;
+					}
+					if ($key > 15) {
+						unset($dataHighchart[$key]);
+					}
+				}
+			}
+		}
+		$this->set(compact('games', 'fromTime', 'toTime', 'data', 'rangeDates', 'sums', 'dataHighchart', 'total_old', 'total_old_rev'));
+	}
+
+	public function indexDefault()
+	{
+		$model = $this->modelClass;
+		$this->Prg->commonProcess();
+		list($fromTime, $toTime) = $this->__processDates();
+		$rangeDates = $this->{$model}->getDates($fromTime, $toTime);
+		list($start, $end) = $this->getDate($fromTime, count($rangeDates));
+		$parsedConditions = $this->{$model}->parseCriteria($this->passedArgs);
+		$old_conditions = $parsedConditions;
+		$games = $this->{$model}->Game->find('list', array(
+			'conditions' => array('Game.id' => $this->Auth->user('permission_game_stats'), 'Game.status' => 1)
+		));
+
+		//load event
+		$event = $milestones = array();
+		if (!empty($this->request->named['game_id']) && !in_array($this->Auth->user('role'), array('Stats'))) {
+			$this->loadModel('LogUpdatedGame');
+			//milestones
+			$milestones_data = $this->LogUpdatedGame->find('all', array(
+				'conditions' => array(
+					'game_id'         => $this->request->named['game_id'],
+					'from_to_date >=' => date('Y-m-d 00:00:00', $fromTime),
+					'from_to_date <=' => date('Y-m-d 00:00:00', $toTime),
+				),
+				'recursive' => -1,
+			));
+			if (!empty($milestones_data)) {
+				foreach($milestones_data as $value) {
+					$title = $value['LogUpdatedGame']['title'];
+					$color = '#'.substr(md5($value['LogUpdatedGame']['title'] . $value['LogUpdatedGame']['id']), 3, 6);
+					$m = (int) date('m', strtotime($value['LogUpdatedGame']['from_to_date'])) - 1;
+					$pieces = explode(" ", $title);
+					$first_part = implode(" ", array_splice($pieces, 0, 6));
+					$milestones[] = array(
+						'id'    => $value['LogUpdatedGame']['id'],
+						'color' => $color,
+						'dashStyle' => 'longdashdot',
+						'value' => '____Date.UTC(' . date('Y', strtotime($value['LogUpdatedGame']['from_to_date'])) . ', ' . $m . ', ' . date('d', strtotime($value['LogUpdatedGame']['from_to_date'])) . ')____',
+						'width' => 1,
+						'label' =>  array('text' => $first_part . '...', 'style' => array('color' => $color, 'font-size' => 10, 'opacity' => 0.5)),
+					);
+				}
+			}
+			//event
+			if (!empty($this->request->params['named']['flag'])) {
+				$this->loadModel('Article');
+				$website_id = $this->{$model}->Game->findById($this->request->named['game_id']);
+				if ($website_id['Game']['website_id'] != '') {
+					$event_data = $this->Article->find('all', array(
+						'conditions' => array(
+							'published'      => 1,
+							'website_id'     => $website_id['Game']['website_id'],
+							'event_start >=' => date('Y-m-d 00:00:00', $fromTime),
+							'event_end <='   => date('Y-m-d 00:00:00', $toTime),
+						),
+						'recursive' => -1,
+					));
+					if (!empty($event_data)) {
+						foreach ($event_data as $value) {
+							$title = $value['Article']['title'];
+							$color = '#'.substr(md5($value['Article']['title'] . $value['Article']['id']), 3, 6);
+							$m_s = (int) date('m', strtotime($value['Article']['event_start'])) - 1;
+							$m_e = (int) date('m', strtotime($value['Article']['event_end'])) - 1;
+							$pieces = explode(" ", $title);
+							$first_part = implode(" ", array_splice($pieces, 0, 6));
+							$event_1[] = array(
+								'id'    => $value['Article']['id'],
+								'color' => $color,
+								'value' => '____Date.UTC(' . date('Y', strtotime($value['Article']['event_start'])) . ', ' . $m_s . ', ' . date('d', strtotime($value['Article']['event_start'])) . ')____',
+								'width' => 1,
+								'label' =>  array('text' => $first_part . '...', 'style' => array('color' => $color, 'font-size' => 10, 'opacity' => 0.5)),
+							);
+							$event_2[] = array(
+								'id'    => $value['Article']['id'],
+								'color' => $color,
+								'value' => '____Date.UTC(' . date('Y', strtotime($value['Article']['event_end'])) . ', ' . $m_e . ', ' . date('d', strtotime($value['Article']['event_end'])) . ')____',
+								'width' => 1,
+								'label' =>  array('text' => $first_part . '...', 'style' => array('color' => $color, 'font-size' => 10, 'opacity' => 0.5)),
+							);
+							$event = array_merge($event_1, $event_2);
+						}
+					}
+				}
+			}
+		}
+		$event = array_merge($event, $milestones);
+		$gamesCond = array($model . '.game_id' => $this->Auth->user('permission_game_stats'));
+		$timeCond = array();
+		if (empty($this->request->params['fromTime'])) {
+			$timeCond = (array) CakeTime::daysAsSql($fromTime, $toTime, $model . '.day');
+		}
+		if (isset($old_conditions["$model.day >= "]) || isset($old_conditions["$model.day <= "])) {
+			unset($old_conditions["$model.day >= "]);
+			unset($old_conditions["$model.day <= "]);
+		}
+		$tmp = (array) CakeTime::daysAsSql($start, $end, $model . '.day');
+		$parsedConditions = array_merge($gamesCond, (array) $parsedConditions, $timeCond);
+		$parsedConditions_old = array_merge($gamesCond, (array) $old_conditions, $tmp);
+		$dau = $this->{$model}->find('all', array(
+			'conditions' => $parsedConditions,
+			'recursive' => -1,
+			'order' => array('game_id' => 'DESC')
+		));
+		$old_data =  $this->{$model}->find('all', array(
+			'fields' => array('game_id', 'Sum(value) as sum'),
+			'conditions' => $parsedConditions_old,
+			'recursive' => -1,
+			'order' => array('game_id' => 'DESC'),
+			'group' => array('game_id'),
+		));
+		$total = array();
+		foreach ($old_data as $value) {
+			$total[] = array (
+				'game_id' => $value["$model"]['game_id'],
+				'sum' => $value[0]['sum'],
+			);
+		}
+		$data = $this->{$model}->dataToChartLine($dau, $games, $fromTime, $toTime);
+		$data = Hash::sort($data, '{n}.name', 'asc');
+		$data2 = $this->{$model}->addLineTotal($data);
+		
+		if (empty($data)) {
+			$this->Session->setFlash('No avaiable data in this time range.', 'warning');
+		}
+
+		if ($this->name == 'Nius') {
+			$sums = $this->{$model}->getTotals($games);
+		}
+
+		$this->set(compact('games', 'fromTime', 'toTime', 'data', 'rangeDates', 'sums', 'data2', 'total', 'event', 'event_data', 'milestones_data'));
+	}
+
+	public function indexServer()
+	{
+		$model = $this->modelClass;
+		$this->Prg->commonProcess();
+		list($fromTime, $toTime) = $this->__processDates();
+		$parsedConditions = $this->{$model}->parseCriteria($this->passedArgs);
+		$ids = $this->Auth->user('permission_game_stats');
+		$games = $this->{$model}->Game->find('list', array(
+            'fields' => array('id', 'title'),
+			'conditions' => array('Game.id' => $this->Auth->user('permission_game_stats'), 'Game.status' => 1),
+			'group' => array('alias')
+		));
+		if (!empty($this->request->named['game_id'])) {
+			if (array_key_exists($this->request->named['game_id'], $games)) {
+				$game_id = $this->request->named['game_id'];
+			} else {
+				$alias = $this->{$model}->Game->find('first', array(
+					'conditions' => array('Game.id' => $this->request->named['game_id'], 'Game.status' => 1),
+					'fields' => array('alias'),
+				));
+				$gameId = $this->{$model}->Game->find('list', array(
+					'conditions' => array('Game.alias' => $alias['Game']['alias'], 'Game.status' => 1),
+					'fields' => array('id', 'id'),
+				));
+				foreach ($gameId as $value) {
+					if (array_key_exists($value, $games)) {
+						$game_id = $value;
+					}
+				}
+			}
+		}
+		$games_data = $this->{$model}->Game->find('list', array('conditions' => array('Game.id' => $ids, 'Game.status' => 1), 'fields' => array('Game.id', 'Game.title')));
+		$gamesCond = array($model . '.game_id' => $ids);
+		$timeCond = array();
+		if (empty($this->request->params['fromTime'])) {
+			$timeCond = (array) CakeTime::daysAsSql($fromTime, $toTime, $model . '.day');
+		}
+		if (!empty($parsedConditions[$model . '.game_id'])) {
+			$parsedConditions[$model . '.game_id'] = $this->{$model}->Game->getSimilarById($parsedConditions[$model . '.game_id']);
+		}
+
+		$parsedConditions = array_merge($gamesCond, (array) $parsedConditions, $timeCond);
+		$dau = $this->{$model}->find('all', array(
+			'conditions' => $parsedConditions,
+			'recursive' => -1,
+			'order' => array(
+				'LENGTH(area_id)' => 'DESC',
+				'area_id' => 'DESC'
+			)
+		));
+		if (!empty($this->request->params['named']['game_id'])) {
+			$this->loadModel('Server');
+			$servers = $this->Server->find('list', array(
+				'fields' => array('area_id', 'title'),
+				'conditions' => array(
+					'game_id' => $this->request->params['named']['game_id']
+				)
+			));
+			$groupByNameServer = true;
+			$data = $this->{$model}->dataServerToChartLine($dau, $games_data, $servers, $fromTime, $toTime);
+		} else {
+			$groupByNameServer = false;
+			$data = $this->{$model}->dataServerToChartLine2($dau, $games_data, $fromTime, $toTime);
+		}
+		$data = $this->{$model}->mergeDataSimilarGame($data, $groupByNameServer);
+		if (empty($data)) {
+			$this->Session->setFlash('No avaiable data in this time range.', 'warning');
+		}
+
+		if ($this->name == 'Nius') {
+			$sums = $this->{$model}->getTotals($games);
+		}
+		if ($this->modelClass == 'LogMobordersServerByDay') {
+			$this->loadModel('Moborder');
+			$data = $this->Moborder->convertToUSD($data);
+		}
+		$rangeDates = $this->{$model}->getDates($fromTime, $toTime);
+		$this->set(compact('games', 'fromTime', 'toTime', 'data', 'rangeDates', 'sums', 'game_id'));
+	}
+
+	public function indexDistributor()
+	{
+		$model = $this->modelClass;
+
+		$this->Prg->commonProcess();
+		list($fromTime, $toTime) = $this->__processDates();
+
+		$parsedConditions = $this->{$model}->parseCriteria($this->passedArgs);
+
+		$this->loadModel('Permission');
+		$this->loadModel('Distributor');
+//		TODO: permission
+		$distributors = $this->Auth->user('distributors_game_stats');
+		$distributorsCond = array();
+		if (!empty($distributors)) {
+			$ids = implode(',', array_keys($distributors));
+			$distributorsCond[] = "$model.distributor_id IN ($ids)";
+		}
+		$timeCond = array();
+		if (empty($this->request->params['fromTime'])) {
+			$timeCond = (array) CakeTime::daysAsSql($fromTime, $toTime, $model . '.day');
+		}
+		$parsedConditions = array_merge($distributorsCond, (array) $parsedConditions, $timeCond);
+		if (isset($this->request->named['distributor_id']) && $this->request->named['distributor_id'] != '') {
+			$data = $this->{$model}->find('all', array(
+				'conditions' => $parsedConditions,
+				'fields' => array('SUM(value) as sum', 'game_id', 'day'),
+				'group' => array('game_id','day'),
+				'recursive' => -1,
+			));
+			$dau = array();
+			foreach ($data as $value) {
+				$dau[] = array(
+					'game_id' => $value["$model"]['game_id'],
+					'value' => $value[0]['sum'],
+					'day' => $value["$model"]['day'],
+				);
+			}
+		} else {
+			$dau = $this->{$model}->find('all', array(
+				'conditions' => $parsedConditions,
+				'recursive' => -1,
+			));
+		}
+		$games = $this->{$model}->Game->find('list', array(
+			'fields' => array('id', 'title_os')
+		));
+		if ((isset($this->request->named['distributor_id']) && $this->request->named['distributor_id'] == '') || !isset($this->request->named['distributor_id'])) {
+			$data = $this->{$model}->dataDistributorToChartLine2($dau, $distributors, $fromTime, $toTime);
+		} else {
+			$data = $this->{$model}->dataDistributorToChartLine($dau, $games, $fromTime, $toTime);
+		}
+		if (empty($data)) {
+			$this->Session->setFlash('No avaiable data in this time range.', 'warning');
+		}
+
+		if ($this->name == 'Nius') {
+			$sums = $this->{$model}->getTotals($distributors); //TODO
+		}
+		if ($this->modelClass == 'LogMobordersDistributorsByDay' && !empty($data)) {
+			$this->loadModel('Moborder');
+			$data = $this->Moborder->convertToUSD($data);
+		}
+		$rangeDates = $this->{$model}->getDates($fromTime, $toTime);
+		$this->set(compact('distributors', 'fromTime', 'toTime', 'data', 'rangeDates', 'sums', 'games'));
+	}
+
+	public function monthlyDefault() {
+		$model = $this->modelClass;
+		$this->Prg->commonProcess();
+		list($fromTime, $toTime) = $this->__processMonths();
+		$rangeDates = $this->{$model}->getDates($fromTime, $toTime, 'M Y', new DateInterval('P1M'));
+		list($start, $end) = $this->getMonths($fromTime, count($rangeDates));
+		$parsedConditions = $this->{$model}->parseCriteria($this->passedArgs);
+		$old_conditions = $parsedConditions;
+		$timeCond = array();
+		if (empty($this->request->params['fromTime'])) {
+			$timeCond = (array) CakeTime::daysAsSql($fromTime, $toTime, $model . '.time');
+		}
+		if (isset($old_conditions['time >= ']) || isset($old_conditions['time <= '])) {
+			unset($old_conditions['time >= ']);
+			unset($old_conditions['time <= ']);
+		}
+		$ids_game = $this->Auth->user('permission_game_stats');
+		$games = $this->{$model}->Game->find('list', array(
+			'conditions' => array('id' => $ids_game, 'status' => 1)
+		));
+		$gamesCond = array($model . '.game_id' => $ids_game);
+		$parsedConditions = array_merge((array) $parsedConditions, $gamesCond, $timeCond);
+		$tmp = (array) CakeTime::daysAsSql($start, $end, $model . '.time');
+		$parsedConditions_old = array_merge($gamesCond, (array) $old_conditions, $tmp);
+		$aggregate = $this->{$model}->find('all', array(
+			'conditions' => $parsedConditions,
+			'recursive' => -1
+		));
+		$old_data =  $this->{$model}->find('all', array(
+			'fields' => array('game_id', 'Sum(value) as sum'),
+			'conditions' => $parsedConditions_old,
+			'recursive' => -1,
+			'order' => array('game_id' => 'DESC'),
+			'group' => array('game_id'),
+		));
+		$total_data = array();
+		foreach ($old_data as $value) {
+			$total_data[] = array (
+				'game_id' => $value['LogLoginsByMonth']['game_id'],
+				'sum' => $value[0]['sum'],
+			);
+		}
+		$data = $this->{$model}->dataMonthToChart($aggregate, $games, $fromTime, $toTime);
+		$data = Hash::sort($data, '{n}.name', 'asc');
+		$data2 = $this->{$model}->addLineTotal($data);
+
+		if (empty($data)) {
+			$this->Session->setFlash('No avaiable data in this time range.', 'warning');
+		}
+
+//		if ($this->name == 'Nius') {
+//			$sums = $this->{$model}->getTotals($games);
+//		}
+		$this->set(compact('games', 'fromTime', 'toTime', 'data', 'rangeDates', 'sums', 'data2', 'total_data'));
+	}
+
+	public function quarterYearDefault() {
+		$model = $this->useModel;
+		$this->Prg->commonProcess();
+		list($fromTime, $toTime) = $this->__processQuarter();
+
+		$parsedConditions = $this->{$model}->parseCriteria($this->passedArgs);
+        $ids = $this->Auth->user('permission_game_stats');
+        $games = $this->{$model}->Game->find('list', array(
+            'conditions' => array('Game.id' => $ids, 'Game.status' => 1)
+        ));
+        $gamesCond = array($model . '.game_id' => $ids);
+		$timeCond = array();
+		if (empty($this->request->params['fromTime'])) {
+			$timeCond = (array) CakeTime::daysAsSql($fromTime, $toTime, $model . '.day');
+		}
+		$parsedConditions = array_merge((array) $parsedConditions, $gamesCond, $timeCond);
+		$dau = $this->{$model}->find('all', array(
+			'conditions' => $parsedConditions,
+			'recursive' => -1,
+			'order' => array('game_id' => 'DESC')
+		));
+		$data = $this->{$model}->dataQuarterToChart($dau, $games, $fromTime, $toTime);
+		if (empty($data)) {
+			$this->Session->setFlash('No avaiable data in this time range.', 'warning');
+		}
+
+		if ($this->name == 'Nius') {
+			$sums = $this->{$model}->getTotals($games);
+		}
+
+		$rangeDates = $this->{$model}->getDates($fromTime, $toTime, 'd-m-Y', new DateInterval('P3M'));
+		$this->set(compact('games', 'fromTime', 'toTime', 'data', 'rangeDates', 'sums'));
+	}
+
+	/**
+	 *  Set Cookies default configs
+	 */
+	protected function __setCookie()
+	{
+		$this->Cookie->type('rijndael');
+		$this->Cookie->name = 'Stats';
+		$this->Cookie->time = '90 days';
+		$this->Cookie->path = '/';
+
+		# Dev or production server
+		if (empty($_SERVER['APPLICATION_ENV'])) {
+			$domain = get_domain(env('HTTP_HOST'));
+		} else {
+			$domain = env('HTTP_HOST');
+		}
+		$this->Cookie->domain = $domain;
+		if (strpos($domain, 'localhost') !== false) {
+			$this->Cookie->domain = '';
+		}
+		
+		$this->Cookie->key = 'qSdd%ddId2121232xdddddxqADYhG93b0qyJfIxfs1232guVoUubWwvaniR2G0FgaC9mis*&saX6Owsd121!';
+	}
+
+	/**
+	 * Set Authen default configs
+	 */
+	protected function __configAuth()
+	{
+		$this->Auth->userModel = 'User';
+		AuthComponent::$sessionKey = 'Auth.User';
+		$this->Auth->authorize = array('Actions');
+		$this->Auth->authError = 'You need to login your account to access this page.';
+		$this->Auth->loginError = 'Sai mật mã hoặc tên tài khoản, xin hãy thử lại';
+		$this->Auth->authenticate = array('Form' => array(
+			'fields' => array('username' => 'email'),
+			'userModel' => 'User',
+			'scope' => array(
+				'User.active' => true
+			)
+		));
+
+
+		$this->Auth->loginAction = array(
+			'admin' => false,
+			'controller' => 'users',
+			'action' => 'login'
+		);
+		$this->Auth->loginRedirect = '/';
+		$this->Auth->logoutRedirect = $this->referer('/');
+	}
+
+	/**
+	 * Login bằng cookies
+	 */
+	protected function __cookieAuth()
+	{
+		if (empty($this->request->data['User'])) {
+			if (!$this->Auth->loggedIn()) {
+				$cookie = $this->Cookie->read('User');
+				if (!empty($cookie['username'])) {
+					$this->loadModel('User');
+					$user = $this->User->findByUsernameAndEmail($cookie['username'], $cookie['email']);
+					if ($user) {
+						if ($this->Auth->login($user['User'])) {
+							$this->Session->delete('Message.auth');
+						}
+					}
+				}
+			}
+		}
+	}
+
+	protected function __trimData($data)
+	{
+		if (is_array($data)) {
+			foreach($data as $key => $val) {
+				$data[$key] = $this->__trimData($val);
+			}
+		} else {
+			$data = trim($data);
+		}
+		return $data;
+	}
+
+	protected function __processDates()
+	{
+		$fromTime = isset($this->request->params['named']['fromTime'])
+			? $this->request->params['named']['fromTime'] : '';
+		$toTime = isset($this->request->params['named']['toTime'])
+			? $this->request->params['named']['toTime'] : '';
+
+        # process for realtime
+        if(isset($this->request->data['LogRetention']['fromTime'])){
+            $fromTime = $this->request->data['LogRetention']['fromTime'];
+        }
+        if(isset($this->request->data['LogRetention']['toTime'])){
+            $toTime = $this->request->data['LogRetention']['toTime'];
+        }
+
+		if (!empty($fromTime)) {
+			$date = new DateTime("@" . $fromTime);
+			$date->setTimezone(new DateTimeZone('Asia/Ho_Chi_Minh')); 
+			$fromTime = $date->getTimestamp();
+		}
+		if (!empty($toTime)) {
+			$date = new DateTime("@" . $toTime);
+			$date->setTimezone(new DateTimeZone('Asia/Ho_Chi_Minh')); 
+			$toTime = $date->getTimestamp();
+		}
+		# at end of time can't larger than today
+		if (	!empty($toTime)
+			&& 	($toTime > strtotime('today'))
+		) {
+			$toTime = strtotime('today');
+		}
+
+		$rangeDefault = 5;
+		if (!empty($this->rangeDefault)) {
+			$rangeDefault = $this->rangeDefault;
+		}
+		if (empty($fromTime) && empty($toTime)) {
+			$fromTime = strtotime("-$rangeDefault days", strtotime('today'));
+			$toTime = strtotime('today');
+		} else {
+			if (empty($fromTime) && !empty($toTime)) {
+				$fromTime = strtotime("-$rangeDefault days", $toTime);
+			} else if (!empty($fromTime) && empty($toTime)) {
+				$toTime = strtotime('today');
+			}
+		}
+		# always fix $toTime to "d-m-Y 23:59:59"
+		$toTime = strtotime(date('d-m-Y 23:59:59', $toTime));
+		return array($fromTime, $toTime);
+	}
+
+	protected function __processWeeks()
+	{
+		$fromTime = isset($this->request->params['named']['fromTime'])
+			? $this->request->params['named']['fromTime'] : '';
+		$toTime = isset($this->request->params['named']['toTime'])
+			? $this->request->params['named']['toTime'] : '';
+
+		# at end of time can't larger than today
+		if (	!empty($toTime)
+			&& 	($toTime > strtotime('today'))
+		) {
+			$toTime = strtotime('today');
+		}
+
+		if (!empty($fromTime)) {
+			$fromTime = strtotime('Last Sunday', $fromTime);
+		}
+
+		if (empty($fromTime) && empty($toTime)) {
+			$fromTime = strtotime('-32 weeks', strtotime('Next Sunday'));
+			$toTime = strtotime('today');
+		} else {
+			if (empty($fromTime) && !empty($toTime)) {
+				$fromTime = strtotime('-32 weeks', $toTime);
+			} else if (!empty($fromTime) && empty($toTime)) {
+				$toTime = strtotime('Next Sunday');
+			}
+		}
+		# always fix $toTime to "d-m-Y 23:59:59"
+		$toTime = strtotime(date('d-m-Y 23:59:59', $toTime));
+		return array($fromTime, $toTime);
+	}
+	protected function __processMonths1()
+	{
+		$fromTime = isset($this->request->params['named']['fromTime1'])
+			? $this->request->params['named']['fromTime1'] : '';
+		$toTime = isset($this->request->params['named']['toTime1'])
+			? $this->request->params['named']['toTime1'] : '';
+
+		# at end of time can't larger than today
+		if (	!empty($toTime)
+			&& 	($toTime > strtotime('today'))
+		) {
+			$toTime = strtotime('today');
+		}
+
+		if (!empty($fromTime)) {
+			$fromTime = strtotime('01-' . $fromTime);
+		}
+
+		if (!empty($toTime)) {
+			$toTime = strtotime(date('t-m-Y', strtotime('1-'. $toTime)));
+		}
+
+		if (empty($fromTime) && empty($toTime)) {
+			$fromTime = strtotime(date('01-m-Y', strtotime('- 5 months', strtotime('today'))));
+			$toTime = strtotime(date('t-m-Y', strtotime('today')));
+		} else {
+			if (empty($fromTime) && !empty($toTime)) {
+				$fromTime = strtotime('- 5 months', $toTime);
+			} else if (!empty($fromTime) && empty($toTime)) {
+				$toTime = strtotime('today');
+			}
+		}
+
+		# always fix $toTime to "d-m-Y 23:59:59"
+		$toTime = strtotime(date('d-m-Y 23:59:59', $toTime));
+
+		return array($fromTime, $toTime);
+	}
+
+	protected function __processMonths()
+	{
+		$fromTime = isset($this->request->params['named']['fromTime'])
+			? $this->request->params['named']['fromTime'] : '';
+		$toTime = isset($this->request->params['named']['toTime'])
+			? $this->request->params['named']['toTime'] : '';
+
+		# at end of time can't larger than today
+		if (	!empty($toTime)
+			&& 	($toTime > strtotime('today'))
+		) {
+			$toTime = strtotime('today');
+		}
+
+		if (!empty($fromTime)) {
+			$fromTime = strtotime('01-' . $fromTime);
+		}
+
+		if (!empty($toTime)) {
+			$toTime = strtotime(date('t-m-Y', strtotime('1-'. $toTime)));
+		}
+
+		if (empty($fromTime) && empty($toTime)) {
+			$fromTime = strtotime(date('01-m-Y', strtotime('- 5 months', strtotime('today'))));
+			$toTime = strtotime(date('t-m-Y', strtotime('today')));
+		} else {
+			if (empty($fromTime) && !empty($toTime)) {
+				$fromTime = strtotime('- 5 months', $toTime);
+			} else if (!empty($fromTime) && empty($toTime)) {
+				$toTime = strtotime('today');
+			}
+		}
+
+		# always fix $toTime to "d-m-Y 23:59:59"
+		$toTime = strtotime(date('d-m-Y 23:59:59', $toTime));
+
+		return array($fromTime, $toTime);
+	}
+
+	protected function __processQuarter()
+	{
+		$currentYear = isset($this->request->params['named']['Y'])
+			? $this->request->params['named']['Y'] : '';
+		$currentY = date('Y', strtotime('today'));
+		if (empty($currentYear) || ($currentYear == $currentY)) {
+			$fromTime = strtotime('first day of January this year');
+			$toTime = strtotime('today');
+		}else{
+			$fromTime = strtotime('first day of January '.$currentYear);
+			$toTime = strtotime('last day of december '.$currentYear);
+		}
+		return array($fromTime, $toTime);
+	}
+
+	private function _startOfWeek($date, $outputFormat = 'd-m-Y')
+	{
+		return date($outputFormat, strtotime('Last Sunday', time()));
+	}
+
+	private function _endOfWeek($date, $outputFormat = 'd-m-Y')
+	{
+		return date($outputFormat, strtotime('Next Saturday', time()));
+	}
+
+	public function beforeRender()
+	{
+		if (!isset($this->viewVars['title_for_layout'])){
+			$this->set('title_for_layout', implode('-', array_merge(array(ucfirst($this->request->params['controller'])), array_reverse(explode('_', $this->request->params['action'])))));
+		}
+	}
+
+    public function afterRender()
+    {
+        $this->Session->delete('currentUrl');
+    }
+}
