@@ -1,2 +1,0 @@
-1495465445
-a:2:{i:0;b:0;s:3:"app";a:1:{s:7:"plugins";a:14:{i:0;s:9:"AclExtras";i:1;s:10:"AclManager";i:2;s:10:"CakeResque";i:3;s:7:"Captcha";i:4;s:8:"DebugKit";i:5;s:7:"Imagine";i:6;s:13:"MarkupParsers";i:7;s:11:"MenuBuilder";i:8;s:10:"Migrations";i:9;s:8:"PhpExcel";i:10;s:6:"Pusher";i:11;s:6:"Search";i:12;s:4:"Tags";i:13;s:5:"Utils";}}}
