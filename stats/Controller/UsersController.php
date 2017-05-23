@@ -51,13 +51,12 @@ class UsersController extends AppController {
 				'code' => $this->request->query('code'),
 				'secret' => $game['Game']['secret_key']
 			));
-			CakeLog::info('check reponse login stats:' . print_r($response,true));
 
 			if ($response->code != 200) {
 				throw new InternalErrorException('Internal error, please report admin');
 			}
 			$response = json_decode($response->body, true);
-            CakeLog::info('check reponse body login stats:' . print_r($response,true));
+
 			$this->Auth->login($response['User']);
 			$this->Cookie->write('User', array(
 				'username' => $response['User']['username'], 'email' => $response['User']['email']
