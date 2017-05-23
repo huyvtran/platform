@@ -16,4 +16,15 @@ class AggregateShell extends AppShell {
 
 		$this->AggregateBase->_aggreateByDay("LogLogin", "LogLoginsByDay", "COUNT_DISTINCT", "user_id", array("game_id"), array('day' => $date));
 	}
+
+
+    public function Niu()
+    {
+        $this->out('Start run aggregate NIU');
+        $date = date('d-m-Y');
+        if (isset($this->args[0])) {
+            $date = $this->args[0];
+        }
+        $this->AggregateBase->_aggreateByDay("Account", "LogAccountsByDay", "COUNT", "user_id", array("game_id"), array('day' => $date));
+    }
 }

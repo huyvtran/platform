@@ -3,14 +3,14 @@
 App::uses('CakeTime', 'Utility');
 App::uses('AppController', 'Controller');
 
-class DausController extends AppController {
+class NiusController extends AppController {
 
 	public $components = array('Search.Prg');
-
-	public $uses = array('LogLoginsByDay', 'LogEntergamesServerByDay');
-
-	public $useModel = 'LogLoginsByDay';
-
+	
+	public $uses = array('LogAccountsByDay');
+	
+	public $useModel = 'LogAccountsByDay';
+	
 	public $presetVars = true;
 
 	public function beforeFilter()

@@ -47,7 +47,6 @@ class AggregateBaseTask extends Shell {
 		$group = $aggregateFields;
 
 		$results = $Model->find('all', compact('fields', 'conditions', 'group'));
-		debug($results);
 
 		if (!empty($results)) {
 			foreach ($results as $k => $v) {
