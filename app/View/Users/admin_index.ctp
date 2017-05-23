@@ -12,7 +12,6 @@ $this->extend('/Common/blank');
 		echo $this->Form->input('id', array('type' => 'text','required' => false));
 		echo $this->Form->input('username', array('required' => false));
 		echo $this->Form->input('email', array('required' => false, 'type' => 'text'));
-		echo $this->Form->input('phone', array('required' => false, 'type' => 'text'));
         echo "<br/>";
 		echo '<label>Staff only' . $this->Form->input('staff', array('type' => 'checkbox', 'label' => false)) . '</label>';
 		echo $this->Form->submit('Search', array('class' => 'btn'));
