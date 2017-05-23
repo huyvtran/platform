@@ -60,8 +60,8 @@ class AppController extends Controller {
 				'NRU (Daily)' => '/nius/index',
 //				'NRU (Monthly)' => '/nius/monthly',
 //				'NRU (Quarter)' => '/nius/quarter',
-				'NRU By Countries' => '/nius/country',
-				'NRU By Referrer' => '/nius/referrer'
+//				'NRU By Countries' => '/nius/country',
+//				'NRU By Referrer' => '/nius/referrer'
 			),
 			'activeMenu' => array('nius')
 		),
@@ -172,148 +172,6 @@ class AppController extends Controller {
 		$this->set('menu', $this->menu);
 	}
 
-	public function getDate($time, $range)
-	{
-		if (isset($time)) {
-			$start = strtotime("- $range day", $time);
-			$end   = date('Y-m-d 23:59:59', strtotime("- 1 day", $time));
-			$end   = strtotime($end);
-			return array($start, $end);
-		}
-	}
-
-	public function indexDefault()
-	{
-		$model = $this->modelClass;
-		$this->Prg->commonProcess();
-		list($fromTime, $toTime) = $this->__processDates();
-		$rangeDates = $this->{$model}->getDates($fromTime, $toTime);
-		list($start, $end) = $this->getDate($fromTime, count($rangeDates));
-		$parsedConditions = $this->{$model}->parseCriteria($this->passedArgs);
-		$old_conditions = $parsedConditions;
-		$games = $this->{$model}->Game->find('list', array(
-			'conditions' => array('Game.id' => $this->Auth->user('permission_game_stats'), 'Game.status' => 1)
-		));
-
-		//load event
-		$event = $milestones = array();
-		if (!empty($this->request->named['game_id']) && !in_array($this->Auth->user('role'), array('Stats'))) {
-			$this->loadModel('LogUpdatedGame');
-			//milestones
-			$milestones_data = $this->LogUpdatedGame->find('all', array(
-				'conditions' => array(
-					'game_id'         => $this->request->named['game_id'],
-					'from_to_date >=' => date('Y-m-d 00:00:00', $fromTime),
-					'from_to_date <=' => date('Y-m-d 00:00:00', $toTime),
-				),
-				'recursive' => -1,
-			));
-			if (!empty($milestones_data)) {
-				foreach($milestones_data as $value) {
-					$title = $value['LogUpdatedGame']['title'];
-					$color = '#'.substr(md5($value['LogUpdatedGame']['title'] . $value['LogUpdatedGame']['id']), 3, 6);
-					$m = (int) date('m', strtotime($value['LogUpdatedGame']['from_to_date'])) - 1;
-					$pieces = explode(" ", $title);
-					$first_part = implode(" ", array_splice($pieces, 0, 6));
-					$milestones[] = array(
-						'id'    => $value['LogUpdatedGame']['id'],
-						'color' => $color,
-						'dashStyle' => 'longdashdot',
-						'value' => '____Date.UTC(' . date('Y', strtotime($value['LogUpdatedGame']['from_to_date'])) . ', ' . $m . ', ' . date('d', strtotime($value['LogUpdatedGame']['from_to_date'])) . ')____',
-						'width' => 1,
-						'label' =>  array('text' => $first_part . '...', 'style' => array('color' => $color, 'font-size' => 10, 'opacity' => 0.5)),
-					);
-				}
-			}
-			//event
-			if (!empty($this->request->params['named']['flag'])) {
-				$this->loadModel('Article');
-				$website_id = $this->{$model}->Game->findById($this->request->named['game_id']);
-				if ($website_id['Game']['website_id'] != '') {
-					$event_data = $this->Article->find('all', array(
-						'conditions' => array(
-							'published'      => 1,
-							'website_id'     => $website_id['Game']['website_id'],
-							'event_start >=' => date('Y-m-d 00:00:00', $fromTime),
-							'event_end <='   => date('Y-m-d 00:00:00', $toTime),
-						),
-						'recursive' => -1,
-					));
-					if (!empty($event_data)) {
-						foreach ($event_data as $value) {
-							$title = $value['Article']['title'];
-							$color = '#'.substr(md5($value['Article']['title'] . $value['Article']['id']), 3, 6);
-							$m_s = (int) date('m', strtotime($value['Article']['event_start'])) - 1;
-							$m_e = (int) date('m', strtotime($value['Article']['event_end'])) - 1;
-							$pieces = explode(" ", $title);
-							$first_part = implode(" ", array_splice($pieces, 0, 6));
-							$event_1[] = array(
-								'id'    => $value['Article']['id'],
-								'color' => $color,
-								'value' => '____Date.UTC(' . date('Y', strtotime($value['Article']['event_start'])) . ', ' . $m_s . ', ' . date('d', strtotime($value['Article']['event_start'])) . ')____',
-								'width' => 1,
-								'label' =>  array('text' => $first_part . '...', 'style' => array('color' => $color, 'font-size' => 10, 'opacity' => 0.5)),
-							);
-							$event_2[] = array(
-								'id'    => $value['Article']['id'],
-								'color' => $color,
-								'value' => '____Date.UTC(' . date('Y', strtotime($value['Article']['event_end'])) . ', ' . $m_e . ', ' . date('d', strtotime($value['Article']['event_end'])) . ')____',
-								'width' => 1,
-								'label' =>  array('text' => $first_part . '...', 'style' => array('color' => $color, 'font-size' => 10, 'opacity' => 0.5)),
-							);
-							$event = array_merge($event_1, $event_2);
-						}
-					}
-				}
-			}
-		}
-		$event = array_merge($event, $milestones);
-		$gamesCond = array($model . '.game_id' => $this->Auth->user('permission_game_stats'));
-		$timeCond = array();
-		if (empty($this->request->params['fromTime'])) {
-			$timeCond = (array) CakeTime::daysAsSql($fromTime, $toTime, $model . '.day');
-		}
-		if (isset($old_conditions["$model.day >= "]) || isset($old_conditions["$model.day <= "])) {
-			unset($old_conditions["$model.day >= "]);
-			unset($old_conditions["$model.day <= "]);
-		}
-		$tmp = (array) CakeTime::daysAsSql($start, $end, $model . '.day');
-		$parsedConditions = array_merge($gamesCond, (array) $parsedConditions, $timeCond);
-		$parsedConditions_old = array_merge($gamesCond, (array) $old_conditions, $tmp);
-		$dau = $this->{$model}->find('all', array(
-			'conditions' => $parsedConditions,
-			'recursive' => -1,
-			'order' => array('game_id' => 'DESC')
-		));
-		$old_data =  $this->{$model}->find('all', array(
-			'fields' => array('game_id', 'Sum(value) as sum'),
-			'conditions' => $parsedConditions_old,
-			'recursive' => -1,
-			'order' => array('game_id' => 'DESC'),
-			'group' => array('game_id'),
-		));
-		$total = array();
-		foreach ($old_data as $value) {
-			$total[] = array (
-				'game_id' => $value["$model"]['game_id'],
-				'sum' => $value[0]['sum'],
-			);
-		}
-		$data = $this->{$model}->dataToChartLine($dau, $games, $fromTime, $toTime);
-		$data = Hash::sort($data, '{n}.name', 'asc');
-		$data2 = $this->{$model}->addLineTotal($data);
-		
-		if (empty($data)) {
-			$this->Session->setFlash('No avaiable data in this time range.', 'warning');
-		}
-
-		if ($this->name == 'Nius') {
-			$sums = $this->{$model}->getTotals($games);
-		}
-
-		$this->set(compact('games', 'fromTime', 'toTime', 'data', 'rangeDates', 'sums', 'data2', 'total', 'event', 'event_data', 'milestones_data'));
-	}
-
 	/**
 	 *  Set Cookies default configs
 	 */
@@ -399,6 +257,160 @@ class AppController extends Controller {
 		return $data;
 	}
 
+    public function beforeRender()
+    {
+        if (!isset($this->viewVars['title_for_layout'])){
+            $this->set('title_for_layout', implode('-', array_merge(array(ucfirst($this->request->params['controller'])), array_reverse(explode('_', $this->request->params['action'])))));
+        }
+    }
+
+    public function afterRender()
+    {
+        $this->Session->delete('currentUrl');
+    }
+
+    public function getDate($time, $range)
+    {
+        if (isset($time)) {
+            $start = strtotime("- $range day", $time);
+            $end   = date('Y-m-d 23:59:59', strtotime("- 1 day", $time));
+            $end   = strtotime($end);
+            return array($start, $end);
+        }
+    }
+
+    public function indexDefault()
+    {
+        $model = $this->modelClass;
+        $this->Prg->commonProcess();
+        list($fromTime, $toTime) = $this->__processDates();
+        $rangeDates = $this->{$model}->getDates($fromTime, $toTime);
+        list($start, $end) = $this->getDate($fromTime, count($rangeDates));
+        $parsedConditions = $this->{$model}->parseCriteria($this->passedArgs);
+        $old_conditions = $parsedConditions;
+        $games = $this->{$model}->Game->find('list', array(
+            'conditions' => array('Game.id' => $this->Auth->user('permission_game_stats'), 'Game.status' => 1)
+        ));
+
+        //load event
+        $event = $milestones = array();
+        if (!empty($this->request->named['game_id']) && !in_array($this->Auth->user('role'), array('Stats'))) {
+            $this->loadModel('LogUpdatedGame');
+            //milestones
+            $milestones_data = $this->LogUpdatedGame->find('all', array(
+                'conditions' => array(
+                    'game_id'         => $this->request->named['game_id'],
+                    'from_to_date >=' => date('Y-m-d 00:00:00', $fromTime),
+                    'from_to_date <=' => date('Y-m-d 00:00:00', $toTime),
+                ),
+                'recursive' => -1,
+            ));
+            if (!empty($milestones_data)) {
+                foreach($milestones_data as $value) {
+                    $title = $value['LogUpdatedGame']['title'];
+                    $color = '#'.substr(md5($value['LogUpdatedGame']['title'] . $value['LogUpdatedGame']['id']), 3, 6);
+                    $m = (int) date('m', strtotime($value['LogUpdatedGame']['from_to_date'])) - 1;
+                    $pieces = explode(" ", $title);
+                    $first_part = implode(" ", array_splice($pieces, 0, 6));
+                    $milestones[] = array(
+                        'id'    => $value['LogUpdatedGame']['id'],
+                        'color' => $color,
+                        'dashStyle' => 'longdashdot',
+                        'value' => '____Date.UTC(' . date('Y', strtotime($value['LogUpdatedGame']['from_to_date'])) . ', ' . $m . ', ' . date('d', strtotime($value['LogUpdatedGame']['from_to_date'])) . ')____',
+                        'width' => 1,
+                        'label' =>  array('text' => $first_part . '...', 'style' => array('color' => $color, 'font-size' => 10, 'opacity' => 0.5)),
+                    );
+                }
+            }
+            //event
+            if (!empty($this->request->params['named']['flag'])) {
+                $this->loadModel('Article');
+                $website_id = $this->{$model}->Game->findById($this->request->named['game_id']);
+                if ($website_id['Game']['website_id'] != '') {
+                    $event_data = $this->Article->find('all', array(
+                        'conditions' => array(
+                            'published'      => 1,
+                            'website_id'     => $website_id['Game']['website_id'],
+                            'event_start >=' => date('Y-m-d 00:00:00', $fromTime),
+                            'event_end <='   => date('Y-m-d 00:00:00', $toTime),
+                        ),
+                        'recursive' => -1,
+                    ));
+                    if (!empty($event_data)) {
+                        foreach ($event_data as $value) {
+                            $title = $value['Article']['title'];
+                            $color = '#'.substr(md5($value['Article']['title'] . $value['Article']['id']), 3, 6);
+                            $m_s = (int) date('m', strtotime($value['Article']['event_start'])) - 1;
+                            $m_e = (int) date('m', strtotime($value['Article']['event_end'])) - 1;
+                            $pieces = explode(" ", $title);
+                            $first_part = implode(" ", array_splice($pieces, 0, 6));
+                            $event_1[] = array(
+                                'id'    => $value['Article']['id'],
+                                'color' => $color,
+                                'value' => '____Date.UTC(' . date('Y', strtotime($value['Article']['event_start'])) . ', ' . $m_s . ', ' . date('d', strtotime($value['Article']['event_start'])) . ')____',
+                                'width' => 1,
+                                'label' =>  array('text' => $first_part . '...', 'style' => array('color' => $color, 'font-size' => 10, 'opacity' => 0.5)),
+                            );
+                            $event_2[] = array(
+                                'id'    => $value['Article']['id'],
+                                'color' => $color,
+                                'value' => '____Date.UTC(' . date('Y', strtotime($value['Article']['event_end'])) . ', ' . $m_e . ', ' . date('d', strtotime($value['Article']['event_end'])) . ')____',
+                                'width' => 1,
+                                'label' =>  array('text' => $first_part . '...', 'style' => array('color' => $color, 'font-size' => 10, 'opacity' => 0.5)),
+                            );
+                            $event = array_merge($event_1, $event_2);
+                        }
+                    }
+                }
+            }
+        }
+        $event = array_merge($event, $milestones);
+        $gamesCond = array($model . '.game_id' => $this->Auth->user('permission_game_stats'));
+        $timeCond = array();
+        if (empty($this->request->params['fromTime'])) {
+            $timeCond = (array) CakeTime::daysAsSql($fromTime, $toTime, $model . '.day');
+        }
+        if (isset($old_conditions["$model.day >= "]) || isset($old_conditions["$model.day <= "])) {
+            unset($old_conditions["$model.day >= "]);
+            unset($old_conditions["$model.day <= "]);
+        }
+        $tmp = (array) CakeTime::daysAsSql($start, $end, $model . '.day');
+        $parsedConditions = array_merge($gamesCond, (array) $parsedConditions, $timeCond);
+        $parsedConditions_old = array_merge($gamesCond, (array) $old_conditions, $tmp);
+        $dau = $this->{$model}->find('all', array(
+            'conditions' => $parsedConditions,
+            'recursive' => -1,
+            'order' => array('game_id' => 'DESC')
+        ));
+        $old_data =  $this->{$model}->find('all', array(
+            'fields' => array('game_id', 'Sum(value) as sum'),
+            'conditions' => $parsedConditions_old,
+            'recursive' => -1,
+            'order' => array('game_id' => 'DESC'),
+            'group' => array('game_id'),
+        ));
+        $total = array();
+        foreach ($old_data as $value) {
+            $total[] = array (
+                'game_id' => $value["$model"]['game_id'],
+                'sum' => $value[0]['sum'],
+            );
+        }
+        $data = $this->{$model}->dataToChartLine($dau, $games, $fromTime, $toTime);
+        $data = Hash::sort($data, '{n}.name', 'asc');
+        $data2 = $this->{$model}->addLineTotal($data);
+
+        if (empty($data)) {
+            $this->Session->setFlash('No avaiable data in this time range.', 'warning');
+        }
+
+        if ($this->name == 'Nius') {
+            $sums = $this->{$model}->getTotals($games);
+        }
+
+        $this->set(compact('games', 'fromTime', 'toTime', 'data', 'rangeDates', 'sums', 'data2', 'total', 'event', 'event_data', 'milestones_data'));
+    }
+
 	protected function __processDates()
 	{
 		$fromTime = isset($this->request->params['named']['fromTime'])
@@ -449,18 +461,6 @@ class AppController extends Controller {
 		$toTime = strtotime(date('d-m-Y 23:59:59', $toTime));
 		return array($fromTime, $toTime);
 	}
-
-	public function beforeRender()
-	{
-		if (!isset($this->viewVars['title_for_layout'])){
-			$this->set('title_for_layout', implode('-', array_merge(array(ucfirst($this->request->params['controller'])), array_reverse(explode('_', $this->request->params['action'])))));
-		}
-	}
-
-    public function afterRender()
-    {
-        $this->Session->delete('currentUrl');
-    }
 
     public function indexCountry()
     {
