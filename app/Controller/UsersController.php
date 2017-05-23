@@ -792,10 +792,15 @@ class UsersController extends AppController {
 					$messageError = $this->User->validationErrors['password'][0] ;
 				}
 
-                CakeLog::error('check log validate register: '. print_r($this->User->validationErrors,true));
+                if( !empty($this->User->validationErrors['username'][0])
+                    && is_string($this->User->validationErrors['username'][0])
+                ){
+                    $messageError = $this->User->validationErrors['username'][0] ;
+                }
+
 				$result = array(
 					'ret' => 903,
-					'msg' => $this->User->validationErrors[0],
+					'msg' => $messageError,
 					'data' => $this->User->validationErrors
 				);
 				goto end;
