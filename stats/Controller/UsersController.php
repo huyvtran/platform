@@ -51,6 +51,8 @@ class UsersController extends AppController {
 				'code' => $this->request->query('code'),
 				'secret' => $game['Game']['secret_key']
 			));
+			CakeLog::info('check reponse login stats:' . print_r($response,true));
+
 			if ($response->code != 200) {
 				throw new InternalErrorException('Internal error, please report admin');
 			}
