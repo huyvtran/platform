@@ -791,6 +791,8 @@ class UsersController extends AppController {
 				){
 					$messageError = $this->User->validationErrors['password'][0] ;
 				}
+
+                CakeLog::error('check log validate register: '. print_r($this->User->validationErrors,true));
 				$result = array(
 					'ret' => 903,
 					'msg' => $this->User->validationErrors[0],
