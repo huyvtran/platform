@@ -50,7 +50,7 @@ class PaymentsController extends AppController {
 				try {
 					$unresolvedPayment = $this->Payment->WaitingPayment->save($data);
 
-					$dataSource = $this->CompenseOrder->getDataSource();
+					$dataSource = $this->Payment->getDataSource();
 					$dataSource->begin();
 
 					# gọi đến api cổng thanh toán và check thẻ (ghi log khi gọi api)
@@ -86,7 +86,7 @@ class PaymentsController extends AppController {
 						$paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_QUEUEING);
 					}
 
-					$dataSource->begin();
+					$dataSource->commit();
 
 					$this->render('/Payments/result');
 				} catch (Exception $e) {
@@ -96,4 +96,34 @@ class PaymentsController extends AppController {
 			}
 		}
 	}
+
+	public function feedback(){
+        $app = 'app';
+        $token  = 'token';
+
+        if($this->request->header($app)){
+            $appKey = $this->request->header($app);
+        }
+
+        if($this->request->header($token)){
+            $accessToken = $this->request->header($token);
+        }
+
+        if ($this->request->query('app_key')) {
+            $appKey = $this->request->query('app_key');
+        } elseif ($this->request->query('appkey')) {
+            $appKey = $this->request->query('appkey');
+        } elseif ($this->request->query('app')) {
+            $appKey = $this->request->query('app');
+        }
+
+        if ($this->request->query('access_token'))
+            $accessToken = $this->request->query('access_token');
+
+        if (!isset($appKey, $accessToken)) {
+            throw new BadRequestException();
+        }
+
+        # update payment khi ingame trả về
+    }
 }
