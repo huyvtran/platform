@@ -49,10 +49,9 @@ class AppController extends Controller {
 		'DAU' => array(
 			'categories' => array(
 				'DAU (Daily)' => '/daus/index',
-//				'MAU (Monthly)' => '/daus/monthly',
-//				'QAU (Quarter)' => '/daus/quarter',
+				'MAU (Monthly)' => '/daus/monthly',
+				'QAU (Quarter)' => '/daus/quarter',
 				'DAU By Countries' => '/daus/country',
-				'DAU By Servers' => '/daus/server',
 			),
 			'activeMenu' => array('daus')
 		),
@@ -461,5 +460,114 @@ class AppController extends Controller {
     public function afterRender()
     {
         $this->Session->delete('currentUrl');
+    }
+
+    public function indexCountry()
+    {
+        $model = $this->modelClass;
+
+        $this->Prg->commonProcess();
+        list($fromTime, $toTime) = $this->__processDates();
+        $rangeDates = $this->{$model}->getDates($fromTime, $toTime);
+        list($start, $end) = $this->getDate($fromTime, count($rangeDates));
+        $parsedConditions = $this->{$model}->parseCriteria($this->passedArgs);
+        $this->loadModel('Permission');
+        $ids = $this->Auth->user('permission_game_stats');
+        $games = $this->{$model}->Game->find('list', array(
+            'fields' => array('id', 'title_os'),
+            'conditions' => array('Game.id' => $this->Auth->user('permission_game_stats'), 'Game.status' => 1)
+        ));
+
+        if (!empty($this->request->named['game_id'])) {
+            $gamesCond = array($model . '.game_id' => $ids);
+            $timeCond = array();
+            $timeCond1 = array();
+            if (empty($this->request->params['fromTime'])) {
+                $timeCond = (array) CakeTime::daysAsSql($fromTime, $toTime, $model . '.day');
+            }
+            if (empty($this->request->params['fromTime'])) {
+                $timeCond1 = (array) CakeTime::daysAsSql($start, $end, $model . '.day');
+            }
+            $parsedConditions = array_merge($gamesCond, (array) $parsedConditions, $timeCond);
+            $old_conditions = $parsedConditions;
+            if (isset($old_conditions["$model.day >= "]) || isset($old_conditions["$model.day <= "]) || $old_conditions["0"]) {
+                unset($old_conditions["$model.day >= "]);
+                unset($old_conditions["$model.day <= "]);
+                unset($old_conditions["0"]);
+            }
+            $old_conditions = array_merge($gamesCond, (array) $old_conditions, $timeCond1);
+            $data = $this->{$model}->find('all', array(
+                'conditions' => $parsedConditions,
+                'recursive' => -1,
+                'order' => array(
+                    'country' => 'DESC'
+                )
+            ));
+            $old_data = $this->{$model}->find('all', array(
+                'fields' => array('SUM(value) as sum', 'country'),
+                'conditions' => $old_conditions,
+                'recursive' => -1,
+                'order' => array(
+                    'country' => 'DESC'
+                ),
+                'group' => array('country'),
+            ));
+            $old_dat_rev = $this->{$model}->find('all', array(
+                'fields' => array('SUM(round(value/100)) as sum', 'country'),
+                'conditions' => $old_conditions,
+                'recursive' => -1,
+                'order' => array(
+                    'country' => 'DESC'
+                ),
+                'group' => array('country'),
+            ));
+            $total_old_rev = array();
+            foreach ($old_dat_rev as $value) {
+                $total_old_rev[] = array(
+                    'sum' => $value[0]['sum'],
+                    'country' => $value["$model"]['country'],
+                );
+            }
+            $total_old = array();
+            foreach ($old_data as $value) {
+                $total_old[] = array(
+                    'sum' => $value[0]['sum'],
+                    'country' => $value["$model"]['country'],
+                );
+            }
+            $data = $this->{$model}->dataCountryToChartLine($data, $games, $fromTime, $toTime);
+
+            if (empty($data)) {
+                $this->Session->setFlash('No avaiable data in this time range.', 'warning');
+            }
+        } else {
+            $this->Session->setFlash('You need to choose a game.', 'error');
+        }
+
+        if ($this->modelClass == 'LogMobordersCountryByDay' && !empty($data)) {
+            $this->loadModel('Moborder');
+            $data = $this->Moborder->convertToUSD($data);
+        }
+        if (!empty($data)) {
+            $dataHighchart = $data;
+
+            foreach ($dataHighchart as $key => $value) {
+                if ($key > 15) {
+                    $dataHighchart[15]['name'] = 'Others';
+                    $dataHighchart[15]['game_id'] = $value['game_id'];
+                    foreach ($value['data'] as $k => $v) {
+                        if (empty($dataHighchart[15]['data'][$k])) {
+                            $dataHighchart[15]['data'][$k] = 0;
+                        }
+
+                        $dataHighchart[15]['data'][$k] += $v;
+                    }
+                    if ($key > 15) {
+                        unset($dataHighchart[$key]);
+                    }
+                }
+            }
+        }
+        $this->set(compact('games', 'fromTime', 'toTime', 'data', 'rangeDates', 'sums', 'dataHighchart', 'total_old', 'total_old_rev'));
     }
 }

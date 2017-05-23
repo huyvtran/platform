@@ -22,4 +22,10 @@ class DausController extends AppController {
 	{
 		$this->indexDefault();
 	}
+
+    public function country()
+    {
+        $this->modelClass = 'LogLoginsCountryByDay';
+        $this->indexCountry();
+    }
 }

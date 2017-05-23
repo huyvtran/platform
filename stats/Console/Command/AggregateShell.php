@@ -14,8 +14,21 @@ class AggregateShell extends AppShell {
 			$date = $this->args[0];
 		}
 
-		$this->AggregateBase->_aggreateByDay("LogLogin", "LogLoginsByDay", "COUNT_DISTINCT", "user_id", array("game_id"), array('day' => $date));
+		$this->AggregateBase->_aggreateByDay(
+		    "LogLogin", "LogLoginsByDay", "COUNT_DISTINCT", "user_id",
+            array("game_id"), array('day' => $date)
+        );
 	}
+
+	public function cDAU(){
+        $this->out('Start run aggregate DAU by country');
+        $date = date('d-m-Y');
+        if (isset($this->args[0])) {
+            $date = $this->args[0];
+        }
+
+        $this->AggregateCountry->Dau($date);
+    }
 
 
     public function Niu()
