@@ -272,4 +272,48 @@ class AppModel extends Model {
         $return = array_values($return);
         return $return;
     }
+
+    public function dataQuarterToChart($data, $games, $from = null, $to = null)
+    {
+        $return = array();
+        foreach($data as $v) {
+            $v = $v[$this->alias];
+
+            # if this games is not exist.
+            if (!isset($games[$v['game_id']])) {
+                continue;
+            }
+
+            if (!isset($return[$v['game_id']])) {
+                $return[$v['game_id']]['name'] = $games[$v['game_id']];
+                $return[$v['game_id']]['game_id'] = $v['game_id'];
+            }
+            $quarter = $this->date_quarter($v['day']);
+            if (!isset($return[$v['game_id']]['data'][$quarter])) {
+                $return[$v['game_id']]['data'][$quarter] = 0;
+            }
+            $return[$v['game_id']]['data'][$quarter] += (int) $v['value'];
+        }
+        if (isset($from, $to)) {
+            $rangeDates = $this->getDates($from, $to, 'd-m-Y', new DateInterval('P3M'));
+            foreach($return as &$v) {
+                $q = 1;
+                foreach($rangeDates as $quarter) {
+                    if (!isset($v['data'][$q])) {
+                        $v['data'][$q] = 0;
+                    }
+                    $q++;
+                }
+                ksort($v['data']);
+                $v['data'] = array_values($v['data']);
+            }
+        }
+
+        $return = array_values($return);
+        return $return;
+    }
+
+    function date_quarter($day){
+        return ceil(date('n', strtotime($day)) / 3);
+    }
 }

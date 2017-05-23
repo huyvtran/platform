@@ -287,7 +287,6 @@ class AppController extends Controller {
             $end   = strtotime($end);
             return array($start, $end);
         }
-
     }
 
     protected function __processDates()
@@ -369,6 +368,21 @@ class AppController extends Controller {
         # always fix $toTime to "d-m-Y 23:59:59"
         $toTime = strtotime(date('d-m-Y 23:59:59', $toTime));
 
+        return array($fromTime, $toTime);
+    }
+
+    protected function __processQuarter()
+    {
+        $currentYear = isset($this->request->params['named']['Y'])
+            ? $this->request->params['named']['Y'] : '';
+        $currentY = date('Y', strtotime('today'));
+        if (empty($currentYear) || ($currentYear == $currentY)) {
+            $fromTime = strtotime('first day of January this year');
+            $toTime = strtotime('today');
+        }else{
+            $fromTime = strtotime('first day of January '.$currentYear);
+            $toTime = strtotime('last day of december '.$currentYear);
+        }
         return array($fromTime, $toTime);
     }
 
@@ -589,9 +603,43 @@ class AppController extends Controller {
             $this->Session->setFlash('No avaiable data in this time range.', 'warning');
         }
 
-//		if ($this->name == 'Nius') {
-//			$sums = $this->{$model}->getTotals($games);
-//		}
+		if ($this->name == 'Nius') {
+			$sums = $this->{$model}->getTotals($games);
+		}
         $this->set(compact('games', 'fromTime', 'toTime', 'data', 'rangeDates', 'sums', 'data2', 'total_data'));
+    }
+
+    public function quarterYearDefault() {
+        $model = $this->useModel;
+        $this->Prg->commonProcess();
+        list($fromTime, $toTime) = $this->__processQuarter();
+
+        $parsedConditions = $this->{$model}->parseCriteria($this->passedArgs);
+        $ids = $this->Auth->user('permission_game_stats');
+        $games = $this->{$model}->Game->find('list', array(
+            'conditions' => array('Game.id' => $ids, 'Game.status' => 1)
+        ));
+        $gamesCond = array($model . '.game_id' => $ids);
+        $timeCond = array();
+        if (empty($this->request->params['fromTime'])) {
+            $timeCond = (array) CakeTime::daysAsSql($fromTime, $toTime, $model . '.day');
+        }
+        $parsedConditions = array_merge((array) $parsedConditions, $gamesCond, $timeCond);
+        $dau = $this->{$model}->find('all', array(
+            'conditions' => $parsedConditions,
+            'recursive' => -1,
+            'order' => array('game_id' => 'DESC')
+        ));
+        $data = $this->{$model}->dataQuarterToChart($dau, $games, $fromTime, $toTime);
+        if (empty($data)) {
+            $this->Session->setFlash('No avaiable data in this time range.', 'warning');
+        }
+
+        if ($this->name == 'Nius') {
+            $sums = $this->{$model}->getTotals($games);
+        }
+
+        $rangeDates = $this->{$model}->getDates($fromTime, $toTime, 'd-m-Y', new DateInterval('P3M'));
+        $this->set(compact('games', 'fromTime', 'toTime', 'data', 'rangeDates', 'sums'));
     }
 }
