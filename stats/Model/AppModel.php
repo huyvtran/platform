@@ -196,4 +196,80 @@ class AppModel extends Model {
 		}
 		return $return;
 	}
+
+    public function dataWeekToChart($data, $games, $from = null, $to = null)
+    {
+        $return = array();
+        foreach($data as $v) {
+            $v = $v[$this->alias];
+
+            # if this games is not exist.
+            if (!isset($games[$v['game_id']])) {
+                continue;
+            }
+            if (!isset($return[$v['game_id']])) {
+                $return[$v['game_id']]['name'] = $games[$v['game_id']];
+                $return[$v['game_id']]['game_id'] = $v['game_id'];
+                $return[$v['game_id']]['data'][$v['day']] = (int) $v['value'];
+            } else {
+                $return[$v['game_id']]['data'][$v['day']] = (int) $v['value'];
+            }
+        }
+
+        if (isset($from, $to)) {
+            $rangeDates = $this->getDates($from, $to, 'Y-m-d', new DateInterval('P1W'));
+            foreach($return as &$v) {
+                foreach($rangeDates as $time) {
+                    if (!isset($v['data'][$time])) {
+                        $v['data'][$time] = 0;
+                    }
+                }
+                ksort($v['data']);
+                $v['data'] = array_values($v['data']);
+            }
+        }
+
+        $return = array_values($return);
+        return $return;
+    }
+
+    public function dataMonthToChart($data, $games, $from = null, $to = null)
+    {
+        $return = array();
+        foreach($data as $v) {
+            $v = $v[$this->alias];
+
+            # if this games is not exist.
+            if (!isset($games[$v['game_id']])) {
+                continue;
+            }
+
+            if (!isset($return[$v['game_id']])) {
+                $return[$v['game_id']]['name'] = $games[$v['game_id']];
+                $return[$v['game_id']]['game_id'] = $v['game_id'];
+
+                $return[$v['game_id']]['data'][$v['time']] = (int) $v['value'];
+            } else {
+                $return[$v['game_id']]['data'][$v['time']] = (int) $v['value'];
+            }
+        }
+
+        if (isset($from, $to)) {
+            $rangeDates = $this->getDates($from, $to, 'Y-m-01', new DateInterval('P1M'));
+
+            foreach($return as &$v) {
+                foreach($rangeDates as $day) {
+                    if (!isset($v['data'][$day])) {
+                        $v['data'][$day] = 0;
+                    }
+                }
+
+                ksort($v['data']);
+                $v['data'] = array_values($v['data']);
+            }
+        }
+
+        $return = array_values($return);
+        return $return;
+    }
 }

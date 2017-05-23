@@ -279,6 +279,17 @@ class AppController extends Controller {
         }
     }
 
+    public function getMonths($time, $range)
+    {
+        if (isset($time)) {
+            $start = strtotime("- $range month", $time);
+            $end   = date('Y-m-d 23:59:59', strtotime("- 1 day", $time));
+            $end   = strtotime($end);
+            return array($start, $end);
+        }
+
+    }
+
     protected function __processDates()
     {
         $fromTime = isset($this->request->params['named']['fromTime'])
@@ -319,6 +330,45 @@ class AppController extends Controller {
         }
         # always fix $toTime to "d-m-Y 23:59:59"
         $toTime = strtotime(date('d-m-Y 23:59:59', $toTime));
+        return array($fromTime, $toTime);
+    }
+
+    protected function __processMonths()
+    {
+        $fromTime = isset($this->request->params['named']['fromTime'])
+            ? $this->request->params['named']['fromTime'] : '';
+        $toTime = isset($this->request->params['named']['toTime'])
+            ? $this->request->params['named']['toTime'] : '';
+
+        # at end of time can't larger than today
+        if (	!empty($toTime)
+            && 	($toTime > strtotime('today'))
+        ) {
+            $toTime = strtotime('today');
+        }
+
+        if (!empty($fromTime)) {
+            $fromTime = strtotime('01-' . $fromTime);
+        }
+
+        if (!empty($toTime)) {
+            $toTime = strtotime(date('t-m-Y', strtotime('1-'. $toTime)));
+        }
+
+        if (empty($fromTime) && empty($toTime)) {
+            $fromTime = strtotime(date('01-m-Y', strtotime('- 5 months', strtotime('today'))));
+            $toTime = strtotime(date('t-m-Y', strtotime('today')));
+        } else {
+            if (empty($fromTime) && !empty($toTime)) {
+                $fromTime = strtotime('- 5 months', $toTime);
+            } else if (!empty($fromTime) && empty($toTime)) {
+                $toTime = strtotime('today');
+            }
+        }
+
+        # always fix $toTime to "d-m-Y 23:59:59"
+        $toTime = strtotime(date('d-m-Y 23:59:59', $toTime));
+
         return array($fromTime, $toTime);
     }
 
@@ -487,5 +537,61 @@ class AppController extends Controller {
             }
         }
         $this->set(compact('games', 'fromTime', 'toTime', 'data', 'rangeDates', 'sums', 'dataHighchart', 'total_old', 'total_old_rev'));
+    }
+
+    public function monthlyDefault() {
+        $model = $this->modelClass;
+        $this->Prg->commonProcess();
+        list($fromTime, $toTime) = $this->__processMonths();
+        $rangeDates = $this->{$model}->getDates($fromTime, $toTime, 'M Y', new DateInterval('P1M'));
+        list($start, $end) = $this->getMonths($fromTime, count($rangeDates));
+        $parsedConditions = $this->{$model}->parseCriteria($this->passedArgs);
+        $old_conditions = $parsedConditions;
+        $timeCond = array();
+        if (empty($this->request->params['fromTime'])) {
+            $timeCond = (array) CakeTime::daysAsSql($fromTime, $toTime, $model . '.time');
+        }
+        if (isset($old_conditions['time >= ']) || isset($old_conditions['time <= '])) {
+            unset($old_conditions['time >= ']);
+            unset($old_conditions['time <= ']);
+        }
+        $ids_game = $this->Auth->user('permission_game_stats');
+        $games = $this->{$model}->Game->find('list', array(
+            'conditions' => array('id' => $ids_game, 'status' => 1)
+        ));
+        $gamesCond = array($model . '.game_id' => $ids_game);
+        $parsedConditions = array_merge((array) $parsedConditions, $gamesCond, $timeCond);
+        $tmp = (array) CakeTime::daysAsSql($start, $end, $model . '.time');
+        $parsedConditions_old = array_merge($gamesCond, (array) $old_conditions, $tmp);
+        $aggregate = $this->{$model}->find('all', array(
+            'conditions' => $parsedConditions,
+            'recursive' => -1
+        ));
+        $old_data =  $this->{$model}->find('all', array(
+            'fields' => array('game_id', 'Sum(value) as sum'),
+            'conditions' => $parsedConditions_old,
+            'recursive' => -1,
+            'order' => array('game_id' => 'DESC'),
+            'group' => array('game_id'),
+        ));
+        $total_data = array();
+        foreach ($old_data as $value) {
+            $total_data[] = array (
+                'game_id' => $value['LogLoginsByMonth']['game_id'],
+                'sum' => $value[0]['sum'],
+            );
+        }
+        $data = $this->{$model}->dataMonthToChart($aggregate, $games, $fromTime, $toTime);
+        $data = Hash::sort($data, '{n}.name', 'asc');
+        $data2 = $this->{$model}->addLineTotal($data);
+
+        if (empty($data)) {
+            $this->Session->setFlash('No avaiable data in this time range.', 'warning');
+        }
+
+//		if ($this->name == 'Nius') {
+//			$sums = $this->{$model}->getTotals($games);
+//		}
+        $this->set(compact('games', 'fromTime', 'toTime', 'data', 'rangeDates', 'sums', 'data2', 'total_data'));
     }
 }

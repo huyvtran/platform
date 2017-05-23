@@ -28,4 +28,14 @@ class DausController extends AppController {
         $this->modelClass = 'LogLoginsCountryByDay';
         $this->indexCountry();
     }
+
+    public function monthly() {
+        $this->modelClass = 'LogLoginsByMonth';
+        $this->monthlyDefault();
+    }
+
+    public function quarter() {
+        $this->modelClass = 'LogLoginsByQuarter';
+        $this->quarterYearDefault();
+    }
 }

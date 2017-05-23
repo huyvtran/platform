@@ -30,6 +30,24 @@ class AggregateShell extends AppShell {
         $this->AggregateCountry->Dau($date);
     }
 
+    public function MAU(){
+        $this->out('Start run aggregate MAU');
+        $month = date('d-m-Y');
+        if (isset($this->args[0])) {
+            $month = $this->args[0];
+        }
+
+        $model = array(
+            'name' => 'LogLogin',
+            'timeField' => 'created'
+        );
+        $model2 = 'LogLoginsByMonth';
+
+        $this->AggregateBase->_aggreateByMonth(
+            $model, $model2, 'COUNT_DISTINCT', 'user_id',
+            array('game_id'), array('time' => $month)
+        );
+    }
 
     public function Niu()
     {
