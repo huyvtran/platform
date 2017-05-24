@@ -63,7 +63,7 @@ class UsersController extends AppController {
 			));
 
             $cookie = $this->Cookie->read('User');
-            debug($cookie);
+            debug($cookie);die;
 			$this->Session->setFlash('You has been logged in successfully', 'success');
 			$this->Session->delete('Message.auth');
 			$this->redirect($this->request->query('redirect'));
