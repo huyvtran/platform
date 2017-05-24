@@ -61,6 +61,9 @@ class UsersController extends AppController {
 			$this->Cookie->write('User', array(
 				'username' => $response['User']['username'], 'email' => $response['User']['email']
 			));
+
+            $cookie = $this->Cookie->read('User');
+            debug($cookie);
 			$this->Session->setFlash('You has been logged in successfully', 'success');
 			$this->Session->delete('Message.auth');
 			$this->redirect($this->request->query('redirect'));
