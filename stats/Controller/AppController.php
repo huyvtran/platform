@@ -177,7 +177,7 @@ class AppController extends Controller {
 	 */
 	protected function __setCookie()
 	{
-		$this->Cookie->type('rijndael');
+		$this->Cookie->type('cipher');
 		$this->Cookie->name = 'Stats';
 		$this->Cookie->time = '90 days';
 		$this->Cookie->path = '/';
@@ -189,11 +189,8 @@ class AppController extends Controller {
 			$domain = env('HTTP_HOST');
 		}
 		$this->Cookie->domain = $domain;
-		if (strpos($domain, 'localhost') !== false) {
-			$this->Cookie->domain = '';
-		}
 		
-		$this->Cookie->key = 'qSdd%ddId2121232xdddddxqADYhG93b0qyJfIxfs1232guVoUubWwvaniR2G0FgaC9mis*&saX6Owsd121!';
+		$this->Cookie->key = 'quanvh_qSdd%ddId2121232xdddddxqADYhG93b0qyJfIxfs1232guVoUubWwvaniR2G0FgaC9mis*&saX6Owsd121!';
 	}
 
 	/**
