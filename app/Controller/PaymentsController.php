@@ -45,7 +45,7 @@ class PaymentsController extends AppController {
 					'time' => time(),
 					'order_id' => microtime(true) * 10000
 				));
-
+				
 				$this->loadModel('Payment');
 				try {
 					$unresolvedPayment = $this->Payment->WaitingPayment->save($data);
@@ -56,6 +56,8 @@ class PaymentsController extends AppController {
 					# gọi đến api cổng thanh toán và check thẻ (ghi log khi gọi api)
 					$result = $paymentLib->callPayApi($data);
 					if( !empty($result['status']) && $result['status'] == 0 && $data['order_id'] == $result['data']['order_id']){
+						$this->render('/Payments/result');
+
 						# trạng thái thành công, lưu dữ liệu payment
 						$user_test = 0; // default
 						$data_payment = array(
@@ -75,26 +77,39 @@ class PaymentsController extends AppController {
 							'card_serial'   => $result['data']['card_serial']
 						);
 						$paymentLib->add($data_payment);
-
-						# gửi api tới game cộng xu
 						
 					}elseif (!empty($result['status']) && $result['status'] == 1){
 						# trạng thái lỗi, thẻ đã sử dụng, hoặc thẻ không đúng
 						$paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+						$this->render('/Payments/error');
 					}else{
 						# chờ hệ thống cổng thanh toán
 						$paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_QUEUEING);
+						$this->render('/Payments/order');
 					}
-
 					$dataSource->commit();
-
-					$this->render('/Payments/result');
 				} catch (Exception $e) {
 					CakeLog::error($e->getMessage());
 					$dataSource->rollback();
 				}
 			}
 		}
+	}
+
+	private function _getAccount($userId, $gameId){
+		# check switch account exist or not
+		$this->loadModel('Account');
+		$this->Account->contain();
+		$account = $this->Account->findAllByGameIdAndUserId($gameId, $userId);
+
+		if (empty($account)) {
+			throw new BadRequestException('Can not found account');
+		}
+		$accountId = $account[0]['Account']['id'];
+		if (!empty($account[0]['Account']['account_id'])) {
+			$accountId = $account[0]['Account']['account_id'];
+		}
+		return $accountId;
 	}
 
 	public function feedback(){

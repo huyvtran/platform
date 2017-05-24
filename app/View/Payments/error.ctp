@@ -1,0 +1,1 @@
+Serial hoặc mã nạp thẻ sai.
