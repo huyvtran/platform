@@ -295,30 +295,12 @@ class CommonComponent extends Component {
         }
 
         if (!empty($code['Game']) && !empty($code['User'])) {
-            $check_profile = false;
-            if (!empty($code["User"]['Profile'])) {
-                if (	!empty($profile['Profile']['email_contact'])
-                    && 	!empty($profile['Profile']['fullname'])
-                    && 	!empty($profile['Profile']['birthday'])
-                ){
-                    $check_profile  = true;
-                }
-            }
-
+            if( !empty($code['Game']) ) unset($code['Game']);
+            if( !empty($code['AuthorizationCode']) ) unset($code['AuthorizationCode']);
+            if( isset($code['User']['Profile']) ) unset($code['User']['Profile']);
+            
             # you can add additional info, but avoid to modify any field in here
-            return array(
-                'User' => array(
-                    'username' => $code['User']['username'],
-                    'name' => $code['User']['name'],
-                    'role' => $code['User']['role'],
-                    'email' => $code['User']['email'],
-                    'id' => $code['User']['id'],
-                    'facebook_uid' => $code['User']['facebook_uid'],
-                    'active' => $code['User']['active'],
-                    'avatar' => !empty($code['User']['facebook_uid']) ? 'https://graph.facebook.com/'.$code['User']['facebook_uid'].'/picture?type=large' : false,
-                    'created' => $code['User']['created'],
-                    'check_profile' => $check_profile
-                ));
+            return $code;
         }
 
         return array();
