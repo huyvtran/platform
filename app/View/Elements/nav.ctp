@@ -125,7 +125,7 @@
 				<?php
 				if (env('SERVER_NAME') != 'localhost') {
 				?>
-					<a href="#">(Stats)</a>
+					<a href="<?php echo $this->Html->url('/') . 'stats';?>">(Stats)</a>
 				<?php
 				} else {
 				?>

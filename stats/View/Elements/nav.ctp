@@ -87,7 +87,7 @@ if ($this->Session->read('Auth.User')) {
 			
 			if (env('SERVER_NAME') != 'localhost') {
 			?>
-				<a href="http://localhost:8088/platform/admin/">(Admin)</a>
+				<a href="<?php echo $this->Html->url('/'). 'admin';?>">(Admin)</a>
 				
 			<?php
 			} else {
