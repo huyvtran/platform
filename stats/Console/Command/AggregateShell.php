@@ -8,7 +8,7 @@ class AggregateShell extends AppShell {
 	public $tasks = array('AggregateBase', 'AggregateServer', 'AggregateCountry');
 
 	public function DAU(){
-		$this->out('Start run aggregate DAU');
+        $this->out(date('Y-m-d H:i:s') . " - Start run aggregate DAU");
 		$date = date('d-m-Y');
 		if (isset($this->args[0])) {
 			$date = $this->args[0];
@@ -21,7 +21,7 @@ class AggregateShell extends AppShell {
 	}
 
 	public function cDAU(){
-        $this->out('Start run aggregate DAU by country');
+        $this->out(date('Y-m-d H:i:s') . " - Start run aggregate DAU by country");
         $date = date('d-m-Y');
         if (isset($this->args[0])) {
             $date = $this->args[0];
@@ -31,7 +31,7 @@ class AggregateShell extends AppShell {
     }
 
     public function MAU(){
-        $this->out('Start run aggregate MAU');
+        $this->out(date('Y-m-d H:i:s') . " - Start run aggregate MAU");
         $month = date('d-m-Y');
         if (isset($this->args[0])) {
             $month = $this->args[0];
@@ -51,7 +51,7 @@ class AggregateShell extends AppShell {
 
     public function Niu()
     {
-        $this->out('Start run aggregate NIU');
+        $this->out(date('Y-m-d H:i:s') . " - Start run aggregate NIU");
         $date = date('d-m-Y');
         if (isset($this->args[0])) {
             $date = $this->args[0];
