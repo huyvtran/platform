@@ -5,7 +5,7 @@ App::uses('CakeTime', 'Utility');
 
 class AggregateShell extends AppShell {
 
-	public $tasks = array('AggregateBase', 'AggregateServer', 'AggregateCountry');
+	public $tasks = array('AggregateBase', 'AggregateCountry');
 
 	public function DAU(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate DAU");
