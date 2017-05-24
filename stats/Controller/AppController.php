@@ -229,16 +229,7 @@ class AppController extends Controller {
 	{
 		if (empty($this->request->data['User'])) {
 			if (!$this->Auth->loggedIn()) {
-			    $checkCookie = array(
-                    'name' => $this->Cookie->name,
-                    'time' => $this->Cookie->time,
-                    'path' => $this->Cookie->path,
-                    'domain' => $this->Cookie->domain,
-                    'key' => $this->Cookie->key
-                );
-			    debug($checkCookie);
-				$cookie = $this->Cookie->read('User');
-                debug($cookie);
+                $cookie = $this->Cookie->read('User');
 				if (!empty($cookie['username'])) {
 					$this->loadModel('User');
 					$user = $this->User->findByUsernameAndEmail($cookie['username'], $cookie['email']);
