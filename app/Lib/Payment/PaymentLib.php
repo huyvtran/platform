@@ -62,5 +62,11 @@ class PaymentLib {
         $this->Transaction = ClassRegistry::init('Transaction');
         $data['type'] = Transaction::TYPE_PAY;
         $this->Transaction->save($data);
+
+        $this->Payment->User->recursive = -1;
+        $user = $this->Payment->User->findById($data['user_id']);
+        $updatePay = $user['User']['payment'] + $data['price'];
+        $this->Payment->User->id = $data['user_id'] ;
+        $this->Payment->User->saveField('payment', $updatePay);
     }
 }

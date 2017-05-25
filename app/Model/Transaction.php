@@ -6,6 +6,6 @@ class Transaction extends AppModel {
 
 	public $useTable = 'transactions';
 
-	const TYPE_PAY    	= 1;
-	const TYPE_SPEND 	= 2;
+	const TYPE_PAY    	= 1; // nạp tiền vào tài khoản
+	const TYPE_SPEND 	= 2; // rút tiên từ tài khoản chuyển vào game
 }
