@@ -159,7 +159,9 @@ class Vippay {
                     'card_serial'   => $this->getSeri()
                 )
             );
-        } elseif (isset($resultVippay->code) && $resultVippay->code == 1000){
+        } elseif (isset($resultVippay->code)
+            && in_array( $resultVippay->code, array(1000, 1007) )
+        ){
             # update trạng thái thẻ lỗi hoặc đã được sử dụng
             $result = array(
                 'status'    => 1,
