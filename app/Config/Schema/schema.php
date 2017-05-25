@@ -440,6 +440,7 @@ class AppSchema extends CakeSchema {
 		'count_daily' => array('type' => 'integer', 'null' => true, 'default' => '0', 'length' => 10),
 		'phone' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 15, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'comment' => 'phone_login', 'charset' => 'utf8'),
 		'phone_verified' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
+		'payment' => array('type' => 'integer', 'null' => true, 'default' => '0'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
 			'email_unique' => array('column' => 'email', 'unique' => 1),
