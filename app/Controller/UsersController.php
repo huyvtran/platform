@@ -922,7 +922,7 @@ class UsersController extends AppController {
 		if (!isset(
 			$this->request->data['user_name'],
 			$this->request->data['password'],
-			$this->request->data['phone']
+			$this->request->data['email']
 		)) {
 			$result = array(
 				'retcode' => 900,
@@ -935,7 +935,7 @@ class UsersController extends AppController {
 		$this->request->data['User']['email'] 	= time().'@myapp.com';
 		$this->request->data['User']['role'] 	= 'User';
 		$this->request->data['User']['active'] 	= true;
-		$this->request->data['User']['phone'] 	= $this->request->data['phone'];
+		$this->request->data['User']['phone'] 	= $this->request->data['email'];
 		$this->request->data['User']['password'] = $this->request->data['password'];
 		$this->request->data['User']['username'] = 'ldr_' . $this->request->data['user_name'];
 
