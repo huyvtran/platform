@@ -69,4 +69,41 @@ class PaymentLib {
         $this->Payment->User->id = $data['user_id'] ;
         $this->Payment->User->saveField('payment', $updatePay);
     }
+
+    /*
+     * data :   order_id, user_id, game_id, price,
+     *          time, note,
+     *          test = 0 // default
+     */
+    public function sub($data){
+        try {
+            $this->Charge = ClassRegistry::init('Charge');
+
+            $dataSource = $this->Charge->getDataSource();
+            $dataSource->begin();
+
+            $this->Charge->save($data);
+
+            App::import('Lib', 'Transaction');
+            $this->Transaction = ClassRegistry::init('Transaction');
+            $data['type'] = Transaction::TYPE_SPEND;
+            $this->Transaction->save($data);
+
+            $this->Charge->User->recursive = -1;
+            $user = $this->Charge->User->findById($data['user_id']);
+            $updatePay = $user['User']['payment'] - $data['price'];
+            if($updatePay >= 0) {
+                $this->Charge->User->id = $data['user_id'];
+                $this->Charge->User->saveField('payment', $updatePay);
+                $dataSource->commit();
+                return true;
+            }else{
+                CakeLog::error('Not enough', 'payment');
+            }
+        }catch (Exception $e){
+            CakeLog::error('error save charge', 'payment');
+        }
+        $dataSource->rollback();
+        return false;
+    }
 }

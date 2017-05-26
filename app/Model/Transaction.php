@@ -8,4 +8,8 @@ class Transaction extends AppModel {
 
 	const TYPE_PAY    	= 1; // nạp tiền vào tài khoản
 	const TYPE_SPEND 	= 2; // rút tiên từ tài khoản chuyển vào game
+
+	public $belongsTo = array(
+		'User', 'Game'
+	);
 }

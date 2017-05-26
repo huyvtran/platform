@@ -55,7 +55,7 @@ CakeLog::config('request', array(
 
 CakeLog::config('payment', array(
     'engine' => $logEngine,
-    'types' => array('info', 'debug'),
+	'types' => array('info', 'debug', 'error'),
     'file' => 'payment',
 ));
 
