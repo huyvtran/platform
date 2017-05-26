@@ -123,6 +123,24 @@ class AppSchema extends CakeSchema {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
 	);
 
+	public $charges = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'order_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 50, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'user_id' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'game_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 5),
+		'status' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 2),
+		'price' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'time' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'note' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'test' => array('type' => 'integer', 'null' => true, 'default' => '0', 'length' => 2),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1)
+		),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
+	);
+
 	public $games = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'primary'),
 		'title' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
