@@ -1178,7 +1178,7 @@ class UsersController extends AppController {
 								$data = array_merge(
 									array(
 										'User' => array(
-											'username' => $user['User']['username'],
+											'username' => substr($user['User']['username'], 4),
 											'account_id' => $account['Account']['account_id']
 										)),
 									array(
@@ -1187,7 +1187,7 @@ class UsersController extends AppController {
 										'indulge'		=> 1,
 										'uid'	=> $account['Account']['account_id'],
 										'ipv4'	=> $this->Common->publicClientIp(),
-										'uname'	=> $user['User']['username'],
+										'uname'	=> substr($user['User']['username'], 4),
 										'KL_SSO'=> $account['Account']['account_id'],
 										"KL_PERSON"	=> "HbzJXvrN14tizpsCilhL9zt-iNCtGzETlRdCLrEcfALa8k679L4vwQHMJN-5m-cOJm3Wqhg3-YE7EdI9-WX.SsCU49NIYeHUsLvq8anfi2GFO_AogqNkS6Uv4jQp.qxfgRdQnxpOzEeH_tpPLqWPlX_9kS1F5lb_c258dKhzKVG9.GJIlu-9l9_aqsvkGAK.pqkkDdvI6fP3uetKI7nJhSzSOyjpWuZSoGGVzlEvAG9R4gS3c3rlAQCZd58G5fxjC8sE9mSh.uGnOzOxuWAnx7QAdc_6d6Iva7Zou5YfpqM0",
 										"isnew"		=> "true"
