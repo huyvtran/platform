@@ -53,6 +53,12 @@ CakeLog::config('request', array(
 	'file' => 'request.log'
 ));
 
+CakeLog::config('payment', array(
+    'engine' => $logEngine,
+    'types' => array('info', 'debug'),
+    'file' => 'payment',
+));
+
 $engine = 'File';
 
 if (extension_loaded('apc') && php_sapi_name() !== 'cli'){

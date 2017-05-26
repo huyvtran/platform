@@ -10,7 +10,7 @@ class PaymentsController extends AppController {
 		$this->Auth->allow();
 	}
 
-	public function charge()
+	public function pay()
 	{
 //		 echo 'Hệ thống thanh toán đang được bảo trì, và sẽ online trong thời gian sớm nhất. Chúng tôi xin lỗi vì sự bất tiện này.';
 //		 die();
@@ -40,6 +40,13 @@ class PaymentsController extends AppController {
                 'time' => time(),
                 'order_id' => microtime(true) * 10000
             ));
+
+            #validate
+//            if( empty($data['card_serial']) || empty($data['card_code']) || empty($data['type'])){
+//                $user_token = '';
+//                if ( !empty($this->request->query['token']) ) $user_token = $this->request->query['token'];
+//                $this->redirect('charge', array('app' => $game['app'], 'token' => $user_token));
+//            }
 
             $this->loadModel('Payment');
             try {
@@ -106,7 +113,7 @@ class PaymentsController extends AppController {
 		return $accountId;
 	}
 
-	public function feedback(){
+	public function api_charge(){
         $app = 'app';
         $token  = 'token';
 
@@ -133,6 +140,6 @@ class PaymentsController extends AppController {
             throw new BadRequestException();
         }
 
-        # update payment khi ingame trả về
+        # update payment user khi ingame trả về
     }
 }
