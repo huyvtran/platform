@@ -909,6 +909,220 @@ class UsersController extends AppController {
 		$this->set('_serialize', 'result');
 	}
 
+	public function api_register_vcc()
+	{
+		$result = array(
+			'retcode' => 900,
+			'retmsg' => 'error'
+		);
+
+		CakeLog::info('input mu vcc api register:' . print_r($this->request->data,true));
+
+		if (!isset(
+			$this->request->data['user_name'],
+			$this->request->data['password'],
+			$this->request->data['phone']
+		)) {
+			$result = array(
+				'retcode' => 900,
+				'retmsg' => 'Necessary data is missing'
+			);
+			goto end;
+		}
+
+		$this->request->data['User'] = $this->request->data;
+		$this->request->data['User']['email'] 	= time().'@myapp.com';
+		$this->request->data['User']['role'] 	= 'User';
+		$this->request->data['User']['active'] 	= true;
+		$this->request->data['User']['phone'] 	= $this->request->data['phone'];
+		$this->request->data['User']['password'] = $this->request->data['password'];
+		$this->request->data['User']['username'] = 'vcc_' . $this->request->data['user_name'];
+
+		$userCheck = $this->User->findByUsername($this->request->data['User']['username']);
+		if( !empty($userCheck['User']) ){
+			$result = array(
+				'retcode' => 900,
+				'retmsg' => 'The username is in use'
+			);
+			goto end;
+		}
+
+		$this->User->validator()->remove('email')->remove('password', 'confirmPassword');
+
+		if ($this->Auth->user()) {
+			$data = $this->Command->authen_vcc('login', true);
+			$this->Log->logLogin();
+			$result = array(
+				'retcode' => 0,
+				'retmsg' => 'Register successfully',
+				'data' => $data
+			);
+			goto end;
+		}
+
+		if ($this->request->is('post')) {
+			if ($this->Auth->user()) {
+				$data = $this->Command->authen_vcc('login', true);
+				$this->Log->logLogin();
+				$result = array(
+					'retcode' => 0,
+					'retmsg' => 'Register successfully',
+					'data' => $data
+				);
+				goto end;
+			}
+
+			$dataSource = $this->User->getDataSource();
+			$dataSource->begin();
+			# lock users
+			$this->User->query("SELECT * FROM users LIMIT 1 FOR UPDATE");
+			# lock accounts
+			$this->User->query("SELECT * FROM accounts LIMIT 1 FOR UPDATE");
+
+			$user = $this->User->register($this->request->data);
+			if ($user !== false) {
+				$this->User->createAccount($this->Common->currentGame());
+				$dataSource->commit();
+
+				$this->User->read();
+				$this->Auth->login($this->User->data['User']);
+
+				$data = $this->Command->authen_vcc('login', true);
+				$this->Log->logLogin();
+
+				$result = array(
+					'retcode' => 0,
+					'retmsg' => 'Register successfully',
+					'data' => $data
+				);
+				goto end;
+			} else {
+				$dataSource->rollback();
+				unset($this->request->data[$this->modelClass]['password']);
+
+				$messageError = 'Validation errors';
+				if( !empty($this->User->validationErrors['password'][0])
+					&& is_string($this->User->validationErrors['password'][0])
+				){
+					$messageError = $this->User->validationErrors['password'][0] ;
+				}
+
+				if( !empty($this->User->validationErrors['username'][0])
+					&& is_string($this->User->validationErrors['username'][0])
+				){
+					$messageError = $this->User->validationErrors['username'][0] ;
+				}
+
+				$result = array(
+					'retcode' => 5,
+					'retmsg' => $messageError
+				);
+				goto end;
+
+				CakeLog::info('check validate register: '. print_r($result,true));
+			}
+		}
+
+		end:
+		CakeLog::info('output api register:' . print_r($result,true));
+		$this->set('result', $result);
+		$this->set('_serialize', 'result');
+	}
+
+	public function api_login_vcc(){
+		$result = array(
+			'retcode' => 5,
+			'retmsg' => 'error'
+		);
+
+		CakeLog::info('input game mu vcc api login:' . print_r($this->request->data,true));
+
+		if (!isset(
+			$this->request->data['username'],
+			$this->request->data['userpass']
+		)) {
+			$result = array(
+				'retcode' 	=> 5,
+				'retmsg' 	=> 'Necessary data is missing'
+			);
+			goto end;
+		}
+		$this->request->data['username'] = 'vcc_' . $this->request->data['username'] ;
+		$this->request->data['password'] = $this->request->data['userpass'];
+
+		# Nếu user không thể login bằng email , check username
+		$this->request->data['User']['email'] = $this->request->data['username'];
+		$this->request->data['User']['password'] = $this->request->data['password'];
+		if (!$this->Auth->user() && !empty($this->request->data['User']['email'])) {
+			$tempEmail = $this->request->data['User']['email'];
+			$this->User->contain();
+			#login by username
+			if ($user = $this->User->findByUsername($this->request->data['User']['email'])) {
+				$this->request->data['User']['email'] = $user['User']['email'];
+				$this->Auth->login();
+			}
+
+			if (!$this->Auth->user()) {
+				if ($user = $this->User->findByPhone($this->request->data['User']['email'])) {
+					$this->request->data['User']['email'] = $user['User']['email'];
+					$this->Auth->login();
+					if (!$this->Auth->user()) {
+						$this->request->data['User']['email'] = $tempEmail;
+					}
+				}
+			}
+		}
+
+		if ($this->Auth->user()) {
+			# if user login in the game
+			if ($this->Common->currentGame()) {
+				$dataSource = $this->User->getDataSource();
+				$dataSource->begin();
+				$this->User->Account->query("SELECT * FROM accounts LIMIT 1 FOR UPDATE");
+				$accountExist = $this->User->Account->find('first', array(
+					'conditions' => array(
+						'user_id' => $this->Auth->user('id'),
+						'game_id' => $this->Common->currentGame('id')
+					),
+					'recursive' => -1
+				));
+
+				if (empty($accountExist)) {
+					$this->Session->write(AuthComponent::$sessionKey . '.new_account', 1);
+
+					$this->User->Account->recursive = -1;
+					$this->User->createAccount(
+						$this->Common->currentGame(),
+						$this->Auth->user('id')
+					);
+				}
+				$dataSource->commit();
+				$data = $this->Command->authen_vcc('login', true);
+				$this->Log->logLogin();
+
+				$result = array(
+					'data' => $data,
+					'retcode' => 0,
+					'retmsg' => 'login successfully'
+				);
+			} else {
+				$this->Session->setFlash('You has been logged in successfully', 'success');
+				$this->redirect(array('action' => 'login_successful'));
+			}
+		} else {
+			$result = array(
+				'retcode' => 5,
+				'retmsg' => __('Tên đăng nhập và/hoặc mật khẩu không đúng!')
+			);
+			goto end;
+		}
+
+		end:
+		CakeLog::info('output api login:' . print_r($result,true));
+		$this->set('result', $result);
+		$this->set('_serialize', 'result');
+	}
+	
 	public function test_sendmail(){
         $options = array(
             'template' => 'default',
