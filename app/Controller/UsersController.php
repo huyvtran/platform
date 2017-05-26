@@ -1014,13 +1014,12 @@ class UsersController extends AppController {
 					$messageError = $this->User->validationErrors['username'][0] ;
 				}
 
+				CakeLog::info('check validate register: '. print_r($this->User->validationErrors,true));
 				$result = array(
 					'retcode' => 5,
 					'retmsg' => $messageError
 				);
 				goto end;
-
-				CakeLog::info('check validate register: '. print_r($this->User->validationErrors,true));
 			}
 		}
 
