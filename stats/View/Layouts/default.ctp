@@ -63,7 +63,7 @@
 				<?php echo $this->fetch('content');?>
 			</div>
 			<footer class='footer'>
-				@copyright 2013
+				@copyright 2017
 				<div class='muted'><?php echo date("Y-m-d H:i:s") ?></div>
 				<div class='muted'><?php echo 'Proccess Time: ' . round(microtime(true) - TIME_START, 2) * 1000 . ' ms' ?></div>				
 			</footer>	
