@@ -926,7 +926,7 @@ class UsersController extends AppController {
 		)) {
 			$result = array(
 				'retcode' => 900,
-				'retmsg' => 'Necessary data is missing'
+				'retmsg' => __('Thiếu thông tin đăng ký')
 			);
 			goto end;
 		}
@@ -943,7 +943,7 @@ class UsersController extends AppController {
 		if( !empty($userCheck['User']) ){
 			$result = array(
 				'retcode' => 900,
-				'retmsg' => 'The username is in use'
+				'retmsg' => __('tài khoản đã tồn tại')
 			);
 			goto end;
 		}
@@ -956,7 +956,7 @@ class UsersController extends AppController {
 			$this->Log->logLogin();
 			$result = array(
 				'retcode' => 0,
-				'retmsg' => 'Register successfully',
+				'retmsg' => __('đăng kí thành công'),
 				'data' => $data
 			);
 			goto end;
@@ -968,7 +968,7 @@ class UsersController extends AppController {
 				$this->Log->logLogin();
 				$result = array(
 					'retcode' => 0,
-					'retmsg' => 'Register successfully',
+					'retmsg' => __('đăng kí thành công'),
 					'data' => $data
 				);
 				goto end;
@@ -994,7 +994,7 @@ class UsersController extends AppController {
 
 				$result = array(
 					'retcode' => 0,
-					'retmsg' => 'Register successfully',
+					'retmsg' => __('đăng kí thành công'),
 					'data' => $data
 				);
 				goto end;
@@ -1002,7 +1002,14 @@ class UsersController extends AppController {
 				$dataSource->rollback();
 				unset($this->request->data[$this->modelClass]['password']);
 
-				$messageError = 'Validation errors';
+				$messageError = __('lỗi đăng ký');
+
+				if( !empty($this->User->validationErrors['phone'][0])
+					&& is_string($this->User->validationErrors['phone'][0])
+				){
+					$messageError = $this->User->validationErrors['phone'][0] ;
+				}
+
 				if( !empty($this->User->validationErrors['password'][0])
 					&& is_string($this->User->validationErrors['password'][0])
 				){
@@ -1044,7 +1051,7 @@ class UsersController extends AppController {
 		)) {
 			$result = array(
 				'retcode' 	=> 5,
-				'retmsg' 	=> 'Necessary data is missing'
+				'retmsg' 	=> __('Thiếu thông tin đăng ký')
 			);
 			goto end;
 		}
@@ -1104,7 +1111,7 @@ class UsersController extends AppController {
 				$result = array(
 					'data' => $data,
 					'retcode' => 0,
-					'retmsg' => 'login successfully'
+					'retmsg' => __('đăng nhập thành công')
 				);
 			} else {
 				$this->Session->setFlash('You has been logged in successfully', 'success');
