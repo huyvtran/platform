@@ -114,32 +114,64 @@ class PaymentsController extends AppController {
 	}
 
 	public function api_charge(){
-        $app = 'app';
-        $token  = 'token';
+	    $result = array(
+	        'status'    => 1,
+            'mesage'    => 'empty'
+        );
+        if ($this->request->is('post')) {
+            $app = 'app';
+            $token  = 'token';
 
-        if($this->request->header($app)){
-            $appKey = $this->request->header($app);
+            if($this->request->header($app)){
+                $appKey = $this->request->header($app);
+            }
+
+            if($this->request->header($token)){
+                $accessToken = $this->request->header($token);
+            }
+
+            if ($this->request->query('app_key')) {
+                $appKey = $this->request->query('app_key');
+            } elseif ($this->request->query('appkey')) {
+                $appKey = $this->request->query('appkey');
+            } elseif ($this->request->query('app')) {
+                $appKey = $this->request->query('app');
+            }
+
+            if ($this->request->query('access_token'))
+                $accessToken = $this->request->query('access_token');
+
+            if (!isset($appKey, $accessToken)) {
+                $result = array(
+                    'status'    => 2,
+                    'mesage'    => 'empty token or appkey'
+                );
+                goto end;
+            }
+
+            $game = $this->Common->currentGame();
+            if( empty($game) || !$this->Auth->loggedIn() ){
+                $result = array(
+                    'status'    => 2,
+                    'mesage'    => 'Invalid token or appkey'
+                );
+                goto end;
+            }
+            $user = $this->Auth->user();
+
+            $paymentLib = new PaymentLib();
+            # update payment user khi ingame trả về
+            # dữ liệu truyền sang `price`, `sign`
+            $data = array_merge( $this->request->data, array(
+                'user_id' => $user['id'],
+                'game_id' => $game['id'],
+                'time' => time(),
+                'order_id' => microtime(true) * 10000
+            ));
         }
 
-        if($this->request->header($token)){
-            $accessToken = $this->request->header($token);
-        }
-
-        if ($this->request->query('app_key')) {
-            $appKey = $this->request->query('app_key');
-        } elseif ($this->request->query('appkey')) {
-            $appKey = $this->request->query('appkey');
-        } elseif ($this->request->query('app')) {
-            $appKey = $this->request->query('app');
-        }
-
-        if ($this->request->query('access_token'))
-            $accessToken = $this->request->query('access_token');
-
-        if (!isset($appKey, $accessToken)) {
-            throw new BadRequestException();
-        }
-
-        # update payment user khi ingame trả về
+        end:
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
     }
 }
