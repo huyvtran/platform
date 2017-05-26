@@ -33,11 +33,7 @@
         ?>
     </head>
     <body>
-        <?php
-        echo $this->element('nav');
-        echo $this->fetch('content');
-		echo $this->element('footer');
-		?>
+        <?php echo $this->fetch('content'); ?>
 
 <?php
 if (env("SERVER_ADDR") == '127.0.0.1'){
