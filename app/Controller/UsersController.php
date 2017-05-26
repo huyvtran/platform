@@ -1020,7 +1020,7 @@ class UsersController extends AppController {
 				);
 				goto end;
 
-				CakeLog::info('check validate register: '. print_r($result,true));
+				CakeLog::info('check validate register: '. print_r($this->User->validationErrors,true));
 			}
 		}
 
