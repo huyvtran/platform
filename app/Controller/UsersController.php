@@ -40,7 +40,7 @@ class UsersController extends AppController {
 		$this->Auth->allow( 
 			'logout', 'api_register', 'api_login', 'api_change_password',
 			'api_login_takan', 'api_register_takan',
-			'api_login_ldr', 'api_register_ldr'
+			'api_login_ldr', 'api_register_ldr', 'api_change_password_ldr'
 		);
 	}
 
@@ -1182,8 +1182,16 @@ class UsersController extends AppController {
 											'account_id' => $account['Account']['account_id']
 										)),
 									array(
-										'access_token' => $token['AccessToken']['token'],
-										'token_expire' => $token['AccessToken']['expired'])
+										'access_token' 	=> $token['AccessToken']['token'],
+										'token_expire' 	=> $token['AccessToken']['expired'],
+										'indulge'		=> 1,
+										'uid'	=> $account['Account']['account_id'],
+										'ipv4'	=> $this->Common->publicClientIp(),
+										'uname'	=> $user['User']['username'],
+										'KL_SSO'=> $account['Account']['account_id'],
+										"KL_PERSON"	=> "HbzJXvrN14tizpsCilhL9zt-iNCtGzETlRdCLrEcfALa8k679L4vwQHMJN-5m-cOJm3Wqhg3-YE7EdI9-WX.SsCU49NIYeHUsLvq8anfi2GFO_AogqNkS6Uv4jQp.qxfgRdQnxpOzEeH_tpPLqWPlX_9kS1F5lb_c258dKhzKVG9.GJIlu-9l9_aqsvkGAK.pqkkDdvI6fP3uetKI7nJhSzSOyjpWuZSoGGVzlEvAG9R4gS3c3rlAQCZd58G5fxjC8sE9mSh.uGnOzOxuWAnx7QAdc_6d6Iva7Zou5YfpqM0",
+										"isnew"		=> "true"
+									)
 								);
 
 								$result = array(
