@@ -40,7 +40,7 @@ class UsersController extends AppController {
 		$this->Auth->allow( 
 			'logout', 'api_register', 'api_login', 'api_change_password',
 			'api_login_takan', 'api_register_takan',
-			'api_login_vcc', 'api_register_vcc'
+			'api_login_ldr', 'api_register_ldr'
 		);
 	}
 
@@ -910,7 +910,7 @@ class UsersController extends AppController {
 		$this->set('_serialize', 'result');
 	}
 
-	public function api_register_vcc()
+	public function api_register_ldr()
 	{
 		$result = array(
 			'retcode' => 900,
@@ -937,7 +937,7 @@ class UsersController extends AppController {
 		$this->request->data['User']['active'] 	= true;
 		$this->request->data['User']['phone'] 	= $this->request->data['phone'];
 		$this->request->data['User']['password'] = $this->request->data['password'];
-		$this->request->data['User']['username'] = 'vcc_' . $this->request->data['user_name'];
+		$this->request->data['User']['username'] = 'ldr_' . $this->request->data['user_name'];
 
 		$userCheck = $this->User->findByUsername($this->request->data['User']['username']);
 		if( !empty($userCheck['User']) ){
@@ -1030,7 +1030,7 @@ class UsersController extends AppController {
 		$this->set('_serialize', 'result');
 	}
 
-	public function api_login_vcc(){
+	public function api_login_ldr(){
 		$result = array(
 			'retcode' => 5,
 			'retmsg' => 'error'
@@ -1048,7 +1048,7 @@ class UsersController extends AppController {
 			);
 			goto end;
 		}
-		$this->request->data['username'] = 'vcc_' . $this->request->data['username'] ;
+		$this->request->data['username'] = 'ldr_' . $this->request->data['username'] ;
 		$this->request->data['password'] = $this->request->data['userpass'];
 
 		# Nếu user không thể login bằng email , check username
