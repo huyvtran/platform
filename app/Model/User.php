@@ -84,8 +84,8 @@ class User extends AppModel {
 				'message' => 'Mật khẩu dài ít nhất 6 ký tự.'
 			),
             'maxLength' => array(
-                'rule'    => array('maxLength', 25),
-                'message' => 'Mật khẩu (dài 6-25 ký tự)'
+                'rule'    => array('maxLength', 50),
+                'message' => 'Mật khẩu (dài 6-50 ký tự)'
             ),
 			'confirmPassword' => array(
 				'rule' => 'confirmPassword',
