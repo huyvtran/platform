@@ -305,4 +305,27 @@ class CommonComponent extends Component {
 
         return array();
     }
+
+	public function bruteForce($fields, $rangeTime, $blockAfterTimes)
+	{
+		if (is_array($fields)) {
+			$key = implode("_", $fields);
+		} else {
+			$key = $fields;
+		}
+
+		App::import('Lib', 'RedisCake');
+		$Redis = new RedisCake('action_count');
+		$Redis->incr($key);
+		$ttl = $Redis->ttl($key);
+
+		if ($ttl < 0 || $ttl > $rangeTime) {
+			$Redis->expire($key, $rangeTime);
+		}
+		$count = $Redis->get($key);
+		if ($count > $blockAfterTimes) {
+			throw new Exception("Bạn không thể thực hiện hành động này");
+			CakeLog::error("Bạn không thể thực hiện hành động này");
+		}
+	}
 }
