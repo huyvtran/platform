@@ -150,10 +150,11 @@ class CommandComponent extends Component {
 			$token = $controller->AccessToken->generateToken($app, $userId);
 		}
 
+		$game = $this->Common->currentGame();
+
 		$controller->Account->contain();
 		$account = $controller->Account->findByUserIdAndGameId(
-			$this->Auth->user('id'),
-			$this->Common->currentGame('id')
+			$this->Auth->user('id'), $game['id']
 		);
 
 		if (empty($account)) {
@@ -181,6 +182,8 @@ class CommandComponent extends Component {
 			'account_id'	=> $accountId,
 			'user_id'		=> $userId,
 			'token' 		=> $token['AccessToken']['token'],
+			'app_key'		=> $game['app'],
+			'app_secret'	=> $game['secret_key'],
 		);
 
 		$this->Session->write('Auth.Account.id', $accountId);
