@@ -917,6 +917,22 @@ class UsersController extends AppController {
 			'retmsg' => 'error'
 		);
 
+		try {
+			if ($this->request->is('post')) {
+				$this->Common->bruteForce(array(
+					'ip' => $this->Common->publicClientIp(),
+					'action' => 'api_register_ldr',
+					$this->Common->currentGame('id'),
+				), 60*60, 30);
+			}
+		} catch (Exception $e) {
+			$result = array(
+				'retcode' => 900,
+				'retmsg' => 'vui lòng thử lại sau ít phút'
+			);
+			goto end;
+		}
+
 		CakeLog::info('input mu vcc api register:' . print_r($this->request->data,true));
 
 		if (!isset(
