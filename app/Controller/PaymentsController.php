@@ -61,13 +61,6 @@ class PaymentsController extends AppController {
                 'order_id' => microtime(true) * 10000
             ));
 
-            #validate
-//            if( empty($data['card_serial']) || empty($data['card_code']) || empty($data['type'])){
-//                $user_token = '';
-//                if ( !empty($this->request->query['token']) ) $user_token = $this->request->query['token'];
-//                $this->redirect('charge', array('app' => $game['app'], 'token' => $user_token));
-//            }
-
             $this->loadModel('Payment');
             $this->loadModel('WaitingPayment');
             try {
@@ -76,19 +69,46 @@ class PaymentsController extends AppController {
                 $dataSource = $this->Payment->getDataSource();
                 $dataSource->begin();
 
-                # gọi đến api cổng thanh toán và check thẻ (ghi log khi gọi api)
-                $result = $paymentLib->callPayApi($data);
+                $test_type = 0;
+                if(!empty($game['data']['payment']['testallowed'])){
+                    $testList = $game['data']['payment']['testallowed'];
+                    if( in_array($user['email'], array_map('trim', explode("\n", $testList))) ){
+                        $test_type = 1;
+                    }
+                }
+                if($test_type){
+                    $result = array(
+                        'status'    => 0,
+                        'messsage'  => 'success',
+                        'data'      => array(
+                            'time'  => $data['time'],
+                            'type'  => $data['type'],
+                            'chanel'    => $data['chanel'],
+
+                            'order_id'  => $data['order_id'],
+                            'user_id'   => $data['user_id'],
+                            'game_id'   => $data['game_id'],
+
+                            'card_code' => $data['card_code'],
+                            'price'     => $data['card_code'],
+                            'card_serial'   => $data['card_serial']
+                        )
+                    );
+                }else{
+                    # gọi đến api cổng thanh toán và check thẻ (ghi log khi gọi api)
+                    $result = $paymentLib->callPayApi($data);
+                }
+
                 if( isset($result['status']) && $result['status'] == 0 && $data['order_id'] == $result['data']['order_id']){
                     $this->render('/Payments/result');
 
                     # trạng thái thành công, lưu dữ liệu payment
-                    $user_test = 0; // default
                     $data_payment = array(
                         'waiting_id'	=> $unresolvedPayment['WaitingPayment']['id'],
 
                         'time'  => $data['time'],
                         'type'  => $data['type'],
-                        'test'	=> $user_test,
+                        'test'	=> $test_type,
                         'chanel'    => $data['chanel'],
 
                         'order_id'  => $result['data']['order_id'],
