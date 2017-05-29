@@ -53,6 +53,7 @@ class PaymentLib {
      *          waiting_id
      */
     public function add($data){
+        CakeLog::info('data add :' .print_r($data,true));
         try {
             $this->Payment = ClassRegistry::init('Payment');
             
