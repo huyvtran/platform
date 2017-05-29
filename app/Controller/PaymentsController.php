@@ -33,6 +33,8 @@ class PaymentsController extends AppController {
 //		 echo 'Hệ thống thanh toán đang được bảo trì, và sẽ online trong thời gian sớm nhất. Chúng tôi xin lỗi vì sự bất tiện này.';
 //		 die();
 
+        $result_api = false;
+
         $this->layout = 'payment';
 
 		# load for view
@@ -119,9 +121,9 @@ class PaymentsController extends AppController {
                         'card_serial'   => $result['data']['card_serial']
                     );
                     $paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
-//                    $paymentLib->add($data_payment);
+                    $paymentLib->add($data_payment);
                     CakeLog::info('trạng thái thành công', 'payment');
-                    if($return) return true;
+                    $result_api = true;
                     $this->render('/Payments/result');
                 }elseif (!empty($result['status']) && $result['status'] == 1){
                     # trạng thái lỗi, thẻ đã sử dụng, hoặc thẻ không đúng
@@ -141,7 +143,7 @@ class PaymentsController extends AppController {
             }
         }
 
-        if($return) return false;
+        if($return) return $result_api;
 	}
 
 	private function _getAccount($userId, $gameId){
