@@ -55,13 +55,12 @@ class PaymentLib {
     public function add($data){
         CakeLog::info('data add :' .print_r($data,true));
         try {
-            ClassRegistry::init('WaitingPayment');
             $this->Payment = ClassRegistry::init('Payment');
             
             $dataSource = $this->Payment->getDataSource();
             $dataSource->begin();
             
-            $this->setResolvedPayment($data['waiting_id'], WaitingPayment::STATUS_COMPLETED);
+//            $this->setResolvedPayment($data['waiting_id'], WaitingPayment::STATUS_COMPLETED);
 
             $this->Payment->save($data);
 
