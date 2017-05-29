@@ -55,6 +55,7 @@ class PaymentLib {
     public function add($data){
         CakeLog::info('data add :' .print_r($data,true));
         try {
+            ClassRegistry::init('WaitingPayment');
             $this->Payment = ClassRegistry::init('Payment');
             
             $dataSource = $this->Payment->getDataSource();
@@ -64,16 +65,16 @@ class PaymentLib {
 
             $this->Payment->save($data);
 
-//            App::import('Lib', 'Transaction');
-//            $this->Transaction = ClassRegistry::init('Transaction');
-//            $data['type'] = Transaction::TYPE_PAY;
-//            $this->Transaction->save($data);
+            App::import('Lib', 'Transaction');
+            $this->Transaction = ClassRegistry::init('Transaction');
+            $data['type'] = Transaction::TYPE_PAY;
+            $this->Transaction->save($data);
 
-//            $this->Payment->User->recursive = -1;
-//            $user = $this->Payment->User->findById($data['user_id']);
-//            $updatePay = $user['User']['payment'] + $data['price'];
-//            $this->Payment->User->id = $data['user_id'];
-//            $this->Payment->User->saveField('payment', $updatePay, array('callbacks' => false));
+            $this->Payment->User->recursive = -1;
+            $user = $this->Payment->User->findById($data['user_id']);
+            $updatePay = $user['User']['payment'] + $data['price'];
+            $this->Payment->User->id = $data['user_id'];
+            $this->Payment->User->saveField('payment', $updatePay, array('callbacks' => false));
             
             $dataSource->commit();
             return true;
