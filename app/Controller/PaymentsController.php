@@ -10,7 +10,25 @@ class PaymentsController extends AppController {
 		$this->Auth->allow();
 	}
 
-	public function pay()
+    public function api_pay(){
+        $data = $this->pay(true);
+
+        $result = array(
+            'status' => 1,
+            'message' => 'error'
+        );
+        if($data){
+            $result = array(
+                'status' => 0,
+                'message' => 'success'
+            );
+        }
+
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
+    }
+
+	public function pay($return = false)
 	{
 //		 echo 'Hệ thống thanh toán đang được bảo trì, và sẽ online trong thời gian sớm nhất. Chúng tôi xin lỗi vì sự bất tiện này.';
 //		 die();
@@ -22,6 +40,8 @@ class PaymentsController extends AppController {
 		
 		$game = $this->Common->currentGame();
 		if( empty($game) || !$this->Auth->loggedIn() ){
+            CakeLog::error('Vui longf login', 'payment');
+            if($return) return false;
 			throw new NotFoundException('Vui lòng login');
 		}
 		$user = $this->Auth->user();
@@ -81,12 +101,15 @@ class PaymentsController extends AppController {
                     );
                     $paymentLib->add($data_payment);
 
+                    if($return) return true;
                 }elseif (!empty($result['status']) && $result['status'] == 1){
                     # trạng thái lỗi, thẻ đã sử dụng, hoặc thẻ không đúng
+                    CakeLog::info('trạng thái lỗi, thẻ đã sử dụng, hoặc thẻ không đúng', 'payment');
                     $paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
                     $this->render('/Payments/error');
                 }else{
                     # chờ hệ thống cổng thanh toán
+                    CakeLog::info('chờ hệ thống cổng thanh toán', 'payment');
                     $paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_QUEUEING);
                     $this->render('/Payments/order');
                 }
@@ -96,6 +119,8 @@ class PaymentsController extends AppController {
                 $dataSource->rollback();
             }
         }
+
+        if($return) return false;
 	}
 
 	private function _getAccount($userId, $gameId){
