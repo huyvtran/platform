@@ -124,17 +124,17 @@ class PaymentsController extends AppController {
                     $paymentLib->add($data_payment);
                     CakeLog::info('trạng thái thành công', 'payment');
                     $result_api = true;
-                    $this->render('/Payments/result');
+                    if(!$return) $this->render('/Payments/result');
                 }elseif (!empty($result['status']) && $result['status'] == 1){
                     # trạng thái lỗi, thẻ đã sử dụng, hoặc thẻ không đúng
                     CakeLog::info('trạng thái lỗi, thẻ đã sử dụng, hoặc thẻ không đúng', 'payment');
                     $paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
-                    $this->render('/Payments/error');
+                    if(!$return) $this->render('/Payments/error');
                 }else{
                     # chờ hệ thống cổng thanh toán
                     CakeLog::info('chờ hệ thống cổng thanh toán', 'payment');
                     $paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_QUEUEING);
-                    $this->render('/Payments/order');
+                    if(!$return) $this->render('/Payments/order');
                 }
                 $dataSource->commit();
             } catch (Exception $e) {
