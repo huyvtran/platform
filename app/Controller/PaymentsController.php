@@ -100,8 +100,6 @@ class PaymentsController extends AppController {
                     CakeLog::info('thẻ cào qua vippay:' . print_r($result,true), 'payment');
                 }
 
-                CakeLog::info('result payment:' . print_r($result,true), 'payment');
-
                 if( isset($result['status']) && $result['status'] == 0 && $data['order_id'] == $result['data']['order_id']){
                     $this->render('/Payments/result');
 
@@ -122,6 +120,7 @@ class PaymentsController extends AppController {
                         'price'     => $result['data']['price'],
                         'card_serial'   => $result['data']['card_serial']
                     );
+                    CakeLog::info('result payment:' . print_r($data_payment,true), 'payment');
                     $paymentLib->add($data_payment);
 
                     if($return) return true;
