@@ -97,6 +97,7 @@ class PaymentsController extends AppController {
                 }else{
                     # gọi đến api cổng thanh toán và check thẻ (ghi log khi gọi api)
                     $result = $paymentLib->callPayApi($data);
+                    CakeLog::info('thẻ cào qua vippay:' . print_r($result,true), 'payment');
                 }
 
                 if( isset($result['status']) && $result['status'] == 0 && $data['order_id'] == $result['data']['order_id']){
