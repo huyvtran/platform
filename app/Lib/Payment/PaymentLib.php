@@ -65,11 +65,9 @@ class PaymentLib {
 
         $this->Payment->User->recursive = -1;
         $user = $this->Payment->User->findById($data['user_id']);
-        CakeLog::info('user add pay:' .print_r($user,true), 'payment');
         $updatePay = $user['User']['payment'] + $data['price'];
-        CakeLog::info('update user add pay:' .print_r($updatePay,true), 'payment');
         $this->Payment->User->id = $data['user_id'] ;
-        $this->Payment->User->saveField('payment', $updatePay);
+        $this->Payment->User->saveField('payment', $updatePay, array('callbacks' => false));
     }
 
     /*
