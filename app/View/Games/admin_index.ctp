@@ -208,6 +208,7 @@ $this->extend('/Common/blank');
 					if (in_array($role, array('Admin', 'Developer'))) {
 						echo $this->Html->link('Edit', array('action' => 'edit', $game['Game']['id']), array('class' => 'btn btn-mini'));
 						echo $this->Html->link('Edit Content', array('action' => 'editDescription', $game['Game']['id']), array('class' => 'btn btn-mini'));
+						echo $this->Html->link('Edit SDK', array('action' => 'editofsdk', $game['Game']['id']), array('class' => 'btn btn-mini'));
 					}
 					?>
 				</td>

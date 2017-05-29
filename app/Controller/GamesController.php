@@ -453,4 +453,51 @@ class GamesController extends AppController {
         $this->Common->currentGame();
         $this->set('title_for_layout', 'Dashboard');
     }
+
+    public function admin_editofsdk($id = null)
+    {
+        if (!$this->Game->exists($id)) {
+            throw new NotFoundException('Invalid game');
+        }
+        if ($this->request->is('post') || $this->request->is('put')) {
+
+            $dataSource = $this->Game->getDatasource();
+            $dataSource->begin();
+
+            $games = $this->Game->findById($id);
+
+            if (!empty($this->request->data['Game'])) {
+                $this->request->data['Game'] = Hash::merge($games['Game'],$this->request->data['Game']);
+            }else{
+                $this->request->data['Game'] = $games['Game'];
+            }
+
+            if ($this->Auth->user('username')) {
+                $this->request->data['Game']['last_username'] = $this->Auth->user('username');
+            }
+            if ($game_save = $this->Game->save($this->request->data)) {
+                $dataSource->commit();
+            } else {
+                $this->Session->setFlash($this->Game->validationErrors, 'error');
+            }
+
+            if(!empty($game_save)) {
+                $this->Session->setFlash('The game has been saved', 'success');
+                $this->redirect(array('action' => 'admin_index'));
+            }else{
+                $this->Session->setFlash($this->Game->validationErrors, 'error');
+            }
+        } else {
+            $options = array('conditions' => array(
+                'Game.' . $this->Game->primaryKey => $id,
+            ));
+            $this->Game->contain(array('Genre','Website'));
+            $this->request->data = $this->Game->find('first', $options);
+
+            $this->request->data['Game'] = $this->__checkMissingDataForGame($this->request->data);
+            if (!empty($this->request->data['Game']['errors']['sdk'])) {
+                $this->Session->setFlash($this->request->data['Game']['errors']['sdk'], 'error');
+            }
+        }
+    }
 }
