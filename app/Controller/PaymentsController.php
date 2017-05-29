@@ -170,6 +170,14 @@ class PaymentsController extends AppController {
             $price = $this->request->query('price');
         }
 
+        if( !is_numeric($price) || $price <= 0 ){
+            $result = array(
+                'status'    => 7,
+                'mesage'    => 'Invalid price'
+            );
+            goto end;
+        }
+
         if( !empty($this->request->data('sign')) ){
             $sign_input = $this->request->data('sign');
         }elseif ( !empty($this->request->query('sign')) ){
