@@ -119,7 +119,7 @@ class PaymentsController extends AppController {
                         'card_serial'   => $result['data']['card_serial']
                     );
                     $paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
-                    $paymentLib->add($data_payment);
+//                    $paymentLib->add($data_payment);
 
                     if($return) return true;
                     $this->render('/Payments/result');
