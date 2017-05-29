@@ -67,7 +67,7 @@ class PaymentLib {
             App::import('Lib', 'Transaction');
             $this->Transaction = ClassRegistry::init('Transaction');
             $data['type'] = Transaction::TYPE_PAY;
-            $this->Transaction->save($data);
+//            $this->Transaction->save($data);
 
             $this->Payment->User->recursive = -1;
             $user = $this->Payment->User->findById($data['user_id']);
