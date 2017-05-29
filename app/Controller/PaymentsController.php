@@ -100,7 +100,6 @@ class PaymentsController extends AppController {
                     CakeLog::info('thẻ cào qua vippay:' . print_r($result,true), 'payment');
                 }
 
-                CakeLog::info('result payment 1:' . print_r($result,true), 'payment');
                 if( isset($result['status']) && $result['status'] == 0 && $data['order_id'] == $result['data']['order_id']){
                     # trạng thái thành công, lưu dữ liệu payment
                     $data_payment = array(
@@ -142,7 +141,6 @@ class PaymentsController extends AppController {
             }
         }
 
-        CakeLog::info('result payment game 2:' . print_r($game,true), 'payment');
         if($return) return false;
 	}
 
