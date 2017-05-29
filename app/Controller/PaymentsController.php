@@ -142,6 +142,7 @@ class PaymentsController extends AppController {
             }
         }
 
+        CakeLog::info('result payment game 2:' . print_r($game,true), 'payment');
         if($return) return false;
 	}
 
