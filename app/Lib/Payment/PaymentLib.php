@@ -59,8 +59,6 @@ class PaymentLib {
             
             $dataSource = $this->Payment->getDataSource();
             $dataSource->begin();
-            
-//            $this->setResolvedPayment($data['waiting_id'], WaitingPayment::STATUS_COMPLETED);
 
             $this->Payment->save($data);
 
