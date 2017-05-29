@@ -101,8 +101,6 @@ class PaymentsController extends AppController {
                 }
 
                 if( isset($result['status']) && $result['status'] == 0 && $data['order_id'] == $result['data']['order_id']){
-                    $this->render('/Payments/result');
-
                     # trạng thái thành công, lưu dữ liệu payment
                     $data_payment = array(
                         'waiting_id'	=> $unresolvedPayment['WaitingPayment']['id'],
@@ -124,6 +122,7 @@ class PaymentsController extends AppController {
                     $paymentLib->add($data_payment);
 
                     if($return) return true;
+                    $this->render('/Payments/result');
                 }elseif (!empty($result['status']) && $result['status'] == 1){
                     # trạng thái lỗi, thẻ đã sử dụng, hoặc thẻ không đúng
                     CakeLog::info('trạng thái lỗi, thẻ đã sử dụng, hoặc thẻ không đúng', 'payment');
