@@ -120,7 +120,7 @@ class PaymentsController extends AppController {
                     );
                     $paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
 //                    $paymentLib->add($data_payment);
-
+                    CakeLog::info('trạng thái thành công', 'payment');
                     if($return) return true;
                     $this->render('/Payments/result');
                 }elseif (!empty($result['status']) && $result['status'] == 1){
