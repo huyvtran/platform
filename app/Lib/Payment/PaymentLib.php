@@ -53,21 +53,35 @@ class PaymentLib {
      *          waiting_id
      */
     public function add($data){
-        $this->Payment = ClassRegistry::init('Payment');
-        $this->setResolvedPayment($data['waiting_id'], WaitingPayment::STATUS_COMPLETED);
+        try {
+            $this->Payment = ClassRegistry::init('Payment');
+            
+            $dataSource = $this->Payment->getDataSource();
+            $dataSource->begin();
+            
+            $this->setResolvedPayment($data['waiting_id'], WaitingPayment::STATUS_COMPLETED);
 
-        $this->Payment->save($data);
+            $this->Payment->save($data);
 
-        App::import('Lib', 'Transaction');
-        $this->Transaction = ClassRegistry::init('Transaction');
-        $data['type'] = Transaction::TYPE_PAY;
-        $this->Transaction->save($data);
+            App::import('Lib', 'Transaction');
+            $this->Transaction = ClassRegistry::init('Transaction');
+            $data['type'] = Transaction::TYPE_PAY;
+            $this->Transaction->save($data);
 
-        $this->Payment->User->recursive = -1;
-        $user = $this->Payment->User->findById($data['user_id']);
-        $updatePay = $user['User']['payment'] + $data['price'];
-        $this->Payment->User->id = $data['user_id'] ;
-        $this->Payment->User->saveField('payment', $updatePay, array('callbacks' => false));
+            $this->Payment->User->recursive = -1;
+            $user = $this->Payment->User->findById($data['user_id']);
+            $updatePay = $user['User']['payment'] + $data['price'];
+            $this->Payment->User->id = $data['user_id'];
+            $this->Payment->User->saveField('payment', $updatePay, array('callbacks' => false));
+            
+            $dataSource->commit();
+            return true;
+        }catch (Exception $e){
+            CakeLog::error('error save payment - ' . $e->getMessage(), 'payment');
+            $dataSource->rollback();
+        }
+        
+        return false;
     }
 
     /*

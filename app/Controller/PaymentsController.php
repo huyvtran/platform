@@ -118,7 +118,6 @@ class PaymentsController extends AppController {
                         'price'     => $result['data']['price'],
                         'card_serial'   => $result['data']['card_serial']
                     );
-                    CakeLog::info('result payment:' . print_r($data_payment,true), 'payment');
                     $paymentLib->add($data_payment);
 
                     if($return) return true;
