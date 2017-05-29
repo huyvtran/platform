@@ -62,7 +62,7 @@ class PaymentLib {
             
             $this->setResolvedPayment($data['waiting_id'], WaitingPayment::STATUS_COMPLETED);
 
-            $this->Payment->save($data);
+//            $this->Payment->save($data);
 
             App::import('Lib', 'Transaction');
             $this->Transaction = ClassRegistry::init('Transaction');
