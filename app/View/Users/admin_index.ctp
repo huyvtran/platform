@@ -42,7 +42,7 @@ $this->extend('/Common/blank');
 			<th><small><?php echo $this->Paginator->sort('email_verified', 'Email Verified'); ?></small></th>
 			<th><small><?php echo $this->Paginator->sort('active', 'Active'); ?></small></th>
 			<th><small><?php echo $this->Paginator->sort('facebook_uid', 'Facebook ID'); ?></small></th>
-			<th><small><?php echo $this->Paginator->sort('device_id', 'Device ID'); ?></small></th>
+			<th><small><?php echo $this->Paginator->sort('payment', 'Xu'); ?></small></th>
 			<th><small><?php echo $this->Paginator->sort('role', 'Role'); ?></small></th>
 			<th><small><?php echo $this->Paginator->sort('phone', 'Phone'); ?></small></th>
             <th><small>Descriptions</small></th>
@@ -100,15 +100,7 @@ $this->extend('/Common/blank');
 				?>
 			</td>
 
-			<td>
-				<?php
-				if ($user['User']['device_id'])
-					echo "<span style='color:green' title='" . $user['User']['device_id'] . "'>Yes</span>";
-				else
-					echo "<span style='color:red'>No</span>";
-				?>
-			</td>
-
+			<td><?php echo $user['User']['payment'] ?></td>
 			<td><?php echo $user['User']['role'] ?></td>
 			<td><?php echo $user['User']['phone'] ?></td>
 
