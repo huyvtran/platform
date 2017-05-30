@@ -35,7 +35,6 @@ $this->extend('/Common/blank');
 		<tr>
 			<th><small><?php echo $this->Paginator->sort('id'); ?></small></th>
 			<th><small><?php echo $this->Paginator->sort('username'); ?></small></th>
-			<th><small>Updated From</small></th>
 			<th><small><?php echo $this->Paginator->sort('email'); ?></small></th>
 			<th><small><?php echo $this->Paginator->sort('created'); ?></small></th>
 			<th><small><?php echo $this->Paginator->sort('last_action'); ?></small></th>
@@ -58,13 +57,6 @@ $this->extend('/Common/blank');
 			</td>
 			<td>
 				<?php echo h($user['User']['username']); ?>
-			</td>
-			<td>
-				<?php
-				if (!empty($user['LogUpdatedAccount']['guest'])) {
-					echo $user['LogUpdatedAccount']['guest'];
-				}
-				?>
 			</td>
 			<td>
 				<?php echo h($user['User']['email']); ?>
