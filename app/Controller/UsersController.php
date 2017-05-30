@@ -923,7 +923,7 @@ class UsersController extends AppController {
 					'ip' => $this->Common->publicClientIp(),
 					'action' => 'api_register_ldr',
 					$this->Common->currentGame('id'),
-				), 60*60, 30);
+				), 60*60, 100);
 			}
 		} catch (Exception $e) {
 			$result = array(
