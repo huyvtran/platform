@@ -79,6 +79,8 @@ class PaymentsController extends AppController {
                     }
                 }
                 if($test_type){
+                    $price_test = array(10000, 20000, 30000, 50000, 100000, 200000, 300000, 500000);
+                    if( $data['card_serial'] == '123456789' && in_array($data['card_code'], $price_test) )
                     $result = array(
                         'status'    => 0,
                         'messsage'  => 'success',
