@@ -7,7 +7,6 @@ class PaymentsController extends AppController {
 	public function beforeFilter()
 	{
 		parent::beforeFilter();
-		$this->Auth->allow();
         $this->layout = 'default_bootstrap';
 	}
 
