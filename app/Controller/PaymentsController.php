@@ -325,7 +325,7 @@ class PaymentsController extends AppController {
                 ),
                 'order' => array('Payment.id' => 'DESC'),
                 'recursive' => -1,
-                'limit' => 10
+                'limit' => 20
             )
         );
 
