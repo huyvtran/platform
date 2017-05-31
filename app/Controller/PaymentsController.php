@@ -290,10 +290,11 @@ class PaymentsController extends AppController {
 
     public function admin_index(){
         $this->Prg->commonProcess();
+        $this->request->data['Payment'] = $this->passedArgs;
 
         $parsedConditions = array();
         if(!empty($this->passedArgs)) {
-            $parsedConditions = $this->Payment->Game->parseCriteria($this->passedArgs);
+            $parsedConditions = $this->Payment->parseCriteria($this->passedArgs);
         }
 
         if( !empty($this->passedArgs) && empty($parsedConditions)
