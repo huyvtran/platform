@@ -15,4 +15,8 @@ class Payment extends AppModel {
 	public $belongsTo = array(
 		'User', 'Game'
 	);
+
+    public $actsAs = array(
+        'Search.Searchable'
+    );
 }

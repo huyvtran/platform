@@ -10,7 +10,7 @@ class AppModel extends Model {
 		$className = get_class($this);
 		$defaultRecursiveModels = array(
 			'AppModel', 'AccessToken', 'Account', 'Game', 'Genre', 'LogEntergame', 
-			'LogLogin', 'Permission', 'Profile', 'User', 'Variable', 'Website'
+			'LogLogin', 'Permission', 'Profile', 'User', 'Variable', 'Website', 'Payment'
 		);
 		if (!in_array($className, $defaultRecursiveModels)) {
 			$this->recursive = -1;

@@ -8,7 +8,12 @@ class PaymentsController extends AppController {
 	{
 		parent::beforeFilter();
 		$this->Auth->allow();
+        $this->layout = 'default_bootstrap';
 	}
+
+    public $components = array(
+        'Search.Prg'
+    );
 
     public function api_pay(){
         $data = $this->pay(true);
@@ -281,5 +286,50 @@ class PaymentsController extends AppController {
         end:
         $this->set('result', $result);
         $this->set('_serialize', 'result');
+    }
+
+    public function admin_index(){
+        $this->Prg->commonProcess();
+
+        $parsedConditions = array();
+        if(!empty($this->passedArgs)) {
+            $parsedConditions = $this->Payment->Game->parseCriteria($this->passedArgs);
+        }
+
+        if( !empty($this->passedArgs) && empty($parsedConditions)
+        ){
+            if (	(count($this->passedArgs) == 1 && empty($this->passedArgs['page']))
+                ||	count($this->passedArgs) > 1
+            ) {
+                $this->Session->setFlash("Can not find anyone match this conditions", "error");
+            }
+        }
+
+        $parsedConditions = array_merge(array(
+            'Payment.game_id' => $this->Session->read('Auth.User.permission_game_default')
+        ), $parsedConditions);
+
+        $games = $this->Payment->Game->find('list', array(
+            'fields' => array('id', 'title_os'),
+            'conditions' => array(
+                'Game.id' => $this->Session->read('Auth.User.permission_game_default'),
+            )
+        ));
+
+        $this->paginate = array(
+            'Payment' => array(
+                'fields' => array('Payment.*', 'User.username', 'User.id', 'Game.title', 'Game.os'),
+                'conditions' => $parsedConditions,
+                'contain' => array(
+                    'Game', 'User'
+                ),
+                'order' => array('Payment.id' => 'DESC'),
+                'recursive' => -1,
+                'limit' => 10
+            )
+        );
+
+        $payments = $this->paginate();
+        $this->set(compact('payments', 'games'));
     }
 }

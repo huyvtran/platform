@@ -63,6 +63,12 @@ class AppController extends Controller {
 			),
 			'activeMenu' => array('games')
 		),
+        'Tools' => array(
+            'categories' => array(
+                'Payment - Index'	=> '/admin/payments',
+            ),
+            'activeMenu' => array('tools')
+        ),
 		'Debug' => array(
 			'categories' => array(
 				'Logs - Local'			=> '/admin/administrators/readLog',
