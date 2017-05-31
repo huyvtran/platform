@@ -47,7 +47,7 @@ $this->extend('/Common/blank');
 
         echo $this->Form->input('username', array(
             'type' => 'text',
-            'placeholder' => 'username, name, email or slug.',
+            'placeholder' => 'id, username or email.',
             'label' => array(
                 'class' => 'control-label',
                 'text' => 'Username'

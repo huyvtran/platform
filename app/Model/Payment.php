@@ -53,16 +53,8 @@ class Payment extends AppModel {
 
         $extra['recursive'] = -1;
         $extra['contain'] = array();
-//        if(isset($conditions['WaitingOrder.confirm_status'])){
-//            $extra['contain'] = array_merge( $extra['contain'], array('WaitingOrder') );
-//        }
-//        if(isset($conditions['PaydirectOrder.cardnumber']) || isset($conditions['PaydirectOrder.cardserial'])){
-//            $extra['contain'] = array_merge( $extra['contain'], array('PaydirectOrder') );
-//        }
         if(isset($conditions['OR']['User.username LIKE'])    ||
-            isset($conditions['OR']['User.email LIKE'])      ||
-            isset($conditions['OR']['User.name LIKE'])       ||
-            isset($conditions['OR']['User.slug LIKE'])
+            isset($conditions['OR']['User.email LIKE'])
         ){
             $extra['contain'] = array_merge($extra['contain'], array('User'));
         }
