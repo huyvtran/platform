@@ -29,10 +29,20 @@ class Payment extends AppModel {
         'cardnumber' => array('type' => 'value', 'field' => 'card_serial'),
         'cardcode' => array('type' => 'value', 'field' => 'card_code'),
 
-        'from_time' => array('type' => 'expression', 'method' => 'fromTimeCond', 'field' => 'MobOrder.time >= '),
-        'to_time' => array('type' => 'expression', 'method' => 'toTimeCond', 'field' => 'MobOrder.time <= '),
+        'from_time' => array('type' => 'expression', 'method' => 'fromTimeCond', 'field' => 'time >= '),
+        'to_time' => array('type' => 'expression', 'method' => 'toTimeCond', 'field' => 'time <= '),
 
     );
+
+    public function fromTimeCond($data = array())
+    {
+        return date('U', strtotime(date('d-m-Y 0:0:0', $data['from_time'])));
+    }
+
+    public function toTimeCond($data = array())
+    {
+        return date('U', strtotime(date('d-m-Y 23:59:59', $data['to_time'])));
+    }
 
     function paginateCount($conditions = array(), $recursive = 0, $extra = array())
     {
