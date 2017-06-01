@@ -25,7 +25,7 @@ Configure::write('Session', array(
 	'checkAgent' => false,
 	'timeout' => 3600,
 	'ini' => array(
-		'session.cookie_domain' => 'localhost',
+		'session.cookie_domain' => 'stats.muoriginfree.com',
 		'session.gc_maxlifetime' => 21600
 	)
 ));
