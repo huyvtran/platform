@@ -125,7 +125,7 @@
 				<?php
 				if (env('SERVER_NAME') != 'localhost') {
 				?>
-					<a href="<?php echo $this->Html->url('/') . 'stats';?>">(Stats)</a>
+					<a href="http://stats.muoriginfree.com:8880/platform/stats/">(Stats)</a>
 				<?php
 				} else {
 				?>
