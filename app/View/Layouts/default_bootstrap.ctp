@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="<?php echo Router::url('/') .'favicon.ico'; ?>" />
 
 		<?php
 		echo $this->element('meta_for_app');

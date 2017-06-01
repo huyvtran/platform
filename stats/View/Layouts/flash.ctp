@@ -20,6 +20,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="icon" href="<?php echo Router::url('/') .'favicon.ico'; ?>" />
 <?php echo $this->Html->charset(); ?>
 <title><?php echo $page_title; ?></title>
 
