@@ -143,6 +143,7 @@ class AppSchema extends CakeSchema {
 
 	public $compense_payments = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'order_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 50, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10),
 		'game_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 5),
 		'card_code' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
