@@ -7,7 +7,9 @@ class PaymentsController extends AppController {
 	public function beforeFilter()
 	{
 		parent::beforeFilter();
-        $this->layout = 'default_bootstrap';
+        $this->Auth->allow(array(
+            'api_pay', 'api_charge'
+        ));
 	}
 
     public $components = array(
@@ -288,6 +290,8 @@ class PaymentsController extends AppController {
     }
 
     public function admin_index(){
+        $this->layout = 'default_bootstrap';
+
         $this->Prg->commonProcess();
         $this->request->data['Payment'] = $this->passedArgs;
 
