@@ -122,18 +122,11 @@
 			</li>
 
 			<li class="dropdown">
-				<?php
-				if (env('SERVER_NAME') != 'localhost') {
-				?>
+				<?php if (empty($_SERVER['APPLICATION_ENV'])) { ?>
 					<a href="http://stats.muoriginfree.com:8880/platform/stats/">(Stats)</a>
-				<?php
-				} else {
-				?>
+				<?php } else { ?>
 					<a href="<?php echo $this->request->webroot ?>stats">(Stats)</a>
-				<?php
-				}
-				?>
-
+				<?php } ?>
 			</li>
 
             <?php if(isset($error_phone) && in_array($this->Session->read('Auth.User.role'), array('Admin', 'Developer'))){

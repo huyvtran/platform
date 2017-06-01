@@ -83,19 +83,11 @@ if ($this->Session->read('Auth.User')) {
 		</li>
 
 		<li class="dropdown">	
-			<?php
-			
-			if (env('SERVER_NAME') != 'localhost') {
-			?>
+			<?php if (empty($_SERVER['APPLICATION_ENV'])) { ?>
 				<a href="http://cms.muoriginfree.com:8880/platform/admin">(Admin)</a>
-				
-			<?php
-			} else {
-			?>
+			<?php } else { ?>
 				<a href="<?php echo substr($this->request->webroot, 0, -6) ?>admin">(Admin)</a>
-			<?php
-			}
-			?>
+			<?php } ?>
 		</li>
 		<?php
 		}
