@@ -147,6 +147,13 @@ $config['rules'] = array(
 		'permissions/*' => 'Role/Developer',
 		'permissions/admin_delete' => 'Role/Content',
 		'genres/*' => 'Role/Content',
+
+        'payments/api_pay'  => 'Role/User',
+        'payments/pay'      => 'Role/User',
+        'payments/api_charge'   => 'Role/User',
+        'payments/admin_index'  => 'Role/Content',
+
+        'compense_payments/*'   => 'Role/Content',
 	),
 	'deny' => array(
 		'users/admin_edit' => 'Role/Marketing, Role/Developer',

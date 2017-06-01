@@ -2,18 +2,21 @@
 App::uses('AppController', 'Controller');
 
 class CompensePaymentsController extends AppController {
-    public $components = array('Paginator', 'Search.Prg',);
 
     public function beforeFilter()
     {
         parent::beforeFilter();
         $this->layout = 'default_bootstrap';
-
     }
+
+    public $components = array(
+        'Search.Prg'
+    );
 
     public function admin_add($id = null)
     {
         if ($this->request->is('post') || $this->request->is('put')) {
+
             # Check user existed
             $this->CompensePayment->User->recursive = -1;
             $user_existed = $this->CompensePayment->User->findById($this->request->data['CompensePayment']['user_id']);
@@ -27,8 +30,9 @@ class CompensePaymentsController extends AppController {
             ){
                 throw new NotFoundException('Chọn sai giá');
             }
-            debug($this->request->data['CompensePayment']['price']);die;
+
             try {
+                $this->request->data['CompensePayment']['last_user'] = $this->Auth->user('username');
                 if ($this->CompensePayment->save($this->request->data)) {
                     $this->Session->setFlash('Compense Payment has been saved');
                 } else {
@@ -62,12 +66,9 @@ class CompensePaymentsController extends AppController {
     
     public function admin_index()
     {
-        $this->CompenseOrder->recursive = 0;
         $this->Prg->commonProcess();
-        $this->request->data['CompenseOrder'] = $this->passedArgs;
-
-        if ($this->CompenseOrder->Behaviors->loaded('Searchable')) {
-            $parsedConditions = $this->CompenseOrder->parseCriteria($this->passedArgs);
+        if ($this->CompensePayment->Behaviors->loaded('Searchable')) {
+            $parsedConditions = $this->CompensePayment->parseCriteria($this->passedArgs);
         } else {
             $parsedConditions = array();
         }
@@ -80,50 +81,26 @@ class CompensePaymentsController extends AppController {
             }
         }
 
-        $permissionCompense = array();
-        if ($this->Auth->loggedIn()) {
-            if (!in_array($this->Auth->user('role'), array('Guest', 'User'))) {
-                $this->loadModel('Permission');
-                if (in_array( $this->Auth->user('role'), array('Admin', 'Developer') )) {
-                    $this->loadModel('Game');
-                    $permissionCompense = $this->Game->find('list', array('fields' => array('id', 'id')));
-                } else {
-                    $permissionCompense = $this->Permission->getRightIds('Game', $this->Auth->user('id'), 'compense');
-                }
-            }
-        }
-
-        $this->loadModel('Game');
-        $games = $this->Game->find('list', array(
-            'fields' => array('app_key', 'title_os'),
+        $games = $this->CompensePayment->Game->find('list', array(
+            'fields' => array('id', 'title_os'),
             'conditions' => array(
-                'Game.id' => $permissionCompense,
-            )
-        ));
-        $list_app_key = array_keys($games);
-        $parsedConditions = Hash::merge(array("CompenseOrder.app_key" => $list_app_key) , (array) $parsedConditions);
-
-        $this->CompenseOrder->bindModel(array(
-            'belongsTo' => array(
-                'Game' => array(
-                    'foreignKey' => false,
-                    'conditions' => array('CompenseOrder.app_key = Game.app_key')
-                )
+                'Game.id' => $this->Session->read('Auth.User.permission_game_default'),
             )
         ));
 
         $this->paginate = array(
-            'CompenseOrder' => array(
-                'conditions' => $parsedConditions,
-                'order' => array('CompenseOrder.id' => 'DESC'),
-                'contain' => array('Product', 'Game', 'User')
+            'CompensePayment' => array(
+                'fields' => array('CompensePayment.*', 'User.username', 'User.id', 'Game.title', 'Game.os'),
+                'conditions'    => $parsedConditions,
+                'order'         => array('CompensePayment.id' => 'DESC'),
+                'contain'       => array('Game', 'User'),
+                'recursive'     => -1
             )
         );
 
-        $compenseOrders = $this->Paginator->paginate();
+        $compense = $this->paginate();
 
-        $this->set(compact('games'));
-        $this->set('compenseOrders', $compenseOrders);
+        $this->set(compact('games', 'compense'));
     }
 
 
