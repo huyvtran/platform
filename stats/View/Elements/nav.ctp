@@ -87,7 +87,7 @@ if ($this->Session->read('Auth.User')) {
 			
 			if (env('SERVER_NAME') != 'localhost') {
 			?>
-				<a href="<?php echo $this->Html->url('/'). 'admin';?>">(Admin)</a>
+				<a href="http://cms.muoriginfree.com:8880/platform/admin">(Admin)</a>
 				
 			<?php
 			} else {
