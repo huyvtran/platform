@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
-	<head>	
+	<head>
+        <link rel="icon" href="/favicon.ico" />
+
 		<?php
 		echo $this->element('meta_for_app');
 		echo $this->Html->css('/css/style.css');

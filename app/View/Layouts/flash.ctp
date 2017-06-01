@@ -20,6 +20,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="icon" href="/favicon.ico" />
 <?php echo $this->Html->charset(); ?>
 <title><?php echo $page_title; ?></title>
 

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<?php
+    <link rel="icon" href="/favicon.ico" />
+    <?php
 	echo $this->element('meta_for_app');
 
 	echo $this->Html->css('/uncommon/signup/css/style.css');

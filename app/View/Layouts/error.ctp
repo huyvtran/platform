@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
     <head>
+        <link rel="icon" href="/favicon.ico" />
     	<meta http-equiv="X-UA-Compatible" content="IE=8" />
         <meta charset="utf-8" />
         <?php echo $this->Html->charset();?>
