@@ -185,6 +185,7 @@ class AppController extends Controller {
 		# Dev or production server
 		if (empty($_SERVER['APPLICATION_ENV'])) {
 			$domain = get_domain(env('HTTP_HOST'));
+			$domain = "cms.muoriginfree.com";
 			#$domain = '45.117.77.125';
 		} else {
 			$domain = env('HTTP_HOST');
