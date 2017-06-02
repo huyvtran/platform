@@ -25,7 +25,7 @@ class PagesController extends AppController {
 
 	public function home()
 	{
-		die;
+		$this->redirect(array('controller' => 'Administrators', 'action' => 'index', 'admin' => true));
 	}
 
 
