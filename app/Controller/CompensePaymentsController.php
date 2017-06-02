@@ -88,6 +88,9 @@ class CompensePaymentsController extends AppController {
     public function admin_index()
     {
         $this->Prg->commonProcess();
+
+        $this->request->data['CompensePayment'] = $this->passedArgs;
+
         if ($this->CompensePayment->Behaviors->loaded('Searchable')) {
             $parsedConditions = $this->CompensePayment->parseCriteria($this->passedArgs);
         } else {

@@ -28,7 +28,6 @@ class Payment extends AppModel {
         'chanel' => array('type' => 'value'),
         'cardnumber' => array('type' => 'value', 'field' => 'card_serial'),
         'cardcode' => array('type' => 'value', 'field' => 'card_code'),
-
         'from_time' => array('type' => 'expression', 'method' => 'fromTimeCond', 'field' => 'time >= '),
         'to_time' => array('type' => 'expression', 'method' => 'toTimeCond', 'field' => 'time <= '),
 
