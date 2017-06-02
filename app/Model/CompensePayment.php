@@ -4,7 +4,10 @@ App::uses('AppModel', 'Model');
 
 class CompensePayment extends AppModel {
     public $actsAs = array(
-        'Search.Searchable'
+        'Search.Searchable',
+        'Utils.Publishable' => array(
+            'field' => 'status'
+        ),
     );
 
 	public $validate = array(
@@ -34,6 +37,11 @@ class CompensePayment extends AppModel {
             )
         ),
         'type' => array(
+            'notEmpty' => array(
+                'rule' => 'notEmpty'
+            )
+        ),
+        'chanel' => array(
             'notEmpty' => array(
                 'rule' => 'notEmpty'
             )

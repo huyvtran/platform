@@ -36,15 +36,6 @@ $this->extend('/Common/blank');
             'selected' => !empty($this->request->params['named']['game_id']) ? $this->request->params['named']['game_id'] : ''
         ));
 
-        echo $this->Form->input('order_id', array(
-            'type' => 'text',
-            'placeholder' => 'Order ID.',
-            'label' => array(
-                'class' => 'control-label',
-                'text' => 'OrderID'
-            ),
-        ));
-
         echo $this->Form->input('username', array(
             'type' => 'text',
             'placeholder' => 'id, username or email.',
@@ -150,10 +141,13 @@ $this->extend('/Common/blank');
             <th><?php echo $this->Paginator->sort('card_serial'); ?></th>
             <th><?php echo $this->Paginator->sort('price'); ?></th>
             <th><?php echo $this->Paginator->sort('type'); ?></th>
+            <th><?php echo $this->Paginator->sort('chanel'); ?></th>
             <th><?php echo $this->Paginator->sort('description'); ?></th>
             <th><?php echo $this->Paginator->sort('last_user'); ?></th>
+            <th><?php echo $this->Paginator->sort('status'); ?></th>
             <th><?php echo $this->Paginator->sort('created'); ?></th>
             <th><?php echo $this->Paginator->sort('modified'); ?></th>
+            <th class="actions">Actions</th>
         </tr>
 
         <?php foreach ($compense as $comp): ?>
@@ -163,16 +157,43 @@ $this->extend('/Common/blank');
             <tr style="<?php echo $style; ?>">
                 <td><?php echo h($comp['CompensePayment']['id']); ?>&nbsp;</td>
                 <td> <?php echo $this->Html->link($comp['User']['username'], array('controller' => 'users', 'action' => 'view', $comp['User']['id'])); ?> </td>
-                <td> <?php echo $comp['Game']['title'] . '_' . $comp['Game']['os']; ?> </td>
+                <td> <?php echo $comp['Game']['title'] . ' ' . $comp['Game']['os']; ?> </td>
                 <td> <?php echo $comp['CompensePayment']['order_id']; ?> </td>
                 <td> <?php echo $comp['CompensePayment']['card_code']; ?> </td>
                 <td> <?php echo $comp['CompensePayment']['card_serial']; ?> </td>
                 <td> <?php echo $comp['CompensePayment']['price']; ?> </td>
                 <td> <?php echo $comp['CompensePayment']['type']; ?> </td>
+                <td>
+                    <?php
+                    $chanel = '';
+                    switch ( $comp['CompensePayment']['chanel'] ){
+                        case Payment::CHANEL_VIPPAY :
+                            $chanel = 'Vippay';
+                            break;
+                    }
+                    echo $chanel;
+                    ?>
+                </td>
                 <td> <?php echo $comp['CompensePayment']['description']; ?> </td>
                 <td> <?php echo $comp['CompensePayment']['last_user']; ?> </td>
+                <td> <?php
+                    if ( empty($comp['CompensePayment']['status']) ) {
+                        echo '<span class="label label-warning">Wait</span>';
+                    }else{
+                        echo '<span class="label label-info">OK</span>';
+                    }
+                    ?>
+                </td>
                 <td> <?php echo $comp['CompensePayment']['created']; ?> </td>
                 <td> <?php echo $comp['CompensePayment']['modified']; ?> </td>
+                <td class="actions btn-group">
+                    <?php
+                    if ( empty($comp['CompensePayment']['status']) ) {
+                        echo $this->Html->link('compense', array('action' => 'compense', $comp['CompensePayment']['id']), array('class' => 'btn btn-mini'));
+                        echo $this->Html->link('Edit', array('action' => 'edit', $comp['CompensePayment']['id']), array('class' => 'btn btn-mini'));
+                    }
+                    ?>
+                </td>
             </tr>
         <?php endforeach; ?>
     </table>
@@ -188,6 +209,13 @@ $this->extend('/Common/blank');
         <?php
         echo $this->element('paging');
         ?>
+    </div>
+
+    <div class="actions">
+        <h3><?php echo 'Actions'; ?></h3>
+        <ul>
+            <li><?php echo $this->Html->link('New Compense', array('action' => 'add')); ?></li>
+        </ul>
     </div>
 </div>
 </div>

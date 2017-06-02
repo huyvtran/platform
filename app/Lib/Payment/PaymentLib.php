@@ -50,6 +50,7 @@ class PaymentLib {
      * data :   order_id, user_id, game_id, card_code, card_serial, price,
      *          time, type, chanel,
      *          test = 0 // default
+     *          note = '' // default
      *          waiting_id
      */
     public function add($data){

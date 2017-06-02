@@ -54,14 +54,26 @@ $this->extend('/Common/blank');
                 ),
                 'empty' => '-- Price chose --',
                 'options' => array(
-                    10000 => 10.000,
-                    20000 => 20.000,
-                    30000 => 30.000,
-                    50000 => 50.000,
-                    100000 => 100.000,
-                    200000 => 200.000,
-                    300000 => 300.000,
-                    500000 => 500.000,
+                    10000 => '10.000 VNĐ',
+                    20000 => '20.000 VNĐ',
+                    30000 => '30.000 VNĐ',
+                    50000 => '50.000 VNĐ',
+                    100000 => '100.000 VNĐ',
+                    200000 => '200.000 VNĐ',
+                    300000 => '300.000 VNĐ',
+                    500000 => '500.000 VNĐ'
+                ),
+            ));
+
+            echo $this->Form->input('chanel', array(
+                'type' => 'select',
+                'label' => array(
+                    'class' => 'control-label',
+                    'text' => 'Kênh'
+                ),
+                'empty' => '-- All Chanel --',
+                'options' => array(
+                    Payment::CHANEL_VIPPAY => 'Vippay'
                 ),
             ));
             ?>

@@ -151,6 +151,7 @@ class AppSchema extends CakeSchema {
 		'price' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'type' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 10, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'status' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 4),
+		'chanel' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 2),
 		'description' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'last_user' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
