@@ -84,7 +84,7 @@ if ($this->Session->read('Auth.User')) {
 
 		<li class="dropdown">	
 			<?php if (empty($_SERVER['APPLICATION_ENV'])) { ?>
-				<a href="http://cms.muoriginfree.com:8880/platform/admin">(Admin)</a>
+				<a href="http://admin.muoriginfree.com:8880/admin">(Admin)</a>
 			<?php } else { ?>
 				<a href="<?php echo substr($this->request->webroot, 0, -6) ?>admin">(Admin)</a>
 			<?php } ?>
