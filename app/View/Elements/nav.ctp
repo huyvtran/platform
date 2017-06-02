@@ -123,7 +123,7 @@
 
 			<li class="dropdown">
 				<?php if (empty($_SERVER['APPLICATION_ENV'])) { ?>
-					<a href="http://stats.muoriginfree.com:8880/platform/stats/">(Stats)</a>
+					<a href="http://stats.muoriginfree.com:8880/stats/">(Stats)</a>
 				<?php } else { ?>
 					<a href="<?php echo $this->request->webroot ?>stats">(Stats)</a>
 				<?php } ?>
