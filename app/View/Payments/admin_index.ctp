@@ -174,7 +174,7 @@ $this->extend('/Common/blank');
             <tr style="<?php echo $style; ?>">
                 <td><?php echo h($payment['Payment']['id']); ?>&nbsp;</td>
                 <td> <?php echo $this->Html->link($payment['User']['username'], array('controller' => 'users', 'action' => 'view', $payment['User']['id'])); ?> </td>
-                <td> <?php echo $payment['Game']['title'] . '_' . $payment['Game']['os']; ?> </td>
+                <td> <?php echo $payment['Game']['title'] . ' ' . $payment['Game']['os']; ?> </td>
                 <td> <?php echo $payment['Payment']['order_id']; ?> </td>
                 <td> <?php echo $payment['Payment']['card_code']; ?> </td>
                 <td> <?php echo $payment['Payment']['card_serial']; ?> </td>
