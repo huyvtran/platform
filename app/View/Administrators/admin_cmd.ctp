@@ -15,6 +15,11 @@ if (!empty($screen)) {
 <pre>
 <code>
 # read log from redis then save into db
-php <?php echo ROOT . DS ?>app/Console/cake.php Log save
+php <?php echo ROOT . DS ?>app/Console/cake.php Log save <br/>
+
+php <?php echo ROOT . DS ?>stats/Console/cake.php -app stats Aggregate DAU <br/>
+php <?php echo ROOT . DS ?>stats/Console/cake.php -app stats Aggregate cDAU<br/>
+php <?php echo ROOT . DS ?>stats/Console/cake.php -app stats Aggregate MAU<br/>
+php <?php echo ROOT . DS ?>stats/Console/cake.php -app stats Aggregate NIU<br/>
 </code>
 </pre>
