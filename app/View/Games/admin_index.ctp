@@ -204,10 +204,11 @@ $this->extend('/Common/blank');
                 <td><?php if(isset($game['Game']['last_username'])) echo $game['Game']['last_username']; ?></td>
 				<td class="actions btn-group">
 					<?php
-					$role = $this->Session->read('Auth.User.role');
+                    echo $this->Html->link('Edit Content', array('action' => 'editDescription', $game['Game']['id']), array('class' => 'btn btn-mini'));
+
+                    $role = $this->Session->read('Auth.User.role');
 					if (in_array($role, array('Admin', 'Developer'))) {
 						echo $this->Html->link('Edit', array('action' => 'edit', $game['Game']['id']), array('class' => 'btn btn-mini'));
-						echo $this->Html->link('Edit Content', array('action' => 'editDescription', $game['Game']['id']), array('class' => 'btn btn-mini'));
 						echo $this->Html->link('Edit SDK', array('action' => 'editofsdk', $game['Game']['id']), array('class' => 'btn btn-mini'));
 					}
 					?>
