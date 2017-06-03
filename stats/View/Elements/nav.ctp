@@ -63,24 +63,24 @@ if ($this->Session->read('Auth.User')) {
 		$role = $this->Session->read('Auth.User.role');
 		if ($role == 'Admin') {
 		?>
-		<li class="dropdown">
-			<a class="dropdown-toggle" data-toggle="dropdown" href="">Debug <b class="caret"></b></a>
-			<ul class="dropdown-menu">
-				<li>
-					<?php 
-					echo $this->Html->link('Logs', array(
-						'admin' => true, 'controller' => 'administrators', 'action' => 'readLog')) ?>
-				</li>
-				<li><?php
-					echo $this->Html->link('Clear Cache', array(
-						'admin' => true, 'controller' => 'administrators', 'action' => 'clearCache')) ?>
-				</li>
-				<li><?php
-					echo $this->Html->link('Cmd', array(
-						'admin' => true, 'controller' => 'administrators', 'action' => 'cmd')) ?>
-				</li>
-			</ul>
-		</li>
+<!--		<li class="dropdown">-->
+<!--			<a class="dropdown-toggle" data-toggle="dropdown" href="">Debug <b class="caret"></b></a>-->
+<!--			<ul class="dropdown-menu">-->
+<!--				<li>-->
+<!--					--><?php //
+//					echo $this->Html->link('Logs', array(
+//						'admin' => true, 'controller' => 'administrators', 'action' => 'readLog')) ?>
+<!--				</li>-->
+<!--				<li>--><?php
+//					echo $this->Html->link('Clear Cache', array(
+//						'admin' => true, 'controller' => 'administrators', 'action' => 'clearCache')) ?>
+<!--				</li>-->
+<!--				<li>--><?php
+//					echo $this->Html->link('Cmd', array(
+//						'admin' => true, 'controller' => 'administrators', 'action' => 'cmd')) ?>
+<!--				</li>-->
+<!--			</ul>-->
+<!--		</li>-->
 
 		<li class="dropdown">	
 			<?php if (empty($_SERVER['APPLICATION_ENV'])) { ?>
@@ -110,11 +110,11 @@ if ($this->Session->read('Auth.User')) {
 				echo $this->Html->link('Logout', '/users/logout');
 				?>
 				</li>
-				<li>
-				<?php
-				echo $this->Html->link('Reset Password', 'http://admin.smobgame.com/plf/users/reset_password_web');
-				?>
-				</li>
+<!--				<li>-->
+<!--				--><?php
+//				echo $this->Html->link('Reset Password', 'http://admin.smobgame.com/plf/users/reset_password_web');
+//				?>
+<!--				</li>-->
 			</ul>
 		<?php
 		} else {
