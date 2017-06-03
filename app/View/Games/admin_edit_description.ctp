@@ -123,21 +123,7 @@ $this->extend('/Common/blank');
         echo $this->Form->input('Game.data.is_close', array('type'=>'checkbox','label' => 'Close this game'));
     ?>
     </div>
-        <div class='span3'>
-            <hr/>
-            <h5 style="cursor: pointer" class='show-config-box'>Show or hide config (for Apple/Google Play/Store... reviews) [+]</h5>
-            <div class='config-box' style="display: none;">
-                <div class='option_app_google'>
-                    <?php
-                    echo $this->Form->input('Game.data.hide_login_email', array('type' => 'checkbox','default' => true));
-                    echo $this->Form->input('Game.data.hide_login_facebook', array('type' => 'checkbox'));
-                    echo $this->Form->input('Game.data.hide_update_account', array('type' => 'checkbox'));
-                    echo $this->Form->input('Game.data.hide_giftcode', array('type' => 'checkbox'));
-                    echo $this->Form->input('Game.data.hide_for_game_version', array('type' => 'text','label' => '<strong>Choose app version</strong> <em><small>(leave blank it will use this status for all app version - SDK)</small></em>'));
-                    ?>
-                </div>
-            </div>
-        </div>
+
     <div class='span8'>
         <hr/>
         <?php
