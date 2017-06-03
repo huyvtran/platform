@@ -25,6 +25,15 @@ class PagesController extends AppController {
 
 	public function home()
 	{
+//        $n = "<br/>";
+//        $time = 1496422800;
+//        echo $time . $n;
+//        echo date('Y-m-d H:i:s', $time) . $n;
+//
+//        $time = 1496454501;
+//        echo $time . $n;
+//        echo date('Y-m-d H:i:s', $time) . $n;
+//        die;
 		$this->redirect(array('controller' => 'Administrators', 'action' => 'index', 'admin' => true));
 	}
 
