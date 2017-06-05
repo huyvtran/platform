@@ -34,7 +34,7 @@ class Payment extends AppModel {
             'fields' => array('SUM(price) as sum', 'game_id'),
             'conditions' => array(
                 'game_id' => $gameIds,
-//                'test' => 0
+                'test' => 0
             ),
             'group' => array('game_id'),
             'recursive' => -1

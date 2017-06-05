@@ -45,7 +45,7 @@ class RevenuesController extends AppController {
 			    'conditions' => array_merge($parsedConditions, array(
 			        'Payment.time >= ' => $fromTime,
                     'Payment.time < ' => $toTime,
-//                    'Payment.test' => 0
+                    'Payment.test' => 0
                 )),
 			    'group' => array_merge(array('game_id', 'day'), $addGroupBy),
 			    'recursive' => -1,
@@ -57,7 +57,7 @@ class RevenuesController extends AppController {
 			    'conditions' => array_merge($parsedConditions, array(
                     'Payment.time >= ' => $fromTime,
                     'Payment.time <= ' => $toTime,
-//                    'Payment.test' => 0
+                    'Payment.test' => 0
                 )),
 			    'group' => array_merge(array('game_id', 'day'), $addGroupBy),
 			    'recursive' => -1,
@@ -80,7 +80,7 @@ class RevenuesController extends AppController {
 			'conditions' => array_merge($parsedConditions, array(
 				'Payment.time >= ' => $start,
 				'Payment.time < ' => $end,
-//                    'Payment.test' => 0
+                    'Payment.test' => 0
 			)),
 			'group' => array_merge(array('game_id'), $addGroupBy),
 			'recursive' => -1,
