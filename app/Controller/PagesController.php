@@ -41,9 +41,10 @@ class PagesController extends AppController {
 
 	public function landing()
 	{
-		$this->Common->setLanguage();
-		$this->Common->setTheme();
-		$this->layout = 'blank';
+		$time = time();
+		debug($time);
+		debug(date('Y-m-d H:i:s', $time));
+		die;
 	}
 	
 }
