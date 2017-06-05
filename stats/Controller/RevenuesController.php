@@ -45,51 +45,56 @@ class RevenuesController extends AppController {
 			    'conditions' => array_merge($parsedConditions, array(
 			        'Payment.time >= ' => $fromTime,
                     'Payment.time < ' => $toTime,
-//                    'Payment.test' => 0
-                )),
-			    'group' => array_merge(array('game_id', 'day'), $addGroupBy),
-			    'recursive' => -1,
-			    'order' => array('game_id' => 'DESC')
-		    ));
-            debug(array($revenues));die;
-	    } else {
-		    $revenues_card = $this->Payment->find('all', array(
-			    'fields' => array('SUM(price) as sum', 'game_id', 'FROM_UNIXTIME(time, "%Y-%m-%d") as day', 'type'),
-			    'conditions' => array_merge($parsedConditions, array(
-                    'Payment.time >= ' => $fromTime,
-                    'Payment.time <= ' => $toTime,
-//                    'Payment.test' => 0
+                    'Payment.test' => 0
                 )),
 			    'group' => array_merge(array('game_id', 'day'), $addGroupBy),
 			    'recursive' => -1,
 			    'order' => array('game_id' => 'DESC')
 		    ));
 
-		    $revenues_merge = array_merge($revenues_card, array());
-		    $revenues = array();
-		    if (empty($addGroupBy)) {
-			    foreach ($revenues_merge as $key => $value) {
-				    if (!isset($revenues[$value['Payment']['game_id'] . '_' . $value['0']['day']])) {
-					    $revenues[$value['Payment']['game_id'] . '_' . $value['0']['day']]['0']['sum'] = $value['0']['sum'];
-				    } else {
-					    $revenues[$value['Payment']['game_id'] . '_' . $value['0']['day']]['0']['sum'] += $value['0']['sum'];
-				    }
-				    $revenues[$value['Payment']['game_id'] . '_' . $value['0']['day']]['Payment']['type'] = $value['Payment']['type'];
-				    $revenues[$value['Payment']['game_id'] . '_' . $value['0']['day']]['Payment']['game_id'] = $value['Payment']['game_id'];
-				    $revenues[$value['Payment']['game_id'] . '_' . $value['0']['day']]['0']['day'] = $value['0']['day'];
-			    }
-		    } else {
-			    foreach ($revenues_merge as $key => $value) {
-				    if (!isset($revenues[$value['Moborder']['app_key'] . '_' . $value['0']['day'] . '_' . $value['Moborder']['type']])) {
-					    $revenues[$value['Moborder']['app_key'] . '_' . $value['0']['day'] . '_' . $value['Moborder']['type']]['0']['sum'] = $value['0']['sum'];
-				    } else {
-					    $revenues[$value['Moborder']['app_key'] . '_' . $value['0']['day'] . '_' . $value['Moborder']['type']]['0']['sum'] += $value['0']['sum'];
-				    }
-				    $revenues[$value['Moborder']['app_key'] . '_' . $value['0']['day'] . '_' . $value['Moborder']['type']]['Moborder']['type'] = $value['Moborder']['type'];
-				    $revenues[$value['Moborder']['app_key'] . '_' . $value['0']['day'] . '_' . $value['Moborder']['type']]['Moborder']['app_key'] = $value['Moborder']['app_key'];
-				    $revenues[$value['Moborder']['app_key'] . '_' . $value['0']['day'] . '_' . $value['Moborder']['type']]['0']['day'] = $value['0']['day'];
-			    }
-		    }
+            debug($revenues);die;
+	    } else {
+		    $revenues_card = $this->Payment->find('all', array(
+			    'fields' => array('SUM(price) as sum', 'game_id', 'FROM_UNIXTIME(time, "%Y-%m-%d") as day', 'type'),
+			    'conditions' => array_merge($parsedConditions, array(
+                    'Payment.time >= ' => $fromTime,
+                    'Payment.time <= ' => $toTime,
+                    'Payment.test' => 0
+                )),
+			    'group' => array_merge(array('game_id', 'day'), $addGroupBy),
+			    'recursive' => -1,
+			    'order' => array('game_id' => 'DESC')
+		    ));
+
+            $revenues = $revenues_card;
+//            debug($this->Payment->getLastQuery());
+//            debug($revenues);die;
+            
+//		    $revenues_merge = array_merge($revenues_card, array());
+//		    $revenues = array();
+//		    if (empty($addGroupBy)) {
+//			    foreach ($revenues_merge as $key => $value) {
+//				    if (!isset($revenues[$value['Payment']['game_id'] . '_' . $value['0']['day']])) {
+//					    $revenues[$value['Payment']['game_id'] . '_' . $value['0']['day']]['0']['sum'] = $value['0']['sum'];
+//				    } else {
+//					    $revenues[$value['Payment']['game_id'] . '_' . $value['0']['day']]['0']['sum'] += $value['0']['sum'];
+//				    }
+//				    $revenues[$value['Payment']['game_id'] . '_' . $value['0']['day']]['Payment']['type'] = $value['Payment']['type'];
+//				    $revenues[$value['Payment']['game_id'] . '_' . $value['0']['day']]['Payment']['game_id'] = $value['Payment']['game_id'];
+//				    $revenues[$value['Payment']['game_id'] . '_' . $value['0']['day']]['0']['day'] = $value['0']['day'];
+//			    }
+//		    } else {
+//			    foreach ($revenues_merge as $key => $value) {
+//				    if (!isset($revenues[$value['Moborder']['app_key'] . '_' . $value['0']['day'] . '_' . $value['Moborder']['type']])) {
+//					    $revenues[$value['Moborder']['app_key'] . '_' . $value['0']['day'] . '_' . $value['Moborder']['type']]['0']['sum'] = $value['0']['sum'];
+//				    } else {
+//					    $revenues[$value['Moborder']['app_key'] . '_' . $value['0']['day'] . '_' . $value['Moborder']['type']]['0']['sum'] += $value['0']['sum'];
+//				    }
+//				    $revenues[$value['Moborder']['app_key'] . '_' . $value['0']['day'] . '_' . $value['Moborder']['type']]['Moborder']['type'] = $value['Moborder']['type'];
+//				    $revenues[$value['Moborder']['app_key'] . '_' . $value['0']['day'] . '_' . $value['Moborder']['type']]['Moborder']['app_key'] = $value['Moborder']['app_key'];
+//				    $revenues[$value['Moborder']['app_key'] . '_' . $value['0']['day'] . '_' . $value['Moborder']['type']]['0']['day'] = $value['0']['day'];
+//			    }
+//		    }
 		    $revenues = array_values($revenues);
 	    }
 
@@ -116,54 +121,54 @@ class RevenuesController extends AppController {
         */
 
         # tính cho lượt trước để so sánh tỉ lệ tăng hay giảm với hiện tại
-//	    if (!empty($this->request->params['named']['type'])) {
-//		    $total = $this->Payment->find('all', array(
-//			    'fields' => array('SUM(price) as sum', 'game_id', 'type'),
-//			    'conditions' => array_merge($parsedConditions, array(
-//			        'Payment.time >= ' => $start,
-//                    'Payment.time < ' => $end,
-////                    'Payment.test' => 0
-//                )),
-//			    'group' => array_merge(array('game_id'), $addGroupBy),
-//			    'recursive' => -1,
-//			    'order' => array('game_id' => 'DESC')
-//		    ));
-//	    } else {
-//		    $old_revenues_card = $this->Payment->find('all', array(
-//			    'fields' => array('SUM(price) as sum', 'game_id', 'type'),
-//			    'conditions' => array_merge($parsedConditions, array(
-//                    'Payment.time >= ' => $start,
-//                    'Payment.time < ' => $end,
-//                    'Payment.test' => 0
-//                )),
-//			    'group' => array_merge(array('game_id'), $addGroupBy),
-//			    'recursive' => -1,
-//			    'order' => array('game_id' => 'DESC')
-//		    ));
-//
-//		    $total = array();
-//		    $old_revenues_merge = array_merge($old_revenues_card, array());
-//		    if (empty($this->request->params['named']['game_id'])) {
-//			    foreach ($old_revenues_merge as $key => $value) {
-//				    if (!isset($total[$value['Payment']['game_id']])) {
-//					    $total[$value['Payment']['game_id']]['sum'] = $value['0']['sum'];
-//				    } else {
-//					    $total[$value['Payment']['game_id']]['sum'] += $value['0']['sum'];
-//				    }
-//				    $total[$value['Payment']['game_id']]['game_id'] = $value['Payment']['game_id'];
-//			    }
-//		    } else {
-//			    foreach ($old_revenues_merge as $key => $value) {
-//				    if (!isset($total[$value['Payment']['game_id']])) {
-//					    $total[$value['Payment']['game_id']]['sum'] = $value['0']['sum'];
-//				    } else {
-//					    $total[$value['Payment']['game_id']]['sum'] += $value['0']['sum'];
-//				    }
-//				    $total[$value['Payment']['game_id']]['type'] = $value['Payment']['type'];
-//			    }
-//		    }
-//		    $total = array_values($total);
-//	    }
+	    if (!empty($this->request->params['named']['type'])) {
+		    $total = $this->Payment->find('all', array(
+			    'fields' => array('SUM(price) as sum', 'game_id', 'type'),
+			    'conditions' => array_merge($parsedConditions, array(
+			        'Payment.time >= ' => $start,
+                    'Payment.time < ' => $end,
+                    'Payment.test' => 0
+                )),
+			    'group' => array_merge(array('game_id'), $addGroupBy),
+			    'recursive' => -1,
+			    'order' => array('game_id' => 'DESC')
+		    ));
+	    } else {
+		    $old_revenues_card = $this->Payment->find('all', array(
+			    'fields' => array('SUM(price) as sum', 'game_id', 'type'),
+			    'conditions' => array_merge($parsedConditions, array(
+                    'Payment.time >= ' => $start,
+                    'Payment.time < ' => $end,
+                    'Payment.test' => 0
+                )),
+			    'group' => array_merge(array('game_id'), $addGroupBy),
+			    'recursive' => -1,
+			    'order' => array('game_id' => 'DESC')
+		    ));
+
+		    $total = array();
+		    $old_revenues_merge = array_merge($old_revenues_card, array());
+		    if (empty($this->request->params['named']['game_id'])) {
+			    foreach ($old_revenues_merge as $key => $value) {
+				    if (!isset($total[$value['Payment']['game_id']])) {
+					    $total[$value['Payment']['game_id']]['sum'] = $value['0']['sum'];
+				    } else {
+					    $total[$value['Payment']['game_id']]['sum'] += $value['0']['sum'];
+				    }
+				    $total[$value['Payment']['game_id']]['game_id'] = $value['Payment']['game_id'];
+			    }
+		    } else {
+			    foreach ($old_revenues_merge as $key => $value) {
+				    if (!isset($total[$value['Payment']['game_id']])) {
+					    $total[$value['Payment']['game_id']]['sum'] = $value['0']['sum'];
+				    } else {
+					    $total[$value['Payment']['game_id']]['sum'] += $value['0']['sum'];
+				    }
+				    $total[$value['Payment']['game_id']]['type'] = $value['Payment']['type'];
+			    }
+		    }
+		    $total = array_values($total);
+	    }
 
         if (empty($this->request->params['named']['id'])) {
             $gameId = array_keys($games);
@@ -194,7 +199,7 @@ class RevenuesController extends AppController {
 
         $data = Hash::sort($data, '{n}.name', 'asc');
         $data2 = $this->Payment->addLineTotal($data);
-
+        
         $idToName = $this->Payment->Game->find('list', array(
             'fields' => array('id', 'title_os'),
             'conditions' => array(
