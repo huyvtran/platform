@@ -85,23 +85,20 @@ if (!$this->request->is('ajax')) {
 		<?php }?>
 		<table class='table table-striped table-bordered table-data'>
 			<thead>
-			<th>Games</th>
-			<?php
-			for($i=0 ;$i < count($rangeDates); $i++){
-				echo "<th class='int'>" . date('d/m', strtotime($rangeDates[$i])) . "</th>";
-			}
-			?>
-			<th class="int">AVG</th>
-			<th>In Range</th>
-			<?php
-			if (!empty($gameTotals) && !$this->request->is('ajax')) {
-				?>
-				<th>All Time</th>
+				<th>Games</th>
 				<?php
-			}
-			?>
+				for($i=0 ;$i < count($rangeDates); $i++){
+					echo "<th class='int'>" . date('d/m', strtotime($rangeDates[$i])) . "</th>";
+				}
+				?>
+				<th class="int">AVG</th>
+				<th>In Range</th>
+				<?php if (!empty($gameTotals) && !$this->request->is('ajax')) { ?>
+					<th>All Time</th>
+				<?php } ?>
 			</thead>
 			<tbody>
+
 			<?php
 			if (!empty($this->request->named['game_id'])) {
 				if (count($this->request->named['game_id']) > 1) {
@@ -119,7 +116,8 @@ if (!$this->request->is('ajax')) {
 						}
 						?>
 					</tr>
-				<?php }} else { ?>
+				<?php }?>
+			<?php } else { ?>
 				<tr class="selected-total">
 					<td>Selected Rows</td>
 					<?php
@@ -134,8 +132,8 @@ if (!$this->request->is('ajax')) {
 					?>
 				</tr>
 			<?php }?>
-			<?php
 
+			<?php
 			# Calculate totals
 			$totals = array();
 			foreach($data as $v) {
@@ -177,50 +175,51 @@ if (!$this->request->is('ajax')) {
 				if (isset($total) && !empty($total)) {
 					foreach ($total as $value) {
 						if (empty($this->request->params['named']['game_id'])) {
-							if ($value['game_id'] == $v['game_id']) {
-								if ($t > $value['sum']) {
-									$rate = round((abs($t - $value['sum']) / $t) * 100, 1) . '%';
+							if ($value['Payment']['game_id'] == $v['game_id']) {
+								if ($t > $value[0]['sum']) {
+									$rate = round((abs($t - $value[0]['sum']) / $t) * 100, 1) . '%';
 									$class = 'glyphicon glyphicon-arrow-up';
-								} else if ($t < $value['sum']) {
-									$rate = round((abs($t - $value['sum']) / $t) * 100, 1) . '%';
+								} else if ($t < $value[0]['sum']) {
+									$rate = round((abs($t - $value[0]['sum']) / $t) * 100, 1) . '%';
 									$class = 'glyphicon glyphicon-arrow-down';
-								} else if ($t == $value['sum']) {
-									$rate = '&nbsp;<span title="no change">0%</span>';
-								}
-								if ($rate > 10000) $rate = '&infin;';
-							}
-						} else {
-							if ($value['type'] == $v['game_id']) {
-								if ($t > $value['sum']) {
-									$rate = round((abs($t - $value['sum']) / $t) * 100, 1) . '%';
-									$class = 'glyphicon glyphicon-arrow-up';
-								} else if ($t < $value['sum']) {
-									$rate = round((abs($t - $value['sum']) / $t) * 100, 1) . '%';
-									$class = 'glyphicon glyphicon-arrow-down';
-								} else if ($t == $value['sum']) {
+								} else if ($t == $value[0]['sum']) {
 									$rate = '&nbsp;<span title="no change">0%</span>';
 								}
 								if ($rate > 10000) $rate = '&infin;';
 							}
 						}
+//						else {
+//							if ($value['Payment']['type'] == $v['game_id']) {
+//								if ($t > $value['sum']) {
+//									$rate = round((abs($t - $value['sum']) / $t) * 100, 1) . '%';
+//									$class = 'glyphicon glyphicon-arrow-up';
+//								} else if ($t < $value['sum']) {
+//									$rate = round((abs($t - $value['sum']) / $t) * 100, 1) . '%';
+//									$class = 'glyphicon glyphicon-arrow-down';
+//								} else if ($t == $value['sum']) {
+//									$rate = '&nbsp;<span title="no change">0%</span>';
+//								}
+//								if ($rate > 10000) $rate = '&infin;';
+//							}
+//						}
 					}
 				}
 				$a = n($t / count($rangeDates));
 				switch (strlen($a)) {
 					case 1 :
-						$a = $a . "$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+						$a = $a . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
 						break;
 					case 2 :
-						$a = $a . "$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+						$a = $a . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
 						break;
 					case 3 :
-						$a = $a . "$&nbsp;&nbsp;&nbsp;&nbsp; ";
+						$a = $a . "&nbsp;&nbsp;&nbsp;&nbsp; ";
 						break;
 					case 4 :
-						$a = $a . "$&nbsp;&nbsp;&nbsp;  ";
+						$a = $a . "&nbsp;&nbsp;&nbsp;  ";
 						break;
 					case 5 :
-						$a = $a . "$&nbsp; ";
+						$a = $a . "&nbsp; ";
 						break;
 				}
 				?>
