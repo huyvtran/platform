@@ -110,11 +110,8 @@ $this->Highchart->render(array(
 		foreach($data as $v) {
 			$range = 0;
 			echo '<tr>';
-			echo '<td  class="name1">' . $this->element('other_links', array(
-				'gameId' => $v['game_id'],
-				'games' => $games,
-				'fromTime' => $fromTime,
-				'toTime' => $toTime)) . '</td>';
+
+            echo '<td class="name1">' . $v['name'] . '</td>';
 			foreach($v['data'] as $kk => $count) {
 				$range += $count;
 				echo '<td class="int data">' . n($count) . '</td>';
