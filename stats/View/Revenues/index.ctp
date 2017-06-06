@@ -25,9 +25,9 @@ if (!$this->request->is('ajax')) {
 				<?php
 				echo $this->Form->create('Payment', array('inputDefaults' => array('div' => false, 'label' => false), 'class' => 'form-inline'));
 				echo $this->Form->input('game_id', array('empty' => '--All Games--', 'options' => $games)) . ' ';
-				echo $this->Form->input('type', array(
-					'empty' => '--All Types--',
-					'options' => $payTypes));
+//				echo $this->Form->input('type', array(
+//					'empty' => '--All Types--',
+//					'options' => $payTypes));
 				echo $this->element('date_ranger_picker');
 				echo $this->Form->submit('Submit', array('class' => 'btn btn-default', 'div' => false));
 				echo $this->Form->end();
