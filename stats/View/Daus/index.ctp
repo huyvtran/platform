@@ -114,12 +114,8 @@ $this->Highchart->render(array(
 		foreach($data as $v) {
 			$range = 0;
 			echo '<tr>';
-			echo '<td class="name1">' . $this->element('other_links', array(
-				'gameId' => $v['game_id'],
-				'games' => $games,
-				'fromTime' => $fromTime,
-				'toTime' => $toTime));
-			echo '</td>';
+
+            echo '<td class="name1">' . $v['name'] . '</td>';
 			foreach($v['data'] as $kk => $count) {
 				$range += $count;
 				echo '<td class="int data">' . n($count) . '</td>';
@@ -175,21 +171,21 @@ $this->Highchart->render(array(
 if (!$this->request->is('ajax')) {
 ?>
 <script type="text/javascript">
-	$(function() {
-		var table = $('.table').DataTable({
-			"scrollX": "100%",
-			"scrollCollapse": true,
-			"paging": false,
-			"search": false,
-			"bSort": false,
-			bFilter: false,
-			bInfo: false
-		} );
-		new $.fn.dataTable.FixedColumns(table, {
-			leftColumns: 1,
-			rightColumns: 2
-		});
-	});
+//	$(function() {
+//		var table = $('.table').DataTable({
+//			"scrollX": "100%",
+//			"scrollCollapse": true,
+//			"paging": false,
+//			"search": false,
+//			"bSort": false,
+//			bFilter: false,
+//			bInfo: false
+//		} );
+//		new $.fn.dataTable.FixedColumns(table, {
+//			leftColumns: 1,
+//			rightColumns: 2
+//		});
+//	});
 	$(document).ready(function(){
 
 	})
