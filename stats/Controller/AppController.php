@@ -36,16 +36,16 @@ class AppController extends Controller {
 	);
 
 	public $menu = array(
-//		'Revenue' => array(
-//			'categories' => array(
-//				'Revenue (Daily)' => '/revenues/index',
+		'Revenue' => array(
+			'categories' => array(
+				'Revenue (Daily)' => '/Revenues/index',
 //				'Revenue (Monthly)' => '/revenues/monthly',
 //				'Revenue (Quarter)' => '/revenues/quarter',
 //				'Revenue By Countries' => '/revenues/country',
 //				'Revenue By Servers' => '/revenues/server',
-//		 	),
-//			'activeMenu' => array('revenues')
-//		),
+		 	),
+			'activeMenu' => array('revenues')
+		),
 		'DAU' => array(
 			'categories' => array(
 				'DAU (Daily)' => '/daus/index',
