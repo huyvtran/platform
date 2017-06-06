@@ -35,38 +35,24 @@ class RevenuesController extends AppController {
 
 	    $addGroupBy = array();
 	    if (!empty($this->request->params['named']['game_id']) && !$this->request->is('ajax')) {
-		    $addGroupBy = array('type');
+//		    $addGroupBy = array('type');
 	    }
 
         # END PERMISSIONS
-	    if (!empty($this->request->params['named']['type'])) {
-		    $revenues = $this->Payment->find('all', array(
-			    'fields' => array('SUM(price) as sum', 'game_id', 'FROM_UNIXTIME(time, "%Y-%m-%d") as day', 'type'),
-			    'conditions' => array_merge($parsedConditions, array(
-			        'Payment.time >= ' => $fromTime,
-                    'Payment.time < ' => $toTime,
-                    'Payment.test' => 0
-                )),
-			    'group' => array_merge(array('game_id', 'day'), $addGroupBy),
-			    'recursive' => -1,
-			    'order' => array('game_id' => 'DESC')
-		    ));
-	    } else {
-			$revenues = $this->Payment->find('all', array(
-			    'fields' => array('SUM(price) as sum', 'game_id', 'FROM_UNIXTIME(time, "%Y-%m-%d") as day', 'type'),
-			    'conditions' => array_merge($parsedConditions, array(
-                    'Payment.time >= ' => $fromTime,
-                    'Payment.time <= ' => $toTime,
-                    'Payment.test' => 0
-                )),
-			    'group' => array_merge(array('game_id', 'day'), $addGroupBy),
-			    'recursive' => -1,
-			    'order' => array('game_id' => 'DESC')
-		    ));
-			$revenues = array_values($revenues);
-//            debug($this->Payment->getLastQuery());
-//            debug($revenues);die;
-	    }
+        $revenues = $this->Payment->find('all', array(
+            'fields' => array('SUM(price) as sum', 'game_id', 'FROM_UNIXTIME(time, "%Y-%m-%d") as day', 'type'),
+            'conditions' => array_merge($parsedConditions, array(
+                'Payment.time >= ' => $fromTime,
+                'Payment.time <= ' => $toTime,
+                'Payment.test' => 0
+            )),
+            'group' => array_merge(array('game_id', 'day'), $addGroupBy),
+            'recursive' => -1,
+            'order' => array('game_id' => 'DESC')
+        ));
+        $revenues = array_values($revenues);
+//        debug($this->Payment->getLastQuery());
+//        debug($revenues);die;
 
         $payTypes = array(
             'VTT' => 'VTT',
