@@ -66,7 +66,7 @@ class AppController extends Controller {
         'Tools' => array(
             'categories' => array(
                 'Payment - Index'	=> '/admin/payments',
-                'Payment - compense'=> '/admin/compense_payments',
+                'Payment - compense'=> '/admin/CompensePayments',
             ),
             'activeMenu' => array('tools')
         ),
