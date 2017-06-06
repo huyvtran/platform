@@ -168,7 +168,7 @@ if (!$this->request->is('ajax')) {
 				$t = 0;
 				foreach($v['data'] as $kk => $count) {
 					$t += $count;
-					echo '<td class="int data">' . $count . '</td>';
+					echo '<td class="int data">' . n($count) . '</td>';
 				}
 				$class = '';
 				$rate = '';
