@@ -378,6 +378,27 @@ class AppSchema extends CakeSchema {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
 	);
 
+	public $log_retention_by_day = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'primary'),
+		'game_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'index'),
+		'day' => array('type' => 'date', 'null' => false, 'default' => null),
+		'return1' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 10),
+		'return3' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 10),
+		'return7' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 10),
+		'return30' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 10),
+		'reg1' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 10),
+		'reg3' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 10),
+		'reg7' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 10),
+		'reg30' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 10),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			'unique' => array('column' => array('game_id', 'day'), 'unique' => 1)
+		),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
+	);
+
 	public $payments = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'order_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 50, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
