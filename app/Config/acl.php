@@ -153,7 +153,9 @@ $config['rules'] = array(
         'payments/api_charge'   => 'Role/User',
         'payments/admin_index'  => 'Role/Content',
 
-        'CompensePayments/*'   => 'Role/Content',
+        'CompensePayments/*'    => 'Role/Content',
+
+        'WaitingPayments/*'     => 'Role/Content',
 	),
 	'deny' => array(
 		'users/admin_edit' => 'Role/Marketing, Role/Developer',
