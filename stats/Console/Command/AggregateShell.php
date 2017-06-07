@@ -74,6 +74,5 @@ class AggregateShell extends AppShell {
             $date = date('Y-m-d', strtotime("-$i days"));
             $this->AggregateBase->_retention($date);
         }
-
     }
 }
