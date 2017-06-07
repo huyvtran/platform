@@ -917,23 +917,23 @@ class UsersController extends AppController {
 			'retmsg' => 'error'
 		);
 
-//		try {
-//			if ($this->request->is('post')) {
-//				$this->Common->bruteForce(array(
-//					'ip' => $this->Common->publicClientIp(),
-//					'action' => 'api_register_ldr',
-//					$this->Common->currentGame('id'),
-//				), 60*60, 100);
-//			}
-//		} catch (Exception $e) {
-//			$result = array(
-//				'retcode' => 900,
-//				'retmsg' => 'vui lòng thử lại sau ít phút'
-//			);
-//			goto end;
-//		}
-
-		CakeLog::info('input mu vcc api register:' . print_r($this->request->data,true));
+		/*
+		try {
+			if ($this->request->is('post')) {
+				$this->Common->bruteForce(array(
+					'ip' => $this->Common->publicClientIp(),
+					'action' => 'api_register_ldr',
+					$this->Common->currentGame('id'),
+				), 60*60, 100);
+			}
+		} catch (Exception $e) {
+			$result = array(
+				'retcode' => 900,
+				'retmsg' => 'vui lòng thử lại sau ít phút'
+			);
+			goto end;
+		}
+        */
 
 		if (!isset(
 			$this->request->data['user_name'],
@@ -947,13 +947,19 @@ class UsersController extends AppController {
 			goto end;
 		}
 
+		$prefix_user = 'ldr_';
+		$game = $this->Common->currentGame();
+		if( !empty($game['app']) && in_array($game['app'], array('d316d77ea8430f82b1df322793e56f48', 'b41ec1c5766d423b73123cf637a8c5e3')) ){
+            $prefix_user = 'vnz_';
+        }
+
 		$this->request->data['User'] = $this->request->data;
 		$this->request->data['User']['email'] 	= time().'@myapp.com';
 		$this->request->data['User']['role'] 	= 'User';
 		$this->request->data['User']['active'] 	= true;
 		$this->request->data['User']['phone'] 	= $this->request->data['email'];
 		$this->request->data['User']['password'] = $this->request->data['password'];
-		$this->request->data['User']['username'] = 'ldr_' . $this->request->data['user_name'];
+		$this->request->data['User']['username'] = $prefix_user . $this->request->data['user_name'];
 
 		$userCheck = $this->User->findByUsername($this->request->data['User']['username']);
 		if( !empty($userCheck['User']) ){
@@ -1071,7 +1077,14 @@ class UsersController extends AppController {
 			);
 			goto end;
 		}
-		$this->request->data['username'] = 'ldr_' . $this->request->data['username'] ;
+
+        $prefix_user = 'ldr_';
+        $game = $this->Common->currentGame();
+        if( !empty($game['app']) && in_array($game['app'], array('d316d77ea8430f82b1df322793e56f48', 'b41ec1c5766d423b73123cf637a8c5e3')) ){
+            $prefix_user = 'vnz_';
+        }
+
+		$this->request->data['username'] = $prefix_user . $this->request->data['username'] ;
 		$this->request->data['password'] = $this->request->data['userpass'];
 
 		# Nếu user không thể login bằng email , check username
@@ -1167,10 +1180,16 @@ class UsersController extends AppController {
 				goto end;
 			}
 
+            $prefix_user = 'ldr_';
+            $game = $this->Common->currentGame();
+            if( !empty($game['app']) && in_array($game['app'], array('d316d77ea8430f82b1df322793e56f48', 'b41ec1c5766d423b73123cf637a8c5e3')) ){
+                $prefix_user = 'vnz_';
+            }
+
 			$old_password = $this->request->data['password'];
 
 			$this->request->data['User']['password'] = $this->request->data['new_password'];
-			$this->request->data['User']['username'] = 'ldr_' . $this->request->data['user_name'];
+			$this->request->data['User']['username'] = $prefix_user . $this->request->data['user_name'];
 
 			$user = $this->User->findByUsername($this->request->data['User']['username']);
 			if (!empty($user)) {
