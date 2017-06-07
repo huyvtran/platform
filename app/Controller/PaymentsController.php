@@ -48,7 +48,7 @@ class PaymentsController extends AppController {
 		
 		$game = $this->Common->currentGame();
 		if( empty($game) || !$this->Auth->loggedIn() ){
-            CakeLog::error('Vui longf login', 'payment');
+            CakeLog::error('Vui lòng login', 'payment');
             if($return) return false;
 			throw new NotFoundException('Vui lòng login');
 		}
@@ -105,9 +105,8 @@ class PaymentsController extends AppController {
                         )
                     );
                 }else{
-                    # gọi đến api cổng thanh toán và check thẻ (ghi log khi gọi api)
+                    # gọi đến api cổng thanh toán và check thẻ
                     $result = $paymentLib->callPayApi($data);
-                    CakeLog::info('thẻ cào qua vippay:' . print_r($result,true), 'payment');
                 }
 
                 if( isset($result['status']) && $result['status'] == 0 && $data['order_id'] == $result['data']['order_id']){
