@@ -195,6 +195,19 @@ class Vippay {
             );
         }
 
+        # ghi log khi vippay trả về
+        if( isset($resultVippay->msg) && $resultVippay->msg != ''){
+            App::import('Lib', 'RedisQueue');
+            $Redis = new RedisQueue('log_vippay_callback');
+            $Redis->rPush(array(
+                'model' => 'Payment',
+                'data' => array(
+                    'order_id'  => $this->getOrderId(),
+                    'note'      => $resultVippay->msg
+                )
+            ));
+        }
+
         CakeLog::info('check paygate vippay:' . print_r($result, true), 'payment');
         
         return $result;
