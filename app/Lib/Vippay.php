@@ -160,7 +160,7 @@ class Vippay {
                 )
             );
         } elseif (isset($resultVippay->code)
-            && in_array( $resultVippay->code, array(1000, 1007) )
+            && in_array( $resultVippay->code, array(1000, 1007, 1009) )
         ){
             # update trạng thái thẻ lỗi hoặc đã được sử dụng
             $result = array(
