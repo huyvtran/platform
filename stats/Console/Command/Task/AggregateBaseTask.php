@@ -183,4 +183,86 @@ class AggregateBaseTask extends Shell {
         }
         $this->out('Done!');
     }
+
+    public function _retention($date)
+    {
+        $this->out('Start Retention ' . $date);
+        set_time_limit(1000);
+        ini_set('memory_limit', '512M');
+
+        App::import('Model', 'Game');
+        App::import('Model', 'LogLogin');
+        App::import('Model', 'Account');
+        App::import('Model', 'LogRetention');
+
+        $Game = new Game();
+        $Account = new Account();
+        $LogLogin = new LogLogin();
+        $Log = new LogRetention();
+
+        $games = $Game->find('all', array(
+            'recursive' => -1,
+            'conditions' => array('status' => 1)
+        ));
+
+        foreach ($games as $game) {
+            $retention = array();
+            foreach (array(1, 3, 7, 30) as $range) {
+
+                $nius = $Account->find('list', array(
+                    'fields' => array('id', 'user_id'),
+                    'conditions' => array(
+                        'created >= ' => date('Y-m-d 00:00:00', strtotime("-$range days", strtotime($date))),
+                        'created <= ' => date('Y-m-d 23:59:59', strtotime("-$range days", strtotime($date))),
+                        'game_id' => $game['Game']['id']),
+                    'recursive' => -1
+                ));
+                if (!$nius) {
+                    continue;
+                }
+
+                $daus = $LogLogin->find('list', array(
+                    'fields' => array('id', 'user_id'),
+                    'conditions' => array(
+                        'created >= ' => date('Y-m-d 00:00:00', strtotime($date)),
+                        'created <= ' => date('Y-m-d 23:59:59', strtotime($date)),
+                        'game_id' => $game['Game']['id']),
+                    'recursive' => -1
+                ));
+
+                $r = 0;
+                if (!empty($daus)) {
+                    $r = count(array_intersect($nius, $daus));
+                }
+                if ($r == 0) {
+                    continue;
+                }
+                $retention['return' . $range] = $r;
+                $retention['reg' . $range] = count($nius);
+            }
+
+            if (empty($retention)) {
+                continue;
+            }
+            $log = $Log->find('first', array(
+                'conditions' => array(
+                    'game_id' => $game['Game']['id'],
+                    'day' => date('Y-m-d', strtotime($date))
+                )
+            ));
+
+            if ($log) {
+                $Log->id = $log['LogRetention']['id'];
+            } else {
+                $Log->create();
+            }
+            $data = array_merge(array('game_id' => $game['Game']['id'], 'day' => date('Y-m-d', strtotime($date))), $retention);
+            if (!$Log->save($data)) {
+                print_r($data);
+                print_r($Log->validationErrors);
+            } else {
+                $this->out('<success>Saved</success>');
+            }
+        }
+    }
 }
