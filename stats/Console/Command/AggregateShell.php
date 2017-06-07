@@ -9,6 +9,12 @@ class AggregateShell extends AppShell {
 
 	public function DAU(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate DAU");
+
+        if( date('H') < 2 ){
+            $this->out(date('Y-m-d H:i:s') . " - disable run aggregate DAU");
+            return ;
+        }
+
 		$date = date('d-m-Y');
 		if (isset($this->args[0])) {
 			$date = $this->args[0];
@@ -22,6 +28,12 @@ class AggregateShell extends AppShell {
 
 	public function cDAU(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate DAU by country");
+
+        if( date('H') < 2 ){
+            $this->out(date('Y-m-d H:i:s') . " - disable run aggregate DAU by country");
+            return ;
+        }
+
         $date = date('d-m-Y');
         if (isset($this->args[0])) {
             $date = $this->args[0];
@@ -32,6 +44,12 @@ class AggregateShell extends AppShell {
 
     public function MAU(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate MAU");
+
+        if( date('H') < 2 ){
+            $this->out(date('Y-m-d H:i:s') . " - disable run aggregate MAU");
+            return ;
+        }
+
         $month = date('d-m-Y');
         if (isset($this->args[0])) {
             $month = $this->args[0];
@@ -52,6 +70,12 @@ class AggregateShell extends AppShell {
     public function Niu()
     {
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate NIU");
+
+        if( date('H') < 2 ){
+            $this->out(date('Y-m-d H:i:s') . " - disable run aggregate NIU");
+            return ;
+        }
+
         $date = date('d-m-Y');
         if (isset($this->args[0])) {
             $date = $this->args[0];
@@ -61,18 +85,16 @@ class AggregateShell extends AppShell {
 
     public function Retention(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Retention");
+
+        if( date('H') < 2 ){
+            $this->out(date('Y-m-d H:i:s') . " - disable run aggregate Retention");
+            return ;
+        }
+
         $date = date('d-m-Y');
         if (isset($this->args[0])) {
             $date = $this->args[0];
         }
         $this->AggregateBase->_retention($date);
-    }
-
-    public function setRetention(){
-        $this->out(date('Y-m-d H:i:s') . " run all Retention");
-        for ($i = 18; $i >= 0; $i--){
-            $date = date('Y-m-d', strtotime("-$i days"));
-            $this->AggregateBase->_retention($date);
-        }
     }
 }
