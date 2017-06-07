@@ -26,6 +26,15 @@ class AggregateShell extends AppShell {
         );
 	}
 
+	public function yesterdayDAU(){
+        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate DAU");
+        $yesterday = date('d-m-Y', strtotime('yesterday'));
+        $this->AggregateBase->_aggreateByDay(
+            "LogLogin", "LogLoginsByDay", "COUNT_DISTINCT", "user_id",
+            array("game_id"), array('day' => $yesterday)
+        );
+    }
+
 	public function cDAU(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate DAU by country");
 
@@ -40,6 +49,12 @@ class AggregateShell extends AppShell {
         }
 
         $this->AggregateCountry->Dau($date);
+    }
+
+    public function yesterdayCDAU(){
+        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate DAU by country");
+        $yesterday = date('d-m-Y', strtotime('yesterday'));
+        $this->AggregateCountry->Dau($yesterday);
     }
 
     public function MAU(){
@@ -83,6 +98,12 @@ class AggregateShell extends AppShell {
         $this->AggregateBase->_aggreateByDay("Account", "LogAccountsByDay", "COUNT", "user_id", array("game_id"), array('day' => $date));
     }
 
+    public function yesterdayNiu(){
+        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate NIU");
+        $yesterday = date('d-m-Y', strtotime('yesterday'));
+        $this->AggregateBase->_aggreateByDay("Account", "LogAccountsByDay", "COUNT", "user_id", array("game_id"), array('day' => $yesterday));
+    }
+
     public function Retention(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Retention");
 
@@ -96,5 +117,11 @@ class AggregateShell extends AppShell {
             $date = $this->args[0];
         }
         $this->AggregateBase->_retention($date);
+    }
+
+    public function yesterdayRetention(){
+        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate Retention");
+        $yesterday = date('d-m-Y', strtotime('yesterday'));
+        $this->AggregateBase->_retention($yesterday);
     }
 }
