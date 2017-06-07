@@ -67,4 +67,13 @@ class AggregateShell extends AppShell {
         }
         $this->AggregateBase->_retention($date);
     }
+
+    public function setRetention(){
+        $this->out(date('Y-m-d H:i:s') . " run all Retention");
+        for ($i = 18; $i >= 0; $i--){
+            $date = date('Y-m-d', strtotime("-$i days"));
+            $this->AggregateBase->_retention($date);
+        }
+
+    }
 }
