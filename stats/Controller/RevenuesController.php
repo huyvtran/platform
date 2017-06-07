@@ -83,11 +83,11 @@ class RevenuesController extends AppController {
             # If select a game, then show all type payments
             $data = $this->Payment->dataToChartLine($revenues, $games, $fromTime, $toTime);
         } else if (!$this->request->is('ajax')) {
-            if (Cache::read('total_alltime', '3_day') == false) {
+            if (Cache::read('total_alltime', 'default') == false) {
                 $gameTotals = $this->Payment->getTotals($gameId);
-                Cache::write('total_alltime', $gameTotals, '3_day');
+                Cache::write('total_alltime', $gameTotals, 'default');
             } else {
-                $gameTotals = Cache::read('total_alltime', '3_day');
+                $gameTotals = Cache::read('total_alltime', 'default');
             }
 
             $data = $this->Payment->dataToChartLine($revenues, $games, $fromTime, $toTime);
