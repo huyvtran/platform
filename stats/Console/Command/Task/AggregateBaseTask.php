@@ -221,7 +221,7 @@ class AggregateBaseTask extends Shell {
                     continue;
                 }
 
-                $this->out('<warning>Running game: ' . $game['Game']['title'] . ' - range date: '  . $range . '</warning>');
+                $this->out('<warning>Running game: ' . $game['Game']['title'] . ' ' . $game['Game']['os'] . ' - range date: '  . $range . '</warning>');
 
                 $daus = $LogLogin->find('list', array(
                     'fields' => array('id', 'user_id'),
