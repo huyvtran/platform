@@ -46,7 +46,7 @@ class RetentionsController extends AppController {
 		$logs = $Model->find('all', array(
 			'fields' => array("*,
 				CASE 
-						WHEN reg$retentionDate < 20 THEN 0
+						WHEN reg$retentionDate < 5 THEN 0
 						ELSE return$retentionDate / reg$retentionDate * 100
 				END as value"),
 			'conditions' => $parsedConditions,
