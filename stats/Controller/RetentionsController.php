@@ -41,8 +41,9 @@ class RetentionsController extends AppController {
 		if (empty($this->request->params['fromTime'])) {
 			$timeCond = (array) CakeTime::daysAsSql($fromTime, $toTime, $this->useModel . '.day');
 		}
-		$parsedConditions = array_merge((array) $parsedConditions, $gamesCond, $timeCond);
-		
+
+        $parsedConditions = array_merge($gamesCond, (array) $parsedConditions, $timeCond);
+
 		$logs = $Model->find('all', array(
 			'fields' => array("*,
 				CASE 

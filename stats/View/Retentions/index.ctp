@@ -18,7 +18,6 @@ echo $this->extend('/Common/fluid');
             <a href="<?php echo $this->Html->url(array_merge(array('1'), $this->request->params['named'])) ?>" class="btn btn-default <?php echo $this->Nav->thisSlug('1') ?>"><i class='glyphicon glyphicon-transfer'></i> 1 Days</button></a>
 			<a href="<?php echo $this->Html->url(array_merge(array('3'), $this->request->params['named'])) ?>" class="btn btn-default <?php echo $this->Nav->thisSlug('3') ?>">3 Days</button></a>
 			<a href="<?php echo $this->Html->url(array_merge(array('7'), $this->request->params['named'])) ?>" class="btn btn-default <?php echo $this->Nav->thisSlug('7') ?>">7 Days</a>
-			<a href="<?php echo $this->Html->url(array_merge(array('30'), $this->request->params['named'])) ?>" class="btn btn-default <?php echo $this->Nav->thisSlug('30') ?>">30 Days</a>
 		</div>
 	</div>
 </div>
@@ -91,13 +90,5 @@ $this->Highchart->render(array(
 </table>
 </div>
 </div>
-<script type="text/javascript">
-	// overwrite number's format in chart
-	function highchartNumberFormat(number)
-	{
-		return number;
-	}
-
-</script>
 <?php
 a:
