@@ -39,10 +39,6 @@ class AppController extends Controller {
 		'Revenue' => array(
 			'categories' => array(
 				'Revenue (Daily)' => '/Revenues/index',
-//				'Revenue (Monthly)' => '/revenues/monthly',
-//				'Revenue (Quarter)' => '/revenues/quarter',
-//				'Revenue By Countries' => '/revenues/country',
-//				'Revenue By Servers' => '/revenues/server',
 		 	),
 			'activeMenu' => array('revenues')
 		),
@@ -58,20 +54,15 @@ class AppController extends Controller {
 		'NRU' => array(
 			'categories' => array(
 				'NRU (Daily)' => '/nius/index',
-//				'NRU (Monthly)' => '/nius/monthly',
-//				'NRU (Quarter)' => '/nius/quarter',
-//				'NRU By Countries' => '/nius/country',
-//				'NRU By Referrer' => '/nius/referrer'
 			),
 			'activeMenu' => array('nius')
 		),
-//		'Retention' => array(
-//			'categories' => array(
-//				'Retention' => '/Retentions/index',
-//				'Referrer' => '/Retentions/referrer',
-//			),
-//			'activeMenu' => array('Retentions')
-//		),
+		'Retention' => array(
+			'categories' => array(
+				'Retention' => '/Retentions/index',
+			),
+			'activeMenu' => array('Retentions')
+		),
 	);
 
 

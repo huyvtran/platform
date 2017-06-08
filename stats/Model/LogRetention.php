@@ -12,8 +12,6 @@ class LogRetention extends AppModel {
 
     public $filterArgs = array(
         'game_id' => array('type' => 'value'),
-        'fromTime' => array('type' => 'expression', 'method' => 'fromTimeCond', 'field' => 'LogLoginsByDay.day >= '),
-        'toTime' =>  array('type' => 'expression', 'method' => 'toTimeCond', 'field' => 'LogLoginsByDay.day <= '),
     );
 
     /**

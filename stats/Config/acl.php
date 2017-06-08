@@ -138,7 +138,8 @@ $config['rules'] = array(
 		'nius/*' => 'Role/Content, Role/Marketing',
 		'daus/*' => 'Role/Content, Role/Marketing',
         'daus/*' => 'Role/Content, Role/Marketing',
-        'Revenues/*' => 'Role/Content, Role/Marketing',
+        'Revenues/*'    => 'Role/Content, Role/Marketing',
+        'Retentions/*'  => 'Role/Content, Role/Marketing',
 	),
 	'deny' => array(
 		
