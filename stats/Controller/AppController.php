@@ -1,6 +1,7 @@
 <?php
 
 App::uses('Controller', 'Controller');
+require_once ROOT . DS . 'Vendor' . DS . 'mobiledetect' . DS . 'mobiledetectlib' . DS . 'Mobile_Detect.php';
 
 if (Configure::read('debug') != 0) {
 	App::uses('FireCake', 'DebugKit.Lib');
@@ -440,6 +441,14 @@ class AppController extends Controller {
         if ($this->name == 'Nius') {
             $sums = $this->{$model}->getTotals($games);
         }
+
+        $MobileDetect = new Mobile_Detect();
+        if ( $this->name == 'Daus'
+            && ( $MobileDetect->isMobile() || $MobileDetect->isTablet() )
+        ){
+            $this->view = 'index_mobile';
+        }
+
 
         $this->set(compact('games', 'fromTime', 'toTime', 'data', 'rangeDates', 'sums', 'data2', 'total', 'event', 'event_data', 'milestones_data'));
     }
