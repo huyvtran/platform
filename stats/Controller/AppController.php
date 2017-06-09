@@ -63,6 +63,12 @@ class AppController extends Controller {
 			),
 			'activeMenu' => array('Retentions')
 		),
+        'Arpu' => array(
+            'categories' => array(
+                'Arpu' => '/Arpu/index',
+            ),
+            'activeMenu' => array('Arpu')
+        ),
 	);
 
 

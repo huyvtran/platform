@@ -140,6 +140,7 @@ $config['rules'] = array(
         'daus/*' => 'Role/Content, Role/Marketing',
         'Revenues/*'    => 'Role/Content, Role/Marketing',
         'Retentions/*'  => 'Role/Content, Role/Marketing',
+        'Arpu/*'        => 'Role/Content, Role/Marketing',
 	),
 	'deny' => array(
 		
