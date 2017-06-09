@@ -124,4 +124,28 @@ class AggregateShell extends AppShell {
         $yesterday = date('d-m-Y', strtotime('yesterday'));
         $this->AggregateBase->_retention($yesterday);
     }
+
+    public function Arpu(){
+        $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Retention");
+
+        if( date('H') < 2 ){
+            $this->out(date('Y-m-d H:i:s') . " - disable run aggregate Retention");
+            return ;
+        }
+
+        $date = date('d-m-Y');
+        if (isset($this->args[0])) {
+            $date = $this->args[0];
+        }
+        $this->AggregateBase->_arpu($date);
+    }
+
+    public function setArpu(){
+        $this->out(date('Y-m-d H:i:s') . " run all Retention");
+        for ($i = 18; $i >= 0; $i--){
+            $date = date('Y-m-d', strtotime("-$i days"));
+            $this->AggregateBase->_arpu($date);
+        }
+
+    }
 }

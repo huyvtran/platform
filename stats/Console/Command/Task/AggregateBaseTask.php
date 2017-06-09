@@ -267,4 +267,76 @@ class AggregateBaseTask extends Shell {
             }
         }
     }
+
+    public function _arpu($date)
+    {
+        $this->out('Start Arpu ' . $date);
+        App::import('Model', 'Game');
+        App::import('Model', 'Payment');
+        App::import('Model', 'LogArpuByDay');
+        App::import('Model', 'LogLogin');
+        $Revenue = new Payment();
+        $Log = new LogArpuByDay();
+        $Game = new Game();
+        $Dau = new LogLogin();
+
+        $revenues = $Revenue->find('all', array(
+            'fields' => array('SUM(price) as sum', 'game_id'),
+            'conditions' => array(
+                'Payment.time >='   => strtotime(date('Y-m-d 00:00:00', strtotime($date))),
+                'Payment.time <= '  => strtotime(date('Y-m-d 23:59:59', strtotime($date))),
+                'Payment.test'      => 0
+            ),
+            'group' => 'game_id',
+            'recursive' => -1
+        ));
+
+        $daus = $Dau->find('all', array(
+            'fields' => array('COUNT(DISTINCT user_id ) as sum', 'game_id'),
+            'conditions' => array(
+                'created >=' => date('Y-m-d 00:00:00', strtotime($date)),
+                'created <= ' => date('Y-m-d 23:59:59', strtotime($date))
+            ),
+            'group' => 'game_id',
+            'recursive' => -1
+        ));
+
+        foreach ($revenues as $revenue) {
+            $game = $Game->findById($revenue['Payment']['game_id']);
+            if (!$game) {
+                $this->out('<warning>Can not find this game id: ' . $revenue['Payment']['game_id'] . '</warning>');
+                continue;
+            }
+
+            foreach ($daus as $dau) {
+                if ($dau['LogLogin']['game_id'] == $game['Game']['id']) {
+                    break;
+                }
+            }
+
+            $log = $Log->find('first', array(
+                'conditions' => array(
+                    'game_id' => $game['Game']['id'],
+                    'day' => date('Y-m-d', strtotime($date))
+                )
+            ));
+
+            if ($log) {
+                $Log->id = $log['LogArpuByDay']['id'];
+            } else {
+                $Log->create();
+            }
+            $data = array(
+                'value'     => $revenue[0]['sum'] / $dau[0]['sum'],
+                'game_id'   => $game['Game']['id'],
+                'day'       => date('Y-m-d', strtotime($date))
+            );
+            if (!$Log->save($data)) {
+                print_r($data);
+                print_r($Log->validationErrors);
+            } else {
+                $this->out('<success>Saved</success>');
+            }
+        }
+    }
 }
