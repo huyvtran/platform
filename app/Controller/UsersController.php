@@ -1289,10 +1289,9 @@ class UsersController extends AppController {
         try {
             $Email = new CakeEmail('amazonses');
             $email = $Email->to('quanhongvu@gmail.com')
-//                ->from('quanhongvu1@gmail.com')
                 ->subject($options['subject'])
                 ->viewVars(array(
-                    'content' => $options,
+                    'content' => 'Test nội dung',
                 ))
                 ->template($options['template'], $options['layout'])
                 ->send();
