@@ -140,12 +140,9 @@ class AggregateShell extends AppShell {
         $this->AggregateBase->_arpu($date);
     }
 
-    public function setArpu(){
-        $this->out(date('Y-m-d H:i:s') . " run all Retention");
-        for ($i = 18; $i >= 0; $i--){
-            $date = date('Y-m-d', strtotime("-$i days"));
-            $this->AggregateBase->_arpu($date);
-        }
-
+    public function yesterdayArpu(){
+        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate Arpu");
+        $yesterday = date('d-m-Y', strtotime('yesterday'));
+        $this->AggregateBase->_arpu($yesterday);
     }
 }
