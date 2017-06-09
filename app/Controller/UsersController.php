@@ -1065,8 +1065,6 @@ class UsersController extends AppController {
 			'retmsg' => 'error'
 		);
 
-		CakeLog::info('input game mu vcc api login:' . print_r($this->request->data,true));
-
 		if (!isset(
 			$this->request->data['username'],
 			$this->request->data['userpass']
@@ -1166,7 +1164,6 @@ class UsersController extends AppController {
 				'status' => 1,
 				'messsage' => __('lỗi')
 			);
-			CakeLog::info('input game mu ldr api chang password:' . print_r($this->request->data,true));
 
 			if (!isset(
 				$this->request->data['user_name'],
