@@ -199,7 +199,7 @@ class UsersController extends AppController {
 		}
 		if (isset($this->request->data['User']['username']) && $this->request->data['User']['username'] != '' ) {
 			$conditions = array_merge($parsedConditions,
-				array("username LIKE '" . $this->request->data['User']['username'] . "'"));
+				array("username LIKE '%" . $this->request->data['User']['username'] . "%'"));
 		} elseif (isset($this->request->data['User']['email']) && $this->request->data['User']['email'] != '') {
 			$conditions = array_merge($parsedConditions,
 				array("email LIKE '" . $this->request->data['User']['email'] . "'"));
