@@ -65,7 +65,7 @@ class AppController extends Controller {
 		),
         'Arpu' => array(
             'categories' => array(
-                'Arpu' => '/Arpu/index',
+                'Arpu (Daily)' => '/Arpu/index',
             ),
             'activeMenu' => array('Arpu')
         ),
