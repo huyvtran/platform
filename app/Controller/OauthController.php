@@ -8,7 +8,7 @@ class OauthController extends AppController {
 	{
 		parent::beforeFilter();
 		$this->Auth->allow(array(
-			'userInfo', 'api_userAuthen', 'token', 'login'
+			'userInfo', 'api_userAuthen', 'token'
 		));
 	}
 
