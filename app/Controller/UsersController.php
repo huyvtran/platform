@@ -1283,7 +1283,7 @@ class UsersController extends AppController {
 	public function test_sendmail(){
         $options = array(
             'template' => 'default',
-            'subject' => __('Thay đổi mật khẩu tài khoản FunID'),
+            'subject' => __('Thay đổi mật khẩu tài khoản'),
             'layout' => 'default'
         );
         try {
