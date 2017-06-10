@@ -39,6 +39,25 @@ if (empty($data)) {
     goto a;
 }
 ?>
+<div id='chart'></div>
+<?php
+if (!$this->request->is('ajax')) {
+    $pointInterval = 3600 * 1000 * 24;
+    $m = (int) date('m', $fromTime) - 1;
+    $pointStart = '____Date.UTC(' . date('Y', $fromTime) . ', ' . $m . ', ' . date('d', $fromTime) . ')____';
+
+    $this->Highchart->render(array(
+        'title' => array('text' => 'Daily Active Users'),
+        'xAxis' => array('title' => array('text' => 'Dates')),
+        'yAxis' => array('title' => array('text' => 'Active Users')),
+        'plotOptions' => array(
+            'series' => array(
+                'pointStart' => $pointStart,
+                'pointInterval' => $pointInterval
+            )
+        )), array_reverse($data2));
+}
+?>
 <div class='row'>
     <div class='md-col-12' >
         <table class='table table-striped table-bordered table-data responsive'>
@@ -53,8 +72,8 @@ if (empty($data)) {
             <th class='int'>In Range</th>
             </thead>
             <tbody>
-            <?php
 
+            <?php
             # Calculate totals
             $totals = array();
             foreach($data as $v) {
