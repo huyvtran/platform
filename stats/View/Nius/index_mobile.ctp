@@ -64,7 +64,6 @@ if (!$this->request->is('ajax')) {
             ?>
             <td class='int total'>AVG</td>
             <th class='int total'>In Range</th>
-            <th class='int total'>TIU</th>
             </thead>
             <tbody>
 
@@ -89,7 +88,6 @@ if (!$this->request->is('ajax')) {
             }
             echo '<td class="int"><strong>' . n(array_sum($totals) / count($rangeDates)) . '</strong></td>';
             echo '<td class="int"><strong>' . n(array_sum($totals)) . '</strong></td>';
-            echo '<td class="int"><strong>' . n(array_sum($sums)) . '</strong></td>';
             echo '</tr>';
 
             foreach($data as $v) {
@@ -141,7 +139,6 @@ if (!$this->request->is('ajax')) {
                 <td class="int total total_data"><?php echo $a;?><?php echo ($class != '') ? '<label class="' . $class . '"></label>' : '';?><?php echo ($rate != '') ? $rate : '&nbsp;<span title="no data">--</span>';?></td>
                 <?php
                 echo '<td class="int total">' . n($range) . '</td>';
-                echo '<td class="int total">' . n($sums[$v['game_id']]) . '</td>';
                 echo '</tr>';
             }
             ?>
@@ -149,8 +146,5 @@ if (!$this->request->is('ajax')) {
         </table>
     </div>
 </div>
-<small class='dimmed'>
-    <strong>TIU</strong>: Total users.
-</small>
 <?php
 a:
