@@ -99,21 +99,23 @@ if (!empty($niuIndexPermission)) {
 <?php
 }
 ?>
+
+<div id="rev-datatable">
+    <h3>Revenues</h3>
+</div>
+
 <script type="text/javascript">
 	$(function() {
 		<?php 
 		if (!empty($game)) {
 			if (count($game) == 1) {
-				$appKey = $game['0']['Game']['app_key'];
 				$gameId = $game['0']['Game']['id'];
 			} else {
-				$appKey = Hash::extract($game, '{n}.Game.app_key');
 				$gameId = Hash::extract($game, '{n}.Game.id');
 			}
 		} else {
 			$gameId = '';
-			$appKey = '';
-		}		
+		}
 		$dauURL = $this->Html->url(array(
 			'controller' => 'daus',
 			'action' => 'index',
@@ -128,15 +130,29 @@ if (!empty($niuIndexPermission)) {
 			'fromTime' => $fromTime,
 			'toTime' => $toTime
 		));
+
+        $revURL = $this->Html->url(array(
+            'controller' => 'Revenues',
+            'action' => 'index',
+            'game_id' => $gameId,
+            'fromTime' => $fromTime,
+            'toTime' => $toTime
+        ));
 		?>
 
 		$.get('<?php echo $niuURL ?>', function(html) {
 			$("#nius-datatable").append(html);
 		});
+
 		$.get('<?php echo $dauURL ?>', function(html) {
 			$("#daus-datatable").append(html);
-		});		
-		$('select').chosen();
+		});
+
+        $.get('<?php echo $revURL ?>', function(html) {
+            $("#rev-datatable").append(html);
+        });
+
+        $('select').chosen();
 	})	
 
 </script>
