@@ -255,8 +255,7 @@ if (!$this->request->is('ajax')) {
 					bInfo: false
 				} );
 				new $.fn.dataTable.FixedColumns(table, {
-					leftColumns: 1,
-					rightColumns: 3
+					leftColumns: 1
 				});
 			});
 		</script>
