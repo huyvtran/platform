@@ -265,7 +265,7 @@ class CommandComponent extends Component {
 			'user_id'		=> $userId,
 			'token' 		=> $token['AccessToken']['token'],
 			'app_key'		=> $game['app'],
-			'app_secret'	=> $game['secret_key'],
+			'app_secret'	=> $game['secret_key'], 
 		);
 
 		$this->Session->write('Auth.Account.id', $accountId);
