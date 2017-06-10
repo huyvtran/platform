@@ -450,8 +450,7 @@ class AppController extends Controller {
         }
 
         $MobileDetect = new Mobile_Detect();
-        if ( $this->name == 'Daus'
-            && ( $MobileDetect->isMobile() || $MobileDetect->isTablet() )
+        if ( ( $MobileDetect->isMobile() || $MobileDetect->isTablet() )
         ){
             $this->view = 'index_mobile';
         }
