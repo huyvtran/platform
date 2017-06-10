@@ -11,7 +11,7 @@ $this->extend('/Common/blank');
 
 echo '<div class="row">';
 echo '<div class="span12 btn-group">';
-$logs = array('payment.log', 'user.log', 'apns.log', 'info.log', 'debug.log', 'error.log');
+$logs = array('info.log', 'debug.log', 'error.log');
 foreach($logs as $log) {
 	echo $this->Html->link(ucfirst($log), array('controller' => 'administrators', 'action' => 'readLog', 'admin' => true, $log), array('class' => 'btn'));
 }

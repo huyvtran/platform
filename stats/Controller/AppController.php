@@ -70,6 +70,13 @@ class AppController extends Controller {
             ),
             'activeMenu' => array('Arpu')
         ),
+        'Debug' => array(
+            'categories' => array(
+                'Logs - Local'			=> '/admin/Administrators/readLog',
+                'Logs - Clear'			=> '/admin/Administrators/clearLogs',
+            ),
+            'activeMenu' => array('debug')
+        ),
 	);
 
 
