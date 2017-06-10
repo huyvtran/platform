@@ -70,7 +70,6 @@ $this->Highchart->render(array(
 		?>
 		<td class='int total'>AVG</td>
 		<th class='int total'>In Range</th>
-		<th class='int total'>TIU</th>
 	</thead>
 	<tbody>
 		<tr class="selected-total">
@@ -80,7 +79,7 @@ $this->Highchart->render(array(
 				echo '<td></td>';
 			}
 			?>
-			<td></td><td></td><td></td>
+			<td></td><td></td>
 		</tr>	
 		<?php
 
@@ -104,7 +103,6 @@ $this->Highchart->render(array(
 		}
 		echo '<td class="int"><strong>' . n(array_sum($totals) / count($rangeDates)) . '</strong></td>';
 		echo '<td class="int"><strong>' . n(array_sum($totals)) . '</strong></td>';
-		echo '<td class="int"><strong>' . n(array_sum($sums)) . '</strong></td>';
 		echo '</tr>';
 
 		foreach($data as $v) {
@@ -156,7 +154,6 @@ $this->Highchart->render(array(
 			<td class="int total total_data"><?php echo $a;?><?php echo ($class != '') ? '<label class="' . $class . '"></label>' : '';?><?php echo ($rate != '') ? $rate : '&nbsp;<span title="no data">--</span>';?></td>
 		<?php
 			echo '<td class="int total">' . n($range) . '</td>';
-			echo '<td class="int total">' . n($sums[$v['game_id']]) . '</td>';
 			echo '</tr>';
 		}
 		?>
@@ -164,9 +161,7 @@ $this->Highchart->render(array(
 </table>
 </div>
 </div>
-<small class='dimmed'>
-<strong>TIU</strong>: Total users.
-</small>
+
 <?php
 if (!$this->request->is('ajax')) {
 ?>
@@ -183,7 +178,6 @@ if (!$this->request->is('ajax')) {
 		} );
 		new $.fn.dataTable.FixedColumns(table, {
 			leftColumns: 1,
-			rightColumns: 3
 		});
 	});
 </script>

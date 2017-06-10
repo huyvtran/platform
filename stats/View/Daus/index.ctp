@@ -171,21 +171,20 @@ $this->Highchart->render(array(
 if (!$this->request->is('ajax')) {
 ?>
 <script type="text/javascript">
-//	$(function() {
-//		var table = $('.table').DataTable({
-//			"scrollX": "100%",
-//			"scrollCollapse": true,
-//			"paging": false,
-//			"search": false,
-//			"bSort": false,
-//			bFilter: false,
-//			bInfo: false
-//		} );
-//		new $.fn.dataTable.FixedColumns(table, {
-//			leftColumns: 1,
-//			rightColumns: 2
-//		});
-//	});
+	$(function() {
+		var table = $('.table').DataTable({
+			"scrollX": "100%",
+			"scrollCollapse": true,
+			"paging": false,
+			"search": false,
+			"bSort": false,
+			bFilter: false,
+			bInfo: false
+		} );
+		new $.fn.dataTable.FixedColumns(table, {
+			leftColumns: 1,
+		});
+	});
 	$(document).ready(function(){
 
 	})
