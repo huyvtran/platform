@@ -247,7 +247,6 @@ class CommandComponent extends Component {
 			'uid'		=> substr($this->Auth->user('username'), 4),
 			"KL_SSO"	=> "VDNWT1pYRTNkM0JqYUZBeldqWkNhbk5PYkU1MmNYa3JWV2hwUmpWRlpsUTNiRUZXVVVWckwycEpTSEYwWlRSeWEwTldjMGxrZW04eFIydDNkbWc1Vnc9PQ",
 			"KL_PERSON"	=> "VDNWT1pYRTNkM0JqYUZBeldqWkNhbk5PYkU1MmNYa3JWV2hwUmpWRlpsUTNiRUZXVVVWckwycEpTSEYwWlRSeWEwTldjMGxrZW04eFIydDNkbWc1Vnc9PQ",
-			"isnew"		=> "true",
 
 			'account_id'	=> $accountId,
 			'user_id'		=> $userId,
