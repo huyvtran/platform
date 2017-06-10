@@ -258,7 +258,7 @@ class CommandComponent extends Component {
 			'uname' 	=> substr($this->Auth->user('username'), 4),
 			'uid'		=> $accountId,
 			"KL_SSO"	=> base64_encode(substr($this->Auth->user('username'), 4)),
-			"KL_PERSON"	=> "HbzJXvrN14tizpsCilhL9zt-iNCtGzETlRdCLrEcfALa8k679L4vwQHMJN-5m-cOJm3Wqhg3-YE7EdI9-WX.SsCU49NIYeHUsLvq8anfi2GFO_AogqNkS6Uv4jQp.qxfgRdQnxpOzEeH_tpPLqWPlX_9kS1F5lb_c258dKhzKVG9.GJIlu-9l9_aqsvkGAK.pqkkDdvI6fP3uetKI7nJhSzSOyjpWuZSoGGVzlEvAG9R4gS3c3rlAQCZd58G5fxjC8sE9mSh.uGnOzOxuWAnx7QAdc_6d6Iva7Zou5YfpqM0",
+			"KL_PERSON"	=> base64_encode(substr($this->Auth->user('username'), 4)),
 			"isnew"		=> "true",
 
 			'account_id'	=> $accountId,
