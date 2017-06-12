@@ -3,13 +3,13 @@
 App::uses('CakeTime', 'Utility');
 App::uses('AppController', 'Controller');
 
-class ArpuController extends AppController {
+class ArppuController extends AppController {
 
 	public $components = array('Search.Prg');
 
-	public $uses = array('LogArpuByDay');
+	public $uses = array('LogArppuByDay');
 
-	public $useModel = 'LogArpuByDay';
+	public $useModel = 'LogArppuByDay';
 	
 	public $presetVars = true;
 
@@ -21,19 +21,19 @@ class ArpuController extends AppController {
 	public function index()
 	{
 		$this->Prg->commonProcess();
-        $parsedConditions = $this->LogArpuByDay->parseCriteria($this->passedArgs);
+        $parsedConditions = $this->LogArppuByDay->parseCriteria($this->passedArgs);
 
         list($fromTime, $toTime) = $this->__processDates();
-        $rangeDates = $this->LogArpuByDay->getDates($fromTime, $toTime);
+        $rangeDates = $this->LogArppuByDay->getDates($fromTime, $toTime);
 
-        $games = $this->LogArpuByDay->Game->find('list', array(
+        $games = $this->LogArppuByDay->Game->find('list', array(
             'conditions' => array(
                 'Game.id' => $this->Auth->user('permission_game_stats'),
                 'Game.status' => 1
             )
         ));
 
-		$gamesCond = array('LogArpuByDay.game_id' => $this->Auth->user('permission_game_stats'));
+		$gamesCond = array('LogArppuByDay.game_id' => $this->Auth->user('permission_game_stats'));
 
         if (empty($this->request->params['fromTime'])) {
             $timeCond = (array) CakeTime::daysAsSql($fromTime, $toTime, $this->useModel . '.day');
@@ -41,13 +41,13 @@ class ArpuController extends AppController {
 
         $parsedConditions = array_merge($gamesCond, (array) $parsedConditions, $timeCond);
 
-		$log = $this->LogArpuByDay->find('all', array(
+		$log = $this->LogArppuByDay->find('all', array(
 			'conditions' => $parsedConditions,
 			'recursive' => -1,
 			'order' => array('game_id' => 'DESC')
 		));
 		
-        $data = $this->LogArpuByDay->dataToChartLine($log, $games, $fromTime, $toTime);
+        $data = $this->LogArppuByDay->dataToChartLine($log, $games, $fromTime, $toTime);
         $data = Hash::sort($data, '{n}.name', 'asc');
 
 		if (empty($data)) {

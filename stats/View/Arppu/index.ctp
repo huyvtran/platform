@@ -17,7 +17,7 @@ echo $this->extend('/Common/fluid');
 	<div class="span11 offset1">
 		<div>
 			<?php
-			echo $this->Form->create('LogArpuByDay', array('inputDefaults' => array('div' => false, 'label' => false), 'class' => 'form-inline'));
+			echo $this->Form->create('LogArppuByDay', array('inputDefaults' => array('div' => false, 'label' => false), 'class' => 'form-inline'));
 			echo $this->Form->input('game_id', array('empty' => '-- All Games --'));
 			echo $this->element('date_ranger_picker');
 			echo $this->Form->submit('Submit', array('class' => 'btn btn-default', 'div' => false));
@@ -155,10 +155,6 @@ if (!$this->request->is('ajax')) {
 			bFilter: false,
 			bInfo: false
 		} );
-//		new $.fn.dataTable.FixedColumns(table, {
-//			leftColumns: 0,
-//			rightColumns: 0
-//		});
 	});
 </script>
 <?php
