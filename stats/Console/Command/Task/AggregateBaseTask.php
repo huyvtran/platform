@@ -339,4 +339,60 @@ class AggregateBaseTask extends Shell {
             }
         }
     }
+
+    public function _arppu($date)
+    {
+        $this->out('Start Arppu ' . $date);
+
+        App::import('Model', 'Game');
+        App::import('Model', 'Payment');
+        App::import('Model', 'LogArppuByDay');
+
+        $Revenue = new Payment();
+        $Log = new LogArppuByDay();
+        $Game = new Game();
+
+        $results = $Revenue->find('all', array(
+            'fields' => array('AVG(price) as avg', 'game_id'),
+            'conditions' => array(
+                'time >='   => strtotime(date('Y-m-d 00:00:00', strtotime($date))),
+                'time <= '  => strtotime(date('Y-m-d 23:59:59', strtotime($date))),
+                'test'      => 0
+            ),
+            'group' => array('game_id'),
+            'recursive' => -1
+        ));
+
+        foreach ($results as $result) {
+            $game = $Game->findById($result['Payment']['game_id']);
+            if (!$game) {
+                $this->out('<warning>Can not find this game id: ' . $result['Payment']['game_id'] . '</warning>');
+                continue;
+            }
+
+            $log = $Log->find('first', array(
+                'conditions' => array(
+                    'game_id'   => $game['Game']['id'],
+                    'day'       => date('Y-m-d', strtotime($date))
+                )
+            ));
+
+            if ($log) {
+                $Log->id = $log['LogArppuByDay']['id'];
+            } else {
+                $Log->create();
+            }
+            $data = array(
+                'value'     => $result[0]['avg'],
+                'game_id'   => $game['Game']['id'],
+                'day'        => date('Y-m-d', strtotime($date))
+            );
+            if (!$Log->save($data)) {
+                print_r($data);
+                print_r($Log->validationErrors);
+            } else {
+                $this->out('<success>Saved</success>');
+            }
+        }
+    }
 }

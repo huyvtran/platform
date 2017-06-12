@@ -126,10 +126,10 @@ class AggregateShell extends AppShell {
     }
 
     public function Arpu(){
-        $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Retention");
+        $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Arpu");
 
         if( date('H') < 2 ){
-            $this->out(date('Y-m-d H:i:s') . " - disable run aggregate Retention");
+            $this->out(date('Y-m-d H:i:s') . " - disable run aggregate Arpu");
             return ;
         }
 
@@ -144,5 +144,26 @@ class AggregateShell extends AppShell {
         $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate Arpu");
         $yesterday = date('d-m-Y', strtotime('yesterday'));
         $this->AggregateBase->_arpu($yesterday);
+    }
+
+    public function Arppu(){
+        $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Arppu");
+
+        if( date('H') < 2 ){
+            $this->out(date('Y-m-d H:i:s') . " - disable run aggregate Arppu");
+            return ;
+        }
+
+        $date = date('d-m-Y');
+        if (isset($this->args[0])) {
+            $date = $this->args[0];
+        }
+        $this->AggregateBase->_arppu($date);
+    }
+
+    public function yesterdayArppu(){
+        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate Arppu");
+        $yesterday = date('d-m-Y', strtotime('yesterday'));
+        $this->AggregateBase->_arppu($yesterday);
     }
 }
