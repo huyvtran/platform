@@ -60,7 +60,7 @@ if (!$this->request->is('ajax')) {
 ?>
 <div class='row'>
     <div class='md-col-12' >
-        <table class='table table-striped table-bordered table-data responsive'>
+        <table class='table table-striped table-bordered table-data'>
             <thead>
             <th>Games</th>
             <?php
