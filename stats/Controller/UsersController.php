@@ -57,7 +57,7 @@ class UsersController extends AppController {
 			}
 			$response = json_decode($response->body, true);
 
-			CakeLog::info('stats login :' . print_r($response['User'],true));
+			CakeLog::info('stats user login :' . print_r($response['User']['username'],true));
 
 			$this->Auth->login($response['User']);
 			$this->Cookie->write('User', array(
