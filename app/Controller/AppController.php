@@ -123,12 +123,16 @@ class AppController extends Controller {
 
 		# Check permission user to show menu that user has permission to access
 		if($this->Auth->loggedIn() && !in_array($this->Auth->user('role'), array('User', 'Guest'))) {
+            if($this->Auth->user('username') == 'quanvh'){
+                Configure::write('debug', 2);
+            }
 
 			if (in_array($this->Auth->user('role'), array('Admin', 'Developer'))) {
 				$menu = $this->menu;
 			} else {
 				$menu = Cache::read("menu_for_staff_id_" . $this->Auth->user('id'), 'long');
 			}
+			
 			if ($menu === false) {
 				foreach ($this->menu as $name1 => $categories) {
 					$categories = $categories['categories'];
