@@ -166,6 +166,36 @@ class AppSchema extends CakeSchema {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
 	);
 
+	public $email_marketings = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'primary'),
+		'title' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'body' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'parsed_body' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'published_date' => array('type' => 'datetime', 'null' => false, 'default' => null, 'key' => 'index'),
+		'user_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10),
+		'game_id' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'layout' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'file' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'big5_chinese_ci', 'charset' => 'big5'),
+		'status' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 2),
+		'data' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'type' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 2),
+		'from_time' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'to_time' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'field' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'total' => array('type' => 'integer', 'null' => false, 'default' => '0'),
+		'view' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'click' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'ad_for_game_id' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'relating_users_on_email_marketing_ids' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			'published_date_status' => array('column' => array('published_date', 'status'), 'unique' => 0)
+		),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
+	);
+
 	public $games = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'primary'),
 		'title' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
@@ -263,6 +293,24 @@ class AppSchema extends CakeSchema {
 			'model' => array('column' => 'model', 'unique' => 0),
 			'row_id' => array('column' => 'foreign_key', 'unique' => 0),
 			'field' => array('column' => 'field', 'unique' => 0)
+		),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
+	);
+
+	public $link_trackings = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'model' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 32, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'foreign_key' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 32, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'convert_link' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 256, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'original_link' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 256, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'count' => array('type' => 'integer', 'null' => true, 'default' => '0'),
+		'type' => array('type' => 'integer', 'null' => true, 'default' => '0', 'length' => 4),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			'model_foreign_key_original_link_type' => array('column' => array('model', 'foreign_key', 'original_link', 'type'), 'unique' => 0, 'length' => array('original_link' => '255')),
+			'convert_link' => array('column' => 'convert_link', 'unique' => 0, 'length' => array('convert_link' => '255'))
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
 	);
