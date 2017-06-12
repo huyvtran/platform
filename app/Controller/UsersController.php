@@ -1299,8 +1299,17 @@ class UsersController extends AppController {
 
 		$prefix_user = 'p03_';
 		$game = $this->Common->currentGame();
-		if( !empty($game['app']) && in_array($game['app'], array('d316d77ea8430f82b1df322793e56f48', 'b41ec1c5766d423b73123cf637a8c5e3')) ){
-			$prefix_user = 'vnz_';
+		if( !empty($game['app']) ){
+			switch ($game['app']){
+				case 'd316d77ea8430f82b1df322793e56f48':
+				case 'b41ec1c5766d423b73123cf637a8c5e3':
+					$prefix_user = 'vnz_';
+					break;
+				case 'cbe6c67975de479253488fc1fcb3d5ff':
+				case 'a9f95c315d0f9f7f26413df0650ccf60':
+					$prefix_user = 'p02_';
+					break;
+			}
 		}
 
 		$this->request->data['User'] = $this->request->data;
@@ -1428,8 +1437,17 @@ class UsersController extends AppController {
 
 		$prefix_user = 'p03_';
 		$game = $this->Common->currentGame();
-		if( !empty($game['app']) && in_array($game['app'], array('d316d77ea8430f82b1df322793e56f48', 'b41ec1c5766d423b73123cf637a8c5e3')) ){
-			$prefix_user = 'vnz_';
+		if( !empty($game['app']) ){
+			switch ($game['app']){
+				case 'd316d77ea8430f82b1df322793e56f48':
+				case 'b41ec1c5766d423b73123cf637a8c5e3':
+					$prefix_user = 'vnz_';
+					break;
+				case 'cbe6c67975de479253488fc1fcb3d5ff':
+				case 'a9f95c315d0f9f7f26413df0650ccf60':
+					$prefix_user = 'p02_';
+					break;
+			}
 		}
 
 		$this->request->data['username'] = $prefix_user . $this->request->data['username'] ;
