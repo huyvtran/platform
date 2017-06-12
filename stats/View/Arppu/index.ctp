@@ -41,7 +41,7 @@ $m = (int) date('m', $fromTime) - 1;
 $pointStart = '____Date.UTC(' . date('Y', $fromTime) . ', ' . $m . ', ' . date('d', $fromTime) . ')____';
 
 $this->Highchart->render(array(
-	'title' => array('text' => 'Average revenue per user'),
+	'title' => array('text' => 'Average Revenue Per Paying User'),
 	'xAxis' => array('title' => array('text' => 'Dates')),
 	'yAxis' => array('title' => array('text' => 'Money')),
     'tooltip' => array('valueSuffix' => ' vnđ'),
