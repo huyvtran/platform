@@ -166,4 +166,13 @@ class AggregateShell extends AppShell {
         $yesterday = date('d-m-Y', strtotime('yesterday'));
         $this->AggregateBase->_arppu($yesterday);
     }
+
+    # run start
+    public function setArppu(){
+        $this->out(date('Y-m-d H:i:s') . " run all Arppu");
+        for ($i = 18; $i >= 0; $i--){
+            $date = date('Y-m-d', strtotime("-$i days"));
+            $this->AggregateBase->_arppu($date);
+        }
+    }
 }
