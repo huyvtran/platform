@@ -190,6 +190,9 @@ class GamesController extends AppController {
     {
         $gameData = $game['Game'];
 
+        # ko check
+        return $gameData;
+
         $errors = array();
         if (empty($gameData['fb_appid'])) {
             $errors['tech']['fb_appid'] = "<a href&#61;&quot;".Router::url(
