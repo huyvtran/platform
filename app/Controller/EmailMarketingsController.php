@@ -155,4 +155,100 @@ class EmailMarketingsController extends AppController {
         $email = $this->EmailMarketing->findById($id);
         $this->set(compact('email'));
     }
+
+    public function admin_edit($id = null)
+    {
+        $this->EmailMarketing->query("SET NAMES utf8mb4");
+        $directoryTemp = APP . 'View' . DS . 'Emails' . DS . 'html' . DS . 'marketings' . DS;
+        if (!$this->EmailMarketing->exists($id)) {
+            throw new NotFoundException('Invalid email marketing');
+        }
+
+        $this->EmailMarketing->contain('Game', 'User');
+        $email = $this->EmailMarketing->findById($id);
+
+        if ($this->request->is('post') || $this->request->is('put')) {
+
+            $this->request->data['EmailMarketing']['id'] = $id;
+            $this->request->data['EmailMarketing']['body'] = html_entity_decode($this->request->data['<http://schema.org/text>'], version_compare(phpversion(), '5.4', '<') ? ENT_COMPAT : (ENT_COMPAT | ENT_HTML401), 'UTF-8');
+            $this->request->data['EmailMarketing']['title'] = html_entity_decode($this->request->data['<http://schema.org/headline>'], version_compare(phpversion(), '5.4', '<') ? ENT_COMPAT : (ENT_COMPAT | ENT_HTML401), 'UTF-8');
+            $this->request->data['EmailMarketing']['layout'] = $this->request->query('template');
+            $list_keyword = array('@unsubscribe', '@giftcode', '@email');
+            if(preg_match_all('/\B\@{1}[a-zA-Z0-9]+\b/', $this->request->data['EmailMarketing']['body'],$matches))
+            {
+                foreach ($matches[0] as $key => $value) {
+                    if(!in_array(trim($value), $list_keyword))
+                    {
+                        $this->Session->setFlash('The email marketing could not be saved.', 'error');
+                        $result = array('code' => 4, 'message' => 'Sử dụng cú pháp @giftcode, @email chưa đúng');
+                        $this->set('result', $result);
+                        $this->set('_serialize', 'result');
+                        return false;
+                    }
+                }
+            }
+
+            // if(!preg_match("/\s+\@unsubscribe\[(.+)\]/", $this->request->data['EmailMarketing']['body']))
+            if(!preg_match("/\@unsubscribe\[([^\]]*)\]/i", $this->request->data['EmailMarketing']['body'],$matches))
+            {
+                $this->Session->setFlash('The email marketing could not be saved.', 'error');
+                $result = array('code' => 2, 'message' => 'Not found @unsubscribe in body');
+                $this->set('result', $result);
+                $this->set('_serialize', 'result');
+            } else {
+                if (preg_match("/\<a(.+)\@unsubscribe(.+)\>/", $this->request->data['EmailMarketing']['body'])) {
+                    $result = array('code' => 3, 'message' => 'Need to use the correct syntax @unsubscribe');
+                    $this->set('result', $result);
+                    $this->set('_serialize', 'result');
+                } else {
+                    CakeLog::info('check data email mkt: ' . print_r($this->request->data,true));
+                    if ($this->EmailMarketing->save($this->request->data)) {
+                        $this->Session->setFlash('The email marketing has been saved.', 'success');
+                        if ($this->request->is('ajax')) {
+                            $result = array('code' => 1, 'message' => 'saved email');
+                            $this->set('result', $result);
+                            $this->set('_serialize', 'result');
+                        } else {
+                            return $this->redirect(array('action' => 'index'));
+                        }
+                    } else {
+                        if ($this->request->is('ajax')) {
+                            $result = array('code' => 1, 'message' => 'The email marketing could not be saved.');
+                            $this->set('result', $result);
+                            $this->set('_serialize', 'result');
+                        } else {
+                            $this->Session->setFlash('The email marketing could not be saved.', 'error');
+                        }
+                    }
+                }
+            }
+        } else {
+            $options = array('conditions' => array('EmailMarketing.' . $this->EmailMarketing->primaryKey => $id));
+            $this->request->data = $this->EmailMarketing->find('first', $options);
+        }
+
+        if (	empty($email['EmailMarketing']['body'])
+            && 	$this->request->query('template')
+        ) {
+            $this->layout = 'Emails/html/marketings/' . $this->request->query('template');
+            $this->view = $directoryTemp . $this->request->query('template') . '.ctp';
+        } elseif (!empty($email['EmailMarketing']['body'])) {
+            $body = $email['EmailMarketing']['body'];
+            $this->layout = 'Emails/html/marketings/' . $email['EmailMarketing']['layout'];
+        }
+
+        $layout = basename($this->layout);
+        $title = $email['EmailMarketing']['title'];
+        $games = $this->EmailMarketing->Game->find('list', array('fields' => array('id', 'title_os')));
+
+        $this->set(compact('users', 'games', 'directoryTemp', 'title', 'body', 'layout', 'email'));
+    }
+
+    public function admin_test(){
+        $tmp = 'vuhongquan@123';
+        $code = $this->EmailMarketing->hashStr($tmp);
+        debug($code);
+        debug($this->EmailMarketing->unhashStr($code));
+        die;
+    }
 }
