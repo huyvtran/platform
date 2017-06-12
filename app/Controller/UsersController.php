@@ -704,8 +704,6 @@ class UsersController extends AppController {
 			'msg' => 'error'
 		);
 
-		CakeLog::info('input api register:' . print_r($this->request->data,true));
-
 		if (!isset(
 			$this->request->data['username'],
 			$this->request->data['pwd']
@@ -806,13 +804,10 @@ class UsersController extends AppController {
 					'data' => $this->User->validationErrors
 				);
 				goto end;
-
-				CakeLog::info('check validate register: '. print_r($result,true));
 			}
 		}
 
 		end:
-		CakeLog::info('output api register:' . print_r($result,true));
 		$this->set('result', $result);
 		$this->set('_serialize', 'result');
 	}
@@ -822,8 +817,6 @@ class UsersController extends AppController {
 			'ret' => 903,
 			'msg' => 'error'
 		);
-
-		CakeLog::info('input api login:' . print_r($this->request->data,true));
 
 		if (!isset(
 			$this->request->data['account'],
@@ -906,7 +899,6 @@ class UsersController extends AppController {
 		}
 
 		end:
-		CakeLog::info('output api login:' . print_r($result,true));
 		$this->set('result', $result);
 		$this->set('_serialize', 'result');
 	}
@@ -1055,7 +1047,6 @@ class UsersController extends AppController {
 		}
 
 		end:
-		CakeLog::info('output api register:' . print_r($result,true));
 		$this->set('result', $result);
 		$this->set('_serialize', 'result');
 	}
@@ -1154,7 +1145,6 @@ class UsersController extends AppController {
 		}
 
 		end:
-		CakeLog::info('output api login:' . print_r($result,true));
 		$this->set('result', $result);
 		$this->set('_serialize', 'result');
 	}
@@ -1273,7 +1263,6 @@ class UsersController extends AppController {
 		}
 
 		end:
-		CakeLog::info('output api change password:' . print_r($result,true));
 		$this->set('result', $result);
 		$this->set('_serialize', 'result');
 	}
