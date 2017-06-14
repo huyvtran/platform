@@ -59,39 +59,14 @@ if ($this->Session->read('Auth.User')) {
 		<?php
 			}
 		}
-
-		$role = $this->Session->read('Auth.User.role');
-		if ($role == 'Admin') {
 		?>
-<!--		<li class="dropdown">-->
-<!--			<a class="dropdown-toggle" data-toggle="dropdown" href="">Debug <b class="caret"></b></a>-->
-<!--			<ul class="dropdown-menu">-->
-<!--				<li>-->
-<!--					--><?php //
-//					echo $this->Html->link('Logs', array(
-//						'admin' => true, 'controller' => 'administrators', 'action' => 'readLog')) ?>
-<!--				</li>-->
-<!--				<li>--><?php
-//					echo $this->Html->link('Clear Cache', array(
-//						'admin' => true, 'controller' => 'administrators', 'action' => 'clearCache')) ?>
-<!--				</li>-->
-<!--				<li>--><?php
-//					echo $this->Html->link('Cmd', array(
-//						'admin' => true, 'controller' => 'administrators', 'action' => 'cmd')) ?>
-<!--				</li>-->
-<!--			</ul>-->
-<!--		</li>-->
-
-		<li class="dropdown">	
-			<?php if (empty($_SERVER['APPLICATION_ENV'])) { ?>
-				<a href="http://admin.muoriginfree.com:8880/admin">(Admin)</a>
-			<?php } else { ?>
-				<a href="<?php echo substr($this->request->webroot, 0, -6) ?>admin">(Admin)</a>
-			<?php } ?>
-		</li>
-		<?php
-		}
-		?>
+        <li class="dropdown">
+            <?php if (empty($_SERVER['APPLICATION_ENV'])) { ?>
+                <a href="http://admin.muoriginfree.com:8880/admin">(Admin)</a>
+            <?php } else { ?>
+                <a href="<?php echo substr($this->request->webroot, 0, -6) ?>admin">(Admin)</a>
+            <?php } ?>
+        </li>
 	</ul>
 <?php
 }
