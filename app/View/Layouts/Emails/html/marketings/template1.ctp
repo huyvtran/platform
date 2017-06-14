@@ -56,8 +56,8 @@ if ($this->Session->read('Auth.User')) {
 	<h3>Hint:</h3>
 	special characters sử dụng trong email (chú ý kí tự đặc biệt không được viết hoa): 
 	<pre>
-	<strong style='color:red'>Phần dùng unsubcribe mọi người đang dùng sai hết, xin hãy copy đoạn bên dưới "****"</strong>
-	@mobgamegiftcode: chỉ sử dụng cho email dạng giftcode
+	<strong style='color:red'>Xin hãy copy đoạn bên dưới "****"</strong>
+	@giftcode: chỉ sử dụng cho email dạng giftcode
 	@friendlyName: sẽ sử dụng name của user, nếu user không có name sẽ sử dụng username hoặc email
 	@unsubscribeLink: đường dẫn unsubscribe, đặt trong thẻ link với href=@unsubscribeLink và type=other
 	@unsubscribe[tieudeUnscribe]: Copy nội dung 1 trong các ngôn ngữ:

@@ -173,7 +173,10 @@ class EmailMarketingsController extends AppController {
             $this->request->data['EmailMarketing']['body'] = html_entity_decode($this->request->data['<http://schema.org/text>'], version_compare(phpversion(), '5.4', '<') ? ENT_COMPAT : (ENT_COMPAT | ENT_HTML401), 'UTF-8');
             $this->request->data['EmailMarketing']['title'] = html_entity_decode($this->request->data['<http://schema.org/headline>'], version_compare(phpversion(), '5.4', '<') ? ENT_COMPAT : (ENT_COMPAT | ENT_HTML401), 'UTF-8');
             $this->request->data['EmailMarketing']['layout'] = $this->request->query('template');
-            $list_keyword = array('@unsubscribe', '@giftcode', '@email');
+            $this->request->data['EmailMarketing']['game_id'] = $email['EmailMarketing']['game_id'];
+            $this->request->data['EmailMarketing']['type'] = $email['EmailMarketing']['type'];
+
+            $list_keyword = array('@unsubscribe', '@unsubscribeLink', '@giftcode', '@email');
             if(preg_match_all('/\B\@{1}[a-zA-Z0-9]+\b/', $this->request->data['EmailMarketing']['body'],$matches))
             {
                 foreach ($matches[0] as $key => $value) {
@@ -201,7 +204,7 @@ class EmailMarketingsController extends AppController {
                     $this->set('result', $result);
                     $this->set('_serialize', 'result');
                 } else {
-                    CakeLog::info('check data email mkt: ' . print_r($this->request->data,true));
+                    CakeLog::info('check data email mkt: ' . print_r($this->request->data['EmailMarketing'],true));
                     if ($this->EmailMarketing->save($this->request->data)) {
                         $this->Session->setFlash('The email marketing has been saved.', 'success');
                         if ($this->request->is('ajax')) {
