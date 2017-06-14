@@ -57,6 +57,15 @@ class AdministratorsController extends AppController{
 		}
 	}
 
+    public function admin_clearLogs()
+    {
+        exec('cat /dev/null > ' . TMP . 'logs' . DS . 'info.log');
+        exec('cat /dev/null > ' . TMP . 'logs' . DS . 'debug.log');
+        exec('cat /dev/null > ' . TMP . 'logs' . DS . 'error.log');
+        $this->Session->setFlash('Đã xóa trắng file log debug và error','success');
+        $this->redirect(array('action' => 'index'));
+    }
+
 	public function admin_redis()
 	{
 		$configs = Configure::read('Redis_Configs');

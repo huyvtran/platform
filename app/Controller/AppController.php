@@ -74,6 +74,7 @@ class AppController extends Controller {
 		'Debug' => array(
 			'categories' => array(
 				'Logs - Local'			=> '/admin/administrators/readLog',
+                'Logs - Clear'			=> '/admin/administrators/clearLogs',
 				'Cmd'					=> '/admin/administrators/cmd',
 				'Redis'					=> '/admin/administrators/redis',
 			),
