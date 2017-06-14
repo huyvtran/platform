@@ -13,7 +13,7 @@ echo '<div class="row">';
 echo '<div class="span12 btn-group">';
 $Folder = new Folder(TMP . 'logs' . DS);
 
-$logs = array( 'info.log', 'debug.log', 'error.log');
+$logs = array( 'info.log', 'payment.log', 'debug.log', 'error.log');
 $logs = array_unique(array_merge($logs, $Folder->find(".*\.log")));
 
 foreach($logs as $log) {
