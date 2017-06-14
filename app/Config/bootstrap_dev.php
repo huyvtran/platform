@@ -56,6 +56,7 @@ CakeLog::config('request', array(
 CakeLog::config('payment', array(
     'engine' => $logEngine,
     'types' => array('info', 'debug', 'error'),
+    'scopes' => array('payment'),
     'file' => 'payment',
 ));
 
@@ -136,6 +137,18 @@ Configure::write('Queue', array(
 		'timeout' => 1,
 		'persistent' => true
 	)
+));
+
+Configure::write('LinkTracking', array(
+    'default' => array(
+        'engine' => 'Redis',
+        'prefix' => 'link_tracking_default',
+        'server' => '127.0.0.1',
+        'port' => 6379,
+        'duration' => '+48 hours',
+        'timeout' => 1,
+        'persistent' => true
+    )
 ));
 
 if (!empty($_GET['app'])) {
