@@ -1523,6 +1523,137 @@ class UsersController extends AppController {
 		$this->set('result', $result);
 		$this->set('_serialize', 'result');
 	}
+
+    public function api_change_password_v26(){
+        try{
+            $result = array(
+                'status' => 1,
+                'messsage' => __('lỗi')
+            );
+
+            if (!isset(
+                $this->request->data['user_name'],
+                $this->request->data['password'],
+                $this->request->data['new_password']
+            )) {
+                $result = array(
+                    'status' => 2,
+                    'message' => __('Thiếu thông tin đổi mật khẩu')
+                );
+                goto end;
+            }
+
+            $prefix_user = 'p03_';
+            $game = $this->Common->currentGame();
+            if( !empty($game['app']) ){
+                switch ($game['app']){
+                    case 'd316d77ea8430f82b1df322793e56f48':
+                    case 'b41ec1c5766d423b73123cf637a8c5e3':
+                        $prefix_user = 'vnz_';
+                        break;
+                    case 'cbe6c67975de479253488fc1fcb3d5ff':
+                    case 'a9f95c315d0f9f7f26413df0650ccf60':
+                        $prefix_user = 'p02_';
+                        break;
+                    case 'd77a238697e63e5056810448d460c0d7':
+                    case 'ced3d169ffdb099ee6fede9d8f923f60':
+                        $prefix_user = 'r13_';
+                        break;
+                }
+            }
+
+            $old_password = $this->request->data['password'];
+
+            $this->request->data['User']['password'] = $this->request->data['new_password'];
+            $this->request->data['User']['username'] = $prefix_user . $this->request->data['user_name'];
+
+            $user = $this->User->findByUsername($this->request->data['User']['username']);
+            if (!empty($user)) {
+                $this->User->data['User']['password'] = $this->request->data['User']['password'];
+                $this->User->set($this->User->data);
+                if ($user['User']['password'] == Security::hash($old_password, 'sha1', true)) {
+                    $this->User->validator()->remove('password', 'confirmPassword');
+                    if ($this->User->validates(array('fieldList' => array('password')))) {
+                        $this->User->id = $user['User']['id'];
+                        $this->User->data['User']['password'] = Security::hash($this->request->data['User']['password'], 'sha1', true);
+                        if ($this->User->save($this->User->data, false, array('password'))) {
+                            if (isset($user['User']['id']) && !empty($user['User']['id'])) {
+                                $this->loadModel('AccessToken');
+                                $token = $this->AccessToken->generateToken($this->Common->currentGame('app'), $user['User']['id']);
+                                $this->loadModel('Account');
+                                $this->Account->contain();
+                                $account = $this->Account->findByUserIdAndGameId(
+                                    $user['User']['id'],
+                                    $this->Common->currentGame('id')
+                                );
+                                $data = array_merge(
+                                    array(
+                                        'User' => array(
+                                            'username' => substr($user['User']['username'], 4),
+                                            'account_id' => $account['Account']['account_id']
+                                        )),
+                                    array(
+                                        'access_token' 	=> $token['AccessToken']['token'],
+                                        'token_expire' 	=> $token['AccessToken']['expired'],
+                                        'indulge'		=> 1,
+                                        'uid'	=> $account['Account']['account_id'],
+                                        'ipv4'	=> $this->Common->publicClientIp(),
+                                        'uname'	=> substr($user['User']['username'], 4),
+                                        'KL_SSO'=> $account['Account']['account_id'],
+                                        "KL_PERSON"	=> "HbzJXvrN14tizpsCilhL9zt-iNCtGzETlRdCLrEcfALa8k679L4vwQHMJN-5m-cOJm3Wqhg3-YE7EdI9-WX.SsCU49NIYeHUsLvq8anfi2GFO_AogqNkS6Uv4jQp.qxfgRdQnxpOzEeH_tpPLqWPlX_9kS1F5lb_c258dKhzKVG9.GJIlu-9l9_aqsvkGAK.pqkkDdvI6fP3uetKI7nJhSzSOyjpWuZSoGGVzlEvAG9R4gS3c3rlAQCZd58G5fxjC8sE9mSh.uGnOzOxuWAnx7QAdc_6d6Iva7Zou5YfpqM0",
+                                        "isnew"		=> "true"
+                                    )
+                                );
+
+                                $result = array(
+                                    'retcode' 	=> 0,
+                                    'data' 		=> $data,
+                                    'message' 	=> __('Đổi mật khẩu thành công')
+                                );
+                                goto end;
+                            }
+                        } else {
+                            $result = array(
+                                'retcode' 	=> 5,
+                                'retmsg' 	=> __('Đổi mật khẩu không thành công, không lưu được dữ liệu')
+                            );
+                            goto end;
+                        }
+                    } else {
+                        if (!empty($this->User->validationErrors)) {
+                            $result = array(
+                                'retcode' 	=> 5,
+                                'retmsg' 	=> $this->User->validationErrors['password'][0]
+                            );
+                            goto end;
+                        }
+                    }
+                } else {
+                    $result = array(
+                        'retcode' 	=> 5,
+                        'retmsg' 	=> __('Mật khẩu cũ không chính xác')
+                    );
+                    goto end;
+                }
+            } else {
+                $result = array(
+                    'retcode' 	=> 4,
+                    'retmsg' 	=> __('Không tìm thấy người chơi')
+                );
+                goto end;
+            }
+        }catch (Exception $e){
+            $result = array(
+                'retcode' 	=> 500,
+                'retmsg' 	=> __('Lỗi không xác định')
+            );
+            goto end;
+        }
+
+        end:
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
+    }
 	
 	public function test_sendmail(){
         $options = array(
