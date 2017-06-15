@@ -328,4 +328,26 @@ class CommonComponent extends Component {
 			CakeLog::error("Bạn không thể thực hiện hành động này");
 		}
 	}
+
+	public function getAccount(){
+        $user = $this->Auth->user();
+        $game = $this->currentGame();
+
+        if (empty($user) || empty($game)) {
+            throw new BadRequestException('Account is invalid');
+        }
+
+        $this->loadModel('Account');
+        $this->Account->contain();
+        $account = $this->Account->findAllByGameIdAndUserId($game['id'], $user['id']);
+
+        if (empty($account)) {
+            throw new BadRequestException('Can not found account');
+        }
+        $accountId = $account[0]['Account']['id'];
+        if (!empty($account[0]['Account']['account_id'])) {
+            $accountId = $account[0]['Account']['account_id'];
+        }
+        return $accountId;
+    }
 }
