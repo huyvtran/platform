@@ -1178,6 +1178,8 @@ class UsersController extends AppController {
                 $prefix_user = 'vnz_';
             }
 
+            $prefix_user = ''; // client gọi sang vẫn có tiền tố, ko check
+
 			$old_password = $this->request->data['password'];
 
 			$this->request->data['User']['password'] = $this->request->data['new_password'];
@@ -1567,6 +1569,7 @@ class UsersController extends AppController {
                         break;
                 }
             }
+            $prefix_user = ''; // client gọi sang vẫn có tiền tố, ko check
 
             $old_password = $this->request->data['password'];
 
