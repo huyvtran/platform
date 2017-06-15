@@ -1080,7 +1080,7 @@ class UsersController extends AppController {
 		# Nếu user không thể login bằng email , check username
 		$this->request->data['User']['email'] = $this->request->data['username'];
 		$this->request->data['User']['password'] = $this->request->data['password'];
-		CakeLog::info("input login ldr: " . print_r($this->request->data,true));
+
 		if (!$this->Auth->user() && !empty($this->request->data['User']['email'])) {
 			$tempEmail = $this->request->data['User']['email'];
 			$this->User->contain();
