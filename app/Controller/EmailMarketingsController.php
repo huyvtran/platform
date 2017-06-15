@@ -247,11 +247,77 @@ class EmailMarketingsController extends AppController {
         $this->set(compact('users', 'games', 'directoryTemp', 'title', 'body', 'layout', 'email'));
     }
 
-    public function admin_test(){
-        $tmp = 'vuhongquan@123';
-        $code = $this->EmailMarketing->hashStr($tmp);
-        debug($code);
-        debug($this->EmailMarketing->unhashStr($code));
-        die;
+    public function admin_delete($id = null)
+    {
+        $this->EmailMarketing->id = $id;
+        if (!$this->EmailMarketing->exists()) {
+            throw new NotFoundException('Invalid email marketing');
+        }
+        $emailMarketing = $this->EmailMarketing->find('first', array(
+            'conditions' => array('id' => $id), 'recursive' => -1
+        ));
+
+        if (	$emailMarketing['EmailMarketing']['status'] != EmailMarketing::SEND_WAIT
+            && 	!in_array($this->Session->read('Auth.User.role'), array('Admin', 'Developer'))
+        ) {
+            $this->Session->setFlash('The email marketing could not be deleted when it was published.', 'error');
+            return $this->redirect($this->referer());
+        }
+
+        $this->request->onlyAllow('post', 'delete');
+        if ($this->EmailMarketing->delete()) {
+            $Redis = new RedisQueue('default', 'email-marketing-id-' . $id);
+            $Redis->delete();
+            $this->Session->setFlash('The email marketing has been deleted.', 'success');
+        } else {
+            $this->Session->setFlash('The email marketing could not be deleted. Please, try again.', 'error');
+        }
+        return $this->redirect($this->referer());
+    }
+
+    public function admin_publish($id = null)
+    {
+        if (!$id || !$email = $this->EmailMarketing->findById($id)) {
+            throw new NotFoundException('Không tìm thấy email này');
+        }
+
+        $this->EmailMarketing->id = $id;
+
+        # clear queue in resend case
+        $Redis = new RedisQueue('default', 'email-marketing-id-' . $id);
+        $Redis->delete();
+
+        if ($this->EmailMarketing->save(array('EmailMarketing' =>
+            array(
+                'status' => EmailMarketing::SEND_PUSHLISHED,
+                'published_date' => date('Y-m-d H:i:s')
+            )
+        ))
+        ) {
+
+            $this->Session->setFlash('Đã gửi email này <strong>'.$email['EmailMarketing']['title'].'</strong>',
+                'success');
+        } else {
+            $this->Session->setFlash('Có lỗi xảy ra');
+        }
+
+        $this->redirect($this->referer(array('action' => 'index'), true));
+    }
+
+    public function admin_unpublish($id = null)
+    {
+        if (!$id || !$email = $this->EmailMarketing->findById($id)) {
+            throw new NotFoundException('Không tìm thấy email này');
+        }
+
+        $this->EmailMarketing->id = $id;
+        if ($this->EmailMarketing->saveField('status', EmailMarketing::SEND_WAIT)) {
+            $this->Session->setFlash('Đã hủy gửi email này <strong>' . $email['EmailMarketing']['title'] . '</strong>',
+                'success');
+        } else {
+            $this->Session->setFlash('Có lỗi xảy ra');
+        }
+
+        $this->redirect($this->referer(array('action' => 'index'), true));
     }
 }
