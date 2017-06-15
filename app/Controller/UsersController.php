@@ -1169,6 +1169,9 @@ class UsersController extends AppController {
 				goto end;
 			}
 
+            $this->request->data['password'] = md5($this->request->data['password']);
+            $this->request->data['new_password'] = md5($this->request->data['new_password']);
+
             $prefix_user = 'ldr_';
             $game = $this->Common->currentGame();
             if( !empty($game['app']) && in_array($game['app'], array('d316d77ea8430f82b1df322793e56f48', 'b41ec1c5766d423b73123cf637a8c5e3')) ){
@@ -1542,6 +1545,9 @@ class UsersController extends AppController {
                 );
                 goto end;
             }
+
+            $this->request->data['password'] = md5($this->request->data['password']);
+            $this->request->data['new_password'] = md5($this->request->data['new_password']);
 
             $prefix_user = 'p03_';
             $game = $this->Common->currentGame();
