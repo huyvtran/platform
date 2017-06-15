@@ -122,6 +122,7 @@ class PaymentsController extends AppController {
 
                         'order_id'  => $result['data']['order_id'],
                         'user_id' 	=> $user['id'],
+                        'account_id'=> $this->Common->getAccount(),
                         'game_id' 	=> $game['id'],
 
                         'card_code' => $result['data']['card_code'],
@@ -151,22 +152,6 @@ class PaymentsController extends AppController {
         }
 
         if($return) return $result_api;
-	}
-
-	private function _getAccount($userId, $gameId){
-		# check switch account exist or not
-		$this->loadModel('Account');
-		$this->Account->contain();
-		$account = $this->Account->findAllByGameIdAndUserId($gameId, $userId);
-
-		if (empty($account)) {
-			throw new BadRequestException('Can not found account');
-		}
-		$accountId = $account[0]['Account']['id'];
-		if (!empty($account[0]['Account']['account_id'])) {
-			$accountId = $account[0]['Account']['account_id'];
-		}
-		return $accountId;
 	}
 
 	public function api_charge(){

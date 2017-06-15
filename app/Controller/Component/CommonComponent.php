@@ -337,9 +337,9 @@ class CommonComponent extends Component {
             throw new BadRequestException('Account is invalid');
         }
 
-        $this->loadModel('Account');
-        $this->Account->contain();
-        $account = $this->Account->findAllByGameIdAndUserId($game['id'], $user['id']);
+        $this->Controller->loadModel('Account');
+        $this->Controller->Account->contain();
+        $account = $this->Controller->Account->findAllByUserIdAndGameId( $user['id'], $game['id'] );
 
         if (empty($account)) {
             throw new BadRequestException('Can not found account');
