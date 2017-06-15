@@ -23,10 +23,11 @@ class PaymentsController extends AppController {
             'status' => 1,
             'message' => 'error'
         );
-        if($data){
+        if( !empty($data) ){
             $result = array(
                 'status' => 0,
-                'message' => 'success'
+                'message' => 'success',
+                'data' => $data
             );
         }
 
@@ -129,7 +130,7 @@ class PaymentsController extends AppController {
                     );
                     $paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
                     $paymentLib->add($data_payment);
-                    $result_api = true;
+                    $result_api = $data_payment;
                     if(!$return) $this->render('/Payments/result');
                 }elseif (!empty($result['status']) && $result['status'] == 1){
                     # trạng thái lỗi, thẻ đã sử dụng, hoặc thẻ không đúng
