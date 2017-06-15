@@ -1298,6 +1298,10 @@ class UsersController extends AppController {
 				case 'a9f95c315d0f9f7f26413df0650ccf60':
 					$prefix_user = 'p02_';
 					break;
+                case 'd77a238697e63e5056810448d460c0d7':
+                case 'ced3d169ffdb099ee6fede9d8f923f60':
+                    $prefix_user = 'r13_';
+                    break;
 			}
 		}
 
@@ -1436,6 +1440,10 @@ class UsersController extends AppController {
 				case 'a9f95c315d0f9f7f26413df0650ccf60':
 					$prefix_user = 'p02_';
 					break;
+                case 'd77a238697e63e5056810448d460c0d7':
+                case 'ced3d169ffdb099ee6fede9d8f923f60':
+                    $prefix_user = 'r13_';
+                    break;
 			}
 		}
 
