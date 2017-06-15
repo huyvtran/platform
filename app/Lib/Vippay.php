@@ -195,7 +195,7 @@ class Vippay {
             );
         }
 
-        CakeLog::info('check paygate vippay:' . print_r($result, true), 'payment');
+        CakeLog::info('check paygate vippay:' . print_r($resultVippay, true), 'payment');
         
         return $result;
     }
