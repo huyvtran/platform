@@ -37,9 +37,11 @@ class EmailMarketing extends AppModel {
 	);
 
 	public $belongsTo = array('User', 'Game');
+
 	public $filterArgs = array(
 		'game_id' => array('type' => 'value', 'field' => 'game_id'),
 	);
+
 	const SEND_COMPLETED = 4; # all notifications was pushed
 	const SEND_QUEUED = 3; # all notifications was queued
 	const SEND_QUEUEING = 2; # pushing to amazon sqs
@@ -65,7 +67,7 @@ class EmailMarketing extends AppModel {
 			foreach($giftcodes as $k => $v) {
 				$giftcodes[$k] = trim($v, " \t\n\r\0\x0B.");
 			}
-			
+
 			$this->data['EmailMarketing']['data']['addresses'] = implode("\n", $addresses);
 			$this->data['EmailMarketing']['data']['giftcodes'] = implode("\n", $giftcodes);
 		}

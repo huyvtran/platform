@@ -12,16 +12,42 @@ class EmailMarketingsController extends AppController {
 		$this->layout = 'default_bootstrap';
 	}
 
+    public $components = array(
+        'Search.Prg'
+    );
+
 	public function admin_index()
 	{
-		$this->EmailMarketing->recursive = 0;
-		$this->Paginator->settings['EmailMarketing']['order'] = array('EmailMarketing.id' => 'desc');
-		
-		if (!empty($this->request->data['EmailMarketing']['game_id'])){
-			$this->Paginator->settings['EmailMarketing']['conditions'] = array('Game.id'=>$this->request->data['EmailMarketing']['game_id']);
-		}
-		
-		$emailMarketings = $this->Paginator->paginate();
+        $this->Prg->commonProcess();
+        $this->request->data['EmailMarketing'] = $this->passedArgs;
+
+        $parsedConditions = array();
+        if(!empty($this->passedArgs)) {
+            $parsedConditions = $this->EmailMarketing->parseCriteria($this->passedArgs);
+        }
+
+        if( !empty($this->passedArgs) && empty($parsedConditions)
+        ){
+            if (	(count($this->passedArgs) == 1 && empty($this->passedArgs['page']))
+                ||	count($this->passedArgs) > 1
+            ) {
+                $this->Session->setFlash("Can not find anyone match this conditions", "error");
+            }
+        }
+
+        $this->paginate = array(
+            'EmailMarketing' => array(
+                'conditions' => $parsedConditions,
+                'contain' => array(
+                    'Game', 'User'
+                ),
+                'order' => array('EmailMarketing.id' => 'DESC'),
+                'recursive' => -1,
+                'limit' => 20
+            )
+        );
+
+        $emailMarketings = $this->paginate();
 
         $distinctGames = $this->EmailMarketing->Game->find('list',
 			array(
@@ -281,20 +307,19 @@ class EmailMarketingsController extends AppController {
             throw new NotFoundException('Không tìm thấy email này');
         }
 
-        $this->EmailMarketing->id = $id;
-
         # clear queue in resend case
         $Redis = new RedisQueue('default', 'email-marketing-id-' . $id);
         $Redis->delete();
 
-        if ($this->EmailMarketing->save(array('EmailMarketing' =>
-            array(
+        $this->EmailMarketing->id = $id;
+        $this->EmailMarketing->validator()->remove('type')->remove('game_id')->remove('title');
+        if ($this->EmailMarketing->save(array(
+            'EmailMarketing' => array(
                 'status' => EmailMarketing::SEND_PUSHLISHED,
                 'published_date' => date('Y-m-d H:i:s')
             )
         ))
         ) {
-
             $this->Session->setFlash('Đã gửi email này <strong>'.$email['EmailMarketing']['title'].'</strong>',
                 'success');
         } else {
