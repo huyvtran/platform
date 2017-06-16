@@ -82,28 +82,12 @@ class EmailMarketingsController extends AppController {
                     }
                     $this->request->data['EmailMarketing']['data']['giftcodes'] = file_get_contents($this->request->data['EmailMarketing']['giftcodefile']['tmp_name']);
                 }
-                $data_save = array();
-                if (!empty($this->request->data['EmailMarketing']['data']['segment']) && !empty($this->request->data['EmailMarketing']['data']['email_marketing_id'])) {
-                    $data = $this->EmailMarketing->find('first', array('conditions' => array('id' => $this->request->data['EmailMarketing']['data']['email_marketing_id'])));
-                    if (!empty($data)) {
-                        $data_save = array(
-                            'EmailMarketing' => array(
-                                'body' => $data['EmailMarketing']['body'],
-                                'layout' => $data['EmailMarketing']['layout'],
-                            ),
-                        );
-                    }
-                }
+
                 $this->request->data['EmailMarketing']['user_id'] = $this->Auth->user('id');
                 if ($new_email = $this->EmailMarketing->save($this->request->data)) {
                     $this->Session->setFlash('The email marketing has been saved.', 'success');
                 } else {
                     throw new Exception('The email marketing could not be saved. Please, try again.');
-                }
-                if (!empty($data_save)) {
-                    $id = $new_email['EmailMarketing']['id'];
-                    $this->EmailMarketing->id = $id;
-                    $this->EmailMarketing->save($data_save);
                 }
             } catch (Exception $e) {
                 $this->Session->setFlash($e->getMessage(), 'error');
@@ -124,11 +108,6 @@ class EmailMarketingsController extends AppController {
         }
         $distinctGames = $tmp;
 
-        $games = $this->EmailMarketing->Game->find('list', array(
-            'fields' => array('Game.id', 'Game.title_os'),
-            'conditions' => array('alias IS NOT NULL', 'os !=' => NULL, 'os !=' => '')
-        ));
-
         if (!empty($id)) {
             $this->request->data = $email = $this->EmailMarketing->findById($id);
             if (!empty($this->request->data['EmailMarketing']['data']['to_time'])) {
@@ -146,7 +125,7 @@ class EmailMarketingsController extends AppController {
 
         }
 
-        $this->set(compact('users', 'distinctGames', 'template', 'email', 'giftcodes', 'addresses', 'games'));
+        $this->set(compact('distinctGames', 'email'));
     }
 
     public function admin_sendTest($id)

@@ -151,6 +151,18 @@ Configure::write('LinkTracking', array(
     )
 ));
 
+Configure::write('EmailMarketing', array(
+    'default' => array(
+        'engine' => 'Redis',
+        'prefix' => 'email_marketing_default',
+        'server' => '127.0.0.1',
+        'port' => 6379,
+        'duration' => '+48 hours',
+        'timeout' => 1,
+        'persistent' => true
+    )
+));
+
 if (!empty($_GET['app'])) {
 	$_SERVER['HTTP_APP'] = $_GET['app'];
 }
