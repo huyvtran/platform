@@ -74,12 +74,12 @@ class EmailMarketingShell extends AppShell {
 
 	public function send()
 	{
-//		exec("ps aux | grep 'EmailMarketing send'  2>&1", $output, $result);
-//
-//		if (count($output) > 8) {
-//			$this->err("Too much processes, can not start");
-//			return false;
-//		}
+		exec("ps aux | grep 'EmailMarketing send'  2>&1", $output, $result);
+
+		if (count($output) > 8) {
+			$this->err("Too much processes, can not start");
+			return false;
+		}
 
         $this->out('Starting push date '. date('Y-m-d H:i:s') .' ...');
 		set_time_limit(200);
