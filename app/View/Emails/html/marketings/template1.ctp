@@ -17,16 +17,6 @@
 							</tr>
 
 							<tr>
-								<td colspan="4" style="text-align:center;vertical-align:center;font-family:Sans-serif;font-style:normal;font-weight:normal;font-size:1.0em">
-									<div>
-										<?php echo $this->Html->image('/uncommon/email_tem/images/line.jpg', array('width' => 474, 'height' => 21, 'fullBase' => true)); ?>
-										<br>
-										<br>
-									</div>
-								</td>
-							</tr>
-
-							<tr>
 								<td colspan="4" style="text-align:left;vertical-align:center;font-family:Sans-serif;font-style:normal;font-size: 1.1em;">
                                     <p>Xin chào !</p>
 									<p>One Piece is a 3D game for mobile dubbed lively and depicting truly the world of dreams.</p>

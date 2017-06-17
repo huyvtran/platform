@@ -42,9 +42,7 @@ class LinkTrackingsController extends AppController {
 				$this->Session->write('LinkTracking.EmailMarketingClicks', $clicks);
 				$Redis->zIncrBy('LinkTracking.EmailMarketing.click', 1, $emailMarketingId);
 			}
-
 		}
-		die;
 
 		return $this->redirect($link['LinkTracking']['original_link']);
 	}
