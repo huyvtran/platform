@@ -189,19 +189,14 @@ class EmailMarketing extends AppModel {
      **/
     public function send($id, $address, $params = array(), $test = false)
     {
-        if (is_array($id)) {
-            $email = $id;
-        } else {
-            $email = Cache::read('info_email_game_' . $id, 'email');
-            if (empty($email)) {
-                $this->contain(array('Game' => array('Website')));
-                $email = $this->findById($id);
-                Cache::write('info_email_game_' . $id, $email, 'email');
-            }
+        $email = Cache::read('info_email_game_' . $id, 'email');
+        if (empty($email)) {
+            $this->contain(array('Game' => array('Website')));
+            $email = $this->findById($id);
+            Cache::write('info_email_game_' . $id, $email, 'email');
         }
 
         $from = array('noreply@' . $email['Game']['Website']['url'] => $email['Game']['title']);
-        CakeLog::info('email mkt: ' . print_r($from,true));
 
         if (!empty($email['EmailMarketing']['parsed_body'])) {
             $emailBody = strtr($email['EmailMarketing']['parsed_body'], $params);

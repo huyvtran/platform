@@ -89,7 +89,11 @@ $cacheConfigs = array(
 	'info' => array(
 		'duration' => '+1 hour',
 		'prefix' => 'detect_',
-	)
+	),
+    'email' => array(
+        'duration' => '+6 hours',
+        'prefix' => 'email_'
+    )
 );
 
 foreach($cacheConfigs as $key => $config) {

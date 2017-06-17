@@ -24,9 +24,9 @@ class SendEmailTask extends Shell {
 				}
 				
 				# dont send this email, it was blocked
-				if ($this->EmailFeedback->wasBlocked($v['address'], $emailMarketing['EmailMarketing']['game_id'])) {
-					continue;
-				}				
+//				if ($this->EmailFeedback->wasBlocked($v['address'], $emailMarketing['EmailMarketing']['game_id'])) {
+//					continue;
+//				}
 				$Redis->rPush(array(
 					'address' => $v['address'],
 					'params' => $v['params'],
@@ -53,32 +53,19 @@ class SendEmailTask extends Shell {
 	 **/
 	public function send($email)
 	{
-		require ROOT . DS . 'vendors' . DS . 'aws' . DS . 'aws-autoloader.php';
-		$aws = Aws::factory(APP . 'Config' . DS . 'aws.php');
-		$SesClient = $aws->get('Ses');
-
 		$Redis = $this->getRedis($email);
 
 		$this->out('Sending: ' . $email['EmailMarketing']['id']);
 		$count = 0;
 		while (true){
-			if (!env('testing') && ($count == 0 || $count == 1000)) {
-				$SesClient->getSendStatistics();
-				$quota = $SesClient->getSendQuota();
-				$data = $quota->getAll();
-				if (($data['Max24HourSend'] - $data['SentLast24Hours']) < 10000) {
-					CakeLog::error("Close to sending limit: " . print_r($data, true), 'email');
-					break;
-				}
-			}
-
 			$m = $Redis->lPop();
-			
+
 			$count++;
 			
 			if ($m == false) {
 				break;
 			}
+
 			try {
 				$this->out($m['id'] . '-' . $m['address']);
 				$this->EmailMarketing->send($m['id'], $m['address'], $m['params']);

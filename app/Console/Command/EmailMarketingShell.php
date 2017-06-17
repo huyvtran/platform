@@ -14,7 +14,7 @@ class EmailMarketingShell extends AppShell {
 
 	public function pushSqs()
 	{
-		$this->out('Starting pushSqs ..');
+		$this->out('Starting pushSqs date '. date('Y-m-d H:i:s') .' ...');
 		set_time_limit(60 * 60 * 24);
 		ini_set('memory_limit', '512M');
 
@@ -29,7 +29,7 @@ class EmailMarketingShell extends AppShell {
 
 		if (!empty($email)) {
 			$this->EmailMarketing->id = $email['EmailMarketing']['id'];
-			// tmp $this->EmailMarketing->saveField('status', EmailMarketing::SEND_QUEUEING, array('callbacks' => false));
+			$this->EmailMarketing->saveField('status', EmailMarketing::SEND_QUEUEING, array('callbacks' => false));
 
 			$Redis = $this->SendEmail->getRedis($email);
 			$Redis->delete();
@@ -39,7 +39,7 @@ class EmailMarketingShell extends AppShell {
 			# Get email addresses and then push to sqs
 			$page = 1;
 			$limit = 100;
-			while ($data = $this->__getData($page, $email, $limit)) {
+			while ($data = $this->__getData($email, $page, $limit)) {
 				if ($data !== true) { // continue to loop but dont process this when data is true bool
 					$this->out('.', false);
 					if (is_array($data)) {
@@ -51,6 +51,7 @@ class EmailMarketingShell extends AppShell {
 						}
 					}
 				}
+                $this->out( 'Email Marketing pushSqs page: ' . $page );
 				$page++;
 			}
 
@@ -73,12 +74,14 @@ class EmailMarketingShell extends AppShell {
 
 	public function send()
 	{
-		exec("ps aux | grep 'EmailMarketing send'  2>&1", $output, $result);
-		if (count($output) > 8) {
-			$this->err("Too much processes, can not start");
-			return false;
-		}
-		$this->out('Starting ..');
+//		exec("ps aux | grep 'EmailMarketing send'  2>&1", $output, $result);
+//
+//		if (count($output) > 8) {
+//			$this->err("Too much processes, can not start");
+//			return false;
+//		}
+
+        $this->out('Starting push date '. date('Y-m-d H:i:s') .' ...');
 		set_time_limit(200);
 		ini_set('memory_limit', '384M');
 
@@ -114,7 +117,7 @@ class EmailMarketingShell extends AppShell {
 		}
 	}
 
-    private function __getData($page, $email, $limit = 100)
+    private function __getData($email, $page, $limit = 100)
     {
         $data = array();
 
@@ -134,7 +137,7 @@ class EmailMarketingShell extends AppShell {
                 }
                 break;
             case EmailMarketing::TYPE_GIFTCODE:
-                $data = $this->__getAddressesGiftcode($page, $email, $limit);
+                $data = $this->__getAddressesGiftcode($email, $page, $limit);
                 break;
         }
         return $data;
@@ -143,6 +146,7 @@ class EmailMarketingShell extends AppShell {
     private function __checkEmailDuplicate($email)
     {
         $data_email = array();
+        # chưa set duplicate email
         if (!empty($email['EmailMarketing']['data']['duplicate_email']) && $email['EmailMarketing']['data']['duplicate_email'] == 1) {
             if (!empty($email['EmailMarketing']['data']['game_id_duplicate'])) {
                 $account = ClassRegistry::init('Account');
@@ -174,7 +178,7 @@ class EmailMarketingShell extends AppShell {
         return $data_email;
     }
 
-    private function __getAddressesGiftcode($page, $email, $limit = 100)
+    private function __getAddressesGiftcode($email, $page, $limit = 100)
     {
         $from = ($page - 1) * $limit;
 
@@ -266,6 +270,37 @@ class EmailMarketingShell extends AppShell {
             } catch (Exception $e) {
                 CakeLog::error($e->getMessage(), 'email');
             }
+        }
+    }
+
+    private function __sendGiftcodes($email, $data)
+    {
+        foreach($data['addresses'] as $k => $address) {
+            # in case, use a giftcode, we won't get giftcode from data
+            if (!empty($data['giftcodes'][$k])) {
+                $giftcode = $data['giftcodes'][$k];
+            } else {
+                continue;
+            }
+
+            $email_address = $address;
+            $friendlyName  = $this->__getName($address);
+
+            $this->out($email_address);
+            $emailData[] = array(
+                'address' => $email_address,
+                'params'  => array(
+                    '@email'        => $email_address,
+                    '@friendlyName' => $friendlyName,
+                    '@giftcode'     => $giftcode,
+                )
+            );
+        }
+
+        try {
+            $this->SendEmail->pushRedisQueue($email, $emailData);
+        } catch (Exception $e) {
+            CakeLog::error('error email marketing pushSqs: ' . $e->getMessage());
         }
     }
 

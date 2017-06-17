@@ -181,7 +181,7 @@ class EmailMarketingsController extends AppController {
             $this->request->data['EmailMarketing']['game_id'] = $email['EmailMarketing']['game_id'];
             $this->request->data['EmailMarketing']['type'] = $email['EmailMarketing']['type'];
 
-            $list_keyword = array('@unsubscribe', '@unsubscribeLink', '@giftcode', '@email');
+            $list_keyword = array('@unsubscribe', '@unsubscribeLink', '@giftcode', '@email', '@friendlyName');
             if(preg_match_all('/\B\@{1}[a-zA-Z0-9]+\b/', $this->request->data['EmailMarketing']['body'],$matches))
             {
                 foreach ($matches[0] as $key => $value) {
