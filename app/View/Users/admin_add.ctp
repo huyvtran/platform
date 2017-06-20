@@ -13,12 +13,10 @@ $this->extend('/Common/blank');
                   'type' => 'select',
                   'options' => array(
                         'Admin' => 'Admin',
-                        'MarketingAdmin' => 'MarketingAdmin',
-                        'Content' => 'Content Manager',
+                        'Content'   => 'Content Manager',
                         'Marketing' => 'Marketing',
                         'Developer' => 'Developer',
-                        'Stats' => 'View Stats',
-                        'Test' => 'Test',
+                        'Distributor' => 'Distributor',
                         'User' => 'User',
                         'Guest' => 'Guest'
                   )

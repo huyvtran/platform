@@ -13,7 +13,7 @@ class Permission extends AppModel {
     );
 	const Distributor = 'distributor';
 	const TYPE_Distributor = 'stats';
-	public static $role  = array('Admin', 'Developer', 'Content', 'Marketing','Test', 'Stats');
+	public static $role  = array('Admin', 'Developer', 'Content', 'Marketing','Distributor');
     public $allGameRoles = array('MarketingAdmin', 'Admin', 'Developer');
 
     const ALL = 999999;

@@ -16,14 +16,15 @@ $this->extend('/Common/blank');
             echo $this->Form->input('role',array(
                   'type' => 'select',
                   'options' => array(
-                        'Admin' => 'Admin',
-                        'Content' => 'Content Manager',
-                        'Support' => 'Supporter',
-                        'Marketing' => 'Marketing',
-                        'Developer' => 'Developer',
-                        'Stats' => 'View Stats',
-                        'User' => 'User',
-                        'Guest' => 'Guest'
+                      'options' => array(
+                          'Admin'   => 'Admin',
+                          'Content'   => 'Content Manager',
+                          'Marketing' => 'Marketing',
+                          'Developer' => 'Developer',
+                          'Distributor' => 'Distributor',
+                          'User'    => 'User',
+                          'Guest'   => 'Guest'
+                      )
                   ),
                   'value' => $this->request->data['User']['role']
             ));

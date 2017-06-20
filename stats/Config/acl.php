@@ -127,6 +127,7 @@ $config['roles'] = array(
 	'Role/Content' => 'Role/Stats',
 	'Role/Marketing' => 'Role/Stats',
 	'Role/Developer' => 'Role/Admin',
+    'Role/Distributor' => null,
 );
 
 /**
@@ -135,13 +136,13 @@ $config['roles'] = array(
 $config['rules'] = array(
 	'allow' => array(
 		'*' => 'Role/Admin',
-		'nius/*' => 'Role/Content, Role/Marketing',
-		'daus/*' => 'Role/Content, Role/Marketing',
-        'daus/*' => 'Role/Content, Role/Marketing',
-        'Revenues/*'    => 'Role/Content, Role/Marketing',
-        'Retentions/*'  => 'Role/Content, Role/Marketing',
-        'Arpu/*'        => 'Role/Content, Role/Marketing',
-        'Arppu/*'       => 'Role/Content, Role/Marketing',
+		'nius/*' => 'Role/Content, Role/Marketing, Role/Distributor',
+		'daus/*' => 'Role/Content, Role/Marketing, Role/Distributor',
+        'daus/*' => 'Role/Content, Role/Marketing, Role/Distributor',
+        'Revenues/*'    => 'Role/Content, Role/Marketing, Role/Distributor',
+        'Retentions/*'  => 'Role/Content, Role/Marketing, Role/Distributor',
+        'Arpu/*'        => 'Role/Content, Role/Marketing, Role/Distributor',
+        'Arppu/*'       => 'Role/Content, Role/Marketing, Role/Distributor',
 	),
 	'deny' => array(
 		

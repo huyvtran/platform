@@ -121,12 +121,13 @@ $config['map'] = array(
  * role configuration
  */
 $config['roles'] = array(
-	'Role/Admin' => null,
-	'Role/User' => null,
-	'Role/Guest' => 'Role/User',
-	'Role/Content' => 'Role/User',
-	'Role/Marketing' => 'Role/User',
-	'Role/Developer' => 'Role/Admin',
+	'Role/Admin'    => null,
+	'Role/User'     => null,
+	'Role/Guest'    => 'Role/User',
+	'Role/Content'  => 'Role/User',
+	'Role/Marketing'    => 'Role/User',
+	'Role/Developer'    => 'Role/Admin',
+    'Role/Distributor'  => 'Role/User',
 );
 
 /**
