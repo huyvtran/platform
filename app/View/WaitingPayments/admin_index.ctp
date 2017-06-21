@@ -156,7 +156,7 @@ $this->extend('/Common/blank');
                 <td> <?php echo $payment['WaitingPayment']['order_id']; ?> </td>
                 <td> <?php echo $payment['WaitingPayment']['card_code']; ?> </td>
                 <td> <?php echo $payment['WaitingPayment']['card_serial']; ?> </td>
-                <td> <?php if( !empty($payment['Payment']['price']) ) echo $payment['Payment']['price']; ?> </td>
+                <td> <?php if( !empty($payment['Payment']['price']) ) echo number_format($payment['Payment']['price'], 0, '.', ','); ?> </td>
                 <td> <?php echo $payment['WaitingPayment']['time']; ?> </td>
                 <td> <?php if( !empty($payment['Payment']['type']) ) echo $payment['Payment']['type']; ?> </td>
                 <td>

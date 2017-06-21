@@ -161,7 +161,7 @@ $this->extend('/Common/blank');
                 <td> <?php echo $comp['CompensePayment']['order_id']; ?> </td>
                 <td> <?php echo $comp['CompensePayment']['card_code']; ?> </td>
                 <td> <?php echo $comp['CompensePayment']['card_serial']; ?> </td>
-                <td> <?php echo $comp['CompensePayment']['price']; ?> </td>
+                <td> <?php echo number_format( $comp['CompensePayment']['price'], 0, '.', ','); ?> </td>
                 <td> <?php echo $comp['CompensePayment']['type']; ?> </td>
                 <td>
                     <?php

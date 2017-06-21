@@ -178,7 +178,7 @@ $this->extend('/Common/blank');
                 <td> <?php echo $payment['Payment']['order_id']; ?> </td>
                 <td> <?php echo $payment['Payment']['card_code']; ?> </td>
                 <td> <?php echo $payment['Payment']['card_serial']; ?> </td>
-                <td> <?php echo $payment['Payment']['price']; ?> </td>
+                <td> <?php echo number_format($payment['Payment']['price'], 0, '.', ','); ?> </td>
                 <td> <?php echo $payment['Payment']['time']; ?> </td>
                 <td> <?php echo $payment['Payment']['type']; ?> </td>
                 <td>
