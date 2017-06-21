@@ -715,6 +715,8 @@ class UsersController extends AppController {
 			goto end;
 		}
 
+		CakeLog::info('api_register_takan:' . print_r($this->request->data,true), 'user');
+
 		$this->request->data['User'] = $this->request->data;
 		$this->request->data['User']['email'] = time().'@myapp.com';
 		$this->request->data['User']['role'] = 'User';
@@ -927,6 +929,8 @@ class UsersController extends AppController {
 			goto end;
 		}
         */
+
+        CakeLog::info('api_register_ldr:' . print_r($this->request->data,true), 'user');
 
 		if (!isset(
 			$this->request->data['user_name'],
@@ -1291,6 +1295,8 @@ class UsersController extends AppController {
 			);
 			goto end;
 		}
+
+        CakeLog::info('api_register_v26:' . print_r($this->request->data,true), 'user');
 
 		$prefix_user = 'p03_';
 		$game = $this->Common->currentGame();
