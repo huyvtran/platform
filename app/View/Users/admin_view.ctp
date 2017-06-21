@@ -25,7 +25,7 @@ $this->extend('/Common/blank');
 	}
 	?>
 	</li>
-	<li>FB Verified: <?php echo $user['User']['fb_verified'] ?></li>
+	<li>Phone: <?php echo $user['User']['phone'] ?></li>
 	<li>Created: <?php 
 				echo $this->Time->timeAgoInWords($user['User']['created'], array(
 					'end' => '1 year',
