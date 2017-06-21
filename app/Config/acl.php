@@ -141,6 +141,7 @@ $config['rules'] = array(
 		'users/admin_index' => 'Role/Content, Role/Marketing, Role/Developer',
 		'users/admin_editContent' => 'Role/Content',
         'users/admin_view' => 'Role/Content',
+        'users/admin_deactive' => 'Role/Content',
 
 		'websites/admin_setsession' => 'Role/Content, Role/Marketing, Role/Developer',
 
