@@ -1314,6 +1314,14 @@ class UsersController extends AppController {
                 case 'ced3d169ffdb099ee6fede9d8f923f60':
                     $prefix_user = 'r13_';
                     break;
+				case 'a3fb6fd597a695212ec9cbd1f533f5e1':
+				case 'c8e35bf746e1f07c018719f605a1ae39':
+					$prefix_user = 'r14_';
+					break;
+				case '52fc9a9c80be1d0c339d420e98ab7120':
+				case '297b1557bfe2e3737731e49308f34858':
+					$prefix_user = 'r15_';
+					break;
 			}
 		}
 
@@ -1456,6 +1464,14 @@ class UsersController extends AppController {
                 case 'ced3d169ffdb099ee6fede9d8f923f60':
                     $prefix_user = 'r13_';
                     break;
+				case 'a3fb6fd597a695212ec9cbd1f533f5e1':
+				case 'c8e35bf746e1f07c018719f605a1ae39':
+					$prefix_user = 'r14_';
+					break;
+				case '52fc9a9c80be1d0c339d420e98ab7120':
+				case '297b1557bfe2e3737731e49308f34858':
+					$prefix_user = 'r15_';
+					break;
 			}
 		}
 
@@ -1573,6 +1589,14 @@ class UsersController extends AppController {
                     case 'ced3d169ffdb099ee6fede9d8f923f60':
                         $prefix_user = 'r13_';
                         break;
+					case 'a3fb6fd597a695212ec9cbd1f533f5e1':
+					case 'c8e35bf746e1f07c018719f605a1ae39':
+						$prefix_user = 'r14_';
+						break;
+					case '52fc9a9c80be1d0c339d420e98ab7120':
+					case '297b1557bfe2e3737731e49308f34858':
+						$prefix_user = 'r15_';
+						break;
                 }
             }
             $prefix_user = ''; // client gọi sang vẫn có tiền tố, ko check
