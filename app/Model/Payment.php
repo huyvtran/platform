@@ -9,8 +9,10 @@ class Payment extends AppModel {
 	const TYPE_NETWORK_VIETTEL          = 'VTT';
 	const TYPE_NETWORK_VINAPHONE        = 'VNP';
 	const TYPE_NETWORK_MOBIFONE         = 'VMS';
+	const TYPE_NETWORK_GATE             = 'GATE';
 
-	const CHANEL_VIPPAY	= 1;
+	const CHANEL_VIPPAY	    = 1;
+    const CHANEL_HANOIPAY	= 2;
 
 	public $belongsTo = array(
 		'User', 'Game'
