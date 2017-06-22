@@ -59,7 +59,15 @@ class PaymentsController extends AppController {
 		# check to see if there is unresolved payment
 
         if ($this->request->is('post')) {
+            App::import('Lib', 'RedisCake');
+            $Redis = new RedisCake('action_count');
+            $Redis->incr('action_count_payment_all_game');
+            $Redis->expire('action_count_payment_all_game', 60*60); // set 1h
+            $count_redis = $Redis->get('action_count_payment_all_game');
+
             $chanel = Payment::CHANEL_VIPPAY; // default
+            if( is_numeric($count_redis) && $count_redis%2 ) $chanel = Payment::CHANEL_HANOIPAY;
+
             $data = $this->request->data;
             $data = array_merge($data, array(
                 'user_id' => $user['id'],
