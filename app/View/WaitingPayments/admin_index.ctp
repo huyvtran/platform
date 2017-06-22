@@ -172,6 +172,16 @@ $this->extend('/Common/blank');
                                 break;
                         }
                     }
+                    if ($chanel == '' && !empty($payment['Vippay']['type'])){
+                        switch ($payment['Vippay']['type']) {
+                            case Payment::CHANEL_VIPPAY :
+                                $chanel = 'Vippay';
+                                break;
+                            case Payment::CHANEL_HANOIPAY :
+                                $chanel = 'Hanoipay';
+                                break;
+                        }
+                    }
                     echo $chanel;
                     ?>
                 </td>

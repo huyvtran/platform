@@ -44,6 +44,12 @@ class WaitingPaymentsController extends AppController {
                         array('WaitingPayment.order_id = Payment.order_id')
                     )
                 ),
+                'Vippay' => array(
+                    'foreignKey' => false,
+                    'conditions' => array_merge(
+                        array('WaitingPayment.order_id = Vippay.order_id')
+                    )
+                ),
             ),
             'belongsTo' => array('Game', 'User')
         ));
@@ -57,10 +63,10 @@ class WaitingPaymentsController extends AppController {
 
         $this->paginate = array(
             'WaitingPayment' => array(
-                'fields' => array('WaitingPayment.*','Payment.*', 'User.username', 'User.id', 'Game.title', 'Game.os'),
+                'fields' => array('WaitingPayment.*','Payment.*', 'User.username', 'User.id', 'Game.title', 'Game.os', 'Vippay.type'),
                 'conditions' => $parsedConditions,
                 'contain' => array(
-                    'Game', 'User', 'Payment'
+                    'Game', 'User', 'Payment', 'Vippay'
                 ),
                 'order' => array('WaitingPayment.id' => 'DESC'),
                 'recursive' => -1,
