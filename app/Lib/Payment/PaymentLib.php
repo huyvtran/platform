@@ -38,12 +38,23 @@ class PaymentLib {
      */
     public function callPayApi($data){
         ClassRegistry::init('Payment');
-        if( !empty($data['chanel']) && $data['chanel'] == Payment::CHANEL_VIPPAY ){
-            $vippay = new Vippay();
-            $result = $vippay->call($data);
-            return $result;
+
+        $result = false;
+        if( !empty($data['chanel']) ){
+            switch ($data['chanel']){
+                case Payment::CHANEL_VIPPAY:
+                    $vippay = new Vippay();
+                    $result = $vippay->call($data);
+                    break;
+                case Payment::CHANEL_HANOIPAY:
+                    App::import('Lib', 'Hanoipay');
+                    $hanoipay = new Hanoipay();
+                    $result = $hanoipay->call($data);
+                    break;
+            }
         }
-        return false;
+
+        return $result;
     }
 
     /*
