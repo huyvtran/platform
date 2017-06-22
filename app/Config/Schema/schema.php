@@ -650,19 +650,24 @@ class AppSchema extends CakeSchema {
 
 	public $waiting_payments = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-		'order_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 50, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'order_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 50, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => null),
-		'game_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 5),
-		'card_code' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
-		'card_serial' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'game_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 5, 'key' => 'index'),
+		'card_code' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'card_serial' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'price' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'status' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 1),
-		'time' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'time' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'index'),
 		'detail' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1)
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			'game_id' => array('column' => 'game_id', 'unique' => 0),
+			'order_id' => array('column' => 'order_id', 'unique' => 0),
+			'card_serial_card_code' => array('column' => array('card_serial', 'card_code'), 'unique' => 0),
+			'card_code' => array('column' => 'card_code', 'unique' => 0),
+			'time' => array('column' => 'time', 'unique' => 0)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
 	);
