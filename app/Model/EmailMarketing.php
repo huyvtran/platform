@@ -89,7 +89,10 @@ class EmailMarketing extends AppModel {
             foreach ($links as $a) {
                 $href = $a->getAttribute('href');
 
-                if (substr($href, 0, 7) == 'mailto:' || $href == '@unsubscribeLink' || $LinkTracking->hasAny(array('convert_link' => $href))) {
+                if ( substr($href, 0, 7) == 'mailto:'
+                    || $href == '@unsubscribeLink'
+                    || $LinkTracking->hasAny(array('convert_link' => $href))
+                ) {
                     continue;
                 }
 
@@ -124,7 +127,8 @@ class EmailMarketing extends AppModel {
                 } else {
                     $data = $LinkTracking->find('first', array('conditions' => $conditions));
                     $parse = parse_url($data['LinkTracking']['convert_link']);
-                    if($parse != $email['Game']['Website']['url'])
+
+                    if(!empty($parse) && $parse != $email['Game']['Website']['url'])
                     {
                         $LinkTracking->id = $data['LinkTracking']['id'];
                         $data['LinkTracking']['convert_link'] = str_replace($parse['host'],$email['Game']['Website']['url'], $data['LinkTracking']['convert_link']);
