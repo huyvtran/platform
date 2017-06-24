@@ -47,12 +47,6 @@
                     </table>
 
                 </div>
-
-                <div style="border-top: 1px solid #ebebeb;background: #f5f5f5;text-align: center;padding: 16px 0;font-size:8pt;color:#999999">
-                    <div> This email was sent to @email</div>
-                    <div><a href="http://muriot.com" style="color: #c00607">Privacy Policy</a></div>
-                    <di>Please do not reply to this email.</di>
-                </div>
             </td>
         </tr>
 	</tbody>
