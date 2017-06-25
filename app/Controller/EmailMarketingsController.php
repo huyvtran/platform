@@ -209,7 +209,6 @@ class EmailMarketingsController extends AppController {
                     $this->set('result', $result);
                     $this->set('_serialize', 'result');
                 } else {
-                    CakeLog::info('check data email mkt: ' . print_r($this->request->data['EmailMarketing'],true));
                     if ($this->EmailMarketing->save($this->request->data)) {
                         $this->Session->setFlash('The email marketing has been saved.', 'success');
                         if ($this->request->is('ajax')) {

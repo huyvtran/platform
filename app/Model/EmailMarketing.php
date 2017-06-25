@@ -108,32 +108,41 @@ class EmailMarketing extends AppModel {
                     $LinkTracking->create();
                     $LinkTracking->save($data);
 
-                    if (empty($_SERVER['APPLICATION_ENV']) && $email['Game']['Website']) {
-                        $data['LinkTracking']['convert_link']
-                            = 'http://'
-                            .$email['Game']['Website']['url']
-                            .'/LinkTrackings/track/'
-                            .$this->hashStr($LinkTracking->id);
-                    } else {
-                        $data['LinkTracking']['convert_link']
-                            = Router::url(array(
-                            'controller' => 'LinkTrackings',
-                            'action' => 'track',
-                            'admin' => false,
-                            $this->hashStr($LinkTracking->id)
-                        ), true);
-                    }
+//                    if (empty($_SERVER['APPLICATION_ENV']) && $email['Game']['Website']) {
+//                        $data['LinkTracking']['convert_link']
+//                            = 'http://'
+//                            .$email['Game']['Website']['url']
+//                            .'/LinkTrackings/track/'
+//                            .$this->hashStr($LinkTracking->id);
+//                    } else {
+//                        $data['LinkTracking']['convert_link']
+//                            = Router::url(array(
+//                            'controller' => 'LinkTrackings',
+//                            'action' => 'track',
+//                            'admin' => false,
+//                            $this->hashStr($LinkTracking->id)
+//                        ), true);
+//                    }
+
+                    $data['LinkTracking']['convert_link']
+                        = Router::url(array(
+                        'controller' => 'LinkTrackings',
+                        'action' => 'track',
+                        'admin' => false,
+                        $this->hashStr($LinkTracking->id)
+                    ), true);
+
                     $LinkTracking->save($data);
                 } else {
                     $data = $LinkTracking->find('first', array('conditions' => $conditions));
-                    $parse = parse_url($data['LinkTracking']['convert_link']);
-
-                    if(!empty($parse) && $parse != $email['Game']['Website']['url'])
-                    {
-                        $LinkTracking->id = $data['LinkTracking']['id'];
-                        $data['LinkTracking']['convert_link'] = str_replace($parse['host'],$email['Game']['Website']['url'], $data['LinkTracking']['convert_link']);
-                        $LinkTracking->saveField('convert_link', $data['LinkTracking']['convert_link']);
-                    }
+//                    $parse = parse_url($data['LinkTracking']['convert_link']);
+//
+//                    if(!empty($parse) && $parse != $email['Game']['Website']['url'])
+//                    {
+//                        $LinkTracking->id = $data['LinkTracking']['id'];
+//                        $data['LinkTracking']['convert_link'] = str_replace($parse['host'],$email['Game']['Website']['url'], $data['LinkTracking']['convert_link']);
+//                        $LinkTracking->saveField('convert_link', $data['LinkTracking']['convert_link']);
+//                    }
                 }
 
                 $a->setAttribute('href', $data['LinkTracking']['convert_link']);
