@@ -1729,7 +1729,8 @@ class UsersController extends AppController {
 			$this->request->data['User']['id'] = $user['id'];
 			$this->request->data['User']['active'] = 1;
 
-			$this->User->validator()->remove('password')->remove('username');
+			$this->User->validator()->remove('password')->remove('username')
+				->remove('phone', 'unique_phone');
 			if ($this->User->add($this->request->data, false)) {
 				$result = array(
 					'status' => 0,
