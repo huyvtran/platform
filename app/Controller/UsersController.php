@@ -1693,6 +1693,57 @@ class UsersController extends AppController {
         $this->set('result', $result);
         $this->set('_serialize', 'result');
     }
+
+	public function api_update_info()
+	{
+		$result = array(
+			'status' => 1,
+			'messsage' => __('lỗi')
+		);
+
+		if( !$this->Auth->loggedIn() ){
+			CakeLog::error('Vui lòng login hoặc truyền access token', 'user');
+			$result = array(
+				'status' => 2,
+				'messsage' => __('Vui lòng login hoặc truyền access token')
+			);
+			goto end;
+		}
+
+		if (!isset(
+			$this->request->data['email'],
+			$this->request->data['phone']
+		)) {
+			CakeLog::error('Thiếu dữ liệu khi gọi api', 'user');
+			$result = array(
+				'status' => 3,
+				'message' => 'Thiếu dữ liệu khi gọi api'
+			);
+			goto end;
+		}
+
+		$user = $this->Auth->user();
+
+		if (!empty($this->request->data)) {
+			$this->request->data['User'] = $this->request->data;
+			$this->request->data['User']['id'] = $user['id'];
+			$this->request->data['User']['active'] = 1;
+
+			$this->User->validator()->remove('password')->remove('username');
+			if ($this->User->add($this->request->data, false)) {
+				$result = array(
+					'status' => 0,
+					'message' => __('Cập nhật thông tin thành công')
+				);
+			}else{
+				CakeLog::error('user info:' . print_r($this->User->validationErrors,true), 'user');
+			}
+		}
+
+		end:
+		$this->set('result', $result);
+		$this->set('_serialize', 'result');
+	}
 	
 	public function test_sendmail(){
         $options = array(
