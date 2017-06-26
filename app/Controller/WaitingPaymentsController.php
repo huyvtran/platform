@@ -78,4 +78,38 @@ class WaitingPaymentsController extends AppController {
 
         $this->set(compact('orders', 'games'));
     }
+
+    public function api_index(){
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            CakeLog::error('Vui lòng login', 'payment');
+            throw new NotFoundException('Vui lòng login');
+        }
+        $user = $this->Auth->user();
+
+        $this->loadModel('WaitingPayment');
+        $this->loadModel('Game');
+        $gameIds = $this->Game->getSimilarGameId($game);
+
+        $limit = 5;
+        $page = 1;
+        if ( !empty($this->request->query('page')) ){
+            $page = $this->request->query('page');
+        }
+        $offset = ($page - 1)* $limit;
+
+        $data = $this->WaitingPayment->find('list', array(
+            'fields'     => array('WaitingPayment.*'),
+            'conditions' => array(
+                'user_id'   => $user['id'],
+                'game_id'   => $gameIds
+            ),
+            'recursive' => -1,
+            'limit'     => $limit,
+            'offset'    => $offset,
+            'order'     => array('id desc')
+        ));
+
+        debug($data);die;
+    }
 }

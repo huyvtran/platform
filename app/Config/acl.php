@@ -142,6 +142,7 @@ $config['rules'] = array(
 		'users/admin_editContent' => 'Role/Content',
         'users/admin_view' => 'Role/Content',
         'users/admin_deactive' => 'Role/Content',
+
 		'users/api_update_info' => 'Role/User',
 
 		'websites/admin_setsession' => 'Role/Content, Role/Marketing, Role/Developer',
@@ -160,7 +161,8 @@ $config['rules'] = array(
 
         'CompensePayments/*'    => 'Role/Content',
 
-        'WaitingPayments/*'     => 'Role/Content',
+        'WaitingPayments/admin_index'   => 'Role/Content',
+        'WaitingPayments/api_index'     => 'Role/User',
 	),
 	'deny' => array(
 		'users/admin_edit' => 'Role/Marketing, Role/Developer',
