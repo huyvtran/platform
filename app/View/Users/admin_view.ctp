@@ -101,14 +101,3 @@ foreach($user['Account'] as $account) {
     }
     ?>
 </ul>
-
-<h5>RoleID And Server</h5>
-<ul>
-<?php
-foreach ($areaRoles as $k => $v) {
-	echo '<li>';
-	echo 'Game: ' . $v['Game']['title'] . ' (' . $v['Game']['os'] . '), Area: ' . $v['LogEntergame']['area_id'] . ', RoleID: ' . $v['LogEntergame']['role_id'];
-	echo '</li>';	
-}
-?>
-</ul>
