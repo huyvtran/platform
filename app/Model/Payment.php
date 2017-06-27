@@ -45,6 +45,25 @@ class Payment extends AppModel {
         return date('U', strtotime(date('d-m-Y 23:59:59', $data['to_time'])));
     }
 
+    public function convertType($type){
+        $result = "";
+        switch ( $type ){
+            case Payment::TYPE_NETWORK_VIETTEL :
+                $result = "Viettel";
+                break;
+            case Payment::TYPE_NETWORK_VINAPHONE :
+                $result = "Vinaphone";
+                break;
+            case Payment::TYPE_NETWORK_MOBIFONE :
+                $result = "Mobifone";
+                break;
+            case Payment::TYPE_NETWORK_GATE :
+                $result = "Gate";
+                break;
+        }
+        return $result;
+    }
+
     function paginateCount($conditions = array(), $recursive = 0, $extra = array())
     {
         $parameters = compact('conditions');

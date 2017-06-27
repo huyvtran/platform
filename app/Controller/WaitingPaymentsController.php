@@ -92,34 +92,86 @@ class WaitingPaymentsController extends AppController {
         $user = $this->Auth->user();
 
         $this->loadModel('WaitingPayment');
-        $this->loadModel('Game');
-        $gameIds = $this->Game->getSimilarGameId($game);
+        $this->loadModel('Payment');
+        $gameIds = $this->Payment->Game->getSimilarGameId($game);
 
-        $limit = 20;
+        $limit = 5;
         $page = 1;
         if ( !empty($this->request->query('page')) ){
             $page = $this->request->query('page');
         }
         $offset = ($page - 1)* $limit;
 
+        $this->WaitingPayment->bindModel(array(
+            'hasOne' => array(
+                'Payment' => array(
+                    'foreignKey' => false,
+                    'conditions' => array_merge(
+                        array('WaitingPayment.order_id = Payment.order_id')
+                    )
+                )
+            )
+        ));
         $data = $this->WaitingPayment->find('all', array(
-            'fields'     => array('WaitingPayment.*'),
+            'fields'     => array('WaitingPayment.*', 'Payment.type', 'Payment.price' ),
             'conditions' => array(
-                'user_id'   => $user['id'],
-                'game_id'   => $gameIds
+                'WaitingPayment.user_id'   => $user['id'],
+                'WaitingPayment.game_id'   => $gameIds
             ),
+            'contain'   => array('Payment'),
             'recursive' => -1,
             'limit'     => $limit,
             'offset'    => $offset,
-            'order'     => array('id desc')
+            'order'     => array('WaitingPayment.id desc')
         ));
 
-        $data = Hash::extract($data, '{n}.WaitingPayment');
+        $data_tmp = array();
+        foreach ($data as $item){
+            $item_status = "";
+            if( isset($item['WaitingPayment']['status']) ){
+                switch ( $item['WaitingPayment']['status'] ){
+                    case WaitingPayment::STATUS_WAIT :
+                        $item_status = "Tạo giao dịch";
+                        break;
+                    case WaitingPayment::STATUS_QUEUEING :
+                        $item_status = "Chờ giao dịch";
+                        break;
+                    case WaitingPayment::STATUS_COMPLETED :
+                        $item_status = "Thành công";
+                        break;
+                    case WaitingPayment::STATUS_ERROR :
+                        $item_status = "Thẻ lỗi";
+                        break;
+                }
+            }
+
+            $item_price = 0;
+            if( !empty($item['Payment']['price']) ) $item_price = $item['Payment']['price'];
+
+            $item_type = '';
+            if( !empty($item['Payment']['type']) ){
+                $item_type = $this->Payment->convertType( $item['Payment']['type'] );
+            }
+
+            $tmp = array(
+                'id'        => $item['WaitingPayment']['id'],
+                'order_id'  => $item['WaitingPayment']['order_id'],
+                'status'    => $item_status,
+                'card_code' => $item['WaitingPayment']['card_code'],
+                'card_serial'   => $item['WaitingPayment']['card_serial'],
+                'price'         => $item_price,
+                'type'          => $item_type,
+                'created'       => $item['WaitingPayment']['created'],
+                'modified'      => $item['WaitingPayment']['modified']
+            );
+
+            $data_tmp[] = $tmp;
+        }
 
         $result = array(
             'status' => 0,
             'message' => 'success',
-            'data' => $data
+            'data' => $data_tmp
         );
 
         end:
