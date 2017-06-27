@@ -1296,10 +1296,11 @@ class UsersController extends AppController {
 			goto end;
 		}
 
-        CakeLog::info('api_register_v26:' . print_r($this->request->data,true), 'user');
-
 		$prefix_user = 'p03_';
 		$game = $this->Common->currentGame();
+
+        CakeLog::info('api_register_v26 - game id:' . $game['id'] . '\n data:' . print_r($this->request->data,true), 'user');
+
 		if( !empty($game['app']) ){
 			switch ($game['app']){
 				case 'd316d77ea8430f82b1df322793e56f48':
@@ -1426,7 +1427,6 @@ class UsersController extends AppController {
 		}
 
 		end:
-		CakeLog::info('output api register:' . print_r($result,true));
 		$this->set('result', $result);
 		$this->set('_serialize', 'result');
 	}
@@ -1546,7 +1546,6 @@ class UsersController extends AppController {
 		}
 
 		end:
-		CakeLog::info('output api login:' . print_r($result,true));
 		$this->set('result', $result);
 		$this->set('_serialize', 'result');
 	}
@@ -1702,7 +1701,7 @@ class UsersController extends AppController {
 		);
 
 		if( !$this->Auth->loggedIn() ){
-			CakeLog::error('Vui lòng login hoặc truyền access token', 'user');
+			CakeLog::error('Vui lòng login hoặc truyền access token tới api update info', 'user');
 			$result = array(
 				'status' => 2,
 				'messsage' => __('Vui lòng login hoặc truyền access token')
@@ -1714,7 +1713,7 @@ class UsersController extends AppController {
 			$this->request->data['email'],
 			$this->request->data['phone']
 		)) {
-			CakeLog::error('Thiếu dữ liệu khi gọi api', 'user');
+			CakeLog::error('Thiếu dữ liệu khi gọi api update info', 'user');
 			$result = array(
 				'status' => 3,
 				'message' => 'Thiếu dữ liệu khi gọi api'
