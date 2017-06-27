@@ -83,7 +83,11 @@ class WaitingPaymentsController extends AppController {
         $game = $this->Common->currentGame();
         if( empty($game) || !$this->Auth->loggedIn() ){
             CakeLog::error('Vui lòng login', 'payment');
-            throw new NotFoundException('Vui lòng login');
+            $result = array(
+                'status' => 1,
+                'message' => 'error',
+            );
+            goto end;
         }
         $user = $this->Auth->user();
 
@@ -91,14 +95,14 @@ class WaitingPaymentsController extends AppController {
         $this->loadModel('Game');
         $gameIds = $this->Game->getSimilarGameId($game);
 
-        $limit = 5;
+        $limit = 20;
         $page = 1;
         if ( !empty($this->request->query('page')) ){
             $page = $this->request->query('page');
         }
         $offset = ($page - 1)* $limit;
 
-        $data = $this->WaitingPayment->find('list', array(
+        $data = $this->WaitingPayment->find('all', array(
             'fields'     => array('WaitingPayment.*'),
             'conditions' => array(
                 'user_id'   => $user['id'],
@@ -110,6 +114,16 @@ class WaitingPaymentsController extends AppController {
             'order'     => array('id desc')
         ));
 
-        debug($data);die;
+        $data = Hash::extract($data, '{n}.WaitingPayment');
+
+        $result = array(
+            'status' => 0,
+            'message' => 'success',
+            'data' => $data
+        );
+
+        end:
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
     }
 }
