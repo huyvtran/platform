@@ -61,7 +61,7 @@ $this->Highchart->render(array(
 			'pointStart' => $pointStart,
 			'pointInterval' => $pointInterval
 		)
-	)), array_reverse($data2));
+	)), array_reverse($data));
 }
 ?>
 <div class='row'>
