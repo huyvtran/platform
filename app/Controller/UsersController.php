@@ -1310,27 +1310,6 @@ class UsersController extends AppController {
 
         CakeLog::info('api_register_v26 - game id:' . $game['id'] . '\n data:' . print_r($this->request->data,true), 'user');
 
-		if( !empty($game['app']) ){
-			switch ($game['app']){
-				case 'd316d77ea8430f82b1df322793e56f48':
-				case 'b41ec1c5766d423b73123cf637a8c5e3':
-					$prefix_user = 'vnz_';
-					break;
-				case 'cbe6c67975de479253488fc1fcb3d5ff':
-				case 'a9f95c315d0f9f7f26413df0650ccf60':
-					$prefix_user = 'p02_';
-					break;
-                case 'd77a238697e63e5056810448d460c0d7':
-                case 'ced3d169ffdb099ee6fede9d8f923f60':
-                    $prefix_user = 'r13_';
-                    break;
-				case 'a3fb6fd597a695212ec9cbd1f533f5e1':
-				case 'c8e35bf746e1f07c018719f605a1ae39':
-					$prefix_user = 'r14_';
-					break;
-			}
-		}
-
         if( !empty( $game['data']['prefix'] ) ){
             $prefix_user = $game['data']['prefix'] ;
         }
@@ -1459,27 +1438,6 @@ class UsersController extends AppController {
 
 		$prefix_user = 'p03_';
 		$game = $this->Common->currentGame();
-		if( !empty($game['app']) ){
-			switch ($game['app']){
-				case 'd316d77ea8430f82b1df322793e56f48':
-				case 'b41ec1c5766d423b73123cf637a8c5e3':
-					$prefix_user = 'vnz_';
-					break;
-				case 'cbe6c67975de479253488fc1fcb3d5ff':
-				case 'a9f95c315d0f9f7f26413df0650ccf60':
-					$prefix_user = 'p02_';
-					break;
-                case 'd77a238697e63e5056810448d460c0d7':
-                case 'ced3d169ffdb099ee6fede9d8f923f60':
-                    $prefix_user = 'r13_';
-                    break;
-				case 'a3fb6fd597a695212ec9cbd1f533f5e1':
-				case 'c8e35bf746e1f07c018719f605a1ae39':
-					$prefix_user = 'r14_';
-					break;
-			}
-		}
-
         if( !empty( $game['data']['prefix'] ) ){
             $prefix_user = $game['data']['prefix'] ;
         }
