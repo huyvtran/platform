@@ -38,9 +38,9 @@
 										Facebook fanpage: <a href="https://www.facebook.com/muriot" style="color: #9d0d14;text-decoration: underline">https://www.facebook.com/muriot</a><br>
 									</div>
 
-                                    <div style="padding: 5px 0">
-                                        Cảm ơn bạn đã đọc e-mail, nếu bạn không muốn tiếp tục nhận vui lòng click  @unsubscribe[vào đây]
-                                    </div>
+<!--                                    <div style="padding: 5px 0">-->
+<!--                                        Cảm ơn bạn đã đọc e-mail, nếu bạn không muốn tiếp tục nhận vui lòng click  @unsubscribe[vào đây]-->
+<!--                                    </div>-->
 								</td>
 							</tr>
                         </tbody>

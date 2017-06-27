@@ -59,7 +59,7 @@ if ($this->Session->read('Auth.User')) {
 	<strong style='color:red'>Xin hãy copy đoạn bên dưới "****"</strong>
 	@giftcode: chỉ sử dụng cho email dạng giftcode
 	@friendlyName: sẽ sử dụng name của user, nếu user không có name sẽ sử dụng username hoặc email
-	@unsubscribe[tieudeUnscribe]: Copy nội dung 1 trong các ngôn ngữ:
+	@unsubscribe[tieudeUnscribe]: Copy nội dung 1 trong các ngôn ngữ: (chưa sử dụng được nhé ^^)
 		****
 		Thanks for reading, If you don't want to continue, please @unsubscribe[click here]
 		Cảm ơn bạn đã đọc e-mail, nếu bạn không muốn tiếp tục nhận vui lòng click  @unsubscribe[vào đây]
