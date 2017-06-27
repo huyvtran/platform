@@ -632,17 +632,26 @@ class UsersController extends AppController {
     public function admin_view($id)
     {
         $id_game = $this->Auth->user('permission_game_default');
+
+        $this->loadModel('Game');
+        $list_games = $this->Game->find('list', array(
+            'fields' => array('id', 'title_os'),
+            'conditions' => array('id' => $id_game)
+        ));
+
+        $this->loadModel('Payment');
+        $payments = $this->Payment->find('all', array(
+            'fields' => array('SUM(price) as total, game_id'),
+            'conditions' => array('Payment.user_id' => $id, 'Payment.game_id' => $id_game),
+            'group' => array('game_id'),
+            'recursive' => -1
+        ));
+
         $this->User->bindModel(array(
             'hasOne' => array(
                 'LogUpdatedAccount'
             )
         ));
-        $this->loadModel('Game');
-        $appkeyToGame = $this->Game->find('list', array(
-            'fields' => array('app', 'title_os'),
-            'conditions' => array('id' => $id_game)
-        ));
-
         $this->User->contain( array(
             'Account' => array(
                 'Game', 'conditions' => array(
@@ -678,7 +687,7 @@ class UsersController extends AppController {
             'limit' => 1000
         ));
 
-        $this->set(compact('appkeyToGame', 'user', 'areaRoles'));
+        $this->set(compact('list_games', 'user', 'areaRoles', 'payments'));
         $this->layout = 'default_bootstrap';
     }
 

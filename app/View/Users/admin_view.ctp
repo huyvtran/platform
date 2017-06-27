@@ -88,6 +88,19 @@ foreach($user['Account'] as $account) {
 </div>
 </div>
 
+<h5>Payments</h5>
+<ul class='unstyled'>
+    <?php
+    foreach($payments as $order) {
+        echo '<li>';
+        if (!empty($list_games[$order['Payment']['game_id']])) {
+            $pay = $list_games[$order['Payment']['game_id']] . ': ' . $order[0]['total'] . ' vnđ ';
+            echo $this->Html->link('details ' . $pay, array('controller' => 'WaitingPayments', 'action' => 'index', 'username' => $user['User']['id'], 'game_id' => $order['Payment']['game_id']));
+        }
+        echo '</li>';
+    }
+    ?>
+</ul>
 
 <h5>RoleID And Server</h5>
 <ul>
