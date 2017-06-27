@@ -115,8 +115,9 @@ class WaitingPaymentsController extends AppController {
         $data = $this->WaitingPayment->find('all', array(
             'fields'     => array('WaitingPayment.*', 'Payment.type', 'Payment.price' ),
             'conditions' => array(
-                'WaitingPayment.user_id'   => $user['id'],
-                'WaitingPayment.game_id'   => $gameIds
+                'WaitingPayment.game_id'   => $gameIds,
+                'WaitingPayment.user_id'   => $user['id']
+
             ),
             'contain'   => array('Payment'),
             'recursive' => -1,
