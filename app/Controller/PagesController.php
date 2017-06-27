@@ -9,8 +9,7 @@ class PagesController extends AppController {
 	public $uses = array('Game', 'Website');
 
 	public $cacheAction = array(
-		'home' => '+30 minutes',
-		'landing' => '+30 minutes'
+		'home' => '+30 minutes'
 	);
 
 	public function beforeFilter()
@@ -25,26 +24,6 @@ class PagesController extends AppController {
 
 	public function home()
 	{
-//        $n = "<br/>";
-//        $time = 1496422800;
-//        echo $time . $n;
-//        echo date('Y-m-d H:i:s', $time) . $n;
-//
-//        $time = 1496454501;
-//        echo $time . $n;
-//        echo date('Y-m-d H:i:s', $time) . $n;
-//        die;
 		$this->redirect(array('controller' => 'Administrators', 'action' => 'index', 'admin' => true));
 	}
-
-
-
-	public function landing()
-	{
-		$time = time();
-		debug($time);
-		debug(date('Y-m-d H:i:s', $time));
-		die;
-	}
-	
 }
