@@ -217,23 +217,28 @@ class EmailMarketing extends AppModel {
             }
         }
 
-        $Email = new CakeEmail('amazonses');
+        try {
+            $Email = new CakeEmail('amazonses');
 
-        if ($email['EmailMarketing']['total'] > 10000) {
-            $Email->addHeaders(array('Precedence' => 'bulk'));
+            if ($email['EmailMarketing']['total'] > 10000) {
+                $Email->addHeaders(array('Precedence' => 'bulk'));
+            }
+
+            $Email->addHeaders(array('emailid' => $id));
+            $title = strtr($email['EmailMarketing']['title'], $params);
+            $Email->to($address)
+                ->subject($title)
+                ->from($from)
+                ->emailFormat('html');
+
+            if ($test) {
+                $Email->viewVars(array('forceSend' => true));
+            }
+            $sendMail = $Email->send($emailBody);
+            CakeLog::info('check response sendmail: ' . print_r($sendMail, true));
+        }catch (Exception $e){
+            CakeLog::error('error send mail mkt - ' . $e->getMessage());
         }
-
-        $Email->addHeaders(array('emailid' => $id));
-        $title = strtr($email['EmailMarketing']['title'], $params);
-        $Email->to($address)
-            ->subject($title)
-            ->from($from)
-            ->emailFormat('html');
-
-        if ($test) {
-            $Email->viewVars(array('forceSend' => true));
-        }
-        $Email->send($emailBody);
         return true;
     }
 
