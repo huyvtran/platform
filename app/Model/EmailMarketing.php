@@ -179,7 +179,7 @@ class EmailMarketing extends AppModel {
             Cache::write('info_email_game_' . $id, $email, 'email');
         }
 
-        $from = array('noreply@' . $email['Game']['Website']['url'] => $email['Game']['title']);
+        $from = array($email['Game']['support_email'] => $email['Game']['title']);
 
         if (!empty($email['EmailMarketing']['parsed_body'])) {
             $emailBody = strtr($email['EmailMarketing']['parsed_body'], $params);
@@ -227,7 +227,7 @@ class EmailMarketing extends AppModel {
         $title = strtr($email['EmailMarketing']['title'], $params);
         $Email->to($address)
             ->subject($title)
-//            ->from($from)
+            ->from($from)
             ->emailFormat('html');
 
         if ($test) {
