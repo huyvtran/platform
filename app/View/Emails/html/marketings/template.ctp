@@ -2,7 +2,7 @@
 	<tbody>
         <tr>
             <td>
-                <div style="padding: 20px 7% ">
+                <div style="padding: 5px 10% ">
                     <table border="0" cellpadding="0" cellspacing="0" style="width:500px;margin: 0 auto">
                         <tbody>
 							<tr>
