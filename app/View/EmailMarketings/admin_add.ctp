@@ -63,10 +63,10 @@
         } else {
             echo '<div class="alert alert-warning">Can not show the list giftcodes because too much giftcodes</div>';
         }
-        echo $this->Form->input('EmailMarketing.giftcodefile', array(
-            'type' => 'file',
-            'after' => '<br/><em><small>a giftcode per line - note: this file replace above text.</small></em>'
-        ))
+//        echo $this->Form->input('EmailMarketing.giftcodefile', array(
+//            'type' => 'file',
+//            'after' => '<br/><em><small>a giftcode per line - note: this file replace above text.</small></em>'
+//        ))
         ?>
     </div>
 </div><!-- /span5 -->
