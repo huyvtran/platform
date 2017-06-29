@@ -1,7 +1,8 @@
 <?php
 
 App::uses('AppModel', 'Model');
-App::uses('CakeEmail', 'Network/Email');
+App::uses('AppEmail', 'Network/Email');
+App::import('Lib', 'RedisCake');
 
 class EmailMarketing extends AppModel {
 
@@ -179,8 +180,6 @@ class EmailMarketing extends AppModel {
             Cache::write('info_email_game_' . $id, $email, 'email');
         }
 
-        $from = array($email['Game']['support_email'] => $email['Game']['title']);
-
         if (!empty($email['EmailMarketing']['parsed_body'])) {
             $emailBody = strtr($email['EmailMarketing']['parsed_body'], $params);
         } else {
@@ -218,7 +217,20 @@ class EmailMarketing extends AppModel {
         }
 
         try {
-            $Email = new CakeEmail('amazonses');
+            $config = "amazonses";
+            $Redis = new RedisCake('action_count');
+            $count_redis = $Redis->get('count_email_marketing_all_game');
+            if( is_numeric($count_redis) ){
+                $check_config_email = $count_redis%2 ;
+                switch ($check_config_email){
+                    case 1:
+                        $config = "amazonses1";
+                        break;
+                }
+            }
+
+            $Email = new AppEmail($config);
+            $from = array( key($Email->getConfig()['from']) => $email['Game']['title']);
 
             if ($email['EmailMarketing']['total'] > 10000) {
                 $Email->addHeaders(array('Precedence' => 'bulk'));
@@ -235,7 +247,6 @@ class EmailMarketing extends AppModel {
                 $Email->viewVars(array('forceSend' => true));
             }
             $sendMail = $Email->send($emailBody);
-            CakeLog::info('check response sendmail: ' . print_r($sendMail, true));
         }catch (Exception $e){
             CakeLog::error('error send mail mkt - ' . $e->getMessage());
         }
