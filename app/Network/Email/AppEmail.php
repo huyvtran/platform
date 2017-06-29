@@ -12,7 +12,7 @@ class AppEmail extends CakeEmail {
         $Redis->expire($key, 60*60);
     }
 
-    public function getConfig(){
-        return $this->_config;
+    public function getConfigFrom(){
+        return $this->_from;
     }
 }
