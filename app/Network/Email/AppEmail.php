@@ -1,5 +1,5 @@
 <?php
-
+App::uses('CakeEmail', 'Network/Email');
 class AppEmail extends CakeEmail {
     public function __construct($config = null)
     {
