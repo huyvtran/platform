@@ -10,12 +10,10 @@
 	</button>
 	<!-- <a class="brand" href="<?php #echo $this->Html->url(array('controller' => 'admin', 'admin' => false)) ?>" > -->
 	</a>
-	<?php
-	if ($this->Session->read('Auth.User') && !in_array($this->Session->read('Auth.User.role'), array('Distributor', 'Stats', 'User', 'Guest'))
-	) {
-	?>
+
 	<div class="nav-collapse navbar-collapse collapse" aria-expanded="true">
 		<ul class="nav">
+            <?php if ($this->Session->read('Auth.User') && !in_array($this->Session->read('Auth.User.role'), array('Distributor', 'Stats', 'User', 'Guest')) ) { ?>
 			<li class="dropdown" >
 				<a href="#" onclick="return false">
 				<i title="Admin Home" class="fa fa-home" style="color: white" onclick=";window.location.href=this.getAttribute('href');return false;" href="<?php echo $this->Html->url("/admin") ?>"></i>
@@ -121,14 +119,6 @@
 			?>
 			</li>
 
-			<li class="dropdown">
-				<?php if (empty($_SERVER['APPLICATION_ENV'])) { ?>
-					<a href="http://stats.muoriginfree.com:8880/stats/">(Stats)</a>
-				<?php } else { ?>
-					<a href="<?php echo $this->request->webroot ?>stats">(Stats)</a>
-				<?php } ?>
-			</li>
-
             <?php if(isset($error_phone) && in_array($this->Session->read('Auth.User.role'), array('Admin', 'Developer'))){
                 ?>
                 <li class="dropdown">
@@ -138,9 +128,18 @@
                     ?>
                 </li>
             <?php } ?>
+            <?php } ?>
+            
+            <li class="dropdown">
+                <?php if (empty($_SERVER['APPLICATION_ENV'])) { ?>
+                    <a href="http://stats.muoriginfree.com:8880/stats/">(Stats)</a>
+                <?php } else { ?>
+                    <a href="<?php echo $this->request->webroot ?>stats">(Stats)</a>
+                <?php } ?>
+            </li>
 		</ul>
 	</div>
-	<?php } ?>
+
 </div>
 </div>
 </div>
