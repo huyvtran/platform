@@ -130,7 +130,7 @@
             <?php } ?>
             <?php } ?>
 
-            <?php if ( $this->Session->read('Auth.User') ){ ?>
+            <?php if ($this->Session->read('Auth.User') && !in_array($this->Session->read('Auth.User.role'), array('Stats', 'User', 'Guest')) ) { ?>
             <li class="dropdown">
                 <?php if (empty($_SERVER['APPLICATION_ENV'])) { ?>
                     <a href="http://stats.muoriginfree.com:8880/stats/">(Stats)</a>
