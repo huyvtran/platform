@@ -185,7 +185,6 @@ class Hanoipay {
                 'messsage'  => 'chưa xác định chờ hệ thống thanh toán trả về',
                 'data'      => array(
                     'obj'   => $resultHanoipay,
-                    'price' => $resultHanoipay->Amount,
                     'time'  => time(),
                     'type'  => $data['type'],
                     'chanel'    => $data['chanel'],
@@ -201,7 +200,6 @@ class Hanoipay {
                 'messsage'  => 'thẻ lỗi hoặc đã được sử dụng',
                 'data'      => array(
                     'obj'   => $resultHanoipay,
-                    'price' => $resultHanoipay->Amount,
                     'time'  => time(),
                     'type'  => $data['type'],
                     'chanel'    => $data['chanel'],
