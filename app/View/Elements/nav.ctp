@@ -129,7 +129,8 @@
                 </li>
             <?php } ?>
             <?php } ?>
-            
+
+            <?php if ( $this->Session->read('Auth.User') ){ ?>
             <li class="dropdown">
                 <?php if (empty($_SERVER['APPLICATION_ENV'])) { ?>
                     <a href="http://stats.muoriginfree.com:8880/stats/">(Stats)</a>
@@ -137,6 +138,7 @@
                     <a href="<?php echo $this->request->webroot ?>stats">(Stats)</a>
                 <?php } ?>
             </li>
+            <?php } ?>
 		</ul>
 	</div>
 
