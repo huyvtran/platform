@@ -221,10 +221,16 @@ class EmailMarketing extends AppModel {
             $Redis = new RedisCake('action_count');
             $count_redis = $Redis->get('count_email_marketing_all_game');
             if( is_numeric($count_redis) ){
-                $check_config_email = $count_redis%2 ;
+                $check_config_email = $count_redis%3 ;
                 switch ($check_config_email){
+                    case 0:
+                        $config = "amazonses";
+                        break;
                     case 1:
                         $config = "amazonses1";
+                        break;
+                    case 2:
+                        $config = "amazonses2";
                         break;
                 }
             }
