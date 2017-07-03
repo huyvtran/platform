@@ -136,7 +136,25 @@ $config['roles'] = array(
 $config['rules'] = array(
 	'allow' => array(
 		'*' => 'Role/Admin',
+
+        'CompensePayments/*'    => 'Role/Content',
+
+        'EmailMarketings/*'     => 'Role/Content, Role/Marketing',
+
+        'games/admin_editDescription' => 'Role/Content',
+        'games/admin_index' => 'Role/Content, Role/Marketing, Role/Developer',
+
+        'genres/*' => 'Role/Content',
+
 		'Oauth/*' => 'Role/User',
+
+        'payments/api_pay'  => 'Role/User',
+        'payments/pay'      => 'Role/User',
+        'payments/api_charge'   => 'Role/User',
+        'payments/admin_index'  => 'Role/Content',
+
+        'permissions/*' => 'Role/Developer',
+        'permissions/admin_delete' => 'Role/Content',
 
 		'users/admin_index' => 'Role/Content, Role/Marketing, Role/Developer',
 		'users/admin_editContent' => 'Role/Content',
@@ -145,24 +163,10 @@ $config['rules'] = array(
 
 		'users/api_update_info' => 'Role/User',
 
-		'websites/admin_setsession' => 'Role/Content, Role/Marketing, Role/Developer',
-
-		'games/admin_editDescription' => 'Role/Content',
-		'games/admin_index' => 'Role/Content, Role/Marketing, Role/Developer',
-		
-		'permissions/*' => 'Role/Developer',
-		'permissions/admin_delete' => 'Role/Content',
-		'genres/*' => 'Role/Content',
-
-        'payments/api_pay'  => 'Role/User',
-        'payments/pay'      => 'Role/User',
-        'payments/api_charge'   => 'Role/User',
-        'payments/admin_index'  => 'Role/Content',
-
-        'CompensePayments/*'    => 'Role/Content',
-
         'WaitingPayments/admin_index'   => 'Role/Content',
         'WaitingPayments/api_index'     => 'Role/User',
+
+		'websites/admin_setsession' => 'Role/Content, Role/Marketing, Role/Developer',
 	),
 	'deny' => array(
 		'users/admin_edit' => 'Role/Marketing, Role/Developer',
