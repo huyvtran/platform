@@ -68,6 +68,7 @@ class AppController extends Controller {
                 'Payment - All'	    => '/admin/WaitingPayments',
                 'Payment - Index'	=> '/admin/payments',
                 'Payment - compense'=> '/admin/CompensePayments',
+                'Email Marketing'   => '/admin/EmailMarketings',
             ),
             'activeMenu' => array('tools')
         ),
