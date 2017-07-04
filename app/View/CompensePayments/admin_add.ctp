@@ -73,7 +73,8 @@ $this->extend('/Common/blank');
                 ),
                 'empty' => '-- All Chanel --',
                 'options' => array(
-                    Payment::CHANEL_VIPPAY => 'Vippay'
+                    Payment::CHANEL_VIPPAY => 'Vippay',
+                    Payment::CHANEL_HANOIPAY => 'Hanoipay'
                 ),
             ));
             ?>
