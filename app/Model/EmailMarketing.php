@@ -76,6 +76,16 @@ class EmailMarketing extends AppModel {
 	}
 
     public function beforeSave($options = array()) {
+	    # chỉ cho phép gửi 500 email trở lại
+        if ( !empty($this->data['EmailMarketing']['data']) ) {
+            $data_mkt = unserialize($this->data['EmailMarketing']['data']);
+            $addresses = explode("\n", $data_mkt['addresses']);
+            $addresses = array_filter($addresses);
+            if(count($addresses) > 500) {
+                throw new Exception('chỉ cho phép gửi 500 email trở lại.');
+            }
+        }
+
         if (!empty($this->data['EmailMarketing']['body'])) {
             $LinkTracking = ClassRegistry::init('LinkTracking');
             $this->contain('Game', 'Game.Website');
