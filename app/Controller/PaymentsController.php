@@ -330,4 +330,7 @@ class PaymentsController extends AppController {
         $payments = $this->paginate();
         $this->set(compact('payments', 'games'));
     }
+
+    public function pay_paypal(){
+    }
 }
