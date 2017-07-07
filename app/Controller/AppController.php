@@ -60,6 +60,8 @@ class AppController extends Controller {
 				'Games - Index'	=> '/admin/games',
                 'Games - Add'	=> '/admin/games/add',
 				'Games - Permissions' 	=> '/admin/games/permission',
+                'Product - Index' 	    => '/admin/products',
+                'Product - Add' 	    => '/admin/products/add',
 			),
 			'activeMenu' => array('games')
 		),
