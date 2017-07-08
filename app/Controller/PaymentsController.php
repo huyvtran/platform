@@ -331,6 +331,53 @@ class PaymentsController extends AppController {
         $this->set(compact('payments', 'games'));
     }
 
-    public function pay_paypal(){
+    public function pay_paypal_index(){
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            CakeLog::error('Vui lòng login', 'payment');
+            throw new NotFoundException('Vui lòng login');
+        }
+        $user = $this->Auth->user();
+
+        $paid_state = $this->request->query('state');
+
+        if (!$paid_state)
+            $paid_state = '';
+
+        if ($paid_state != '') {
+            $this->Session->write('paid.state', $paid_state);
+            Cache::write('paid_state_' . $game['app'] . '_' . $user['id'], $paid_state, 'info');
+        }
+
+        //get currency
+        $currency = $this->request->query('currency');
+
+        if (!$currency) {
+            $currency = 'USD';
+        } else {
+            $currency = strtolower($currency);
+        }
+
+        $gameData = $game['data'];
+
+        if (!isset($gameData['vcurrency']['type']) || empty($gameData['vcurrency']['type']))
+            $vcurrencyType = "diamond";
+        else
+            $vcurrencyType = $gameData['vcurrency']['type'];
+
+        //get list price
+        $this->loadModel('Product');
+        $products = $this->Product->find('all', array(
+            'conditions' => array(
+                'Product.game_id' => $game['id'],
+            ),
+            'order'     => array('Product.platform_price' => 'asc' ),
+            'recursive' => -1
+        ));
+
+        $this->set(compact('products', 'vcurrencyType', 'currency'));
+
+        $this->layout = 'payment';
+        $this->loadModel('Payment');
     }
 }
