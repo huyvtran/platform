@@ -338,6 +338,20 @@ class PaymentsController extends AppController {
             throw new NotFoundException('Vui lòng login');
         }
         $user = $this->Auth->user();
+        $token = $this->request->header('token');
+
+        //get currency
+        $currency = $this->request->query('currency');
+        if (!$currency) {
+            $currency = 'USD';
+        } else {
+            $currency = strtolower($currency);
+        }
+
+        App::uses('Paypal', 'Payment');
+        $paypal = new Paypal($game['app'], $token);
+        $linkPaypal = $paypal->buy("Caffe",3, $currency);
+        $this->redirect($linkPaypal);
 
         $paid_state = $this->request->query('state');
 
@@ -347,15 +361,6 @@ class PaymentsController extends AppController {
         if ($paid_state != '') {
             $this->Session->write('paid.state', $paid_state);
             Cache::write('paid_state_' . $game['app'] . '_' . $user['id'], $paid_state, 'info');
-        }
-
-        //get currency
-        $currency = $this->request->query('currency');
-
-        if (!$currency) {
-            $currency = 'USD';
-        } else {
-            $currency = strtolower($currency);
         }
 
         $gameData = $game['data'];
@@ -379,5 +384,60 @@ class PaymentsController extends AppController {
 
         $this->layout = 'payment';
         $this->loadModel('Payment');
+    }
+
+    public function pay_paypal_response(){
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            CakeLog::error('Vui lòng login', 'payment');
+            throw new NotFoundException('Vui lòng login');
+        }
+        $user = $this->Auth->user();
+
+        $paypal_id = $this->request->query('paymentId');
+        if( empty($paypal_id) ){
+            throw new NotFoundException('Lỗi giao dịch');
+        }
+
+        $clientId = Configure::read('Paypal.clientId');
+        $secret = Configure::read('Paypal.secret');
+
+        $paypal_token_url = "https://api.sandbox.paypal.com/v1/oauth2/token";
+        $paypal_payment_url = "https://api.sandbox.paypal.com/v1/payments/payment/";
+
+        $paypal_id = $this->request->query('paymentId');
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $paypal_token_url);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERPWD, $clientId.":".$secret);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
+
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        if(!empty($result)) {
+            $json = json_decode($result);
+
+            $accessToken = $json->access_token;
+
+            $ch1 = curl_init();
+            curl_setopt($ch1, CURLOPT_URL, $paypal_payment_url . $paypal_id);
+            curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch1, CURLOPT_HTTPHEADER, array(
+                'Authorization: Bearer ' . $accessToken,
+                'Accept: application/json',
+                'Content-Type: application/json'
+            ));
+
+            $result = curl_exec($ch1);
+            curl_close($ch1);
+
+            echo "<pre>"; print_r(json_decode($result));die;
+        }
     }
 }

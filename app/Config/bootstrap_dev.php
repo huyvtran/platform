@@ -180,6 +180,9 @@ if (!empty($_GET['app'])) {
 if (!empty($_GET['token'])) {
 	$_SERVER['HTTP_TOKEN'] = $_GET['token'];
 }
+if (!empty($_GET['qtoken'])) {
+    $_SERVER['HTTP_TOKEN'] = $_GET['qtoken'];
+}
 
 foreach($_GET as $key => $getParam){
 	if (stripos($key, 'app_game_') == 0) {
@@ -194,3 +197,10 @@ foreach($_GET as $key => $getParam){
 		}
 	}
 }
+
+Configure::write('Paypal', array(
+    'clientId'  => 'AaeZnJylkGvuFQo6jWowP0aVrjg6RDfGnkGMw7tgFNh-t2yULpCTgd1qCWlBgN6Mnw8dugMXjPPAdTsr',
+    'secret'    => 'EGqquORpqsQ7D9KPakOLSw3INfhZRk16Zg6FR0rTLqmzODvmy1IjQZtHAvST0Rh46kwbpgMorytlXQOk',
+    'ReturnUrl' => 'http://cms.platform.net.local/Payments/pay_paypal_response',
+    'CancelUrl' => 'http://cms.platform.net.local/Payments/pay_paypal_response'
+));
