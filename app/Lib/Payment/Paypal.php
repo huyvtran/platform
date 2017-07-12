@@ -1,8 +1,8 @@
 <?php
 class Paypal {
-    private $paypal;
-    private $user_token;
-    private $appkey;
+    protected $paypal;
+    protected $user_token;
+    protected $appkey;
 
     function __construct($appkey, $user_token)
     {
@@ -16,6 +16,8 @@ class Paypal {
         );
     }
 
+    # tạo giao dịch
+    # trả về link redirect paypal
     public function buy($nameProduct, $price, $currency = 'USD', $shipping = 0.00, $description = ''){
         $price_total = $price + $shipping;
 

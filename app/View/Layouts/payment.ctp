@@ -14,7 +14,7 @@
 <!-- nocache -->
 <?php
     echo $this->Html->css('/css/bootstrap.min.css');
-	echo $this->Html->css('/uncommon/payment/css/style.css');
+	echo $this->Html->css('/uncommon/payment/css/payment.css');
 
 	echo $this->Html->script('/js/jquery-2.0.0.min.js');
 
