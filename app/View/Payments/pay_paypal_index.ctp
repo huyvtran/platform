@@ -1,28 +1,25 @@
-<body>
-<div class="container-fluid" style="max-width: 800px">
-    <br/><br/>
-    <div id="page-wrapper">
-        <div class="col-xs-9">
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-default class-type">
-                    <input type="radio" name="type" value="<?php echo Payment::TYPE_NETWORK_VIETTEL ; ?>"> <img src="<?php echo $this->Html->url('/uncommon/payment/images/logo_vtel.png'); ?>" width="79px" height="39px">
-                </label>
-                <label class="btn btn-default class-type">
-                    <input type="radio" name="type" value="<?php echo Payment::TYPE_NETWORK_MOBIFONE ; ?>"> <img src="<?php echo $this->Html->url('/uncommon/payment/images/logo_mobi.png'); ?>" width="79px" height="39px">
-                </label>
-                <label class="btn btn-default class-type">
-                    <input type="radio" name="type" value="<?php echo Payment::TYPE_NETWORK_VINAPHONE ; ?>"> <img src="<?php echo $this->Html->url('/uncommon/payment/images/logo_vina.png'); ?>" width="79px" height="39px">
-                </label>
+<body class="rs">
+<div class="m-container">
+    <div class="box-lstNap pdm">
+        <div class="fixCen bd">
+            <h3></h3>
+            <div class="lstMG cf">
+                <?php if( !empty($products) ){ ?>
+                    <?php foreach ($products as $product){?>
+                        <a href="<?php echo $this->Html->url(array( 'controller' => 'payments', 'action' => 'pay_paypal_order',
+                            '?' => array(
+                                'app'   => $game['app'],
+                                'token' => $token,
+                                'productId' => $product['Product']['id']
+                            )
+                        )); ?>" class="btn-mg">
+                            <span class="f-knb "><i class="ico-mg"></i> <?php echo $product['Product']['price'] ?> </span>
+                            <span price="<?php echo $product['Product']['price'] ?>" class="f-tien" data-toggle="modal" data-target="#myModal"> <?php echo $product['Product']['platform_price'] ?> </span>
+                        </a>
+                    <?php } ?>
+                <?php } ?>
             </div>
         </div>
     </div>
 </div>
 </body>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.class-type').on('click', function (e) {
-            $('.class-type').css('background-color', 'white');
-            $(this).css('background-color', 'wheat');
-        });
-    });
-</script>

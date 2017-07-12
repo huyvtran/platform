@@ -18,24 +18,39 @@ input[type="checkbox"]{margin:0;vertical-align:-2px}button::-moz-focus-inner,inp
 .box-game .fixCen{padding: 15px 0 0;}
 .box-game.pdb .fixCen {padding: 0}
 .box-SGame .fixCen{padding: 0 0 70px ;}
+.box-lstNap .box-gameI{margin-bottom: 0;border: none}
 
 .bd{border: 1px solid #dbdbdb}
 
-.lstMG{width: 300px;margin: 0 auto 0;padding-bottom: 30px;}
+.lstNap, .lstMG{width: 300px;margin: 0 auto 0;padding-bottom: 30px;}
+.lstNap a{display: block; float: left; width: 145px; height: 95px; background: #e99b15; border-radius: 4px; -moz-border-radius: 4px;margin: 0 10px 10px 0; position: relative; color: #ffffff; font-size: 15px; text-align: center; padding-top: 65px; overflow:hidden; }
+.lstNap a:nth-child(2n), .lstMG a:nth-child(2n){margin-right: 0}
+.lstNap a i{display: block;position: absolute;left: 50%;top: 15px}
+
+.lstNap a.btn-thecao i{background: url("../images/vt.png") 0 0 no-repeat;height: 44px;width: 76px;margin-left: -38px;background-size: 76px 44px}
+.lstNap a.btn-thenh i{background: url("../images/bank.png") 0 0 no-repeat;height: 45px;width: 58.5px;margin-left: -29px;background-size: 58.5px 45px}
+.lstNap a.btn-thefc i{background: url("../images/fc.png") 0 0 no-repeat;height: 41.5px;width: 41.5px;margin-left: -21px;background-size: 41.5px 41.5px}
+.lstNap a.btn-diem i{background: url("../images/wl.png") 0 0 no-repeat;height: 42px;width: 42px;margin-left: -21px;background-size: 42px 42px}
+.lstNap a.btn-paypal i{background: url("../images/paypal.png") 0 0 no-repeat;height: 40px;width: 106px;margin-left: -51px;background-size: 106px 40px}
+
+.lstNap .sale {display: block;position: absolute; width: 0; height: 0; border-top: 70px solid #731100; border-right: 70px solid transparent; top: 0; left: 0;}
+.lstNap .saleContent {display: block; position: absolute; top: 18px; left: -4px; font-size: 12px; transform: rotate(-45deg); -webkit-transform: rotate(-45deg); -moz-transform: rotate(-45deg);}
 .lstMG a:nth-child(2n){margin-right: 0}
 .lstMG .btn-mg{width: 145px;display: block;float: left;margin: 0 10px 10px 0;height: 95px;border: 1px solid #f0b4a9;border-radius: 4px;-moz-border-radius: 4px;background: #ffddd7;}
+
 
 .cf:before,.cf:after{content:"";display:table}.cf:after{clear:both}
 
 .btn-mg .f-mg{color: #383838;font-size: 22px;font-weight: bold;display: block;padding: 10px 0 10px 60px;position: relative;text-shadow: 0 1px 0 #fff;}
+.btn-mg .f-knb{color: #383838;font-size: 22px;font-weight: bold;display: block;padding: 10px 0 10px 60px;position: relative;text-shadow: 0 1px 0 #fff;}
 .f-mg .ico-mg{ width: 39px;  height: 35px;  background: url(../images/kc.png) 0 1px no-repeat;  background-size: 39px 35px;  display: block;  position: absolute;  left: 15px;  top: 9px;  }
 .f-knb .ico-mg{  width: 40px;  height: 24px;  background: url(../images/knb.png) 0 1px no-repeat;  background-size: 40px 24px;  display: block;  position: absolute;  left: 15px;  top: 11px;  }
 .f-tien{display: block;height: 33px;color: #fff;line-height: 33px;width: 120px;margin: 0 auto;text-align: center;background: #e92c0b;border-radius: 4px;-moz-border-radius: 4px;font-weight: bold;font-size: 15px;/* text-shadow: 0 1px 0 #282828; */}
 
 @media (min-width:500px){
-    .lstMG{width: 455px}
-    .lstMG a:nth-child(2n){margin-right: 10px}
-    .lstMG a:nth-child(3n){margin-right: 0}
+    .lstNap, .lstMG{width: 455px}
+    .lstNap a:nth-child(2n), .lstMG a:nth-child(2n){margin-right: 10px}
+    .lstNap a:nth-child(3n), .lstMG a:nth-child(3n){margin-right: 0}
 }
 
 @media (max-width:640px){

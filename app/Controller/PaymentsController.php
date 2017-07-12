@@ -331,13 +331,26 @@ class PaymentsController extends AppController {
         $this->set(compact('payments', 'games'));
     }
 
+    public function pay_list(){
+        $this->layout = 'payment';
+
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            CakeLog::error('Vui lòng login', 'payment');
+            throw new NotFoundException('Vui lòng login');
+        }
+
+        $token = $this->request->header('token');
+        $this->set(compact('token', 'game'));
+    }
+
     public function pay_paypal_index(){
         $game = $this->Common->currentGame();
         if( empty($game) || !$this->Auth->loggedIn() ){
             CakeLog::error('Vui lòng login', 'payment');
             throw new NotFoundException('Vui lòng login');
         }
-        $user = $this->Auth->user();
+
         $token = $this->request->header('token');
 
         //get currency
@@ -348,23 +361,7 @@ class PaymentsController extends AppController {
             $currency = strtolower($currency);
         }
 
-        App::uses('Paypal', 'Payment');
-        $paypal = new Paypal($game['app'], $token);
-        $linkPaypal = $paypal->buy("Caffe",3, $currency);
-        $this->redirect($linkPaypal);
-
-        $paid_state = $this->request->query('state');
-
-        if (!$paid_state)
-            $paid_state = '';
-
-        if ($paid_state != '') {
-            $this->Session->write('paid.state', $paid_state);
-            Cache::write('paid_state_' . $game['app'] . '_' . $user['id'], $paid_state, 'info');
-        }
-
         $gameData = $game['data'];
-
         if (!isset($gameData['vcurrency']['type']) || empty($gameData['vcurrency']['type']))
             $vcurrencyType = "diamond";
         else
@@ -380,10 +377,48 @@ class PaymentsController extends AppController {
             'recursive' => -1
         ));
 
-        $this->set(compact('products', 'vcurrencyType', 'currency'));
-
+        $this->set(compact('products', 'vcurrencyType', 'currency', 'game', 'token'));
         $this->layout = 'payment';
         $this->loadModel('Payment');
+    }
+
+    public function pay_paypal_order(){
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            CakeLog::error('Vui lòng login', 'payment');
+            throw new NotFoundException('Vui lòng login');
+        }
+
+        $token = $this->request->header('token');
+
+        //get currency
+        $currency = $this->request->query('currency');
+        if (!$currency) {
+            $currency = 'USD';
+        } else {
+            $currency = strtolower($currency);
+        }
+
+        $productId = $this->request->query('productId');
+        if( empty($this->request->query('productId')) ){
+            CakeLog::error('Chưa chọn gói xu - paypal', 'payment');
+            throw new NotFoundException('Chưa chọn gói xu');
+        }
+
+        $this->loadModel('Product');
+        $this->Product->recursive = -1;
+        $product = $this->Product->findById($productId);
+
+        if( empty($product) ){
+            CakeLog::error('Không có gói xu phù hợp - paypal', 'payment');
+            throw new NotFoundException('Không có gói xu phù hợp');
+        }
+
+        # xử lý mua hàng qua paypal
+        App::uses('Paypal', 'Payment');
+        $paypal = new Paypal($game['app'], $token);
+        $linkPaypal = $paypal->buy($product['Product']['title'], $product['Product']['price'], $currency);
+        $this->redirect($linkPaypal);
     }
 
     public function pay_paypal_response(){
