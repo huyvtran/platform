@@ -46,6 +46,9 @@ class ProductsController extends AppController {
 
 		    if( !empty($this->request->data['Product']['chanel']) ){
 		        switch ( $this->request->data['Product']['chanel'] ){
+                    case Payment::CHANEL_VIPPAY:
+                        $type = 'Vippay';
+                        break;
                     case Payment::CHANEL_PAYPAL:
                         $type = Payment::TYPE_NETWORK_PAYPAL;
                         break;
@@ -78,6 +81,7 @@ class ProductsController extends AppController {
 		$games = $this->Product->Game->find('list', array('fields' => array('id', 'title_os')));
 
         $chanels = array(
+            Payment::CHANEL_VIPPAY    => 'Vippay',
             Payment::CHANEL_PAYPAL    => 'Paypal',
             Payment::CHANEL_MOLIN     => 'Molin'
         );

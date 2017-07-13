@@ -157,6 +157,16 @@ $config['rules'] = array(
         'payments/pay_paypal_order'     => 'Role/User',
         'payments/pay_paypal_response'  => 'Role/User',
 
+        'OvsPayments/pay_list'  => 'Role/User',
+
+        'OvsPayments/pay_paypal_index'     => 'Role/User',
+        'OvsPayments/pay_paypal_order'     => 'Role/User',
+        'OvsPayments/pay_paypal_response'  => 'Role/User',
+
+        'OvsPayments/pay_vippay_index'     => 'Role/User',
+        'OvsPayments/pay_vippay_order'     => 'Role/User',
+        'OvsPayments/pay_vippay_response'  => 'Role/User',
+
         'permissions/*' => 'Role/Developer',
         'permissions/admin_delete' => 'Role/Content',
 
