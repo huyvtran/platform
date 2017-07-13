@@ -199,8 +199,8 @@ foreach($_GET as $key => $getParam){
 }
 
 Configure::write('Paypal', array(
-    'clientId'  => 'AaeZnJylkGvuFQo6jWowP0aVrjg6RDfGnkGMw7tgFNh-t2yULpCTgd1qCWlBgN6Mnw8dugMXjPPAdTsr',
-    'secret'    => 'EGqquORpqsQ7D9KPakOLSw3INfhZRk16Zg6FR0rTLqmzODvmy1IjQZtHAvST0Rh46kwbpgMorytlXQOk',
+    'clientId'  => 'AUw5RTbPUM9k_U8ZYJBJvx40_z0WDQIxDjZenTqceqav9JXsjzTI-FxZYdFL5c1vbH4_JdGN_zlDU2GH',
+    'secret'    => 'ENcJa84TPyYUuIaY_aPArIXWBKR6KkKrlM9wVgotKY1uqjEOHAJa_jGcmML5',
     'ReturnUrl' => 'http://cms.platform.net.local/Payments/pay_paypal_response',
     'CancelUrl' => 'http://cms.platform.net.local/Payments/pay_paypal_response',
     'TokenUrl'  => 'https://api.sandbox.paypal.com/v1/oauth2/token',
