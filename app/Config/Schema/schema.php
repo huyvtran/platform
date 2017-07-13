@@ -679,6 +679,8 @@ class AppSchema extends CakeSchema {
 		'status' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 1),
 		'time' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'index'),
 		'detail' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'type' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'chanel' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 2),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'indexes' => array(
