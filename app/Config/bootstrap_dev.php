@@ -202,5 +202,7 @@ Configure::write('Paypal', array(
     'clientId'  => 'AaeZnJylkGvuFQo6jWowP0aVrjg6RDfGnkGMw7tgFNh-t2yULpCTgd1qCWlBgN6Mnw8dugMXjPPAdTsr',
     'secret'    => 'EGqquORpqsQ7D9KPakOLSw3INfhZRk16Zg6FR0rTLqmzODvmy1IjQZtHAvST0Rh46kwbpgMorytlXQOk',
     'ReturnUrl' => 'http://cms.platform.net.local/Payments/pay_paypal_response',
-    'CancelUrl' => 'http://cms.platform.net.local/Payments/pay_paypal_response'
+    'CancelUrl' => 'http://cms.platform.net.local/Payments/pay_paypal_response',
+    'TokenUrl'  => 'https://api.sandbox.paypal.com/v1/oauth2/token',
+    'PaymentUrl'=> 'https://api.sandbox.paypal.com/v1/payments/payment/'
 ));

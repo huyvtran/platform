@@ -418,6 +418,10 @@ class PaymentsController extends AppController {
         App::uses('Paypal', 'Payment');
         $paypal = new Paypal($game['app'], $token);
         $linkPaypal = $paypal->buy($product['Product']['title'], $product['Product']['price'], $currency);
+        if( empty($linkPaypal) ){
+            CakeLog::error('Lỗi tạo giao dịch - paypal', 'payment');
+            throw new NotFoundException('Lỗi tạo giao dịch, vui lòng thử lại');
+        }
         $this->redirect($linkPaypal);
     }
 
@@ -431,16 +435,15 @@ class PaymentsController extends AppController {
 
         $paypal_id = $this->request->query('paymentId');
         if( empty($paypal_id) ){
+            CakeLog::error('Lỗi giao dịch - paypal response', 'payment');
             throw new NotFoundException('Lỗi giao dịch');
         }
 
         $clientId = Configure::read('Paypal.clientId');
         $secret = Configure::read('Paypal.secret');
 
-        $paypal_token_url = "https://api.sandbox.paypal.com/v1/oauth2/token";
-        $paypal_payment_url = "https://api.sandbox.paypal.com/v1/payments/payment/";
-
-        $paypal_id = $this->request->query('paymentId');
+        $paypal_token_url = Configure::read('Paypal.TokenUrl');
+        $paypal_payment_url = Configure::read('Paypal.PaymentUrl');
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $paypal_token_url);
@@ -456,7 +459,6 @@ class PaymentsController extends AppController {
 
         if(!empty($result)) {
             $json = json_decode($result);
-
             $accessToken = $json->access_token;
 
             $ch1 = curl_init();
