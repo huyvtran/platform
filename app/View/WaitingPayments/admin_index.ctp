@@ -158,22 +158,12 @@ $this->extend('/Common/blank');
                 <td> <?php echo $payment['WaitingPayment']['card_serial']; ?> </td>
                 <td> <?php if( !empty($payment['Payment']['price']) ) echo number_format($payment['Payment']['price'], 0, '.', ','); ?> </td>
                 <td> <?php echo $payment['WaitingPayment']['time']; ?> </td>
-                <td> <?php if( !empty($payment['Payment']['type']) ) echo $payment['Payment']['type']; ?> </td>
+                <td> <?php echo $payment['WaitingPayment']['type']; ?> </td>
                 <td>
                     <?php
                     $chanel = '';
-                    if( !empty($payment['Payment']['chanel']) ) {
-                        switch ($payment['Payment']['chanel']) {
-                            case Payment::CHANEL_VIPPAY :
-                                $chanel = 'Vippay';
-                                break;
-                            case Payment::CHANEL_HANOIPAY :
-                                $chanel = 'Hanoipay';
-                                break;
-                        }
-                    }
-                    if ($chanel == '' && !empty($payment['Vippay']['type'])){
-                        switch ($payment['Vippay']['type']) {
+                    if( !empty($payment['WaitingPayment']['chanel']) ) {
+                        switch ($payment['WaitingPayment']['chanel']) {
                             case Payment::CHANEL_VIPPAY :
                                 $chanel = 'Vippay';
                                 break;
