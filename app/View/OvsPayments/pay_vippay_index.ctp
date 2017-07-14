@@ -2,7 +2,7 @@
 <div class="m-container">
     <div class="box-lstNap pdm">
         <div class="fixCen bd">
-            <h3></h3>
+            <h3>Visa banking</h3>
             <div class="lstMG cf">
                 <?php if( !empty($products) ){ ?>
                     <?php foreach ($products as $product){?>
@@ -10,7 +10,8 @@
                             '?' => array(
                                 'app'   => $game['app'],
                                 'token' => $token,
-                                'productId' => $product['Product']['id']
+                                'productId' => $product['Product']['id'],
+                                'bank_type' => 'Visa'
                             )
                         )); ?>" class="btn-mg">
                             <span class="f-knb "><i class="ico-mg"></i> <?php echo number_format($product['Product']['platform_price'], 0, '.', ',') ?> </span>

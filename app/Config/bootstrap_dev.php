@@ -206,3 +206,11 @@ Configure::write('Paypal', array(
     'TokenUrl'  => 'https://api.sandbox.paypal.com/v1/oauth2/token',
     'PaymentUrl'=> 'https://api.sandbox.paypal.com/v1/payments/payment/'
 ));
+
+Configure::write('VippayBanking', array(
+    'ReturnUrl' => 'http://cms.platform.net.local/vippay',
+));
+
+Configure::write('OnePay', array(
+    'ReturnUrl' => 'http://cms.platform.net.local/onepay',
+));

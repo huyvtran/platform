@@ -5,7 +5,6 @@ class VippayBanking {
     private $merchant_id ;
 	private $api_user ;
 	private $api_password ;
-    private $chanel ;
 
     private $user_token;
     private $game_app;
@@ -13,12 +12,11 @@ class VippayBanking {
 
     private $note = '';
 
-    function __construct($merchant_id, $api_user, $api_password, $chanel)
+    function __construct($merchant_id, $api_user, $api_password)
     {
         $this->merchant_id  = $merchant_id;
         $this->api_user     = $api_user;
         $this->api_password = $api_password;
-        $this->chanel       = $chanel;
     }
 
     public function getUserToken() {
@@ -56,6 +54,27 @@ class VippayBanking {
     # amount: số tiền
     # bank_type: mã visa (visa, master)
     public function create($amount, $bank_type){
+        $amount = (int) $amount;
+        $sign = Security::hash(
+            $this->merchant_id
+                . '-' . urlencode($this->getOrderId())
+                . '-' . $amount
+                . '-' . $bank_type
+                . '-' . $this->api_user
+                . '-' . $this->api_password
+                . '-' . urlencode(Configure::read('VippayBanking.ReturnUrl') . DS . $this->getGameApp() . DS . $this->getUserToken()),
+                'sha256'
+        );
 
+        $url = 'https://vippay.vn/atm-checkout.html?';
+        $url .= 'merchant_id=' . $this->merchant_id;
+        $url .= '&amount=' . $amount;
+        $url .= '&payment_type=1'; // thanh toán qua visa
+        $url .= '&order_code=' . urlencode($this->getOrderId());
+        $url .= '&bank=' . urlencode($bank_type);
+        $url .= '&urlreturn=' . urlencode(Configure::read('VippayBanking.ReturnUrl') . DS . $this->getGameApp() . DS . $this->getUserToken());
+        $url .= '&sign=' . urlencode($sign);
+
+        return $url;
     }
 }

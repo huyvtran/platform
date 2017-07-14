@@ -11,14 +11,17 @@ class Payment extends AppModel {
 	const TYPE_NETWORK_VINAPHONE    = 'VNP';
 	const TYPE_NETWORK_MOBIFONE     = 'VMS';
 	const TYPE_NETWORK_GATE         = 'GATE';
+
     # thanh toán quốc tế
     const TYPE_NETWORK_PAYPAL       = 'PAYPAL';
     const TYPE_NETWORK_MOLIN        = 'MOLIN';
+    const TYPE_NETWORK_ONEPAY       = 'ONEPAY';
 
 	const CHANEL_VIPPAY	    = 1;
     const CHANEL_HANOIPAY	= 2;
     const CHANEL_PAYPAL	    = 3;
     const CHANEL_MOLIN	    = 4;
+    const CHANEL_ONEPAY	    = 5;
 
 	public $belongsTo = array(
 		'User', 'Game'

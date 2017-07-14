@@ -163,8 +163,6 @@ class OvsPaymentsController extends AppController {
             throw new NotFoundException('Vui lòng login');
         }
 
-        $token = $this->request->header('token');
-
         $productId = $this->request->query('productId');
         if( empty($this->request->query('productId')) ){
             CakeLog::error('Chưa chọn gói xu - vippay banking', 'payment');
@@ -179,16 +177,58 @@ class OvsPaymentsController extends AppController {
             CakeLog::error('Không có gói xu phù hợp - vippay banking', 'payment');
             throw new NotFoundException('Không có gói xu phù hợp');
         }
-        debug($product);die;
+
+        $bank_type = $this->request->query('bank_type');
+        if(!in_array($bank_type, array('Visa', 'Master'))){
+            CakeLog::error('Loại thẻ không phù hợp - vippay banking', 'payment');
+            throw new NotFoundException('Loại thẻ không phù hợp');
+        }
+
+        $this->loadModel('Payment');
+        $this->loadModel('WaitingPayment');
+
+        $user = $this->Auth->user();
+        $order_id = microtime(true) * 10000;
+
+        $chanel = Payment::CHANEL_VIPPAY;
+        # set chanel defaul, có thể sẽ đc check theo chanel (Vippay, Vippay1, Vippay2...)
+        $merchant_id = 8945;
+        $api_user = "6433e60201c2412ca9d211ed2d9a8caa";
+        $api_password = "f3197fbb40b748e9b6123cf2739bbdf2";
+        $type = 'Vippay';
+
+        # tạo giao dịch waiting_payment
+        $data = array(
+            'order_id'  => $order_id,
+            'user_id'   => $user['id'],
+            'game_id'   => $game['id'],
+            'price'     => $product['Product']['platform_price'],
+            'status'    => WaitingPayment::STATUS_WAIT,
+            'time'      => time(),
+            'type'      => $type,
+            'chanel'    => $chanel,
+        );
+
+        $unresolvedPayment = $this->WaitingPayment->save($data);
 
         # xử lý mua hàng qua vippay
-        App::uses('Paypal', 'Payment');
-        $paypal = new Paypal($game['app'], $token);
-        $linkPaypal = $paypal->buy($product['Product']['title'], $product['Product']['price'], $currency);
-        if( empty($linkPaypal) ){
+        $token = $this->request->header('token');
+        App::uses('VippayBanking', 'Payment');
+        $vippay = new VippayBanking($merchant_id, $api_user, $api_password);
+        $vippay->setGameApp($game['app']);
+        $vippay->setUserToken($token);
+        $vippay->setOrderId($order_id);
+
+        $orderVippay = $vippay->create($product['Product']['price'], $bank_type);
+        if( empty($orderVippay) ){
             CakeLog::error('Lỗi tạo giao dịch - vippay banking', 'payment');
             throw new NotFoundException('Lỗi tạo giao dịch, vui lòng thử lại');
         }
-        $this->redirect($linkPaypal);
+        $this->redirect($orderVippay);
+    }
+
+    public function pay_onepay_index(){
+        $this->loadModel('Payment');
+        $this->pay_index(Payment::CHANEL_ONEPAY, 'VND');
     }
 }

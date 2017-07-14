@@ -24,7 +24,7 @@
 <!--                    Thẻ paypal-->
 <!--                </a>-->
 
-                <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_vippay_index',
+                <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_onepay_index',
                     '?' => array(
                         'app'   => $game['app'],
                         'token' => $token

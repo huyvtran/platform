@@ -55,6 +55,9 @@ class ProductsController extends AppController {
                     case Payment::CHANEL_MOLIN:
                         $type = Payment::TYPE_NETWORK_MOLIN;
                         break;
+                    case Payment::CHANEL_ONEPAY:
+                        $type = Payment::TYPE_NETWORK_ONEPAY;
+                        break;
                 }
 
                 if( !isset($type) ){
@@ -83,7 +86,8 @@ class ProductsController extends AppController {
         $chanels = array(
             Payment::CHANEL_VIPPAY    => 'Vippay',
             Payment::CHANEL_PAYPAL    => 'Paypal',
-            Payment::CHANEL_MOLIN     => 'Molin'
+            Payment::CHANEL_MOLIN     => 'Molin',
+            Payment::CHANEL_ONEPAY    => 'Onepay'
         );
 
 		$this->set(compact('games', 'chanels'));
