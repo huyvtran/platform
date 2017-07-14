@@ -14,15 +14,15 @@
                     Nạp Thẻ Cào
                 </a>
 
-<!--                <a href="--><?php //echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paypal_index',
-//                    '?' => array(
-//                        'app'   => $game['app'],
-//                        'token' => $token
-//                    )
-//                )); ?><!--" class="btn-paypal">-->
-<!--                    <i></i>-->
-<!--                    Thẻ paypal-->
-<!--                </a>-->
+                <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paypal_index',
+                    '?' => array(
+                        'app'   => $game['app'],
+                        'token' => $token
+                    )
+                )); ?>" class="btn-paypal">
+                    <i></i>
+                    Thẻ paypal
+                </a>
 
                 <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_onepay_index',
                     '?' => array(
