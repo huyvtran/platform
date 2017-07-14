@@ -211,6 +211,6 @@ Configure::write('VippayBanking', array(
     'ReturnUrl' => 'http://cms.platform.net.local/vippay',
 ));
 
-Configure::write('OnePay', array(
+Configure::write('OnepayBanking', array(
     'ReturnUrl' => 'http://cms.platform.net.local/onepay',
 ));

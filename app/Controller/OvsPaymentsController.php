@@ -231,4 +231,68 @@ class OvsPaymentsController extends AppController {
         $this->loadModel('Payment');
         $this->pay_index(Payment::CHANEL_ONEPAY, 'VND');
     }
+
+    public function pay_onepay_order(){
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            CakeLog::error('Vui lòng login - onepay banking', 'payment');
+            throw new NotFoundException('Vui lòng login');
+        }
+
+        $productId = $this->request->query('productId');
+        if( empty($this->request->query('productId')) ){
+            CakeLog::error('Chưa chọn gói xu - onepay banking', 'payment');
+            throw new NotFoundException('Chưa chọn gói xu');
+        }
+
+        $this->loadModel('Product');
+        $this->Product->recursive = -1;
+        $product = $this->Product->findById($productId);
+
+        if( empty($product) ){
+            CakeLog::error('Không có gói xu phù hợp - onepay banking', 'payment');
+            throw new NotFoundException('Không có gói xu phù hợp');
+        }
+
+        $this->loadModel('Payment');
+        $this->loadModel('WaitingPayment');
+
+        $user = $this->Auth->user();
+        $order_id = microtime(true) * 10000;
+
+        $chanel = Payment::CHANEL_ONEPAY;
+        $type = Payment::TYPE_NETWORK_ONEPAY;
+        # set chanel defaul, có thể sẽ đc check theo chanel (Vippay, Vippay1, Vippay2...)
+        $access_key = "diggr0l4g6k792oj528a";
+        $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
+
+        # tạo giao dịch waiting_payment
+        $data = array(
+            'order_id'  => $order_id,
+            'user_id'   => $user['id'],
+            'game_id'   => $game['id'],
+            'price'     => $product['Product']['platform_price'],
+            'status'    => WaitingPayment::STATUS_WAIT,
+            'time'      => time(),
+            'type'      => $type,
+            'chanel'    => $chanel,
+        );
+
+        $unresolvedPayment = $this->WaitingPayment->save($data);
+
+        # xử lý mua hàng qua vippay
+        $token = $this->request->header('token');
+        App::uses('OnepayBanking', 'Payment');
+        $vippay = new OnepayBanking($access_key, $secret);
+        $vippay->setGameApp($game['app']);
+        $vippay->setUserToken($token);
+        $vippay->setOrderId($order_id);
+
+        $orderOnepay = $vippay->create($product['Product']['price']);
+        if( empty($orderOnepay) ){
+            CakeLog::error('Lỗi tạo giao dịch - vippay banking', 'payment');
+            throw new NotFoundException('Lỗi tạo giao dịch, vui lòng thử lại');
+        }
+        $this->redirect($orderOnepay);
+    }
 }

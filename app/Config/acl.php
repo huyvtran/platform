@@ -167,6 +167,10 @@ $config['rules'] = array(
         'OvsPayments/pay_vippay_order'     => 'Role/User',
         'OvsPayments/pay_vippay_response'  => 'Role/User',
 
+        'OvsPayments/pay_onepay_index'     => 'Role/User',
+        'OvsPayments/pay_onepay_order'     => 'Role/User',
+        'OvsPayments/pay_onepay_response'  => 'Role/User',
+
         'permissions/*' => 'Role/Developer',
         'permissions/admin_delete' => 'Role/Content',
 
