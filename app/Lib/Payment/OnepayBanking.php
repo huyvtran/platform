@@ -67,23 +67,25 @@ class OnepayBanking {
     public function create($amount){
         $access_key = $this->access_key;
         $secret     = $this->secret;
-        $return_url = urlencode(Configure::read('OnepayBanking.ReturnUrl') . DS . $this->getGameApp() . DS . $this->getUserToken());
-        $command    = 'request_transaction';
+        $return_url = urlencode(Configure::read('OnepayBanking.ReturnUrl') . '?app=' . $this->getGameApp() . '&qtoken=' . $this->getUserToken());
+//        $command    = 'request_transaction';
         $order_id   = $this->getOrderId();
         $order_info = $this->getNote();
 
         $data = "access_key=" . $access_key;
         $data .= "&amount=" . $amount;
-        $data .= "&command=" . $command;
+//        $data .= "&command=" . $command;
         $data .= "&order_id=" . $order_id;
         $data .= "&order_info=" . $order_info;
-        $data .= "&return_url=" . $return_url;
         $signature = hash_hmac("sha256", $data, $secret);
+
+        $data .= "&return_url=" . $return_url;
         $data.= "&signature=" . $signature;
 
         $pay_url = false;
         try {
-            $url = 'http://api.1pay.vn/bank-charging/service';
+//            $url = 'http://api.1pay.vn/bank-charging/service';
+            $url = 'http://visa.1pay.vn/visa-charging/api/handle/request';
             $json_bankCharging = $this->execPostRequest($url, $data);
             $decode_bankCharging = json_decode($json_bankCharging, true);  // decode json
             if( !empty($decode_bankCharging["pay_url"]) ) $pay_url = $decode_bankCharging["pay_url"];

@@ -348,7 +348,8 @@ class OvsPaymentsController extends AppController {
         $vippay->setUserToken($token);
         $vippay->setOrderId($order_id);
 
-        $orderOnepay = $vippay->create($product['Product']['price']);
+        $orderOnepay = $vippay->create($product['Product']['platform_price']);
+
         if( empty($orderOnepay) ){
             CakeLog::error('Lỗi tạo giao dịch - vippay banking', 'payment');
             throw new NotFoundException('Lỗi tạo giao dịch, vui lòng thử lại');
