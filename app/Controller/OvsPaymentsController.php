@@ -62,8 +62,6 @@ class OvsPaymentsController extends AppController {
             throw new NotFoundException('Vui lòng login');
         }
 
-        $token = $this->request->header('token');
-
         //get currency
         $currency = $this->request->query('currency');
         if (!$currency) {
@@ -87,18 +85,52 @@ class OvsPaymentsController extends AppController {
             throw new NotFoundException('Không có gói xu phù hợp');
         }
 
+        $this->loadModel('Payment');
+        $this->loadModel('WaitingPayment');
+
+        $user = $this->Auth->user();
+        $order_id = microtime(true) * 10000;
+
+        $chanel = Payment::CHANEL_PAYPAL;
+        $type = Payment::TYPE_NETWORK_PAYPAL;
+
+        # tạo giao dịch waiting_payment
+        $data = array(
+            'order_id'  => $order_id,
+            'user_id'   => $user['id'],
+            'game_id'   => $game['id'],
+            'price'     => $product['Product']['platform_price'],
+            'status'    => WaitingPayment::STATUS_WAIT,
+            'time'      => time(),
+            'type'      => $type,
+            'chanel'    => $chanel,
+        );
+
+        $unresolvedPayment = $this->WaitingPayment->save($data);
+
         # xử lý mua hàng qua paypal
+        $token = $this->request->header('token');
         App::uses('Paypal', 'Payment');
         $paypal = new Paypal($game['app'], $token);
+        $paypal->setOrderId($order_id);
+
         $linkPaypal = $paypal->buy($product['Product']['title'], $product['Product']['price'], $currency);
         if( empty($linkPaypal) ){
             CakeLog::error('Lỗi tạo giao dịch - paypal', 'payment');
             throw new NotFoundException('Lỗi tạo giao dịch, vui lòng thử lại');
         }
+
+        # chuyển trạng thái queue trong giao dịch
+        App::uses('PaymentLib', 'Payment');
+        $payLib = new PaymentLib();
+        $payLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_QUEUEING);
+
         $this->redirect($linkPaypal);
     }
 
     public function pay_paypal_response(){
+        $this->layout = 'payment';
+        $this->view = 'error';
         $game = $this->Common->currentGame();
         if( empty($game) || !$this->Auth->loggedIn() ){
             CakeLog::error('Vui lòng login', 'payment');
@@ -146,8 +178,36 @@ class OvsPaymentsController extends AppController {
 
             $result = curl_exec($ch1);
             curl_close($ch1);
+            $result = json_decode($result);
+            if( !empty($result->transactions[0]->invoice_number) ){
+                $orderId = $result->transactions[0]->invoice_number ;
+                $this->loadModel('WaitingPayment');
+                $this->WaitingPayment->recursive = -1;
+                $wating_payment = $this->WaitingPayment->findByOrderId($orderId);
 
-            echo "<pre>"; print_r(json_decode($result));die;
+                # cộng xu
+                if( isset($wating_payment['WaitingPayment']['status'])
+                    && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
+                ){
+                    $data_payment = array(
+                        'order_id'  => $orderId,
+                        'user_id'   => $user['id'],
+                        'game_id'   => $game['id'],
+                        'price'     => $wating_payment['WaitingPayment']['price'],
+                        'time'      => time(),
+                        'type'      => $wating_payment['WaitingPayment']['type'],
+                        'chanel'    => $wating_payment['WaitingPayment']['chanel'],
+                        'waiting_id'=> $wating_payment['WaitingPayment']['id']
+                    );
+
+                    App::uses('PaymentLib', 'Payment');
+                    $paymentLib = new PaymentLib();
+                    $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+                    $paymentLib->add($data_payment);
+
+                    $this->view = 'success';
+                }
+            }
         }
     }
 

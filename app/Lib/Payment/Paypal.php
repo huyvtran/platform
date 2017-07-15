@@ -4,6 +4,8 @@ class Paypal {
     protected $user_token;
     protected $appkey;
 
+    protected $order_id;
+
     function __construct($appkey, $user_token)
     {
         $this->appkey = $appkey;
@@ -14,6 +16,14 @@ class Paypal {
                 Configure::read('Paypal.secret')
             )
         );
+    }
+
+    public function setOrderId($order_id){
+        $this->order_id = $order_id;
+    }
+
+    public function getOrderId(){
+        return $this->order_id;
     }
 
     # tạo giao dịch
@@ -46,7 +56,7 @@ class Paypal {
         $transaction->setAmount($amount)
             ->setItemList($itemList)
             ->setDescription($description)
-            ->setInvoiceNumber(uniqid());
+            ->setInvoiceNumber($this->order_id);
 
         $redirectUrl = new \PayPal\Api\RedirectUrls();
         $redirectUrl->setReturnUrl(Configure::read('Paypal.ReturnUrl') . '?app=' . $this->appkey . '&qtoken=' . $this->user_token )

@@ -2,7 +2,7 @@
 <div class="m-container">
     <div class="box-lstNap pdm">
         <div class="fixCen bd">
-            <h3></h3>
+            <h3 style="text-align: center">Paypal</h3>
             <div class="lstMG cf">
                 <?php if( !empty($products) ){ ?>
                     <?php foreach ($products as $product){?>

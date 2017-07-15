@@ -201,8 +201,8 @@ foreach($_GET as $key => $getParam){
 Configure::write('Paypal', array(
     'clientId'  => 'AUw5RTbPUM9k_U8ZYJBJvx40_z0WDQIxDjZenTqceqav9JXsjzTI-FxZYdFL5c1vbH4_JdGN_zlDU2GH',
     'secret'    => 'ENcJa84TPyYUuIaY_aPArIXWBKR6KkKrlM9wVgotKY1uqjEOHAJa_jGcmML59rRzHKL3rONZIhFNsY85',
-    'ReturnUrl' => 'http://cms.platform.net.local/Payments/pay_paypal_response',
-    'CancelUrl' => 'http://cms.platform.net.local/Payments/pay_paypal_response',
+    'ReturnUrl' => 'http://cms.platform.net.local/OvsPayments/pay_paypal_response',
+    'CancelUrl' => 'http://cms.platform.net.local/OvsPayments/pay_paypal_response',
     'TokenUrl'  => 'https://api.sandbox.paypal.com/v1/oauth2/token',
     'PaymentUrl'=> 'https://api.sandbox.paypal.com/v1/payments/payment/'
 ));
