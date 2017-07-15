@@ -356,4 +356,8 @@ class OvsPaymentsController extends AppController {
         }
         $this->redirect($orderOnepay);
     }
+
+    public function pay_onepay_response(){
+        debug($this->request);die;
+    }
 }

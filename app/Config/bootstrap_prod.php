@@ -194,3 +194,11 @@ foreach($_GET as $key => $getParam){
 		}
 	}
 }
+
+Configure::write('VippayBanking', array(
+	'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_vippay_response',
+));
+
+Configure::write('OnepayBanking', array(
+	'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_onepay_response',
+));
