@@ -68,6 +68,11 @@ class Paypal {
             ->setRedirectUrls($redirectUrl)
             ->setTransactions([$transaction]);
 
+        CakeLog::info('check url callback:'
+            . Configure::read('Paypal.ReturnUrl') . '?app=' . $this->appkey . '&qtoken=' . $this->user_token
+            . '----' . Configure::read('Paypal.CancelUrl' )
+        );
+        
         try{
             $payment->create($this->paypal);
         }catch (Exception $e){
