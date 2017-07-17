@@ -171,8 +171,10 @@ $this->extend('/Common/blank');
                                 $chanel = 'Hanoipay';
                                 break;
                             case Payment::CHANEL_PAYPAL :
+                                $chanel = 'Paypal';
+                                break;
                             case Payment::CHANEL_ONEPAY :
-                                $chanel = Payment::TYPE_NETWORK_BANKING;
+                                $chanel = 'Onepay';
                                 break;
                         }
                     }
