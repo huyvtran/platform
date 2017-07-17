@@ -174,7 +174,7 @@ $this->extend('/Common/blank');
                                 $chanel = 'Paypal';
                                 break;
                             case Payment::CHANEL_ONEPAY :
-                                $chanel = 'Onepay';
+                                $chanel = '1Pay';
                                 break;
                         }
                     }
