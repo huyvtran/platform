@@ -381,7 +381,7 @@ class OvsPaymentsController extends AppController {
             $wating_payment = $this->WaitingPayment->findByOrderIdAndUserId($orderId, $user['id']);
 
             # cộng xu
-            if( isset($wating_payment['WaitingPayment']['status'])
+            if( $this->request->query['response_code'] == '00' && isset($wating_payment['WaitingPayment']['status'])
                 && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
             ){
                 $data_payment = array(
