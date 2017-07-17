@@ -13,8 +13,8 @@
                                 'productId' => $product['Product']['id']
                             )
                         )); ?>" class="btn-mg">
-                            <span class="f-knb "><i class="ico-mg"></i> <?php echo $product['Product']['price']; ?>$ </span>
-                            <span price="<?php echo number_format($product['Product']['platform_price'], 0, '.', ',') ?>" class="f-tien" data-toggle="modal" data-target="#myModal"> <?php echo number_format($product['Product']['platform_price'], 0, '.', ',') ?> vnđ </span>
+                            <span class="f-knb "><i class="ico-mg"></i> <?php echo $product['Product']['platform_price']; ?> </span>
+                            <span price="<?php echo $product['Product']['price'] ?>" class="f-tien" data-toggle="modal" data-target="#myModal"> <?php echo $product['Product']['price'] ?> $</span>
                         </a>
                     <?php } ?>
                 <?php } ?>

@@ -9,7 +9,7 @@ class OnepayBanking {
     private $game_app;
     private $order_id;
 
-    private $note = 'a';
+    private $note = ' ';
 
     function __construct($access_key, $secret)
     {
