@@ -92,7 +92,7 @@ class OvsPaymentsController extends AppController {
         $order_id = microtime(true) * 10000;
 
         $chanel = Payment::CHANEL_PAYPAL;
-        $type = Payment::TYPE_NETWORK_PAYPAL;
+        $type = Payment::TYPE_NETWORK_BANKING;
 
         # tạo giao dịch waiting_payment
         $data = array(
@@ -255,7 +255,7 @@ class OvsPaymentsController extends AppController {
         $merchant_id = 8945;
         $api_user = "6433e60201c2412ca9d211ed2d9a8caa";
         $api_password = "f3197fbb40b748e9b6123cf2739bbdf2";
-        $type = 'Vippay';
+        $type = Payment::TYPE_NETWORK_BANKING;
 
         # tạo giao dịch waiting_payment
         $data = array(
@@ -321,7 +321,7 @@ class OvsPaymentsController extends AppController {
         $order_id = microtime(true) * 10000;
 
         $chanel = Payment::CHANEL_ONEPAY;
-        $type = Payment::TYPE_NETWORK_ONEPAY;
+        $type = Payment::TYPE_NETWORK_BANKING;
         # set chanel defaul, có thể sẽ đc check theo chanel (Vippay, Vippay1, Vippay2...)
         $access_key = "diggr0l4g6k792oj528a";
         $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";

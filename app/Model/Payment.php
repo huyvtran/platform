@@ -13,9 +13,7 @@ class Payment extends AppModel {
 	const TYPE_NETWORK_GATE         = 'GATE';
 
     # thanh toán quốc tế
-    const TYPE_NETWORK_PAYPAL       = 'PAYPAL';
-    const TYPE_NETWORK_MOLIN        = 'MOLIN';
-    const TYPE_NETWORK_ONEPAY       = 'ONEPAY';
+    const TYPE_NETWORK_BANKING      = 'Banking';
 
 	const CHANEL_VIPPAY	    = 1;
     const CHANEL_HANOIPAY	= 2;
