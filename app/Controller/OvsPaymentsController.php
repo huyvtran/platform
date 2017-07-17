@@ -378,7 +378,7 @@ class OvsPaymentsController extends AppController {
             $orderId = $this->request->query['order_id'] ;
             $this->loadModel('WaitingPayment');
             $this->WaitingPayment->recursive = -1;
-            $wating_payment = $this->WaitingPayment->findByOrderId($orderId);
+            $wating_payment = $this->WaitingPayment->findByOrderIdAndUserId($orderId, $user['id']);
 
             # cộng xu
             if( isset($wating_payment['WaitingPayment']['status'])
