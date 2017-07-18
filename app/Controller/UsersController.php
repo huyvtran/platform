@@ -1441,6 +1441,8 @@ class UsersController extends AppController {
         if( !empty( $game['data']['prefix'] ) ){
             $prefix_user = $game['data']['prefix'] ;
         }
+		
+		CakeLog::info('api_login_v26 - game id:' . $game['id'] . '\n data:' . print_r($this->request->data,true), 'user');
 
 		$this->request->data['username'] = $prefix_user . $this->request->data['username'] ;
 		$this->request->data['password'] = $this->request->data['userpass'];
