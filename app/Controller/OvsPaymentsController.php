@@ -380,6 +380,8 @@ class OvsPaymentsController extends AppController {
             $this->WaitingPayment->recursive = -1;
             $wating_payment = $this->WaitingPayment->findByOrderIdAndUserId($orderId, $user['id']);
 
+            App::uses('PaymentLib', 'Payment');
+            $paymentLib = new PaymentLib();
             # cộng xu
             if( $this->request->query['response_code'] == '00' && isset($wating_payment['WaitingPayment']['status'])
                 && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
@@ -395,12 +397,12 @@ class OvsPaymentsController extends AppController {
                     'waiting_id'=> $wating_payment['WaitingPayment']['id']
                 );
 
-                App::uses('PaymentLib', 'Payment');
-                $paymentLib = new PaymentLib();
+
                 $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
                 $paymentLib->add($data_payment);
-
                 $this->view = 'success';
+            }else{
+                $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
             }
         }
     }
