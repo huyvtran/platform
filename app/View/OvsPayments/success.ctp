@@ -1,7 +1,7 @@
 <body>
 <div class="toolbar">
     <div class="toolbar-left">
-        <a href="/pay"><i class="fa fa-home fa-lg" aria-hidden="true"></i></a>
+        <a href="<?php echo $currentGame['data']['payment']['url_sdk']; ?>"><i class="fa fa-home fa-lg" aria-hidden="true"></i></a>
     </div>
     <div class="toolbar-brand">
         <?php echo 'Banking (visa, master)'; ?>
