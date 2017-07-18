@@ -1,28 +1,37 @@
-<body class="rs">
-<div class="m-container">
-    <div class="bd" style="background: black;">
-        <a href="#" onclick="document.location = 'js-oc:kunlunClose:null';return false">X</a>
+<body>
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <a href="/pay"><i class="fa fa-home fa-lg" aria-hidden="true"></i></a>
+        </div>
+        <div class="toolbar-brand">
+            <?php echo 'Banking (visa, master)'; ?>
+        </div>
+        <div class="toolbar-right">
+            <a href="#" onclick="document.location = 'js-oc:kunlunClose:null';return false">
+                <i class="fa fa-times fa-lg" aria-hidden="true"></i>
+            </a>
+        </div>
     </div>
-    <div class="box-lstNap pdm">
-        <div class="fixCen bd">
-            <h3 style="text-align: center">Banking (visa, master)</h3>
-            <div class="lstMG cf">
-                <?php if( !empty($products) ){ ?>
-                    <?php foreach ($products as $product){?>
+    <div class="container">
+        <?php if( !empty($products) ){ ?>
+            <div class="row" align="center">
+                <?php foreach ($products as $product){?>
+                    <div class="col-xs-4">
                         <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_onepay_order',
                             '?' => array(
                                 'app'   => $game['app'],
                                 'token' => $token,
                                 'productId' => $product['Product']['id']
                             )
-                        )); ?>" class="btn-mg">
-                            <span class="f-mg"><i class="ico-mg"></i> <?php echo $product['Product']['platform_price']; ?> </span>
-                            <span price="<?php echo $product['Product']['price'] ?>" class="f-tien" data-toggle="modal" data-target="#myModal"> <?php echo $product['Product']['price'] ?> $</span>
+                        )); ?>" class="btn btn-info btn-md" style="border: 1px #337ab7 solid !important; margin-top: 5px;">
+                            <font color="yellow"><b><?php echo number_format($product['Product']['platform_price'], 0, '.', ','); ?> Coin</b></font><br/>
+                            <i class="fa fa-diamond fa-2x"></i><br/>
+                            <?php echo $product['Product']['price']; ?>$
                         </a>
-                    <?php } ?>
+                    </div>
                 <?php } ?>
             </div>
-        </div>
+        <?php } ?>
     </div>
 </div>
 </body>

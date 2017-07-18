@@ -53,6 +53,7 @@ class OvsPaymentsController extends AppController {
     public function pay_paypal_index(){
         $this->loadModel('Payment');
         $this->pay_index(Payment::CHANEL_PAYPAL, 'USD');
+        $this->set('title_for_app', 'Banking (visa, master)');
     }
 
     public function pay_paypal_order(){
