@@ -76,7 +76,14 @@ class WaitingPaymentsController extends AppController {
 
         $orders = $this->paginate();
 
-        $this->set(compact('orders', 'games'));
+        $status = array(
+            WaitingPayment::STATUS_WAIT         => 'create',
+            WaitingPayment::STATUS_QUEUEING     => 'wait',
+            WaitingPayment::STATUS_COMPLETED    => 'success',
+            WaitingPayment::STATUS_ERROR        => 'error',
+        );
+
+        $this->set(compact('orders', 'games', 'status'));
     }
 
     public function api_index(){
