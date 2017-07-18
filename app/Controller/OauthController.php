@@ -93,6 +93,7 @@ class OauthController extends AppController {
 				'full_name' 	=> $token['User']['email'],
 				'last_action'	=> $token['User']['last_action'],
                 'payment'	    => $token['User']['payment'],
+				'phone'	    	=> $token['User']['phone'],
 			)
 		);
 
