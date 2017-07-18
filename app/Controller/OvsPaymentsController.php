@@ -368,6 +368,7 @@ class OvsPaymentsController extends AppController {
         $this->layout = 'payment';
         $this->view = 'error';
         $sdk_message = __("Giao dịch thất bại.");
+        $status_sdk = 1;
 
         $game = $this->Common->currentGame();
         if( empty($game) || !$this->Auth->loggedIn() ){
@@ -404,12 +405,13 @@ class OvsPaymentsController extends AppController {
                 $paymentLib->add($data_payment);
                 $this->view = 'success';
                 $sdk_message = __("Giao dịch thành công.");
+                $status_sdk = 0;
             }else{
                 $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
             }
 
             if( !empty($game['data']['payment']['url_sdk']) ){
-                $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message);
+                $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message . '&status=' . $status_sdk);
             }
         }
     }
