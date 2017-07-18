@@ -37,6 +37,7 @@ class ProductsController extends AppController {
 
 		$games = $this->Product->Game->find('list', array('fields' => array('id', 'title_os')));
 		$this->set(compact('products', 'games'));
+		$this->loadModel('Payment');
 	}
 
 	public function admin_add($id = null)
@@ -50,13 +51,9 @@ class ProductsController extends AppController {
                         $type = 'Vippay';
                         break;
                     case Payment::CHANEL_PAYPAL:
-                        $type = Payment::TYPE_NETWORK_PAYPAL;
-                        break;
                     case Payment::CHANEL_MOLIN:
-                        $type = Payment::TYPE_NETWORK_MOLIN;
-                        break;
                     case Payment::CHANEL_ONEPAY:
-                        $type = Payment::TYPE_NETWORK_ONEPAY;
+                        $type = Payment::TYPE_NETWORK_BANKING;
                         break;
                 }
 

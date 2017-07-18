@@ -32,6 +32,7 @@ $this->extend('/Common/blank');
 		<th><?php echo $this->Paginator->sort('price'); ?></th>
 		<th><?php echo $this->Paginator->sort('platform_price'); ?></th>
         <th><?php echo $this->Paginator->sort('type'); ?></th>
+		<th><?php echo $this->Paginator->sort('chanel'); ?></th>
 		<th><?php echo $this->Paginator->sort('description'); ?></th>
         <th><?php echo $this->Paginator->sort('created'); ?></th>
         <th><?php echo $this->Paginator->sort('modified'); ?></th>
@@ -45,6 +46,28 @@ $this->extend('/Common/blank');
 		<td><?php echo $product['Product']['price']; ?>&nbsp;</td>
 		<td><?php echo h($product['Product']['platform_price']); ?></td>
         <td><?php echo h($product['Product']['type']); ?></td>
+		<td>
+			<?php
+			$chanel = '';
+			if( !empty($product['Product']['chanel']) ) {
+				switch ($product['Product']['chanel']) {
+					case Payment::CHANEL_VIPPAY :
+						$chanel = 'Vippay';
+						break;
+					case Payment::CHANEL_HANOIPAY :
+						$chanel = 'Hanoipay';
+						break;
+					case Payment::CHANEL_PAYPAL :
+						$chanel = 'Paypal';
+						break;
+					case Payment::CHANEL_ONEPAY :
+						$chanel = '1Pay';
+						break;
+				}
+			}
+			echo $chanel;
+			?>
+		</td>
 		<td><?php echo h($product['Product']['description']); ?>&nbsp;</td>
         <td><?php echo h($product['Product']['created']); ?>&nbsp;</td>
         <td><?php echo h($product['Product']['modified']); ?>&nbsp;</td>

@@ -1,6 +1,6 @@
 <body class="rs">
 <div class="m-container">
-    <div class="bd" style="background: black; right: 0px;position: relative;">
+    <div class="bd" style="background: black;">
         <a href="#" onclick="document.location = 'js-oc:kunlunClose:null';return false">X</a>
     </div>
     <div class="box-lstNap pdm">
