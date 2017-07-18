@@ -45,10 +45,11 @@ echo $this->Form->create('Game', array(
 
         <div class='row'>
             <div class='span3'>
-                <a href="#" class='show-config-box'>Payment Test account</a>
+                <a href="#" class='show-config-box'>Payment config</a>
                 <div class='config-box'>
                     <?php
-                            echo $this->Form->input('Game.data.payment.testallowed', array('label' => 'Test account', 'type' => 'textarea'));
+                        echo $this->Form->input('Game.data.payment.testallowed', array('label' => 'Test account', 'type' => 'textarea'));
+                        echo $this->Form->input('Game.data.payment.url_sdk');
                     ?>
                 </div>
             </div>
