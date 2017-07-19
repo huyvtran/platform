@@ -350,7 +350,8 @@ class OvsPaymentsController extends AppController {
         $onepay->setOrderId($order_id);
         $onepay->setNote($product['Product']['title']);
 
-        $orderOnepay = $onepay->create($product['Product']['platform_price']);
+        # $orderOnepay = $onepay->create($product['Product']['platform_price']);
+        $orderOnepay = $onepay->order($product['Product']['platform_price']);
 
         if( empty($orderOnepay) ){
             CakeLog::error('Lỗi tạo giao dịch - vippay banking', 'payment');
@@ -377,35 +378,57 @@ class OvsPaymentsController extends AppController {
         }
         $user = $this->Auth->user();
 
+        $transaction_status = false;
         if( !empty($this->request->query['response_code']) && !empty($this->request->query['order_id']) ){
             $orderId = $this->request->query['order_id'] ;
+            $trans_ref = $this->request->query['trans_ref'] ;
+
             $this->loadModel('WaitingPayment');
             $this->WaitingPayment->recursive = -1;
             $wating_payment = $this->WaitingPayment->findByOrderIdAndUserId($orderId, $user['id']);
 
-            App::uses('PaymentLib', 'Payment');
-            $paymentLib = new PaymentLib();
-            # cộng xu
+            # ghi log onepay order
+
+            # check cổng trả về và commit giao dịch lên cổng
             if( $this->request->query['response_code'] == '00' && isset($wating_payment['WaitingPayment']['status'])
                 && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
-            ){
-                $data_payment = array(
-                    'order_id'  => $orderId,
-                    'user_id'   => $user['id'],
-                    'game_id'   => $game['id'],
-                    'price'     => $wating_payment['WaitingPayment']['price'],
-                    'time'      => time(),
-                    'type'      => $wating_payment['WaitingPayment']['type'],
-                    'chanel'    => $wating_payment['WaitingPayment']['chanel'],
-                    'waiting_id'=> $wating_payment['WaitingPayment']['id']
-                );
+            ) {
+                $access_key = "diggr0l4g6k792oj528a";
+                $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
+                $token = $this->request->header('qtoken');
 
+                App::uses('OnepayBanking', 'Payment');
+                $onepay = new OnepayBanking($access_key, $secret);
+                $onepay->setGameApp($game['app']);
+                $onepay->setUserToken($token);
+                $onepay->setOrderId($orderId);
+                $data_commit = $onepay->close($trans_ref);
 
+                # cộng xu
+                if ( !empty($data_commit->response_code) && $data_commit->response_code == '00' ) {
+                    $data_payment = array(
+                        'order_id' => $orderId,
+                        'user_id' => $user['id'],
+                        'game_id' => $game['id'],
+                        'price' => $wating_payment['WaitingPayment']['price'],
+                        'time' => time(),
+                        'type' => $wating_payment['WaitingPayment']['type'],
+                        'chanel' => $wating_payment['WaitingPayment']['chanel'],
+                        'waiting_id' => $wating_payment['WaitingPayment']['id']
+                    );
+
+                    $this->view = 'success';
+                    $sdk_message = __("Giao dịch thành công.");
+                    $status_sdk = 0;
+                    $transaction_status = true;
+                }
+            }
+
+            App::uses('PaymentLib', 'Payment');
+            $paymentLib = new PaymentLib();
+            if( $transaction_status ){
                 $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
                 $paymentLib->add($data_payment);
-                $this->view = 'success';
-                $sdk_message = __("Giao dịch thành công.");
-                $status_sdk = 0;
             }else{
                 $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
             }

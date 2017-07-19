@@ -91,4 +91,63 @@ class OnepayBanking {
         }
         return $pay_url;
     }
+
+    public function order($amount){
+        $access_key = $this->access_key;
+        $secret     = $this->secret;
+        $return_url = Configure::read('OnepayBanking.ReturnUrl') . '?app=' . $this->getGameApp() . '&qtoken=' . $this->getUserToken();
+        $order_id   = $this->getOrderId();
+        $order_info = $this->getNote();
+        $command = 'request_transaction';
+
+        $data = "access_key=" . $access_key;
+        $data .= "&amount=" . $amount;
+        $data .= "&command=" . $command;
+        $data .= "&order_id=" . $order_id;
+        $data .= "&order_info=" . $order_info;
+
+        $dataSign = $data . "&return_url=" . $return_url;
+        $signature = hash_hmac("sha256", $dataSign, $secret);
+
+        $data .= "&return_url=" . urlencode($return_url);
+        $data.= "&signature=" . $signature;
+
+        $pay_url = false;
+        try {
+            $url = 'http://api.1pay.vn/bank-charging/service/v2';
+            $json_bankCharging = $this->execPostRequest($url, $data);
+            $decode_bankCharging = json_decode($json_bankCharging, true);  // decode json
+            if( !empty($decode_bankCharging["pay_url"]) ) $pay_url = $decode_bankCharging["pay_url"];
+        }catch (Exception $e){
+            CakeLog::error('error create onepay - ' . print_r($e, true), 'payment');
+        }
+        return $pay_url;
+    }
+
+    public function close($trans_ref){
+        $access_key = $this->access_key;
+        $secret     = $this->secret;
+        $command    = 'close_transaction';
+
+        $data = "access_key=" . $access_key;
+        $data .= "&command=" . $command;
+        $data .= "&trans_ref=" . $trans_ref;
+
+        $signature = hash_hmac("sha256", $data, $secret);
+
+        $data.= "&signature=" . $signature;
+
+        try {
+            $url = 'http://api.1pay.vn/bank-charging/service/v2';
+            $json_bankCommit = $this->execPostRequest($url, $data);
+            $result = json_decode($json_bankCommit, true);  // decode json
+            CakeLog::info('onepay commit data :' . print_r($result, true) ,'payment');
+
+            return $result;
+        }catch (Exception $e){
+            CakeLog::error('error create onepay - ' . print_r($e, true), 'payment');
+        }
+
+        return false;
+    }
 }
