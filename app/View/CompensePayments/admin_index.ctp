@@ -183,7 +183,7 @@ $this->extend('/Common/blank');
                     if ( empty($comp['CompensePayment']['status']) ) {
                         echo '<span class="label label-warning">Wait</span>';
                     }else{
-                        echo '<span class="label label-info">OK</span>';
+                        echo '<span class="label label-success">OK</span>';
                     }
                     ?>
                 </td>
