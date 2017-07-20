@@ -487,6 +487,7 @@ class AppSchema extends CakeSchema {
 		'card_type' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'response_code' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 10, 'collate' => 'utf8_unicode_ci', 'comment' => 'trước commit giao dịch', 'charset' => 'utf8'),
 		'trans_status' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 125, 'collate' => 'utf8_unicode_ci', 'comment' => 'trước commit giao dịch', 'charset' => 'utf8'),
+		'trans_ref' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'chanel' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 2),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
