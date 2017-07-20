@@ -388,6 +388,23 @@ class OvsPaymentsController extends AppController {
             $wating_payment = $this->WaitingPayment->findByOrderIdAndUserId($orderId, $user['id']);
 
             # ghi log onepay order
+            $this->loadModel('Payment');
+            $this->loadModel('OnepayOrder');
+            $data_onepay_order = array(
+                'order_id'      => $orderId,
+                'order_info'    => $this->request->query['order_info'],
+                'order_type'    => $this->request->query['order_type'],
+                'user_id'       => $user['id'],
+                'game_id'       => $game['id'],
+                'amount'        => $this->request->query['amount'],
+                'card_name'     => $this->request->query['card_name'],
+                'card_type'     => $this->request->query['card_type'],
+                'response_code' => $this->request->query['response_code'],
+                'trans_status'  => $this->request->query['trans_status'],
+                'trans_ref'     => $this->request->query['trans_ref'],
+                'chanel'        => Payment::CHANEL_ONEPAY
+            );
+            $this->OnepayOrder->save($data_onepay_order);
 
             # check cổng trả về và commit giao dịch lên cổng
             if( $this->request->query['response_code'] == '00' && isset($wating_payment['WaitingPayment']['status'])
@@ -405,7 +422,7 @@ class OvsPaymentsController extends AppController {
                 $data_commit = $onepay->close($trans_ref);
 
                 # cộng xu
-                if ( !empty($data_commit->response_code) && $data_commit->response_code == '00' ) {
+                if ( isset($data_commit['response_code']) && $data_commit['response_code'] == '00' ) {
                     $data_payment = array(
                         'order_id' => $orderId,
                         'user_id' => $user['id'],
