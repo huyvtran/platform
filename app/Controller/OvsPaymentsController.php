@@ -404,7 +404,7 @@ class OvsPaymentsController extends AppController {
                 'trans_ref'     => $this->request->query['trans_ref'],
                 'chanel'        => Payment::CHANEL_ONEPAY
             );
-            CakeLog::info('data url callback - onepay:' . print_r($data_onepay_order, true) , 'payment');
+            CakeLog::info('data url callback - onepay:' . print_r($this->request->query, true) , 'payment');
             $this->OnepayOrder->save($data_onepay_order);
 
             # check cổng trả về và commit giao dịch lên cổng
