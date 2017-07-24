@@ -212,6 +212,10 @@ class CommonComponent extends Component {
 		if ($this->isPrivateIp($ip)) {
 			$ip = $this->Controller->request->clientIp(false);
 		}
+
+		if( !empty($this->Controller->request->data['ip']) ){
+		    $ip = $this->Controller->request->data['ip'];
+        }
 		return $ip;
 	}
 
