@@ -280,25 +280,18 @@ class AppController extends Controller {
 	{
 		if ($this->Auth->loggedIn())
 		{
-			if (   !$this->Session->read('Auth.User.last_action')
-				|| 	(	$this->Session->read('Auth.User.last_action') 
-					&& 	strtotime($this->Session->read('Auth.User.last_action')) + 3600 * 2 < time()
-					)
-			) {
-				# push users's last action to redis queue
-				if (extension_loaded('redis')) {
-					App::import('Lib', 'RedisQueue');
-					$Redis = new RedisQueue();
-					$Redis->rPush(array(
-						'model' => 'User',
-						'data' => array(
-							'id' => $this->Auth->user('id'),
-							'last_action' => date('Y-m-d H:i:s')
-						)
-					));
-				}
-				$this->Session->write('Auth.User.last_action', date('Y-m-d H:i:s', time()));
-			}
+            # push users's last action to redis queue
+            if (extension_loaded('redis')) {
+                App::import('Lib', 'RedisQueue');
+                $Redis = new RedisQueue();
+                $Redis->rPush(array(
+                    'model' => 'User',
+                    'data' => array(
+                        'id' => $this->Auth->user('id'),
+                        'last_action' => date('Y-m-d H:i:s')
+                    )
+                ));
+            }
 		}
 	}
 
