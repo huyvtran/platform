@@ -7,6 +7,11 @@ require_once ROOT . DS . 'vendors' . DS . 'GeoIP2-php' . DS . 'vendor' . DS . 'a
             if ($this->isPrivateIp($ip)) {
                 $ip = Router::getRequest()->clientIp(false);
             }
+
+            if( Router::getRequest()->query('ip') ){
+                $ip = Router::getRequest()->query('ip');
+            }
+
             return $ip;
         }
 
