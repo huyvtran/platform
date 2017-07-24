@@ -8,8 +8,8 @@ require_once ROOT . DS . 'vendors' . DS . 'GeoIP2-php' . DS . 'vendor' . DS . 'a
                 $ip = Router::getRequest()->clientIp(false);
             }
 
-            if( Router::getRequest()->query('ip') ){
-                $ip = Router::getRequest()->query('ip');
+            if( Router::getRequest()->data('ip') ){
+                $ip = Router::getRequest()->data('ip');
             }
 
             CakeLog::info('detect ip:' . print_r($ip,true), 'user');
