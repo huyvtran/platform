@@ -291,8 +291,8 @@ class OvsPaymentsController extends AppController {
     public function pay_onepay_index(){
         $this->loadModel('Payment');
         $this->pay_index(Payment::CHANEL_ONEPAY, 'VND');
-        $this->layout = 'payment';
-        $this->view = 'maintain';
+//        $this->layout = 'payment';
+//        $this->view = 'maintain';
     }
 
     public function pay_onepay_order(){
@@ -352,8 +352,8 @@ class OvsPaymentsController extends AppController {
         $onepay->setOrderId($order_id);
         $onepay->setNote($product['Product']['title']);
 
-        $orderOnepay = $onepay->create($product['Product']['platform_price']);
-        # $orderOnepay = $onepay->order($product['Product']['platform_price']);
+        #$orderOnepay = $onepay->create($product['Product']['platform_price']);
+        $orderOnepay = $onepay->order($product['Product']['platform_price']);
 
         if( empty($orderOnepay) ){
             CakeLog::error('Lỗi tạo giao dịch - vippay banking', 'payment');
@@ -367,7 +367,7 @@ class OvsPaymentsController extends AppController {
         $this->redirect($orderOnepay);
     }
 
-    public function pay_onepay_response2(){
+    public function pay_onepay_response(){
         $this->layout = 'payment';
         $this->view = 'error';
         $sdk_message = __("Giao dịch thất bại.");
@@ -459,7 +459,7 @@ class OvsPaymentsController extends AppController {
         }
     }
 
-    public function pay_onepay_response(){
+    public function pay_onepay_response2(){
         $this->layout = 'payment';
         $this->view = 'error';
         $sdk_message = __("Giao dịch thất bại.");
