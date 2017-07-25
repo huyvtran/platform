@@ -291,6 +291,8 @@ class OvsPaymentsController extends AppController {
     public function pay_onepay_index(){
         $this->loadModel('Payment');
         $this->pay_index(Payment::CHANEL_ONEPAY, 'VND');
+        $this->layout = 'payment';
+        $this->view = 'maintain';
     }
 
     public function pay_onepay_order(){
