@@ -59,9 +59,12 @@ class PaymentsController extends AppController {
 		# check to see if there is unresolved payment
 
         if ($this->request->is('post')) {
-
-
             $chanel = Payment::CHANEL_HANOIPAY; // default
+            if( in_array($game['app'], array('cbf45aa058807a173cccd5a6ac74c9a3', '1f5d898444a64fbbbdd10a38e5363c7d',
+                '2f9a1f92822b9f96fe6a20a68598023e', 'a8f01e2bec804367aad3ed5190ac595d'
+            ))){
+                $chanel = Payment::CHANEL_VIPPAY;
+            }
             #chuyển về hanoipay
 //            App::import('Lib', 'RedisCake');
 //            $Redis = new RedisCake('action_count');

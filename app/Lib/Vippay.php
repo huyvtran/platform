@@ -2,9 +2,9 @@
 
 class Vippay {
     
-    private $merchant_id = 8945;
-	private $api_user = '6433e60201c2412ca9d211ed2d9a8caa';
-	private $api_password = 'f3197fbb40b748e9b6123cf2739bbdf2';
+    private $merchant_id = 9142; #8945 => thắng phạm
+	private $api_user = '165cb7d6da73452aa269129b2d79235f';
+	private $api_password = 'f73ead2b14194e4999bbaee3fe84421d';
 
     private $pin;
     private $seri;
@@ -130,6 +130,7 @@ class Vippay {
         if( $data['type'] == Payment::TYPE_NETWORK_VIETTEL ) $type_vippay = 1;
         if( $data['type'] == Payment::TYPE_NETWORK_MOBIFONE ) $type_vippay = 2;
         if( $data['type'] == Payment::TYPE_NETWORK_VINAPHONE ) $type_vippay = 3;
+        if( $data['type'] == Payment::TYPE_NETWORK_GATE )   $type_vippay = 4;
         $this->setCardType($type_vippay);
 
         $this->setUserId($data['user_id']);
