@@ -83,7 +83,16 @@ class WaitingPaymentsController extends AppController {
             WaitingPayment::STATUS_ERROR        => 'error',
         );
 
-        $this->set(compact('orders', 'games', 'status'));
+        $this->loadModel('Payment');
+        $chanels = array(
+            Payment::CHANEL_VIPPAY      => 'Vippay',
+            Payment::CHANEL_HANOIPAY    => 'Hanoipay',
+            Payment::CHANEL_PAYPAL      => 'Paypal',
+            Payment::CHANEL_MOLIN       => 'Molin',
+            Payment::CHANEL_ONEPAY      => 'Onepay',
+        );
+
+        $this->set(compact('orders', 'games', 'status', 'chanels'));
     }
 
     public function api_index(){

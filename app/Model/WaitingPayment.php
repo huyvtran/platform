@@ -16,14 +16,15 @@ class WaitingPayment extends AppModel {
     );
 
     public $filterArgs = array(
-        'order_id' => array('type' => 'value'),
-        'game_id' => array('type' => 'value'),
-        'status' => array('type' => 'value'),
-        'username' => array('type' => 'like', 'field' => array('User.id', 'User.username', 'User.email')),
-        'cardnumber' => array('type' => 'value', 'field' => 'card_serial'),
-        'cardcode' => array('type' => 'value', 'field' => 'card_code'),
+        'order_id'  => array('type' => 'value'),
+        'game_id'   => array('type' => 'value'),
+        'status'    => array('type' => 'value'),
+        'chanel'    => array('type' => 'value'),
+        'username'  => array('type' => 'like', 'field' => array('User.id', 'User.username', 'User.email')),
+        'cardnumber'=> array('type' => 'value', 'field' => 'card_serial'),
+        'cardcode'  => array('type' => 'value', 'field' => 'card_code'),
         'from_time' => array('type' => 'expression', 'method' => 'fromTimeCond', 'field' => 'WaitingPayment.time >= '),
-        'to_time' => array('type' => 'expression', 'method' => 'toTimeCond', 'field' => 'WaitingPayment.time <= '),
+        'to_time'   => array('type' => 'expression', 'method' => 'toTimeCond', 'field' => 'WaitingPayment.time <= '),
 
     );
 
