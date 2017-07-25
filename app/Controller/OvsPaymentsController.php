@@ -350,8 +350,8 @@ class OvsPaymentsController extends AppController {
         $onepay->setOrderId($order_id);
         $onepay->setNote($product['Product']['title']);
 
-        # $orderOnepay = $onepay->create($product['Product']['platform_price']);
-        $orderOnepay = $onepay->order($product['Product']['platform_price']);
+        $orderOnepay = $onepay->create($product['Product']['platform_price']);
+        # $orderOnepay = $onepay->order($product['Product']['platform_price']);
 
         if( empty($orderOnepay) ){
             CakeLog::error('Lỗi tạo giao dịch - vippay banking', 'payment');
@@ -365,7 +365,7 @@ class OvsPaymentsController extends AppController {
         $this->redirect($orderOnepay);
     }
 
-    public function pay_onepay_response(){
+    public function pay_onepay_response2(){
         $this->layout = 'payment';
         $this->view = 'error';
         $sdk_message = __("Giao dịch thất bại.");
@@ -447,6 +447,76 @@ class OvsPaymentsController extends AppController {
             if( $transaction_status ){
                 $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
                 $paymentLib->add($data_payment);
+            }else{
+                $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+            }
+
+            if( !empty($game['data']['payment']['url_sdk']) ){
+                $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message . '&status=' . $status_sdk);
+            }
+        }
+    }
+
+    public function pay_onepay_response(){
+        $this->layout = 'payment';
+        $this->view = 'error';
+        $sdk_message = __("Giao dịch thất bại.");
+        $status_sdk = 1;
+
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            CakeLog::error('Vui lòng login - onepay banking', 'payment');
+            throw new NotFoundException('Vui lòng login');
+        }
+        $user = $this->Auth->user();
+
+        if( !empty($this->request->query['response_code']) && !empty($this->request->query['order_id']) ){
+            $orderId = $this->request->query['order_id'] ;
+            $this->loadModel('WaitingPayment');
+            $this->WaitingPayment->recursive = -1;
+            $wating_payment = $this->WaitingPayment->findByOrderIdAndUserId($orderId, $user['id']);
+
+            # ghi log onepay order
+            $this->loadModel('Payment');
+            $this->loadModel('OnepayOrder');
+            $data_onepay_order = array(
+                'order_id'      => $orderId,
+                'order_info'    => $this->request->query['order_info'],
+                'order_type'    => $this->request->query['order_type'],
+                'user_id'       => $user['id'],
+                'game_id'       => $game['id'],
+                'amount'        => $this->request->query['amount'],
+                'response_code' => $this->request->query['response_code'],
+                'trans_status'  => $this->request->query['trans_status'],
+                'trans_ref'     => $this->request->query['trans_ref'],
+                'chanel'        => Payment::CHANEL_ONEPAY
+            );
+            CakeLog::info('data url callback - onepay:' . print_r($this->request->query, true) , 'payment');
+            $this->OnepayOrder->save($data_onepay_order);
+
+            App::uses('PaymentLib', 'Payment');
+            $paymentLib = new PaymentLib();
+            # cộng xu
+            if( $this->request->query['response_code'] == '00' && isset($wating_payment['WaitingPayment']['status'])
+                && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
+            ){
+                $data_payment = array(
+                    'order_id'  => $orderId,
+                    'user_id'   => $user['id'],
+                    'game_id'   => $game['id'],
+                    'price'     => $wating_payment['WaitingPayment']['price'],
+                    'time'      => time(),
+                    'type'      => $wating_payment['WaitingPayment']['type'],
+                    'chanel'    => $wating_payment['WaitingPayment']['chanel'],
+                    'waiting_id'=> $wating_payment['WaitingPayment']['id']
+                );
+
+
+                $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+                $paymentLib->add($data_payment);
+                $this->view = 'success';
+                $sdk_message = __("Giao dịch thành công.");
+                $status_sdk = 0;
             }else{
                 $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
             }
