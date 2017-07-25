@@ -89,7 +89,7 @@ class WaitingPaymentsController extends AppController {
             Payment::CHANEL_HANOIPAY    => 'Hanoipay',
             Payment::CHANEL_PAYPAL      => 'Paypal',
             Payment::CHANEL_MOLIN       => 'Molin',
-            Payment::CHANEL_ONEPAY      => 'Onepay',
+            Payment::CHANEL_ONEPAY      => '1Pay',
         );
 
         $this->set(compact('orders', 'games', 'status', 'chanels'));
