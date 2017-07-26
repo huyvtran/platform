@@ -529,4 +529,11 @@ class OvsPaymentsController extends AppController {
             }
         }
     }
+    
+    public function pay_fortumo_index(){
+        $this->loadModel('Payment');
+        $this->pay_index(Payment::CHANEL_PAYPAL, 'VND');
+//        $this->layout = 'payment';
+//        $this->view = 'maintain';
+    }
 }

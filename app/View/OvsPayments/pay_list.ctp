@@ -34,6 +34,15 @@
                     Banking
                 </a>
 
+                <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_fortumo_index',
+                    '?' => array(
+                        'app'   => $game['app'],
+                        'token' => $token
+                    )
+                )); ?>" class="btn-paypal">
+                    <i></i>
+                    Fortumo
+                </a>
             </div>
         </div>
     </div>
