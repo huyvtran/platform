@@ -221,7 +221,7 @@ $this->extend('/Common/blank');
                                 $status = '<span class="label label-success">OK</span>';
                                 break;
                             case WaitingPayment::STATUS_ERROR:
-                                $status = '<span class="label label-danger">error</span>';
+                                $status = '<span class="label label-important">error</span>';
                                 break;
                         }
 
