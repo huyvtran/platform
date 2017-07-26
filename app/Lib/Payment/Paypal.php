@@ -16,6 +16,12 @@ class Paypal {
                 Configure::read('Paypal.secret')
             )
         );
+
+        $this->paypal->setConfig(
+            array(
+                'mode' => 'live'
+            )
+        );
     }
 
     public function setOrderId($order_id){
