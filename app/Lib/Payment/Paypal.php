@@ -19,7 +19,7 @@ class Paypal {
 
         $this->paypal->setConfig(
             array(
-                'mode' => 'live'
+                'mode' => Configure::read('Paypal.mode')
             )
         );
     }

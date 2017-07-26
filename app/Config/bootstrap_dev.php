@@ -204,7 +204,8 @@ Configure::write('Paypal', array(
     'ReturnUrl' => 'http://cms.platform.net.local/OvsPayments/pay_paypal_response',
     'CancelUrl' => 'http://cms.platform.net.local/OvsPayments/pay_paypal_response',
     'TokenUrl'  => 'https://api.sandbox.paypal.com/v1/oauth2/token',
-    'PaymentUrl'=> 'https://api.sandbox.paypal.com/v1/payments/payment/'
+    'PaymentUrl'=> 'https://api.sandbox.paypal.com/v1/payments/payment/',
+    'mode'      => 'sandbox'
 ));
 
 Configure::write('VippayBanking', array(
