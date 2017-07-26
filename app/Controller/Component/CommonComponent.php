@@ -354,4 +354,21 @@ class CommonComponent extends Component {
         }
         return $accountId;
     }
+
+	public function encryptBlowfish($str){
+		$key = 'dontchangethiswordsdontchangethiswords';
+
+		$result = mcrypt_encrypt(MCRYPT_BLOWFISH, $key, $str, MCRYPT_MODE_ECB );
+		$result = base64_encode($result);
+		return $result ;
+	}
+
+	public function decryptBlowfish($str){
+		$key = 'dontchangethiswordsdontchangethiswords';
+
+		$result = base64_decode($str);
+		$result = mcrypt_decrypt(MCRYPT_BLOWFISH, $key, $result, MCRYPT_MODE_ECB);
+		$result = trim($result, " \x00..\x1F");
+		return $result;
+	}
 }

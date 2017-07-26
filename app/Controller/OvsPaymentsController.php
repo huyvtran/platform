@@ -531,9 +531,67 @@ class OvsPaymentsController extends AppController {
     }
     
     public function pay_fortumo_index(){
+        $this->layout = 'payment';
+        $this->view = 'success';
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            CakeLog::error('Vui lòng login - onepay banking', 'payment');
+            throw new NotFoundException('Vui lòng login');
+        }
+        $key = md5('lienxochongmi');
+
         $this->loadModel('Payment');
-        $this->pay_index(Payment::CHANEL_PAYPAL, 'VND');
-//        $this->layout = 'payment';
-//        $this->view = 'maintain';
+        $this->loadModel('WaitingPayment');
+
+        $user = $this->Auth->user();
+        $order_id = microtime(true) * 10000;
+        $chanel = Payment::CHANEL_FORTUMO;
+        $type = Payment::TYPE_NETWORK_SMS;
+
+        # tạo giao dịch waiting_payment cộng xu 50k
+        $data = array(
+            'order_id'  => $order_id,
+            'user_id'   => $user['id'],
+            'game_id'   => $game['id'],
+            'price'     => 50000,
+            'status'    => WaitingPayment::STATUS_WAIT,
+            'time'      => time(),
+            'type'      => $type,
+            'chanel'    => $chanel,
+        );
+
+        $unresolvedPayment = $this->WaitingPayment->save($data);
+
+        CakeLog::info('data unresol pay :' . print_r($unresolvedPayment,true), 'payment');
+        if(!empty($this->request->query['sign']) ){
+            $sign = $this->Common->decryptBlowfish($this->request->query['sign']);
+            CakeLog::info('data sign pay :' . print_r($sign,true), 'payment');
+            
+            App::uses('PaymentLib', 'Payment');
+            $paymentLib = new PaymentLib();
+            if($key == $sign){
+                $data_payment = array(
+                    'order_id'  => $order_id,
+                    'user_id'   => $user['id'],
+                    'game_id'   => $game['id'],
+                    'price'     => $unresolvedPayment['WaitingPayment']['price'],
+                    'time'      => time(),
+                    'type'      => $unresolvedPayment['WaitingPayment']['type'],
+                    'chanel'    => $unresolvedPayment['WaitingPayment']['chanel'],
+                    'waiting_id'=> $unresolvedPayment['WaitingPayment']['id']
+                );
+
+                $paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+                $paymentLib->add($data_payment);
+            }else{
+                $paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+            }
+        }
+
+        if( !empty($game['data']['payment']['url_sdk']) ){
+            $sdk_message = __("Giao dịch thành công.");
+            $status_sdk = 0;
+            $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message . '&status=' . $status_sdk);
+        }
     }
 }

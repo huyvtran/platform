@@ -14,12 +14,14 @@ class Payment extends AppModel {
 
     # thanh toán quốc tế
     const TYPE_NETWORK_BANKING      = 'Banking';
+    const TYPE_NETWORK_SMS          = 'SMS';
 
 	const CHANEL_VIPPAY	    = 1;
     const CHANEL_HANOIPAY	= 2;
     const CHANEL_PAYPAL	    = 3;
     const CHANEL_MOLIN	    = 4;
     const CHANEL_ONEPAY	    = 5;
+    const CHANEL_FORTUMO    = 6;
 
 	public $belongsTo = array(
 		'User', 'Game'
