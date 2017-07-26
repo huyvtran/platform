@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="container">
-        <a id="fmp-button" href="#" rel="d0161fc335d3d6193e7b023078aa39e2/<?php echo $game['app'] . '/'. $token ?>">
+        <a id="fmp-button" href="#" rel="d0161fc335d3d6193e7b023078aa39e2/<?php echo 'app='.$game['app'] . '&token='. $token ?>">
             <img src="https://assets.fortumo.com/fmp/fortumopay_150x50_red.png" width="150" height="50" alt="Mobile Payments by Fortumo" border="0" />
         </a>
     </div>
