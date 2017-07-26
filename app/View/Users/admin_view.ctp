@@ -26,6 +26,7 @@ $this->extend('/Common/blank');
 	?>
 	</li>
 	<li>Phone: <?php echo $user['User']['phone'] ?></li>
+    <li>Country: <?php echo $user['User']['country_code'] ?></li>
 	<li>Created: <?php 
 				echo $this->Time->timeAgoInWords($user['User']['created'], array(
 					'end' => '1 year',
