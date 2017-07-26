@@ -171,6 +171,8 @@ $config['rules'] = array(
         'OvsPayments/pay_onepay_order'     => 'Role/User',
         'OvsPayments/pay_onepay_response'  => 'Role/User',
 
+		'OvsPayments/pay_fortumo_index'  => 'Role/User',
+
         'permissions/*' => 'Role/Developer',
         'permissions/admin_delete' => 'Role/Content',
 
