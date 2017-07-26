@@ -331,7 +331,24 @@ class PaymentsController extends AppController {
         );
 
         $payments = $this->paginate();
-        $this->set(compact('payments', 'games'));
+
+        $chanels = array(
+            Payment::CHANEL_VIPPAY      => 'Vippay',
+            Payment::CHANEL_HANOIPAY    => 'Hanoipay',
+            Payment::CHANEL_PAYPAL      => 'Paypal',
+            Payment::CHANEL_MOLIN       => 'Molin',
+            Payment::CHANEL_ONEPAY      => '1Pay',
+        );
+
+        $types = array(
+            Payment::TYPE_NETWORK_VIETTEL   => 'Viettel',
+            Payment::TYPE_NETWORK_VINAPHONE => 'Vinaphone',
+            Payment::TYPE_NETWORK_MOBIFONE  => 'Mobifone',
+            Payment::TYPE_NETWORK_GATE      => 'Gate',
+            Payment::TYPE_NETWORK_BANKING   => 'Visa'
+        );
+
+        $this->set(compact('payments', 'games', 'chanels', 'types'));
     }
 
     public function pay_list(){

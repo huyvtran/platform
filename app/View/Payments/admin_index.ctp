@@ -56,7 +56,7 @@ $this->extend('/Common/blank');
         ?>
     </div>
 
-    <div class="span8">
+    <div class="span3">
         <?php
         echo $this->Form->input('cardnumber', array(
             'type' => 'text',
@@ -75,7 +75,11 @@ $this->extend('/Common/blank');
                 'text' => 'Mã thẻ'
             ),
         ));
+        ?>
+    </div>
 
+    <div class="span4">
+        <?php
         echo $this->Form->input('type', array(
             'type' => 'select',
             'label' => array(
@@ -83,11 +87,18 @@ $this->extend('/Common/blank');
                 'text' => 'Loại thẻ'
             ),
             'empty' => '-- All Type Card --',
-            'options' => array(
-                'VTT' => 'Viettel',
-                'VNP' => 'Vinaphone',
-                'VMS' => 'Mobifone'
+            'options' => $types,
+        ));
+
+        echo $this->Form->input('chanel', array(
+            'type' => 'select',
+            'label' => array(
+                'class' => 'control-label',
+                'text' => 'chanel'
             ),
+            'empty' => 'All chanel',
+            'options' => $chanels,
+            'selected' => !empty($this->request->params['named']['chanel']) ? $this->request->params['named']['chanel'] : ''
         ));
         ?>
     </div>
