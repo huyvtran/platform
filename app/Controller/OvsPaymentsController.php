@@ -180,6 +180,7 @@ class OvsPaymentsController extends AppController {
             $result = curl_exec($ch1);
             curl_close($ch1);
             $result = json_decode($result);
+            CakeLog::info('paypal response:' . print_r($result, true), 'payment');
             if( !empty($result->transactions[0]->invoice_number) ){
                 $orderId = $result->transactions[0]->invoice_number ;
                 $this->loadModel('WaitingPayment');
