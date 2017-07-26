@@ -40,9 +40,11 @@ $this->extend('/Common/blank');
                 ),
                 'empty' => '-- All Type Card --',
                 'options' => array(
-                    'VTT' => 'Viettel',
-                    'VNP' => 'Vinaphone',
-                    'VMS' => 'Mobifone'
+                    Payment::TYPE_NETWORK_VIETTEL   => 'Viettel',
+                    Payment::TYPE_NETWORK_VINAPHONE => 'Vinaphone',
+                    Payment::TYPE_NETWORK_MOBIFONE  => 'Mobifone',
+                    Payment::TYPE_NETWORK_GATE      => 'Gate',
+                    Payment::TYPE_NETWORK_BANKING   => 'Visa',
                 ),
             ));
 
@@ -73,8 +75,9 @@ $this->extend('/Common/blank');
                 ),
                 'empty' => '-- All Chanel --',
                 'options' => array(
-                    Payment::CHANEL_VIPPAY => 'Vippay',
-                    Payment::CHANEL_HANOIPAY => 'Hanoipay'
+                    Payment::CHANEL_VIPPAY      => 'Vippay',
+                    Payment::CHANEL_HANOIPAY    => 'Hanoipay',
+                    Payment::CHANEL_ONEPAY      => '1Pay'
                 ),
             ));
             ?>
