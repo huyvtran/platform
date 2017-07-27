@@ -538,7 +538,6 @@ class OvsPaymentsController extends AppController {
             CakeLog::error('Vui lòng login - onepay banking', 'payment');
             throw new NotFoundException('Vui lòng login');
         }
-        $key = md5('lienxochongmi');
 
         $this->loadModel('Payment');
         $this->loadModel('WaitingPayment');
@@ -553,7 +552,7 @@ class OvsPaymentsController extends AppController {
             'order_id'  => $order_id,
             'user_id'   => $user['id'],
             'game_id'   => $game['id'],
-            'price'     => 50000,
+            'price'     => 20000,
             'status'    => WaitingPayment::STATUS_WAIT,
             'time'      => time(),
             'type'      => $type,
@@ -564,12 +563,18 @@ class OvsPaymentsController extends AppController {
 
         CakeLog::info('data unresol pay :' . print_r($unresolvedPayment,true), 'payment');
         if(!empty($this->request->query['sign']) ){
-            $sign = $this->Common->decryptBlowfish($this->request->query['sign']);
+            $token = $this->request->header('qtoken');
+            if( !empty($this->request->header('token')) ){
+                $token = $this->request->header('token');
+            }
+
+            $key = md5('lienxochongmi');
+            $sign = md5( $game['app'] . $token . $key);
             CakeLog::info('data sign pay :' . print_r($sign,true), 'payment');
-            
+
             App::uses('PaymentLib', 'Payment');
             $paymentLib = new PaymentLib();
-            if($key == $sign){
+            if( $this->request->query['sign'] == $sign ){
                 $data_payment = array(
                     'order_id'  => $order_id,
                     'user_id'   => $user['id'],
