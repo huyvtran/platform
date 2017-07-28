@@ -28,7 +28,7 @@ class CompensePaymentsController extends AppController {
                 throw new NotFoundException('Không tìm thấy User này');
             }
 
-            $price_check = array(10000, 20000, 30000, 50000, 100000, 200000, 300000, 500000);
+            $price_check = array(10000, 20000, 30000, 40000, 50000, 100000, 200000, 300000, 500000);
             if( empty($this->request->data['CompensePayment']['price'])
                 || !in_array($this->request->data['CompensePayment']['price'], $price_check)
             ){
