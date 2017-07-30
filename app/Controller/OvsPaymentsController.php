@@ -192,20 +192,19 @@ class OvsPaymentsController extends AppController {
                 $wating_payment = $this->WaitingPayment->findByOrderId($orderId);
 
                 # ghi log paypal_order
-                $json = json_decode($result, true);
                 $data_paypal = array(
                     'user_id'   => $user['id'],
                     'game_id'   => $game['id'],
                     'order_id'  => $orderId,
-                    'paypal_id' => $json['id'],
-                    'state'     => $json['state'],
-                    'paypal_create_time'    => $json['create_time'],
-                    'paypal_update_time'    => $json['update_time'],
-                    'amount_total'          => $json['transactions'][0]['amount']['total'],
-                    'amount_currency'       => $json['transactions'][0]['amount']['currency'],
-                    'sale_state'            => $json['transactions'][0]['related_resources'][0]['sale']['state'],
-                    'sale_id'               => $json['transactions'][0]['related_resources'][0]['sale']['id'],
-                    'data'                  => json_encode($json),
+                    'paypal_id' => $result->id,
+                    'state'     => $result->state,
+                    'paypal_create_time'    => $result->create_time,
+                    'paypal_update_time'    => $result->update_time,
+                    'amount_total'          => $result->transactions[0]->amount->total,
+                    'amount_currency'       => $result->transactions[0]->amount->currency,
+                    'sale_state'            => $result->transactions[0]->related_resources[0]->sale->state,
+                    'sale_id'               => $result->transactions[0]->related_resources[0]->sale->id,
+                    'data'                  => json_encode($result),
                 );
                 $this->loadModel('PaypalOrder');
                 $paypalOrderObj = new PaypalOrder();
