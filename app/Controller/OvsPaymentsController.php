@@ -132,6 +132,10 @@ class OvsPaymentsController extends AppController {
     public function pay_paypal_response(){
         $this->layout = 'payment';
         $this->view = 'error';
+        $sdk_message = __("Giao dịch thất bại.");
+        $status_sdk = 1;
+        $transaction_status = false;
+
         $game = $this->Common->currentGame();
         if( empty($game) || !$this->Auth->loggedIn() ){
             CakeLog::error('Vui lòng login', 'payment');
@@ -187,9 +191,29 @@ class OvsPaymentsController extends AppController {
                 $this->WaitingPayment->recursive = -1;
                 $wating_payment = $this->WaitingPayment->findByOrderId($orderId);
 
+                # ghi log paypal_order
+                $data_paypal = array(
+                    'user_id'   => $user['id'],
+                    'game_id'   => $game['id'],
+                    'order_id'  => $orderId,
+                    'paypal_id' => $result['id'],
+                    'state'     => $result['state'],
+                    'paypal_create_time'    => $result['create_time'],
+                    'paypal_update_time'    => $result['update_time'],
+                    'amount_total'          => $result['transactions'][0]['amount']['total'],
+                    'amount_currency'       => $result['transactions'][0]['amount']['currency'],
+                    'sale_state'            => $result['transactions'][0]['related_resources'][0]['sale']['state'],
+                    'sale_id'               => $result['transactions'][0]['related_resources'][0]['sale']['id'],
+                    'data'                  => json_encode($result),
+                );
+                $this->loadModel('PaypalOrder');
+                $paypalOrderObj = new PaypalOrder();
+                $paypalOrderObj->save($data_paypal);
+
                 # cộng xu
                 if( isset($wating_payment['WaitingPayment']['status'])
                     && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
+                    && $data_paypal['amount_currency'] == 'USD' && $data_paypal['sale_state'] == 'completed'
                 ){
                     $data_payment = array(
                         'order_id'  => $orderId,
@@ -202,14 +226,25 @@ class OvsPaymentsController extends AppController {
                         'waiting_id'=> $wating_payment['WaitingPayment']['id']
                     );
 
-                    App::uses('PaymentLib', 'Payment');
-                    $paymentLib = new PaymentLib();
+                    $this->view = 'success';
+                    $sdk_message = __("Giao dịch thành công.");
+                    $status_sdk = 0;
+                    $transaction_status = true;
+                }
+
+                App::uses('PaymentLib', 'Payment');
+                $paymentLib = new PaymentLib();
+                if( $transaction_status ){
                     $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
                     $paymentLib->add($data_payment);
-
-                    $this->view = 'success';
+                }else{
+                    $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
                 }
             }
+        }
+
+        if( !empty($game['data']['payment']['url_sdk']) ){
+            $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message . '&status=' . $status_sdk);
         }
     }
 
