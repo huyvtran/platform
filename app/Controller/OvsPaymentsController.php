@@ -7,6 +7,9 @@ class OvsPaymentsController extends AppController {
 	public function beforeFilter()
 	{
 		parent::beforeFilter();
+        $this->Auth->allow(
+            'pay_error'
+        );
 	}
 
     public function pay_list(){
@@ -20,6 +23,11 @@ class OvsPaymentsController extends AppController {
 
         $token = $this->request->header('token');
         $this->set(compact('token', 'game'));
+    }
+
+    public function pay_error(){
+        $this->layout = 'payment';
+        $this->view = 'error';
     }
 
     public function pay_index($chanel = array(), $currency = false){
