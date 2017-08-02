@@ -72,7 +72,7 @@ class PaymentWall {
             array(
                 'app' => $this->getGameApp(),
                 'qtoken' => $this->getUserToken(),
-                'success_url' => Configure::read('Paymentwall.ReturnUrl') . '?app=' . $this->getGameApp() . '&qtoken='. $this->getUserToken()
+                'success_url' => urlencode(Configure::read('Paymentwall.ReturnUrl') . '?app=' . $this->getGameApp() . '&qtoken='. $this->getUserToken())
             )
         );
         return $widget->getUrl();
