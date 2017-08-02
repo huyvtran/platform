@@ -649,6 +649,90 @@ class OvsPaymentsController extends AppController {
     }
 
     public function pay_paymentwall_response(){
-        CakeLog::info($this->request);die;
+        CakeLog::info('check log paymentwall response:' . print_r($this->request, true), 'payment');
+        $this->layout = 'payment';
+        $this->view = 'error';
+        $sdk_message = __("Giao dịch thất bại.");
+        $status_sdk = 1;
+        $transaction_status = false;
+
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            CakeLog::error('Vui lòng login - paymentwall', 'payment');
+            throw new NotFoundException('Vui lòng login');
+        }
+        $user = $this->Auth->user();
+        
+        if(  !empty($this->request->query['order_id']) ){
+            $orderId = $this->request->query['order_id'] ;
+
+            $this->loadModel('WaitingPayment');
+            $this->WaitingPayment->recursive = -1;
+            $wating_payment = $this->WaitingPayment->findByOrderId($orderId);
+
+            # ghi log paymentwall order
+            $this->loadModel('Payment');
+//            $this->loadModel('PaymentwallOrder');
+//            $data_paymentwall_order = array(
+//                'order_id'      => $orderId,
+//                'order_info'    => $this->request->query['order_info'],
+//                'order_type'    => $this->request->query['order_type'],
+//                'user_id'       => $user['id'],
+//                'game_id'       => $game['id'],
+//                'amount'        => $this->request->query['amount'],
+//                'card_name'     => $this->request->query['card_name'],
+//                'card_type'     => $this->request->query['card_type'],
+//                'response_code' => $this->request->query['response_code'],
+//                'trans_status'  => $this->request->query['trans_status'],
+//                'trans_ref'     => $this->request->query['trans_ref'],
+//                'chanel'        => Payment::CHANEL_PAYMENTWALL
+//            );
+//            $this->PaymentwallOrder->save($data_paymentwall_order);
+
+            # check cổng trả về và commit giao dịch lên cổng
+            if( isset( $wating_payment['WaitingPayment']['status'] )
+                && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
+            ) {
+                $access_key = "b16230d530d4e02c13801d17dfad7f84";
+                $secret = "b1b48f5f2240ad9a5918e66c6feec5ff";
+                $token = $this->request->header('qtoken');
+
+                App::uses('PaymentWall', 'Payment');
+                $paymentWall = new PaymentWall($access_key, $secret, $token, $game['app']);
+                $paymentWall->setOrderId($orderId);
+
+                # cộng xu
+                if ( isset($data_commit['response_code']) && $data_commit['response_code'] == '00' ) {
+                    $data_payment = array(
+                        'order_id' => $orderId,
+                        'user_id' => $user['id'],
+                        'game_id' => $game['id'],
+                        'price' => $wating_payment['WaitingPayment']['price'],
+                        'time' => time(),
+                        'type' => $wating_payment['WaitingPayment']['type'],
+                        'chanel' => $wating_payment['WaitingPayment']['chanel'],
+                        'waiting_id' => $wating_payment['WaitingPayment']['id']
+                    );
+
+                    $this->view = 'success';
+                    $sdk_message = __("Giao dịch thành công.");
+                    $status_sdk = 0;
+                    $transaction_status = true;
+                }
+            }
+
+            App::uses('PaymentLib', 'Payment');
+            $paymentLib = new PaymentLib();
+            if( $transaction_status ){
+                $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+                $paymentLib->add($data_payment);
+            }else{
+                $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+            }
+
+            if( !empty($game['data']['payment']['url_sdk']) ){
+                $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message . '&status=' . $status_sdk);
+            }
+        }
     }
 }
