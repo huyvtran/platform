@@ -16,74 +16,6 @@ class CompensePaymentsController extends AppController {
     public $components = array(
         'Search.Prg'
     );
-
-    public function admin_add($id = null)
-    {
-        if ($this->request->is('post') || $this->request->is('put')) {
-
-            # Check user existed
-            $this->CompensePayment->User->recursive = -1;
-            $user_existed = $this->CompensePayment->User->findById($this->request->data['CompensePayment']['user_id']);
-            if(empty($user_existed)){
-                throw new NotFoundException('Không tìm thấy User này');
-            }
-
-            $price_check = array(10000, 20000, 30000, 40000, 50000, 100000, 200000, 300000, 500000);
-            if( empty($this->request->data['CompensePayment']['price'])
-                || !in_array($this->request->data['CompensePayment']['price'], $price_check)
-            ){
-                throw new NotFoundException('Chọn sai giá');
-            }
-
-            try {
-                $this->request->data['CompensePayment']['last_user'] = $this->Auth->user('username');
-                if( empty($id) ) $this->request->data['CompensePayment']['order_id'] = microtime(true) * 10000 ;
-
-                if ($this->CompensePayment->save($this->request->data)) {
-                    $this->Session->setFlash('Compense Payment has been saved');
-                    $this->redirect(array('action' => 'index'));
-                } else {
-                    $this->Session->setFlash('Compense Payment could not be saved. Please, try again.');
-                }
-            }catch (Exception $e){
-                CakeLog::error('save Compense Payment add error: '.$e->getMessage());
-                $this->Session->setFlash('Compense Payment could not be saved. Please, try again.');
-            }
-        }
-
-        if (!empty($id)) {
-            $compense = $this->CompensePayment->findById($id);
-            if (empty($compense)) {
-                throw new NotFound('Không tìm thấy Compense Payment này');
-            }
-            $this->request->data = $compense;
-        }
-
-        $games = $this->CompensePayment->Game->find('list', array(
-            'fields' => array('id', 'title_os'),
-            'conditions' => array(
-                'Game.id' => $this->Session->read('Auth.User.permission_game_default')
-            )
-        ));
-
-        $this->set(compact('games'));
-        $this->view = 'admin_add';
-
-        # set contain in view
-        $this->loadModel('Payment');
-    }
-
-    public function admin_edit($id){
-        $this->CompensePayment->recursive = -1;
-        if (!$id || !$compense = $this->CompensePayment->findById($id)) {
-            throw new NotFoundException('Không tìm thấy giao dịch này');
-        }
-        if( !empty($compense['CompensePayment']['status'])){
-            throw new NotFoundException('Giao dịch đã được bù');
-        }
-
-        $this->admin_add($id);
-    }
     
     public function admin_index()
     {
@@ -134,12 +66,23 @@ class CompensePaymentsController extends AppController {
 
     public function admin_compense($id)
     {
+        $this->loadModel('CompensePayment');
         if (!$id || !$compense = $this->CompensePayment->findById($id)) {
             throw new NotFoundException('Không tìm thấy giao dịch này');
         }
 
         if( !empty($compense['CompensePayment']['status']) ) {
             throw new NotFoundException('Đã thực hiện bù giao dịch này');
+        }
+
+        # tìm giao dịch waiting theo order_id
+        $this->loadModel('WaitingPayment');
+        $this->WaitingPayment->recursive = -1;
+        $wating = $this->WaitingPayment->findByOrderIdAndStatus( $compense['CompensePayment']['order_id'], WaitingPayment::STATUS_QUEUEING );
+        if( empty($wating) ) {
+            $msgFlash = "Order Id:" . $compense['CompensePayment']['order_id'] . " là không tìm thấy giao dịch hoặc giao dịch đã được bù - vui lòng kiểm tra lại";
+            $this->Session->setFlash($msgFlash, 'error');
+            $this->redirect($this->referer(array('action' => 'index'), true));
         }
 
         $dataSource = $this->CompensePayment->getDataSource();
@@ -149,6 +92,9 @@ class CompensePaymentsController extends AppController {
         if ($this->CompensePayment->publish($id)) {
             App::uses('PaymentLib', 'Payment');
             $paymentLib = new PaymentLib();
+
+            $paymentLib->setResolvedPayment($wating['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+
             $data_payment = array(
                 'time'  => time(),
                 'type'  => $compense['CompensePayment']['type'],
@@ -175,6 +121,85 @@ class CompensePaymentsController extends AppController {
             $dataSource->rollback();
         }
         $this->redirect($this->referer(array('action' => 'index'), true));
+    }
+
+    public function admin_add($id = null)
+    {
+        if (!empty($id)) {
+            $compense = $this->CompensePayment->findById($id);
+            if (empty($compense)) {
+                throw new NotFound('Không tìm thấy Compense Payment này');
+            }
+        }
+
+        if ($this->request->is('post') || $this->request->is('put')) {
+            if( empty($this->request->data['CompensePayment']['order_id']) ){
+                throw new NotFoundException('Chưa chọn giao dịch');
+            }
+
+            $price_check = array(10000, 20000, 30000, 40000, 50000, 100000, 200000, 300000, 500000);
+            if( empty($this->request->data['CompensePayment']['price'])
+                || !in_array($this->request->data['CompensePayment']['price'], $price_check)
+            ){
+                throw new NotFoundException('Chọn sai giá');
+            }
+
+            # tìm giao dịch waiting theo order_id
+            $this->loadModel('WaitingPayment');
+            $this->WaitingPayment->recursive = -1;
+            $wating = $this->WaitingPayment->findByOrderId($this->request->data['CompensePayment']['order_id']);
+
+            if( empty($wating) ){
+                throw new NotFoundException('Không tìm thấy giao dịch phù hợp');
+            }
+
+            $data = array(
+                'CompensePayment' => array(
+                    'order_id'  => $this->request->data['CompensePayment']['order_id'],
+                    'user_id'   => $wating['WaitingPayment']['user_id'],
+                    'game_id'   => $wating['WaitingPayment']['game_id'],
+                    'price'     => $this->request->data['CompensePayment']['price'],
+                    'type'      => $wating['WaitingPayment']['type'],
+                    'chanel'    => $wating['WaitingPayment']['chanel'],
+                    'last_user' => $this->Auth->user('username'),
+                    'description'    => $this->request->data['CompensePayment']['description']
+                )
+            );
+
+            if (!empty($id)) {
+                $data['CompensePayment']['id'] = $compense['CompensePayment']['id'];
+            }
+
+            try {
+                if ($this->CompensePayment->save($data)) {
+                    $this->Session->setFlash('Compense Payment has been saved');
+                    $this->redirect(array('action' => 'index'));
+                } else {
+                    $this->Session->setFlash('Compense Payment could not be saved. Please, try again.');
+                }
+            }catch (Exception $e){
+                CakeLog::error('save Compense Payment add error: '.$e->getMessage());
+                $this->Session->setFlash('Compense Payment could not be saved. Please, try again.');
+            }
+        }
+
+        if( $id ){
+            $this->request->data = $compense;
+        }
+
+        $this->view = 'admin_add';
+    }
+
+    public function admin_edit($id){
+        $this->CompensePayment->recursive = -1;
+        if (!$id || !$compense = $this->CompensePayment->findById($id)) {
+            throw new NotFoundException('Không tìm thấy giao dịch này');
+        }
+        if( !empty($compense['CompensePayment']['status'])){
+            throw new NotFoundException('Giao dịch đã được bù');
+        }
+
+        $this->admin_add($id);
     }
 }
 ?>

@@ -3,11 +3,11 @@ $this->extend('/Common/blank');
 ?>
 
 <div class='row'>
-	<div class="span12">
-		<h3 class='page-header'>
-			Đền bù giao dịch
-		</h3>
-	</div>
+    <div class="span12">
+        <h3 class='page-header'>
+            Đền bù giao dịch
+        </h3>
+    </div>
 
     <div class='row'>
         <?php
@@ -29,30 +29,19 @@ $this->extend('/Common/blank');
         ?>
         <div class="span4">
             <?php
-            echo $this->Form->input('card_code', array('type' => 'text'));
-            echo $this->Form->input('card_serial', array('type' => 'text'));
-
-            echo $this->Form->input('type', array(
-                'type' => 'select',
+            echo $this->Form->input('order_id', array(
+                'type' => 'text',
                 'label' => array(
+                    'text' => 'Mã giao dịch <span style="color: red">(*)</span>',
                     'class' => 'control-label',
-                    'text' => 'Loại thẻ'
-                ),
-                'empty' => '-- All Type Card --',
-                'options' => array(
-                    Payment::TYPE_NETWORK_VIETTEL   => 'Viettel',
-                    Payment::TYPE_NETWORK_VINAPHONE => 'Vinaphone',
-                    Payment::TYPE_NETWORK_MOBIFONE  => 'Mobifone',
-                    Payment::TYPE_NETWORK_GATE      => 'Gate',
-                    Payment::TYPE_NETWORK_BANKING   => 'Visa',
-                ),
+                )
             ));
 
             echo $this->Form->input('price', array(
                 'type' => 'select',
                 'label' => array(
                     'class' => 'control-label',
-                    'text' => 'Giá tiền'
+                    'text' => 'Giá tiền <span style="color: red">(*)</span>'
                 ),
                 'empty' => '-- Price chose --',
                 'options' => array(
@@ -67,20 +56,6 @@ $this->extend('/Common/blank');
                     500000 => '500.000 VNĐ'
                 ),
             ));
-
-            echo $this->Form->input('chanel', array(
-                'type' => 'select',
-                'label' => array(
-                    'class' => 'control-label',
-                    'text' => 'Kênh'
-                ),
-                'empty' => '-- All Chanel --',
-                'options' => array(
-                    Payment::CHANEL_VIPPAY      => 'Vippay',
-                    Payment::CHANEL_HANOIPAY    => 'Hanoipay',
-                    Payment::CHANEL_ONEPAY      => '1Pay'
-                ),
-            ));
             ?>
 
             <div class="form-actions">
@@ -93,11 +68,8 @@ $this->extend('/Common/blank');
                 ?>
             </div>
         </div>
-
         <div class="span8">
             <?php
-            echo $this->Form->input('game_id');
-            echo $this->Form->input('user_id', array('type' => 'text'));
             echo $this->Form->input('description', array('type' => 'textarea'));
             ?>
         </div>
