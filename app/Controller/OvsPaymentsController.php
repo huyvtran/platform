@@ -639,6 +639,8 @@ class OvsPaymentsController extends AppController {
             throw new NotFoundException('Lỗi tạo giao dịch, vui lòng thử lại');
         }
 
+        CakeLog::info('url paymentwall:' . print_r($url,true), 'payment');
+
         # chuyển trạng thái queue trong giao dịch
         App::uses('PaymentLib', 'Payment');
         $payLib = new PaymentLib();
