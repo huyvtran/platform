@@ -202,3 +202,7 @@ Configure::write('VippayBanking', array(
 Configure::write('OnepayBanking', array(
 	'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_onepay_response',
 ));
+
+Configure::write('Paymentwall', array(
+	'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paymentwall_response'
+));
