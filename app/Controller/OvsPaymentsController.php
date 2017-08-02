@@ -573,13 +573,32 @@ class OvsPaymentsController extends AppController {
         }
     }
     
-    public function pay_fortumo_index(){
-        $this->layout = 'payment';
-        $this->view = 'success';
+    public function pay_paymentwall_index(){
+        $this->loadModel('Payment');
+        $this->pay_index(Payment::CHANEL_PAYPAL, 'USD');
+        $this->set('title_for_app', 'Banking (visa, master ...)');
+    }
+
+    public function pay_paymentwall_order(){
         $game = $this->Common->currentGame();
         if( empty($game) || !$this->Auth->loggedIn() ){
-            CakeLog::error('Vui lòng login - onepay banking', 'payment');
+            CakeLog::error('Vui lòng login - paymentwall', 'payment');
             throw new NotFoundException('Vui lòng login');
+        }
+
+        $productId = $this->request->query('productId');
+        if( empty($this->request->query('productId')) ){
+            CakeLog::error('Chưa chọn gói xu - paymentwall', 'payment');
+            throw new NotFoundException('Chưa chọn gói xu');
+        }
+
+        $this->loadModel('Product');
+        $this->Product->recursive = -1;
+        $product = $this->Product->findById($productId);
+
+        if( empty($product) ){
+            CakeLog::error('Không có gói xu phù hợp - paymentwall', 'payment');
+            throw new NotFoundException('Không có gói xu phù hợp');
         }
 
         $this->loadModel('Payment');
@@ -587,59 +606,47 @@ class OvsPaymentsController extends AppController {
 
         $user = $this->Auth->user();
         $order_id = microtime(true) * 10000;
-        $chanel = Payment::CHANEL_FORTUMO;
-        $type = Payment::TYPE_NETWORK_SMS;
 
-        # tạo giao dịch waiting_payment cộng xu 50k
+        $chanel = Payment::CHANEL_PAYMENTWALL;
+        $type = Payment::TYPE_NETWORK_BANKING;
+        # set chanel defaul, có thể sẽ đc check theo chanel (Vippay, Vippay1, Vippay2...)
+        $access_key = "bacf923104e06cff45a01317edcc2042";
+        $secret = "aea2a5767089c8f40e4a9937f10db567";
+        $token = $this->request->header('token');
+
+        # tạo giao dịch waiting_payment
         $data = array(
             'order_id'  => $order_id,
             'user_id'   => $user['id'],
             'game_id'   => $game['id'],
-            'price'     => 20000,
+            'price'     => $product['Product']['platform_price'],
             'status'    => WaitingPayment::STATUS_WAIT,
             'time'      => time(),
             'type'      => $type,
             'chanel'    => $chanel,
         );
-
         $unresolvedPayment = $this->WaitingPayment->save($data);
 
-        CakeLog::info('data unresol pay :' . print_r($unresolvedPayment,true), 'payment');
-        if(!empty($this->request->query['sign']) ){
-            $token = $this->request->header('qtoken');
-            if( !empty($this->request->header('token')) ){
-                $token = $this->request->header('token');
-            }
+        App::uses('PaymentWall', 'Payment');
+        $paymentWall = new PaymentWall($access_key, $secret, $token, $game['app']);
+        $paymentWall->setOrderId($order_id);
+        $paymentWall->setNote($product['Product']['title']);
 
-            $key = md5('lienxochongmi');
-            $sign = md5( $game['app'] . $token . $key);
-            CakeLog::info('data sign pay :' . print_r($sign,true), 'payment');
+        $url = $paymentWall->create($product['Product']);
 
-            App::uses('PaymentLib', 'Payment');
-            $paymentLib = new PaymentLib();
-            if( $this->request->query['sign'] == $sign ){
-                $data_payment = array(
-                    'order_id'  => $order_id,
-                    'user_id'   => $user['id'],
-                    'game_id'   => $game['id'],
-                    'price'     => $unresolvedPayment['WaitingPayment']['price'],
-                    'time'      => time(),
-                    'type'      => $unresolvedPayment['WaitingPayment']['type'],
-                    'chanel'    => $unresolvedPayment['WaitingPayment']['chanel'],
-                    'waiting_id'=> $unresolvedPayment['WaitingPayment']['id']
-                );
-
-                $paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
-                $paymentLib->add($data_payment);
-            }else{
-                $paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
-            }
+        if( empty($url) ){
+            CakeLog::error('Lỗi tạo giao dịch - paymentwall', 'payment');
+            throw new NotFoundException('Lỗi tạo giao dịch, vui lòng thử lại');
         }
 
-        if( !empty($game['data']['payment']['url_sdk']) ){
-            $sdk_message = __("Giao dịch thành công.");
-            $status_sdk = 0;
-            $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message . '&status=' . $status_sdk);
-        }
+        # chuyển trạng thái queue trong giao dịch
+        App::uses('PaymentLib', 'Payment');
+        $payLib = new PaymentLib();
+        $payLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_QUEUEING);
+        $this->redirect($url);
+    }
+
+    public function pay_paymentwall_response(){
+        CakeLog::info($this->request);die;
     }
 }

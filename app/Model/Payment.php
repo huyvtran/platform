@@ -21,7 +21,7 @@ class Payment extends AppModel {
     const CHANEL_PAYPAL	    = 3;
     const CHANEL_MOLIN	    = 4;
     const CHANEL_ONEPAY	    = 5;
-    const CHANEL_FORTUMO    = 6;
+    const CHANEL_PAYMENTWALL    = 6;
 
 	public $belongsTo = array(
 		'User', 'Game'
