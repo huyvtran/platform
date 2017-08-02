@@ -610,8 +610,8 @@ class OvsPaymentsController extends AppController {
         $chanel = Payment::CHANEL_PAYMENTWALL;
         $type = Payment::TYPE_NETWORK_BANKING;
         # set chanel defaul, có thể sẽ đc check theo chanel (Vippay, Vippay1, Vippay2...)
-        $access_key = "bacf923104e06cff45a01317edcc2042";
-        $secret = "aea2a5767089c8f40e4a9937f10db567";
+        $access_key = "b16230d530d4e02c13801d17dfad7f84";
+        $secret = "b1b48f5f2240ad9a5918e66c6feec5ff";
         $token = $this->request->header('token');
 
         # tạo giao dịch waiting_payment
