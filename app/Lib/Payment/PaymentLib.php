@@ -101,6 +101,7 @@ class PaymentLib {
      *          test = 0 // default
      */
     public function sub($data){
+        CakeLog::info('log charge data:' . print_r($data,true), 'payment');
         try {
             $this->Charge = ClassRegistry::init('Charge');
 
@@ -117,6 +118,11 @@ class PaymentLib {
             $this->Charge->User->recursive = -1;
             $user = $this->Charge->User->findById($data['user_id']);
             $updatePay = $user['User']['payment'] - $data['price'];
+
+            CakeLog::info('log charge user_id:' . $data['user_id']
+                . '- before update pay:' . $user['User']['payment']
+                . ' - update pay:' . $updatePay, 'payment');
+
             if($updatePay >= 0) {
                 $this->Charge->User->id = $data['user_id'];
                 $this->Charge->User->saveField('payment', $updatePay);
