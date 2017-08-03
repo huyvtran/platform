@@ -34,14 +34,14 @@
                     Banking
                 </a>
 
-                <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_fortumo_index',
+                <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paymentwall_index',
                     '?' => array(
                         'app'   => $game['app'],
                         'token' => $token
                     )
                 )); ?>" class="btn-paypal">
                     <i></i>
-                    Fortumo
+                    Payment wall
                 </a>
             </div>
         </div>

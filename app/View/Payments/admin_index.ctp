@@ -205,6 +205,9 @@ $this->extend('/Common/blank');
                         case Payment::CHANEL_ONEPAY :
                             $chanel = '1Pay';
                             break;
+                        case Payment::CHANEL_PAYMENTWALL :
+                            $chanel = 'PayWall';
+                            break;
                     }
                     echo $chanel;
                     ?>
