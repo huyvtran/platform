@@ -59,18 +59,18 @@ class PaymentWall {
         Paymentwall_Base::setSecretKey($this->secret);
 
         $widget = new Paymentwall_Widget(
-            $this->getOrderId(),   // id of the end-user who's making the payment ( orderId)
-            'pw',          // widget code, e.g. pw; can be picked inside of your merchant account
-            array(         // product details for Flexible Widget Call. To let users select the product on Paymentwall's end, leave this array empty
+            $this->getOrderId(),
+            'pw',
+            array(
                 new Paymentwall_Product(
-                    $this->getOrderId(),   // id of the product in your system
+                    $this->getOrderId(),
                     $product['price'],
-                    'USD',      // currency code
-                    $product['title']      // product name
+                    'USD',
+                    $product['title']
                 )
             ),
             array(
-                'country_code' => 'PH', // set country Philippines
+//                'country_code' => 'PH', // set country Philippines
                 'success_url' => urlencode(Configure::read('Paymentwall.ReturnUrl') . '?app=' . $this->getGameApp() . '&qtoken='. $this->getUserToken()),
                 'order_id'  => $this->getOrderId()
             )
