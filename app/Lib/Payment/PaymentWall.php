@@ -70,8 +70,7 @@ class PaymentWall {
                 )
             ),
             array(
-                'app' => $this->getGameApp(),
-                'qtoken' => $this->getUserToken(),
+                'country_code' => 'PH', // set country Philippines
                 'success_url' => urlencode(Configure::read('Paymentwall.ReturnUrl') . '?app=' . $this->getGameApp() . '&qtoken='. $this->getUserToken()),
                 'order_id'  => $this->getOrderId()
             )
