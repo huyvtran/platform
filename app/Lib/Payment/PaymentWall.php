@@ -70,8 +70,12 @@ class PaymentWall {
                 )
             ),
             array(
-//                'country_code' => $country_code, // set country Philippines
+                'country_code' => $country_code, // set country Philippines
                 'success_url' => Configure::read('Paymentwall.ReturnUrl')
+                    . '?app=' . $this->getGameApp()
+                    . '&qtoken='. $this->getUserToken()
+                    . '&order_id=' . $this->getOrderId(),
+                'pingback_url' => Configure::read('Paymentwall.ReturnUrl')
                     . '?app=' . $this->getGameApp()
                     . '&qtoken='. $this->getUserToken()
                     . '&order_id=' . $this->getOrderId()
