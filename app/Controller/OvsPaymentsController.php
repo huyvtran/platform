@@ -669,25 +669,6 @@ class OvsPaymentsController extends AppController {
             $this->WaitingPayment->recursive = -1;
             $wating_payment = $this->WaitingPayment->findByOrderId($orderId);
 
-            # ghi log paymentwall order
-//            $this->loadModel('Payment');
-//            $this->loadModel('PaymentwallOrder');
-//            $data_paymentwall_order = array(
-//                'order_id'      => $orderId,
-//                'order_info'    => $this->request->query['order_info'],
-//                'order_type'    => $this->request->query['order_type'],
-//                'user_id'       => $user['id'],
-//                'game_id'       => $game['id'],
-//                'amount'        => $this->request->query['amount'],
-//                'card_name'     => $this->request->query['card_name'],
-//                'card_type'     => $this->request->query['card_type'],
-//                'response_code' => $this->request->query['response_code'],
-//                'trans_status'  => $this->request->query['trans_status'],
-//                'trans_ref'     => $this->request->query['trans_ref'],
-//                'chanel'        => Payment::CHANEL_PAYMENTWALL
-//            );
-//            $this->PaymentwallOrder->save($data_paymentwall_order);
-
             # check cổng trả về và commit giao dịch lên cổng
             App::uses('PaymentLib', 'Payment');
             $paymentLib = new PaymentLib();
@@ -726,6 +707,9 @@ class OvsPaymentsController extends AppController {
                     $status_sdk = 0;
                 }elseif ( $payment_wall_commit == WaitingPayment::STATUS_ERROR ){
                     $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+                }elseif ( $payment_wall_commit == WaitingPayment::STATUS_QUEUEING ){
+                    $sdk_message = __("Chờ xác admin xác nhận giao dịch.");
+                    $status_sdk = 1;
                 }
             }
 

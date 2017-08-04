@@ -53,7 +53,7 @@ class PaymentWall {
 
     # $product : dữ liệu từ bảng product
     # type: array
-    public function create( $product ){
+    public function create( $product, $country_code = "PH" ){
         Paymentwall_Base::setApiType(Paymentwall_Base::API_GOODS);
         Paymentwall_Base::setAppKey($this->access_key);
         Paymentwall_Base::setSecretKey($this->secret);
@@ -70,8 +70,7 @@ class PaymentWall {
                 )
             ),
             array(
-//                'country_code' => 'PH', // set country Philippines
-//                'success_url' => urlencode(Configure::read('Paymentwall.ReturnUrl') . '?app=' . $this->getGameApp() . '&qtoken='. $this->getUserToken()),
+//                'country_code' => $country_code, // set country Philippines
                 'success_url' => Configure::read('Paymentwall.ReturnUrl')
                     . '?app=' . $this->getGameApp()
                     . '&qtoken='. $this->getUserToken()
@@ -91,7 +90,6 @@ class PaymentWall {
 
         $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
         if ($pingback->validate()) {
-            echo "OK";
             if ($pingback->isDeliverable()) {
                 // deliver the product
                 return WaitingPayment::STATUS_COMPLETED;
@@ -102,8 +100,6 @@ class PaymentWall {
                 // set "pending" status to order
                 return WaitingPayment::STATUS_QUEUEING;
             }
-        } else {
-            echo $pingback->getErrorSummary();
         }
 
         return WaitingPayment::STATUS_ERROR;
