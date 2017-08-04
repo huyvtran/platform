@@ -71,8 +71,11 @@ class PaymentWall {
             ),
             array(
 //                'country_code' => 'PH', // set country Philippines
-                'success_url' => urlencode(Configure::read('Paymentwall.ReturnUrl') . '?app=' . $this->getGameApp() . '&qtoken='. $this->getUserToken()),
-                'order_id'  => $this->getOrderId()
+//                'success_url' => urlencode(Configure::read('Paymentwall.ReturnUrl') . '?app=' . $this->getGameApp() . '&qtoken='. $this->getUserToken()),
+                'success_url' => Configure::read('Paymentwall.ReturnUrl')
+                    . '?app=' . $this->getGameApp()
+                    . '&qtoken='. $this->getUserToken()
+                    . '&order_id=' . $this->getOrderId()
             )
         );
         return $widget->getUrl();
@@ -83,19 +86,26 @@ class PaymentWall {
         Paymentwall_Base::setAppKey($this->access_key);
         Paymentwall_Base::setSecretKey($this->secret);
 
+        App::import('Model', 'WaitingPayment');
+        ClassRegistry::init('WaitingPayment');
+
         $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
         if ($pingback->validate()) {
             $productId = $pingback->getProduct()->getId();
             if ($pingback->isDeliverable()) {
                 // deliver the product
+                return WaitingPayment::STATUS_COMPLETED;
             } else if ($pingback->isCancelable()) {
                 // withdraw the product
+                return WaitingPayment::STATUS_ERROR;
             } else if ($pingback->isUnderReview()) {
                 // set "pending" status to order
+                return WaitingPayment::STATUS_QUEUEING;
             }
-            echo 'OK'; // Paymentwall expects response to be OK, otherwise the pingback will be resent
         } else {
             echo $pingback->getErrorSummary();
         }
+
+        return WaitingPayment::STATUS_ERROR;
     }
 }

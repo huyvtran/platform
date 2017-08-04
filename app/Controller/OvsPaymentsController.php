@@ -654,7 +654,6 @@ class OvsPaymentsController extends AppController {
         $this->view = 'error';
         $sdk_message = __("Giao dịch thất bại.");
         $status_sdk = 1;
-        $transaction_status = false;
 
         $game = $this->Common->currentGame();
         if( empty($game) || !$this->Auth->loggedIn() ){
@@ -671,7 +670,7 @@ class OvsPaymentsController extends AppController {
             $wating_payment = $this->WaitingPayment->findByOrderId($orderId);
 
             # ghi log paymentwall order
-            $this->loadModel('Payment');
+//            $this->loadModel('Payment');
 //            $this->loadModel('PaymentwallOrder');
 //            $data_paymentwall_order = array(
 //                'order_id'      => $orderId,
@@ -690,6 +689,9 @@ class OvsPaymentsController extends AppController {
 //            $this->PaymentwallOrder->save($data_paymentwall_order);
 
             # check cổng trả về và commit giao dịch lên cổng
+            App::uses('PaymentLib', 'Payment');
+            $paymentLib = new PaymentLib();
+
             if( isset( $wating_payment['WaitingPayment']['status'] )
                 && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
             ) {
@@ -702,7 +704,9 @@ class OvsPaymentsController extends AppController {
                 $paymentWall->setOrderId($orderId);
 
                 # cộng xu
-                if ( isset($data_commit['response_code']) && $data_commit['response_code'] == '00' ) {
+                $payment_wall_commit = $paymentWall->close();
+                CakeLog::info('payment_wall_commit:' . $payment_wall_commit , 'payment');
+                if ( $payment_wall_commit == WaitingPayment::STATUS_COMPLETED ) {
                     $data_payment = array(
                         'order_id' => $orderId,
                         'user_id' => $user['id'],
@@ -714,24 +718,19 @@ class OvsPaymentsController extends AppController {
                         'waiting_id' => $wating_payment['WaitingPayment']['id']
                     );
 
+                    $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+                    $paymentLib->add($data_payment);
+
                     $this->view = 'success';
                     $sdk_message = __("Giao dịch thành công.");
                     $status_sdk = 0;
-                    $transaction_status = true;
+                }elseif ( $payment_wall_commit == WaitingPayment::STATUS_ERROR ){
+                    $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
                 }
             }
 
-            App::uses('PaymentLib', 'Payment');
-            $paymentLib = new PaymentLib();
-            if( $transaction_status ){
-                $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
-                $paymentLib->add($data_payment);
-            }else{
-                $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
-            }
-
             if( !empty($game['data']['payment']['url_sdk']) ){
-                $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message . '&status=' . $status_sdk);
+//                $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message . '&status=' . $status_sdk);
             }
         }
     }
