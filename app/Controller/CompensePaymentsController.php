@@ -80,9 +80,19 @@ class CompensePaymentsController extends AppController {
         $this->WaitingPayment->recursive = -1;
         $wating = $this->WaitingPayment->findByOrderIdAndStatus( $compense['CompensePayment']['order_id'], array(WaitingPayment::STATUS_QUEUEING, WaitingPayment::STATUS_ERROR) );
         if( empty($wating) ) {
-            $msgFlash = "Order Id:" . $compense['CompensePayment']['order_id'] . " là không tìm thấy giao dịch hoặc giao dịch đã được bù - vui lòng kiểm tra lại";
+            $msgFlash = "Order Id:" . $compense['CompensePayment']['order_id'] . " - không tìm thấy giao dịch hoặc giao dịch đã được bù - vui lòng kiểm tra lại";
             $this->Session->setFlash($msgFlash, 'error');
             $this->redirect($this->referer(array('action' => 'index'), true));
+        }
+
+        # check thẻ tecos đã thành công
+        if( !empty($wating['WaitingPayment']['card_code']) && $wating['WaitingPayment']['card_serial'] ){
+            $wating2 = $this->WaitingPayment->findByCardSerialAndCardCodeAndStatus( $wating['WaitingPayment']['card_serial'], $wating['WaitingPayment']['card_code'], WaitingPayment::STATUS_COMPLETED );
+            if(!empty($wating2)){
+                $msgFlash = "card serial:" . $wating['WaitingPayment']['card_serial'] . " đã được sử dụng - vui lòng kiểm tra lại";
+                $this->Session->setFlash($msgFlash, 'error');
+                $this->redirect($this->referer(array('action' => 'index'), true));
+            }
         }
 
         $dataSource = $this->CompensePayment->getDataSource();
