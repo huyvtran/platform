@@ -654,7 +654,7 @@ class OvsPaymentsController extends AppController {
     }
 
     public function pay_paymentwall_response(){
-        CakeLog::info('check log paymentwall response:' . print_r($this->request, true), 'payment');
+        CakeLog::info('check log paymentwall response:' . print_r($this->request->query, true), 'payment');
         $this->layout = 'payment';
         $this->view = 'error';
         $sdk_message = __("Giao dịch thất bại.");
