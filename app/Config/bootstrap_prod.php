@@ -204,5 +204,5 @@ Configure::write('OnepayBanking', array(
 ));
 
 Configure::write('Paymentwall', array(
-	'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paymentwall_response'
+	'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paymentwall_wait'
 ));

@@ -8,7 +8,7 @@ class OvsPaymentsController extends AppController {
 	{
 		parent::beforeFilter();
         $this->Auth->allow(
-            'pay_error'
+            array('pay_error', 'pay_paymentwall_wait')
         );
 	}
 
@@ -646,6 +646,11 @@ class OvsPaymentsController extends AppController {
         $payLib = new PaymentLib();
         $payLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_QUEUEING);
         $this->redirect($url);
+    }
+
+    public function pay_paymentwall_wait(){
+        $this->layout = 'payment';
+        $this->view = 'wait';
     }
 
     public function pay_paymentwall_response(){
