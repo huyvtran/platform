@@ -654,6 +654,68 @@ class OvsPaymentsController extends AppController {
     }
 
     public function pay_paymentwall_response(){
+        CakeLog::info('paymentwall pingback:' . print_r($this->request->query, true), 'payment');
+
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            CakeLog::error('Vui lòng login - paymentwall', 'payment');
+            throw new NotFoundException('Vui lòng login');
+        }
+        $user = $this->Auth->user();
+
+        if(  !empty($this->request->query['order_id']) ){
+            $orderId = $this->request->query['order_id'] ;
+
+            $this->loadModel('WaitingPayment');
+            $this->WaitingPayment->recursive = -1;
+            $wating_payment = $this->WaitingPayment->findByOrderId($orderId);
+
+            # check cổng trả về và commit giao dịch lên cổng
+            App::uses('PaymentLib', 'Payment');
+            $paymentLib = new PaymentLib();
+
+            if( isset( $wating_payment['WaitingPayment']['status'] )
+                && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
+            ) {
+                require_once ROOT. DS . 'vendors' . DS . 'PaymentWall' . DS . 'lib' . DS . 'paymentwall.php';
+
+                $access_key = "b16230d530d4e02c13801d17dfad7f84";
+                $secret = "b1b48f5f2240ad9a5918e66c6feec5ff";
+
+                # cộng xu
+                Paymentwall_Base::setApiType(Paymentwall_Base::API_GOODS);
+                Paymentwall_Base::setAppKey($access_key);
+                Paymentwall_Base::setSecretKey($secret);
+
+                $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
+                if ($pingback->validate()) {
+                    if ($pingback->isDeliverable()) {
+                        // deliver the product
+                        $data_payment = array(
+                            'order_id' => $orderId,
+                            'user_id' => $user['id'],
+                            'game_id' => $game['id'],
+                            'price' => $wating_payment['WaitingPayment']['price'],
+                            'time' => time(),
+                            'type' => $wating_payment['WaitingPayment']['type'],
+                            'chanel' => $wating_payment['WaitingPayment']['chanel'],
+                            'waiting_id' => $wating_payment['WaitingPayment']['id']
+                        );
+
+                        $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+                        $paymentLib->add($data_payment);
+                    } else if ($pingback->isCancelable()) {
+                        // withdraw the product
+                        $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+                    }
+                    echo 'OK';die;
+                }
+            }
+        }
+        echo "ERROR";die;
+    }
+
+    public function pay_paymentwall_response2(){
         CakeLog::info('check log paymentwall response:' . print_r($this->request->query, true), 'payment');
         $this->layout = 'payment';
         $this->view = 'error';
@@ -719,7 +781,7 @@ class OvsPaymentsController extends AppController {
             }
 
             if( !empty($game['data']['payment']['url_sdk']) ){
-//                $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message . '&status=' . $status_sdk);
+                $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message . '&status=' . $status_sdk);
             }
         }
     }
