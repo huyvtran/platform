@@ -708,11 +708,13 @@ class OvsPaymentsController extends AppController {
                         // withdraw the product
                         $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
                     }
-                    echo 'OK';die;
+                    echo 'OK';
+                }else{
+                    echo $pingback->getErrorSummary();
                 }
             }
         }
-        echo "ERROR";die;
+        die;
     }
 
     public function pay_paymentwall_response2(){
