@@ -75,7 +75,7 @@ class PaymentWall {
                     . '?app=' . $this->getGameApp()
                     . '&qtoken='. $this->getUserToken()
                     . '&order_id=' . $this->getOrderId(),
-                'pingback_url' => Configure::read('Paymentwall.ReturnUrl')
+                'pingback_url' => Configure::read('Paymentwall.UrlPingBack')
                     . '?app=' . $this->getGameApp()
                     . '&qtoken='. $this->getUserToken()
                     . '&order_id=' . $this->getOrderId()
