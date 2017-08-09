@@ -94,6 +94,7 @@ class PaymentWall {
 
         $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
         if ($pingback->validate()) {
+            echo 'OK';die;
             if ($pingback->isDeliverable()) {
                 // deliver the product
                 return WaitingPayment::STATUS_COMPLETED;
@@ -104,8 +105,9 @@ class PaymentWall {
                 // set "pending" status to order
                 return WaitingPayment::STATUS_QUEUEING;
             }
-        }
 
+        }
+        debug($pingback);die;
         return WaitingPayment::STATUS_ERROR;
     }
 }
