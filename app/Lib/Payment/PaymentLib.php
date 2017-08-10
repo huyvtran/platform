@@ -65,6 +65,7 @@ class PaymentLib {
      *          waiting_id
      */
     public function add($data){
+        $this->__getPriceEnd($data);
         CakeLog::info('data add :' .print_r($data,true));
         try {
             $this->Payment = ClassRegistry::init('Payment');
@@ -136,5 +137,45 @@ class PaymentLib {
         }
         $dataSource->rollback();
         return false;
+    }
+
+    private function __getPriceEnd(&$data){
+        if( !empty($data) ){
+            ClassRegistry::init('Payment');
+            $price_end = 0;
+
+            if($data['chanel'] == Payment::CHANEL_VIPPAY){
+                switch ( $data['type'] ){
+                    case Payment::TYPE_NETWORK_VIETTEL:
+                    case Payment::TYPE_NETWORK_MOBIFONE:
+                    case Payment::TYPE_NETWORK_VINAPHONE:
+                        $price_end = 0.79 * $data['price'];
+                        break;
+                    case Payment::TYPE_NETWORK_GATE:
+                        $price_end = 0.83 * $data['price'];
+                        break;
+                }
+            }elseif ( $data['chanel'] == Payment::CHANEL_HANOIPAY ){
+                switch ( $data['type'] ){
+                    case Payment::TYPE_NETWORK_VIETTEL:
+                        $price_end = 0.8 * $data['price'];
+                        break;
+                    case Payment::TYPE_NETWORK_MOBIFONE:
+                        $price_end = 0.815 * $data['price'];
+                        break;
+                    case Payment::TYPE_NETWORK_VINAPHONE:
+                        $price_end = 0.81 * $data['price'];
+                        break;
+                    case Payment::TYPE_NETWORK_GATE:
+                        $price_end = 0.82 * $data['price'];
+                        break;
+                }
+
+            }elseif ( $data['chanel'] == Payment::CHANEL_ONEPAY ){
+                $price_end = $data['price'] * 0.967 - 3300;
+            }
+
+            $data['price_end'] = $price_end;
+        }
     }
 }
