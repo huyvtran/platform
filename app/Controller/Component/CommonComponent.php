@@ -216,6 +216,10 @@ class CommonComponent extends Component {
 		if( !empty($this->Controller->request->data['ip']) ){
 		    $ip = $this->Controller->request->data['ip'];
         }
+
+        $ip = explode(',', $ip);
+        if( !empty($ip[0]) ) $ip = $ip[0];
+        
 		return $ip;
 	}
 

@@ -12,6 +12,9 @@ require_once ROOT . DS . 'vendors' . DS . 'GeoIP2-php' . DS . 'vendor' . DS . 'a
                 $ip = Router::getRequest()->data('ip');
             }
 
+            $ip = explode(',', $ip);
+            if( !empty($ip[0]) ) $ip = $ip[0];
+
             CakeLog::info('detect ip:' . print_r($ip,true), 'user');
 
             return $ip;
