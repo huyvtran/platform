@@ -506,6 +506,7 @@ class AppSchema extends CakeSchema {
 		'card_code' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'card_serial' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'price' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'price_end' => array('type' => 'integer', 'null' => true, 'default' => '0'),
 		'time' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'index'),
 		'type' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'chanel' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 2),
