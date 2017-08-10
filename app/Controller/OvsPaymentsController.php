@@ -8,7 +8,7 @@ class OvsPaymentsController extends AppController {
 	{
 		parent::beforeFilter();
         $this->Auth->allow(
-            array('pay_error', 'pay_paymentwall_wait')
+            array('pay_error', 'pay_paymentwall_wait', 'pay_paymentwall_response')
         );
 	}
 
