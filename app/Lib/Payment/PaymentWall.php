@@ -10,6 +10,7 @@ class PaymentWall {
     private $order_id;
 
     private $note = ' ';
+    private $user_created = ' ';
 
     function __construct($access_key, $secret , $user_token, $game_app)
     {
@@ -51,6 +52,14 @@ class PaymentWall {
         $this->note = $note;
     }
 
+    public function getUserCreated() {
+        return $this->user_created;
+    }
+
+    public function setUserCreated($user_created) {
+        $this->user_created = $user_created;
+    }
+
     # $product : dữ liệu từ bảng product
     # type: array
     public function create( $product, $country_code = "PH" ){
@@ -78,7 +87,8 @@ class PaymentWall {
                 'pingback_url' => Configure::read('Paymentwall.UrlPingBack')
                     . '?app=' . $this->getGameApp()
                     . '&qtoken='. $this->getUserToken()
-                    . '&order_id=' . $this->getOrderId()
+                    . '&order_id=' . $this->getOrderId(),
+                'history[registration_date]' => $this->getUserCreated()
             )
         );
         return $widget->getUrl();

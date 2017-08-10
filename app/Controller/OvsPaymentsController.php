@@ -631,6 +631,7 @@ class OvsPaymentsController extends AppController {
         $paymentWall = new PaymentWall($access_key, $secret, $token, $game['app']);
         $paymentWall->setOrderId($order_id);
         $paymentWall->setNote($product['Product']['title']);
+        $paymentWall->setUserCreated($user['created']);
 
         $url = $paymentWall->create($product['Product']);
 
