@@ -656,14 +656,44 @@ class OvsPaymentsController extends AppController {
     public function pay_paymentwall_response(){
         CakeLog::info('paymentwall pingback:' . print_r($this->request->query, true), 'payment');
 
-        $game = $this->Common->currentGame();
-        if( empty($game) || !$this->Auth->loggedIn() ){
-            CakeLog::error('Vui lòng login - paymentwall', 'payment');
-            throw new NotFoundException('Vui lòng login');
+        if ($this->request->query('app_key')) {
+            $appKey = $this->request->query('app_key');
+        } elseif ($this->request->query('appkey')) {
+            $appKey = $this->request->query('appkey');
+        } elseif ($this->request->query('app')) {
+            $appKey = $this->request->query('app');
         }
-        $user = $this->Auth->user();
 
-        Configure::write('debug', 2);
+        if ($this->request->query('access_token')) {
+            $accessToken = $this->request->query('access_token');
+        }elseif ($this->request->query('qtoken')){
+            $accessToken = $this->request->query('qtoken');
+        }
+
+
+        if (!isset($appKey, $accessToken)) {
+            throw new BadRequestException();
+        }
+
+        $this->loadModel('AccessToken');
+        $this->loadModel('Game');
+
+        $this->AccessToken->contain(array('User'));
+        $user = $this->AccessToken->findByToken($accessToken);
+        if (empty($user) || empty($user['User'])) {
+            throw new BadRequestException('Invalid Token');
+        }
+
+        $game = $this->Game->find('first', array(
+            'conditions' => array('app' => $user['AccessToken']['app'])
+        ));
+
+        if (empty($game)) {
+            throw new BadRequestException('Can not found this game');
+        }
+
+        $user = $user['User'];
+
         $result = 'ERROR';
         if(  !empty($this->request->query['order_id']) ){
             $orderId = $this->request->query['order_id'] ;
