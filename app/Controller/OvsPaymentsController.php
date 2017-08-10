@@ -8,7 +8,7 @@ class OvsPaymentsController extends AppController {
 	{
 		parent::beforeFilter();
         $this->Auth->allow(
-            array('pay_error', 'pay_paymentwall_wait')
+            array('pay_error', 'pay_paymentwall_wait', 'pay_paymentwall_response')
         );
 	}
 
@@ -654,6 +654,7 @@ class OvsPaymentsController extends AppController {
     }
 
     public function pay_paymentwall_response(){
+//        Configure::write('debug', 2);
         CakeLog::info('paymentwall pingback:' . print_r($this->request->query, true), 'payment');
 
         $game = $this->Common->currentGame();
