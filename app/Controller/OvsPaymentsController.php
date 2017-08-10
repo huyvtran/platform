@@ -663,6 +663,7 @@ class OvsPaymentsController extends AppController {
         }
         $user = $this->Auth->user();
 
+        $result = array();
         if(  !empty($this->request->query['order_id']) ){
             $orderId = $this->request->query['order_id'] ;
 
@@ -708,13 +709,15 @@ class OvsPaymentsController extends AppController {
                         // withdraw the product
                         $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
                     }
-                    echo 'OK';
+                    $result = 'OK';
                 }else{
-                    echo $pingback->getErrorSummary();
+                    $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+                    $result = $pingback->getErrorSummary();
                 }
             }
         }
-        die;
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
     }
 
     public function pay_paymentwall_response2(){
