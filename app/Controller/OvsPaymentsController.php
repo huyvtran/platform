@@ -684,6 +684,7 @@ class OvsPaymentsController extends AppController {
             throw new BadRequestException('Invalid Token');
         }
 
+        $this->Game->recursive = -1;
         $game = $this->Game->find('first', array(
             'conditions' => array('app' => $user['AccessToken']['app'])
         ));
@@ -692,6 +693,7 @@ class OvsPaymentsController extends AppController {
             throw new BadRequestException('Can not found this game');
         }
 
+        $game = $game['Game'];
         $user = $user['User'];
 
         $result = 'ERROR';
