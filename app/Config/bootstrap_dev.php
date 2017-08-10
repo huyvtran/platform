@@ -218,5 +218,5 @@ Configure::write('OnepayBanking', array(
 
 Configure::write('Paymentwall', array(
 	'ReturnUrl' => 'http://cms.platform.net.local/OvsPayments/pay_paymentwall_wait',
-    'UrlPingBack' => 'http://cms.platform.net.local/OvsPayments/pay_paymentwall_response.json',
+    'UrlPingBack' => 'http://cms.platform.net.local/OvsPayments/pay_paymentwall_response',
 ));

@@ -663,7 +663,8 @@ class OvsPaymentsController extends AppController {
         }
         $user = $this->Auth->user();
 
-        $result = array();
+        Configure::write('debug', 2);
+        $result = 'ERROR';
         if(  !empty($this->request->query['order_id']) ){
             $orderId = $this->request->query['order_id'] ;
 
@@ -716,8 +717,7 @@ class OvsPaymentsController extends AppController {
                 }
             }
         }
-        $this->set('result', $result);
-        $this->set('_serialize', 'result');
+        echo $result; die;
     }
 
     public function pay_paymentwall_response2(){
