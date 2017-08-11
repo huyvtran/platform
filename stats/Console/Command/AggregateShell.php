@@ -175,4 +175,26 @@ class AggregateShell extends AppShell {
             $this->AggregateBase->_arppu($date);
         }
     }
+
+    public function cRevenues(){
+        $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Revenues by country");
+
+        if( date('H') < 2 ){
+            $this->out(date('Y-m-d H:i:s') . " - disable run aggregate Revenues by country");
+            return ;
+        }
+
+        $date = date('d-m-Y');
+        if (isset($this->args[0])) {
+            $date = $this->args[0];
+        }
+
+        $this->AggregateCountry->Revenue($date);
+    }
+
+    public function yesterdayCRevenues(){
+        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate Revenues by country");
+        $yesterday = date('d-m-Y', strtotime('yesterday'));
+        $this->AggregateCountry->Revenue($yesterday);
+    }
 }

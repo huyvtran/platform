@@ -69,7 +69,7 @@ if (!$this->request->is('ajax')) {
 		'title' => array('text' => 'Daily Revenues'),
 		'xAxis' => $xAxis,
 		'yAxis' => array('title' => array('text' => 'Dollar')),
-		'tooltip' => array('valueSuffix' => ' VNĐ'),
+		'tooltip' => array('valueSuffix' => ' vnđ'),
 		'plotOptions' => array(
 			'series' => array(
 				'pointStart' => $pointStart,

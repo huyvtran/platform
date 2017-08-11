@@ -514,15 +514,7 @@ class AppController extends Controller {
                 ),
                 'group' => array('country'),
             ));
-            $old_dat_rev = $this->{$model}->find('all', array(
-                'fields' => array('SUM(round(value/100)) as sum', 'country'),
-                'conditions' => $old_conditions,
-                'recursive' => -1,
-                'order' => array(
-                    'country' => 'DESC'
-                ),
-                'group' => array('country'),
-            ));
+            $old_dat_rev = $old_data;
             $total_old_rev = array();
             foreach ($old_dat_rev as $value) {
                 $total_old_rev[] = array(

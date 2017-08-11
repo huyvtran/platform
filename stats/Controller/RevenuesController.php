@@ -110,4 +110,9 @@ class RevenuesController extends AppController {
         ));
         $this->set(compact('games', 'fromTime', 'toTime', 'revenues', 'data', 'rangeDates', 'gameTotals', 'payTypes', 'idToName', 'data2', 'total'));
     }
+
+    public function country() {
+        $this->modelClass = 'LogPaymentsCountryByDay';
+        $this->indexCountry();
+    }
 }
