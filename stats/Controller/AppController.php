@@ -40,6 +40,7 @@ class AppController extends Controller {
 		'Revenue' => array(
 			'categories' => array(
 				'Revenue (Daily)' => '/Revenues/index',
+                'Revenue (Countries)' => '/Revenues/country',
 		 	),
 			'activeMenu' => array('revenues')
 		),
