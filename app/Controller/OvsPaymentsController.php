@@ -731,7 +731,7 @@ class OvsPaymentsController extends AppController {
                         }
 
                         $test_type = 0;
-                        if( $this->request->query['is_test'] == 1 ) {
+                        if( isset($this->request->query['is_test']) && $this->request->query['is_test'] == 1 ) {
                             $test_type = 1;
                             $price_end = 22000;
                         }
