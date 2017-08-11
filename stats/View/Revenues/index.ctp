@@ -161,7 +161,6 @@ if (!$this->request->is('ajax')) {
 
 			foreach($data as $v) {
 				echo '<tr>';
-				echo '<td class="name1">';
 				echo '<td class="name1">' . $this->Html->link($v['name'], array('controller' => 'Revenues', 'action' => 'country', 'game_id' => $v['game_id']) ) . '</td>';
 				echo '</td>';
 
