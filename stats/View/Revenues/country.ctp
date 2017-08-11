@@ -30,46 +30,6 @@ echo $this->extend('/Common/fluid');
 			?>
 		</div>
 	</div>
-	<div class='col-md-4'>
-		<div class="btn-group">
-			<a href="<?php echo $this->Html->url(array(
-				'controller' => 'revenues',
-				'action' => 'country',
-				'game_id' => @$this->request->params['named']['game_id'],
-				'fromTime' => $fromTime,
-				'toTime' => $toTime)) ?>"
-
-				class="btn btn-default">
-				<i class='glyphicon glyphicon-transfer'></i> Revenue</a>		
-
-			<a 	href="<?php echo $this->Html->url(array(
-				'controller' => 'nius',
-				'action' => 'country',
-				'game_id' => @$this->request->params['named']['game_id'],
-				'fromTime' => $fromTime,
-				'toTime' => $toTime))?>"
-
-				class="btn btn-default">NIU</a>
-
-			<a href="<?php echo $this->Html->url(array(
-				'controller' => 'daus',
-				'action' => 'country',
-				'game_id' => @$this->request->params['named']['game_id'],
-				'fromTime' => $fromTime,
-				'toTime' => $toTime)) ?>"
-
-				class="btn btn-default">DAU</a>	
-
-			<a href="<?php echo $this->Html->url(array(
-				'controller' => 'arpu',
-				'action' => 'country_daily',
-				'game_id' => @$this->request->params['named']['game_id'],
-				'fromTime' => $fromTime,
-				'toTime' => $toTime)) ?>"
-
-				class="btn btn-default">ARPU <small>(day)</small></a>
-		</div>
-	</div>	
 </div>
 <?php
 	if (empty($data) || empty($this->request->params['named']['game_id'])) {
