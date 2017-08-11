@@ -95,7 +95,7 @@ $this->Highchart->render(array(
 	'title' => array('text' => 'Daily Revenue by Country - ' . $games[$this->request->params['named']['game_id']]),
 	'xAxis' => array('title' => array('text' => 'Dates')),
 	'yAxis' => array('title' => array('text' => 'Revenue')),
-	'tooltip' => array('valueSuffix' => 'vnđ', 'shared' => true, 'formatter' => ""),
+	'tooltip' => array('valueSuffix' => ' vnđ', 'shared' => true, 'formatter' => ""),
 	'plotOptions' => array(
         'area' => array(
             'stacking' => 'normal',
@@ -153,8 +153,8 @@ $this->Highchart->render(array(
 		foreach($totals as $val) {
 			echo '<td class="total int">' . n($val) . '</td>';
 		}
-		echo '<td class="total int">' . n(array_sum($totals) / count($rangeDates)) . '$</td>';
-		echo '<td class="total int">' . n(array_sum($totals)) . '$</td>';
+		echo '<td class="total int">' . n(array_sum($totals) / count($rangeDates)) . ' </td>';
+		echo '<td class="total int">' . n(array_sum($totals)) . ' </td>';
 		echo '</tr>';
 
 		foreach($data as $v) {
@@ -191,19 +191,19 @@ $this->Highchart->render(array(
 			$a = n($t / count($rangeDates));
 			switch (strlen($a)) {
 				case 1 :
-					$a = $a . "$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+					$a = $a . " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
 					break;
 				case 2 :
-					$a = $a . "$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+					$a = $a . " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
 					break;
 				case 3 :
-					$a = $a . "$&nbsp;&nbsp;&nbsp;&nbsp; ";
+					$a = $a . " &nbsp;&nbsp;&nbsp;&nbsp; ";
 					break;
 				case 4 :
-					$a = $a . "$&nbsp;&nbsp;&nbsp;  ";
+					$a = $a . " &nbsp;&nbsp;&nbsp;  ";
 					break;
 				case 5 :
-					$a = $a . "$&nbsp; ";
+					$a = $a . " &nbsp; ";
 					break;
 			}
 			?>
