@@ -173,6 +173,8 @@ class PaymentLib {
 
             }elseif ( $data['chanel'] == Payment::CHANEL_ONEPAY ){
                 $price_end = $data['price'] * 0.967 - 3300;
+            }elseif ( $data['chanel'] == Payment::CHANEL_PAYMENTWALL ){
+                return ;
             }
 
             $data['price_end'] = $price_end;

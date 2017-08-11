@@ -725,9 +725,17 @@ class OvsPaymentsController extends AppController {
                 $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
                 if ($pingback->validate()) {
                     if ($pingback->isDeliverable()) {
+                        $price_end = 0;
+                        if( !empty($this->request->query['REVENUE']) ) {
+                            $price_end = 22000 * $this->request->query['REVENUE'];
+                        }
+
                         $test_type = 0;
-                        if( $this->request->query['is_test'] == 1 ) $test_type = 1;
-                        
+                        if( $this->request->query['is_test'] == 1 ) {
+                            $test_type = 1;
+                            $price_end = 22000;
+                        }
+
                         // deliver the product
                         $data_payment = array(
                             'order_id' => $orderId,
@@ -739,6 +747,7 @@ class OvsPaymentsController extends AppController {
                             'chanel' => $wating_payment['WaitingPayment']['chanel'],
                             'waiting_id' => $wating_payment['WaitingPayment']['id'],
                             'test'	=> $test_type,
+                            'price_end' => $price_end
                         );
 
                         $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
