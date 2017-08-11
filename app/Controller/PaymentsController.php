@@ -339,6 +339,7 @@ class PaymentsController extends AppController {
             Payment::CHANEL_PAYPAL      => 'Paypal',
             Payment::CHANEL_MOLIN       => 'Molin',
             Payment::CHANEL_ONEPAY      => '1Pay',
+            Payment::CHANEL_PAYMENTWALL => 'PaymentWall',
         );
 
         $types = array(
