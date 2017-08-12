@@ -60,9 +60,10 @@ class PaymentsController extends AppController {
 
         if ($this->request->is('post')) {
             $chanel = Payment::CHANEL_HANOIPAY; // default
-            if( in_array($game['app'], array('cbf45aa058807a173cccd5a6ac74c9a3', '1f5d898444a64fbbbdd10a38e5363c7d',
-                '2f9a1f92822b9f96fe6a20a68598023e', 'a8f01e2bec804367aad3ed5190ac595d',
-                '368134ee5abfbce34ffab0ed6f5d2ee3', '339a82e78b8a6c61096bcd01a435c664'
+            if( in_array($game['app'], array('cbf45aa058807a173cccd5a6ac74c9a3', '1f5d898444a64fbbbdd10a38e5363c7d', //p17
+                '2f9a1f92822b9f96fe6a20a68598023e', 'a8f01e2bec804367aad3ed5190ac595d', // t17
+                '368134ee5abfbce34ffab0ed6f5d2ee3', '339a82e78b8a6c61096bcd01a435c664', // p20
+                '443fe0ec835beae4ad944ee6da22729a', 'f26e77b1b71803f57ee7324b7355484d' // p21
             ))){
                 $chanel = Payment::CHANEL_VIPPAY;
             }
