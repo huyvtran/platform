@@ -40,7 +40,7 @@ class RevenuesController extends AppController {
 
         # END PERMISSIONS
         $revenues = $this->Payment->find('all', array(
-            'fields' => array('SUM(0.8*price) as sum', 'game_id', 'FROM_UNIXTIME(time, "%Y-%m-%d") as day', 'type'),
+            'fields' => array('SUM(price_end) as sum', 'game_id', 'FROM_UNIXTIME(time, "%Y-%m-%d") as day', 'type'),
             'conditions' => array_merge($parsedConditions, array(
                 'Payment.time >= ' => $fromTime,
                 'Payment.time <= ' => $toTime,
@@ -62,7 +62,7 @@ class RevenuesController extends AppController {
 
         # tính cho lượt trước để so sánh tỉ lệ tăng hay giảm với hiện tại
 		$total = $this->Payment->find('all', array(
-			'fields' => array('SUM(0.8*price) as sum', 'game_id', 'type'),
+			'fields' => array('SUM(price_end) as sum', 'game_id', 'type'),
 			'conditions' => array_merge($parsedConditions, array(
 				'Payment.time >= ' => $start,
 				'Payment.time < ' => $end,
