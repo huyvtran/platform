@@ -2,8 +2,11 @@
 
 class Hanoipay {
     
-	private $accesskey  = '041d1d28a3e6195c60a517319feb04d2';
-	private $secret     = '5af8db65db50eac2e15faf557c532e3c';
+//	private $accesskey  = '041d1d28a3e6195c60a517319feb04d2';
+//	private $secret     = '5af8db65db50eac2e15faf557c532e3c';
+
+    private $accesskey  = '15a22563cc3803db40dc47643e5571e3';
+    private $secret     = '32685ea89936f4000f801b52a4d964c7';
 
     private $pin;
     private $seri;
