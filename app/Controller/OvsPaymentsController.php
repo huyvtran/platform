@@ -736,12 +736,18 @@ class OvsPaymentsController extends AppController {
                             $price_end = 22000;
                         }
 
+                        $price = $wating_payment['WaitingPayment']['price'];
+                        if( isset($this->request->query['PAYMENT_SYSTEM']) && $this->request->query['PAYMENT_SYSTEM'] == 'Mobiamo' ){
+                            $price = ($wating_payment['WaitingPayment']['price'])/2;
+                        }
+
+
                         // deliver the product
                         $data_payment = array(
                             'order_id' => $orderId,
                             'user_id' => $user['id'],
                             'game_id' => $game['id'],
-                            'price' => $wating_payment['WaitingPayment']['price'],
+                            'price' => $price,
                             'time' => time(),
                             'type' => $wating_payment['WaitingPayment']['type'],
                             'chanel' => $wating_payment['WaitingPayment']['chanel'],

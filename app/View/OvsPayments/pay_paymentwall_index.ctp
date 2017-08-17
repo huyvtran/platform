@@ -11,6 +11,9 @@
     </div>
 </div>
 <div class="container">
+    <div class="row" align="center" >
+        &nbsp;&nbsp;<span style="color: red;">Note: payment via Mobiamo will reduce 50% coins</span>
+    </div><br/>
     <?php if( !empty($products) ){ ?>
         <div class="row" align="center">
             <?php foreach ($products as $product){?>
@@ -31,5 +34,11 @@
         </div>
     <?php } ?>
 </div>
+<footer class="container-fluid text-center bg-lightgray">
+    <div class="copyrights" style="margin-top:25px;">
+        COPYRIGHT FunGame Inc. Global Digital Entertainment Leader<br/>
+    </div>
+</footer>
+
 </div>
 </body>
