@@ -31,7 +31,7 @@ class Payment extends AppModel {
     public function getTotals($gameIds = array())
     {
         $sums = $this->find('all', array(
-            'fields' => array('SUM(price_end) as sum', 'game_id'),
+            'fields' => array('SUM(0.8*price) as sum', 'game_id'),
             'conditions' => array(
                 'game_id' => $gameIds,
                 'test' => 0
