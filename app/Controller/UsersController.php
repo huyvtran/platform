@@ -246,8 +246,8 @@ class UsersController extends AppController {
 	public function api_register()
 	{
 		$result = array(
-			'retcode' => 900,
-			'retmsg' => 'error'
+			'status' => 900,
+			'message' => 'error'
 		);
 
 		if (!isset(
@@ -256,8 +256,8 @@ class UsersController extends AppController {
 			$this->request->data['email']
 		)) {
 			$result = array(
-				'retcode' => 900,
-				'retmsg' => __('Thiếu thông tin đăng ký')
+				'status' => 900,
+				'message' => __('Thiếu thông tin đăng ký')
 			);
 			goto end;
 		}
@@ -281,8 +281,8 @@ class UsersController extends AppController {
 		$userCheck = $this->User->findByUsername($this->request->data['User']['username']);
 		if( !empty($userCheck['User']) ){
 			$result = array(
-				'retcode' => 900,
-				'retmsg' => __('tài khoản đã tồn tại')
+				'status' => 900,
+				'message' => __('tài khoản đã tồn tại')
 			);
 			goto end;
 		}
@@ -294,8 +294,8 @@ class UsersController extends AppController {
 			$data = $this->Command->authen_v26('login', true);
 			$this->Log->logLogin();
 			$result = array(
-				'retcode' => 0,
-				'retmsg' => __('đăng kí thành công'),
+				'status' => 0,
+				'message' => __('đăng kí thành công'),
 				'data' => $data
 			);
 			goto end;
@@ -306,8 +306,8 @@ class UsersController extends AppController {
 				$data = $this->Command->authen_v26('login', true);
 				$this->Log->logLogin();
 				$result = array(
-					'retcode' => 0,
-					'retmsg' => __('đăng kí thành công'),
+					'status' => 0,
+					'message' => __('đăng kí thành công'),
 					'data' => $data
 				);
 				goto end;
@@ -332,8 +332,8 @@ class UsersController extends AppController {
 				$this->Log->logLogin();
 
 				$result = array(
-					'retcode' => 0,
-					'retmsg' => __('đăng kí thành công'),
+					'status' => 0,
+					'message' => __('đăng kí thành công'),
 					'data' => $data
 				);
 				goto end;
@@ -363,8 +363,8 @@ class UsersController extends AppController {
 
 				CakeLog::info('check validate register: '. print_r($this->User->validationErrors,true));
 				$result = array(
-					'retcode' => 5,
-					'retmsg' => $messageError
+					'status' => 5,
+					'message' => $messageError
 				);
 				goto end;
 			}
@@ -377,8 +377,8 @@ class UsersController extends AppController {
 
 	public function api_login(){
 		$result = array(
-			'retcode' => 5,
-			'retmsg' => 'error'
+			'status' 	=> 1,
+			'message' 	=> 'error'
 		);
 
 		if (!isset(
@@ -386,8 +386,8 @@ class UsersController extends AppController {
 			$this->request->data['password']
 		)) {
 			$result = array(
-				'retcode' 	=> 5,
-				'retmsg' 	=> __('Thiếu thông tin đăng ký')
+				'status' 	=> 2,
+				'message' 	=> __('Thiếu thông tin đăng ký')
 			);
 			goto end;
 		}
@@ -455,8 +455,8 @@ class UsersController extends AppController {
 
 				$result = array(
 					'data' => $data,
-					'retcode' => 0,
-					'retmsg' => __('đăng nhập thành công')
+					'status' 	=> 0,
+					'message' 	=> __('đăng nhập thành công')
 				);
 			} else {
 				$this->Session->setFlash('You has been logged in successfully', 'success');
@@ -464,8 +464,8 @@ class UsersController extends AppController {
 			}
 		} else {
 			$result = array(
-				'retcode' => 5,
-				'retmsg' => __('Tên đăng nhập và/hoặc mật khẩu không đúng!')
+				'status' => 5,
+				'message' => __('Tên đăng nhập và/hoặc mật khẩu không đúng!')
 			);
 			goto end;
 		}
