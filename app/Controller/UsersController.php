@@ -288,7 +288,7 @@ class UsersController extends AppController {
 		}
 
 		$this->User->validator()->remove('email')->remove('password', 'confirmPassword');
-		$this->User->validator()->remove('phone', 'unique_phone');
+		$this->User->validator()->remove('phone')->remove('phone', 'unique_phone');
 
 		if ($this->Auth->user()) {
 			$data = $this->Command->authen_v26('login', true);
