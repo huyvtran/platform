@@ -904,6 +904,7 @@ class OvsPaymentsController extends AppController {
 
                 $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
                 if ($pingback->validate()) {
+                    $price = $pingback->getVirtualCurrencyAmount();
                     if ($pingback->isDeliverable()) {
                         $price_end = 0;
                         if( !empty($this->request->query['REVENUE']) ) {
@@ -916,10 +917,9 @@ class OvsPaymentsController extends AppController {
                             $price_end = 22000;
                         }
 
-                        $price = $wating_payment['WaitingPayment']['price'];
-                        if( isset($this->request->query['PAYMENT_SYSTEM']) && $this->request->query['PAYMENT_SYSTEM'] == 'Mobiamo' ){
-                            $price = ($wating_payment['WaitingPayment']['price'])/2;
-                        }
+//                        if( isset($this->request->query['PAYMENT_SYSTEM']) && $this->request->query['PAYMENT_SYSTEM'] == 'Mobiamo' ){
+//                            $price = ($wating_payment['WaitingPayment']['price'])/2;
+//                        }
 
 
                         // deliver the product
