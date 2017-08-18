@@ -7,9 +7,10 @@ class OvsPaymentsController extends AppController {
 	public function beforeFilter()
 	{
 		parent::beforeFilter();
-        $this->Auth->allow(
-            array('pay_error', 'pay_paymentwall_wait', 'pay_paymentwall_response')
-        );
+        $this->Auth->allow(array(
+            'pay_error', 'pay_paymentwall_wait', 'pay_paymentwall_response',
+            'pay_paymentwall_response_sms'
+        ));
 	}
 
     public function pay_list(){
@@ -574,11 +575,70 @@ class OvsPaymentsController extends AppController {
     }
     
     public function pay_paymentwall_index(){
-         echo 'Maintain';
-		 die();
+//         echo 'Maintain';
+//		 die();
         $this->loadModel('Payment');
         $this->pay_index(Payment::CHANEL_PAYPAL, 'USD');
         $this->set('title_for_app', 'Banking (visa, master ...)');
+    }
+
+    public function pay_paymentwall_bank(){
+        $this->loadModel('Payment');
+        $this->pay_index(Payment::CHANEL_PAYPAL, 'USD');
+        $this->set('title_for_app', 'Banking (visa, master ...)');
+    }
+
+    public function pay_paymentwall_card(){
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            CakeLog::error('Vui lòng login - paymentwall', 'payment');
+            throw new NotFoundException('Vui lòng login');
+        }
+
+        $this->loadModel('Payment');
+        $this->loadModel('WaitingPayment');
+
+        $user = $this->Auth->user();
+        $order_id = microtime(true) * 10000;
+
+        $chanel = Payment::CHANEL_PAYMENTWALL;
+        $type = Payment::TYPE_NETWORK_SMS;
+        # set chanel defaul, có thể sẽ đc check theo chanel (Vippay, Vippay1, Vippay2...)
+        $access_key = "66ea2fac02753c9d22ce29b6f9085927";
+        $secret = "be6560c61bacc1ff6cb6dafbd3fc4d3e";
+        $token = $this->request->header('token');
+
+        # tạo giao dịch waiting_payment
+        $data = array(
+            'order_id'  => $order_id,
+            'user_id'   => $user['id'],
+            'game_id'   => $game['id'],
+            'status'    => WaitingPayment::STATUS_WAIT,
+            'time'      => time(),
+            'type'      => $type,
+            'chanel'    => $chanel,
+        );
+        $unresolvedPayment = $this->WaitingPayment->save($data);
+
+        App::uses('PaymentWall', 'Payment');
+        $paymentWall = new PaymentWall($access_key, $secret, $token, $game['app']);
+        $paymentWall->setOrderId($order_id);
+        $paymentWall->setUserCreated($user['created']);
+
+        $url = $paymentWall->create_card();
+
+        if( empty($url) ){
+            CakeLog::error('Lỗi tạo giao dịch - paymentwall', 'payment');
+            throw new NotFoundException('Lỗi tạo giao dịch, vui lòng thử lại');
+        }
+
+        CakeLog::info('url paymentwall:' . print_r($url,true), 'payment');
+
+        # chuyển trạng thái queue trong giao dịch
+        App::uses('PaymentLib', 'Payment');
+        $payLib = new PaymentLib();
+        $payLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_QUEUEING);
+        $this->redirect($url);
     }
 
     public function pay_paymentwall_order(){
@@ -721,6 +781,124 @@ class OvsPaymentsController extends AppController {
 
                 # cộng xu
                 Paymentwall_Base::setApiType(Paymentwall_Base::API_GOODS);
+                Paymentwall_Base::setAppKey($access_key);
+                Paymentwall_Base::setSecretKey($secret);
+
+                $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
+                if ($pingback->validate()) {
+                    if ($pingback->isDeliverable()) {
+                        $price_end = 0;
+                        if( !empty($this->request->query['REVENUE']) ) {
+                            $price_end = 22000 * $this->request->query['REVENUE'];
+                        }
+
+                        $test_type = 0;
+                        if( isset($this->request->query['is_test']) && $this->request->query['is_test'] == 1 ) {
+                            $test_type = 1;
+                            $price_end = 22000;
+                        }
+
+                        $price = $wating_payment['WaitingPayment']['price'];
+                        if( isset($this->request->query['PAYMENT_SYSTEM']) && $this->request->query['PAYMENT_SYSTEM'] == 'Mobiamo' ){
+                            $price = ($wating_payment['WaitingPayment']['price'])/2;
+                        }
+
+
+                        // deliver the product
+                        $data_payment = array(
+                            'order_id' => $orderId,
+                            'user_id' => $user['id'],
+                            'game_id' => $game['id'],
+                            'price' => $price,
+                            'time' => time(),
+                            'type' => $wating_payment['WaitingPayment']['type'],
+                            'chanel' => $wating_payment['WaitingPayment']['chanel'],
+                            'waiting_id' => $wating_payment['WaitingPayment']['id'],
+                            'test'	=> $test_type,
+                            'price_end' => $price_end
+                        );
+
+                        $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+                        $paymentLib->add($data_payment);
+                    } else if ($pingback->isCancelable()) {
+                        // withdraw the product
+                        $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+                    }
+                    $result = 'OK';
+                }else{
+                    $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+                    $result = $pingback->getErrorSummary();
+                }
+            }
+        }
+        echo $result; die;
+    }
+
+    public function pay_paymentwall_response_sms(){
+        CakeLog::info('paymentwall pingback sms:' . print_r($this->request->query, true), 'payment');
+
+        if ($this->request->query('app_key')) {
+            $appKey = $this->request->query('app_key');
+        } elseif ($this->request->query('appkey')) {
+            $appKey = $this->request->query('appkey');
+        } elseif ($this->request->query('app')) {
+            $appKey = $this->request->query('app');
+        }
+
+        if ($this->request->query('access_token')) {
+            $accessToken = $this->request->query('access_token');
+        }elseif ($this->request->query('qtoken')){
+            $accessToken = $this->request->query('qtoken');
+        }
+
+
+        if (!isset($appKey, $accessToken)) {
+            throw new BadRequestException();
+        }
+
+        $this->loadModel('AccessToken');
+        $this->loadModel('Game');
+
+        $this->AccessToken->contain(array('User'));
+        $user = $this->AccessToken->findByToken($accessToken);
+        if (empty($user) || empty($user['User'])) {
+            throw new BadRequestException('Invalid Token');
+        }
+
+        $this->Game->recursive = -1;
+        $game = $this->Game->find('first', array(
+            'conditions' => array('app' => $user['AccessToken']['app'])
+        ));
+
+        if (empty($game)) {
+            throw new BadRequestException('Can not found this game');
+        }
+
+        $game = $game['Game'];
+        $user = $user['User'];
+
+        $result = 'ERROR';
+        if(  !empty($this->request->query['order_id']) ){
+            $orderId = $this->request->query['order_id'] ;
+
+            $this->loadModel('WaitingPayment');
+            $this->WaitingPayment->recursive = -1;
+            $wating_payment = $this->WaitingPayment->findByOrderId($orderId);
+
+            # check cổng trả về và commit giao dịch lên cổng
+            App::uses('PaymentLib', 'Payment');
+            $paymentLib = new PaymentLib();
+
+            if( isset( $wating_payment['WaitingPayment']['status'] )
+                && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
+            ) {
+                require_once ROOT. DS . 'vendors' . DS . 'PaymentWall' . DS . 'lib' . DS . 'paymentwall.php';
+
+                $access_key = "66ea2fac02753c9d22ce29b6f9085927";
+                $secret = "be6560c61bacc1ff6cb6dafbd3fc4d3e";
+
+                # cộng xu
+                Paymentwall_Base::setApiType(Paymentwall_Base::API_VC);
                 Paymentwall_Base::setAppKey($access_key);
                 Paymentwall_Base::setSecretKey($secret);
 

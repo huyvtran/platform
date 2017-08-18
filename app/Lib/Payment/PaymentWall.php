@@ -62,14 +62,16 @@ class PaymentWall {
 
     # $product : dữ liệu từ bảng product
     # type: array
-    public function create( $product, $country_code = "PH" ){
+    # widget_code : mặc định là loại banking
+    # (project Riot Game)
+    public function create( $product, $widget_code = "m2_3" ){
         Paymentwall_Base::setApiType(Paymentwall_Base::API_GOODS);
         Paymentwall_Base::setAppKey($this->access_key);
         Paymentwall_Base::setSecretKey($this->secret);
 
         $widget = new Paymentwall_Widget(
             $this->getOrderId(),
-            'pw',
+            $widget_code,
             array(
                 new Paymentwall_Product(
                     $this->getOrderId(),
@@ -79,7 +81,7 @@ class PaymentWall {
                 )
             ),
             array(
-//                'country_code' => $country_code, // set country Philippines
+//                'country_code' => 'PH', // set country Philippines
                 'success_url' => Configure::read('Paymentwall.ReturnUrl')
                     . '?app=' . $this->getGameApp()
                     . '&qtoken='. $this->getUserToken()
@@ -117,5 +119,30 @@ class PaymentWall {
         }
 
         return WaitingPayment::STATUS_ERROR;
+    }
+
+    # widget_code : mặc định là loại SMS (project Riot Game Prepaid Cards)
+    public function create_card( $widget_code = "m2_1" ){
+        Paymentwall_Base::setApiType(Paymentwall_Base::API_VC);
+        Paymentwall_Base::setAppKey($this->access_key);
+        Paymentwall_Base::setSecretKey($this->secret);
+
+        $widget = new Paymentwall_Widget(
+            $this->getOrderId(),
+            $widget_code,
+            array(),
+            array(
+                'success_url' => Configure::read('Paymentwall.ReturnUrl')
+                    . '?app=' . $this->getGameApp()
+                    . '&qtoken='. $this->getUserToken()
+                    . '&order_id=' . $this->getOrderId(),
+                'pingback_url' => Configure::read('Paymentwall.UrlPingBackSMS')
+                    . '?app=' . $this->getGameApp()
+                    . '&qtoken='. $this->getUserToken()
+                    . '&order_id=' . $this->getOrderId(),
+                'history[registration_date]' => $this->getUserCreated()
+            )
+        );
+        return $widget->getUrl();
     }
 }
