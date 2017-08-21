@@ -575,8 +575,6 @@ class OvsPaymentsController extends AppController {
     }
     
     public function pay_paymentwall_index(){
-//         echo 'Maintain';
-//		 die();
         $this->loadModel('Payment');
         $this->pay_index(Payment::CHANEL_PAYPAL, 'USD');
         $this->set('title_for_app', 'Banking (visa, master ...)');
@@ -602,7 +600,7 @@ class OvsPaymentsController extends AppController {
         $order_id = microtime(true) * 10000;
 
         $chanel = Payment::CHANEL_PAYMENTWALL;
-        $type = Payment::TYPE_NETWORK_SMS;
+        $type = Payment::TYPE_NETWORK_CARD;
         # set chanel defaul, có thể sẽ đc check theo chanel (Vippay, Vippay1, Vippay2...)
         $access_key = "66ea2fac02753c9d22ce29b6f9085927";
         $secret = "be6560c61bacc1ff6cb6dafbd3fc4d3e";

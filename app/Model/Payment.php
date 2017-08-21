@@ -14,6 +14,7 @@ class Payment extends AppModel {
 
     # thanh toán quốc tế
     const TYPE_NETWORK_BANKING      = 'Banking';
+    const TYPE_NETWORK_CARD         = 'CARD';
     const TYPE_NETWORK_SMS          = 'SMS';
 
 	const CHANEL_VIPPAY	    = 1;
