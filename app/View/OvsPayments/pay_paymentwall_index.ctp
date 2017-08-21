@@ -27,7 +27,7 @@
         &nbsp;&nbsp;<span style="color: red;">Note: payment via Mobiamo will reduce 50% coins</span>
     </div><br/>
 
-    <div class="col-xs-4">
+    <div class="col-xs-6">
         <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paymentwall_bank',
             '?' => array(
                 'app'   => $game['app'],
@@ -39,7 +39,7 @@
         </a>
     </div>
 
-    <div class="col-xs-4">
+    <div class="col-xs-6">
         <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paymentwall_card',
             '?' => array(
                 'app'   => $game['app'],
