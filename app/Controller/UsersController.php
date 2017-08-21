@@ -1513,6 +1513,7 @@ class UsersController extends AppController {
 	}
 
     public function api_change_password_v26(){
+        CakeLog::info('api_change_password_v26 - data:' . print_r($this->request->data,true), 'user');
         try{
             $result = array(
                 'status' => 1,
