@@ -1513,7 +1513,6 @@ class UsersController extends AppController {
 	}
 
     public function api_change_password_v26(){
-        CakeLog::info('api_change_password_v26 - data:' . print_r($this->request->data,true), 'user');
         try{
             $result = array(
                 'status' => 1,
@@ -1532,9 +1531,6 @@ class UsersController extends AppController {
                 goto end;
             }
 
-            $this->request->data['password'] = md5($this->request->data['password']);
-            $this->request->data['new_password'] = md5($this->request->data['new_password']);
-
             $prefix_user = ''; // client gọi sang vẫn có tiền tố, ko check
 
             $old_password = $this->request->data['password'];
@@ -1547,13 +1543,12 @@ class UsersController extends AppController {
             CakeLog::info('api_change_password_v26 - game id:' . $game['id'] . '\n data:' . print_r($this->request->data,true), 'user');
             $user = $this->User->findByUsername($this->request->data['User']['username']);
             if (!empty($user)) {
-                $this->User->data['User']['password'] = $this->request->data['User']['password'];
+                $this->User->data['User']['password'] = Security::hash($this->request->data['User']['password'], 'sha1', true);
                 $this->User->set($this->User->data);
                 if ($user['User']['password'] == Security::hash($old_password, 'sha1', true)) {
                     $this->User->validator()->remove('password', 'confirmPassword');
                     if ($this->User->validates(array('fieldList' => array('password')))) {
                         $this->User->id = $user['User']['id'];
-                        $this->User->data['User']['password'] = Security::hash($this->request->data['User']['password'], 'sha1', true);
                         if ($this->User->save($this->User->data, false, array('password'))) {
                             if (isset($user['User']['id']) && !empty($user['User']['id'])) {
                                 $this->loadModel('AccessToken');
