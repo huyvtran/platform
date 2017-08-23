@@ -915,9 +915,9 @@ class OvsPaymentsController extends AppController {
                             $price_end = 22000;
                         }
 
-//                        if( isset($this->request->query['PAYMENT_SYSTEM']) && $this->request->query['PAYMENT_SYSTEM'] == 'Mobiamo' ){
-//                            $price = ($wating_payment['WaitingPayment']['price'])/2;
-//                        }
+                        if( isset($this->request->query['PAYMENT_SYSTEM']) && $this->request->query['PAYMENT_SYSTEM'] == 'Mobiamo' ){
+                            $price = ($price)/2;
+                        }
 
 
                         // deliver the product
