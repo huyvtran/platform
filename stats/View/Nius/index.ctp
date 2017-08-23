@@ -184,7 +184,7 @@ $this->Highchart->render(array(
 <?php
 if (!$this->request->is('ajax')) {
 ?>
-<script type="text/javascript">
+<!--<script type="text/javascript">
 	$(function() {
 		var table = $('.table').DataTable({
 			"scrollX": "100%",
@@ -199,7 +199,7 @@ if (!$this->request->is('ajax')) {
 			leftColumns: 1,
 		});
 	});
-</script>
+</script>-->
 <?php
 }
 a:

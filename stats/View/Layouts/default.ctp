@@ -16,7 +16,7 @@
 		echo $this->Html->css('/bower_components/pickadate/themes/default.css');
 		echo $this->Html->css('/bower_components/pickadate/themes/default.date.css');
 		echo $this->Html->css('/bower_components/pickadate/themes/default.time.css');
-		echo $this->Html->css('/bower_components/zurb-responsive-tables/responsive-tables.css');
+		//echo $this->Html->css('/bower_components/zurb-responsive-tables/responsive-tables.css');
 		echo $this->Html->css('https://cdn.datatables.net/v/bs-3.3.7/dt-1.10.15/fc-3.2.2/sc-1.4.2/datatables.min.css');
 
 		// old css and js
@@ -53,7 +53,7 @@
         echo $this->Html->script('/bower_components/pickadate/picker.time.js');
         echo $this->Html->script('/bower_components/pickadate/legacy.js');
         echo $this->Html->script('/bower_components/chosen/chosen.jquery.min.js');
-        echo $this->Html->script('/bower_components/zurb-responsive-tables/responsive-tables.js');
+        //echo $this->Html->script('/bower_components/zurb-responsive-tables/responsive-tables.js');
         echo $this->Html->script('https://cdn.datatables.net/v/bs/dt-1.10.15/fc-3.2.2/sc-1.4.2/datatables.min.js');
 		echo $this->Html->script('highcharts-3.0.2/js/highcharts.js');
 		echo $this->Html->script('highcharts-3.0.2/js/highcharts-more.js');
