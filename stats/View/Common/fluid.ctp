@@ -1,5 +1,4 @@
-<div class="container">
-	<div class="content">
+<section class="content container-fluid">
 		<!--nocache-->
 		<?php
 		echo $this->Session->flash();
@@ -7,5 +6,4 @@
 		?>              
 		<!--/nocache-->
 		<?php echo $this->fetch('content');?>
-	</div>
-</div>
+</section>

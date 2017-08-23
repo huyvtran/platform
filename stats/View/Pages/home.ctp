@@ -3,9 +3,8 @@ $this->extend('/Common/fluid');
 $role = $this->Session->read('Auth.User.role');
 if (!empty($dauIndexPermission) || !empty($niuIndexPermission)) {
 ?>
-<div class='row form-stats'>
-	<div class="col-md-11 offset1">
-		<div>
+    <div class="box">
+        <div class="box-body">
 			<?php
 			echo $this->Form->create('LogLoginsByDay', array(
 				'url' => array('controller' => 'pages'),
@@ -24,10 +23,10 @@ if (!empty($dauIndexPermission) || !empty($niuIndexPermission)) {
 			echo $this->Form->end()
 			?>
 		</div>
-	</div>
 </div>
 
-<div class='row'>
+<div class="box">
+    <div class="box-body">
 	<?php
 	if ($dauIndexPermission) {
 	?>
@@ -45,6 +44,7 @@ if (!empty($dauIndexPermission) || !empty($niuIndexPermission)) {
 	<?php
 	}
 	?>
+    </div>
 </div>
 
 <?php
@@ -86,22 +86,44 @@ if (!empty($nius) && $niuIndexPermission) {
 <?php
 if (!empty($dauIndexPermission)) {
 ?>
-<div id="daus-datatable">
-<h3>Daus</h3>
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Daus</h3>
+    </div>
+    <div class="box-body">
+        <div style="padding-left: 10px;" class="table-responsive">
+            <div id="daus-datatable">
+            </div>
+        </div>
+    </div>
 </div>
 <?php
 }
 if (!empty($niuIndexPermission)) {
 ?>
-<div id="nius-datatable">
-<h3>Nrus</h3>
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Nrus</h3>
+    </div>
+    <div class="box-body">
+        <div style="padding-left: 10px;" class="table-responsive">
+            <div id="nius-datatable"></div>
+        </div>
+    </div>
 </div>
 <?php
 }
 ?>
 
-<div id="rev-datatable">
-    <h3>Revenues</h3>
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Revenues</h3>
+    </div>
+    <div class="box-body">
+        <div style="padding-left: 10px;" class="table-responsive">
+            <div id="rev-datatable"></div>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">

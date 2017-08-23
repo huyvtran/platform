@@ -9,9 +9,8 @@
 <?php
 echo $this->extend('/Common/fluid');
 ?>
-<div class='row'>
-	<div class="col-md-8 offset1">
-		<div>
+<div class="box">
+    <div class="box-body">
 			<?php
 			echo $this->Form->create('LogLoginsCountryByDay', array('inputDefaults' => array('div' => false, 'label' => false), 'class' => 'form-inline'));
 			echo '<div class="form-group">';
@@ -28,7 +27,6 @@ echo $this->extend('/Common/fluid');
 			echo '</div>';
 			echo $this->Form->end()
 			?>
-		</div>
 	</div>
 </div>
 <?php
@@ -43,7 +41,13 @@ echo $this->extend('/Common/fluid');
 		goto a;
 	}
 ?>
-<div id='chart'></div>
+<div class="box">
+    <div class="box-body">
+        <div class="col-md-12">
+            <div id='chart'></div>
+        </div>
+    </div>
+</div>
 
 <?php
 $pointInterval = 3600 * 1000 * 24;
@@ -66,11 +70,11 @@ $this->Highchart->render(array(
 		)
 	)), $dataHighchart);
 ?>
-<div class='row'>
-<div class='md-col-12'>
+<div class="box">
+    <div class="box-body">
 
 <div style='margin-bottom: 10px'><a class="btn btn-default" href="<?php echo $this->Html->url(array('action' => 'index', 'game_id' => $this->request->params['named']['game_id'], 'fromTime' => $fromTime, 'toTime' => $toTime));?>"><i class="glyphicon glyphicon-transfer"></i> Back to genetic stats</a></div>
-
+        <div class="table-responsive">
 <table class='table table-striped table-bordered table-data responsive'>
 	<thead>
 		<th>Countries</th>
@@ -177,7 +181,7 @@ $this->Highchart->render(array(
 		?>
 	</tbody>
 </table>
-
+        </div>
 </div>
 
 </div>

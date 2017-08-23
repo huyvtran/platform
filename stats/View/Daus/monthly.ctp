@@ -9,9 +9,8 @@
 <?php
 echo $this->extend('/Common/fluid');
 ?>
-<div class='row-fluid'>
-	<div class="span11 offset1">
-		<div>
+<div class="box">
+    <div class="box-body">
 			<?php
 			echo $this->Form->create('LogLoginsByMonth', array('inputDefaults' => array('div' => false, 'label' => false), 'class' => 'form-inline'));
 			echo $this->Form->input('game_id', array('empty' => '--All Games--', 'options' => $games)) . ' ';
@@ -21,7 +20,6 @@ echo $this->extend('/Common/fluid');
 			
 			echo $this->Form->end()
 			?>
-		</div>
 	</div>
 </div>
 <?php
@@ -29,7 +27,13 @@ if (empty($data)) {
 	goto end_of_file;
 }
 ?>
-<div id='chart'></div>
+<div class="box">
+    <div class="box-body">
+        <div class="col-md-12">
+            <div id='chart'></div>
+        </div>
+    </div>
+</div>
 <?php
 $this->Highchart->render(array(
 	'title' => array('text' => 'Monthly Active Users'),
@@ -43,8 +47,9 @@ $this->Highchart->render(array(
 ?>
 
 <!-- DATA TABLE -->
-<div class='row'>
-	<div class='md-col-12' style='overflow:auto'>
+<div class="box">
+    <div class="box-body">
+        <div class="table-responsive">
 		<table class='table table-striped table-bordered table-data'>
 			<thead>
 				
@@ -141,6 +146,7 @@ $this->Highchart->render(array(
 				
 			</tbody>
 		</table>
+        </div>
 	</div>
 </div>
 <?php

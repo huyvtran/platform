@@ -2,7 +2,8 @@
 echo $this->extend('/Common/fluid');
 
 ?>
-<div class='row'>
+    <div class="box">
+    <div class="box-body">
 	<div class="col-md-8">
 		<?php
 		echo $this->Form->create('LogRetention', array('inputDefaults' => array('div' => false, 'label' => false), 'class' => 'form-inline'));
@@ -20,6 +21,7 @@ echo $this->extend('/Common/fluid');
 			<a href="<?php echo $this->Html->url(array_merge(array('7'), $this->request->params['named'])) ?>" class="btn btn-default <?php echo $this->Nav->thisSlug('7') ?>">7 Days</a>
 		</div>
 	</div>
+    </div>
 </div>
 <?php
 	if (empty($data)) {
@@ -27,7 +29,13 @@ echo $this->extend('/Common/fluid');
 	}
 ?>
 
-<div id='chart'></div>
+    <div class="box">
+        <div class="box-body">
+            <div class="col-md-12">
+                <div id='chart'></div>
+            </div>
+        </div>
+    </div>
 <?php
 
 $pointInterval = 3600 * 1000 * 24;
@@ -46,8 +54,9 @@ $this->Highchart->render(array(
 		)
 	)), $data);
 ?>
-<div class='row'>
-<div class='md-col-12' style='overflow:auto'>
+    <div class="box">
+    <div class="box-body">
+        <div class="table-responsive">
 <table class='table table-striped table-bordered table-data'>
 	<thead>
 		<th>Games</th>
@@ -88,6 +97,7 @@ $this->Highchart->render(array(
 		?>
 	</tbody>
 </table>
+        </div>
 </div>
 </div>
 <?php

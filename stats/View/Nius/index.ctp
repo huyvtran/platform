@@ -19,9 +19,8 @@
 if (!$this->request->is('ajax')) {
 echo $this->extend('/Common/fluid');
 ?>
-<div class='row-fluid'>
-	<div class="span11 offset1">
-		<div>
+    <div class="box">
+        <div class="box-body">
 			<?php
 			echo $this->Form->create('LogAccountsByDay', array('inputDefaults' => array('div' => false, 'label' => false), 'class' => 'form-inline'));
 			echo $this->Form->input('game_id', array('empty' => '-- All Games --'));
@@ -29,7 +28,6 @@ echo $this->extend('/Common/fluid');
 			echo $this->Form->submit('Submit', array('class' => 'btn btn-default', 'div' => false));
 			echo $this->Form->end()
 			?>
-		</div>
 	</div>
 </div>
 <?php
@@ -39,7 +37,16 @@ echo $this->extend('/Common/fluid');
 	}
 ?>
 
-<div id='chart'></div>
+<?php
+if (!$this->request->is('ajax')) { ?>
+    <div class="box">
+        <div class="box-body">
+            <div class="col-md-12">
+                <div id='chart'></div>
+            </div>
+        </div>
+    </div>
+<?php } ?>
 <?php
 if (!$this->request->is('ajax')) {
 $pointInterval = 3600 * 1000 * 24;
@@ -58,8 +65,16 @@ $this->Highchart->render(array(
 	)), $data);
 }
 ?>
-<div class='row'>
-<div class='md-col-12'>
+<?php if (!$this->request->is('ajax')) {?>
+            <div class="box">
+			    <div class="box-header with-border">
+                    <h3 class="box-title">Data</h3>
+                </div>
+                <div class="table-responsive">
+		<?php } else { ?>
+                <div class='row'>
+                    <div class='md-col-12' >
+                        <?php } ?>
 <table class='table table-striped table-bordered'>
 	<thead>
 		<th>Games</th>
@@ -159,9 +174,13 @@ $this->Highchart->render(array(
 		?>
 	</tbody>
 </table>
-</div>
-</div>
 
+                        <?php if (!$this->request->is('ajax')) {?>
+                    </div></div>
+                    <?php } else { ?>
+                </div>
+            </div>
+<?php } ?>
 <?php
 if (!$this->request->is('ajax')) {
 ?>
