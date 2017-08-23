@@ -104,6 +104,28 @@ class AggregateShell extends AppShell {
         $this->AggregateBase->_aggreateByDay("Account", "LogAccountsByDay", "COUNT", "user_id", array("game_id"), array('day' => $yesterday));
     }
 
+    public function cNiu(){
+        $this->out(date('Y-m-d H:i:s') . " - Start run aggregate NIU by country");
+
+        if( date('H') < 2 ){
+            $this->out(date('Y-m-d H:i:s') . " - disable run aggregate NIU by country");
+            return ;
+        }
+
+        $date = date('d-m-Y');
+        if (isset($this->args[0])) {
+            $date = $this->args[0];
+        }
+
+        $this->AggregateCountry->Niu($date);
+    }
+
+    public function yesterdayCNiu(){
+        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate NIU by country");
+        $yesterday = date('d-m-Y', strtotime('yesterday'));
+        $this->AggregateCountry->Niu($yesterday);
+    }
+
     public function Retention(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Retention");
 

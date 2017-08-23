@@ -97,8 +97,8 @@ if (typeof Highcharts != 'undefined') {
 		},
 		credits: {
 			enabled: true,
-			text: 'Mobgame',
-			href: 'http://mobgame.mobi'
+			text: 'VNTAP',
+			href: 'http://vntap.com'
 		},
 		lang: {
 			decimalPoint : ','

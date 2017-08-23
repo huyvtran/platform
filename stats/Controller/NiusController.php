@@ -22,4 +22,10 @@ class NiusController extends AppController {
 	{
 		$this->indexDefault();
 	}
+
+    public function country()
+    {
+        $this->modelClass = 'LogAccountsCountryByDay';
+        $this->indexCountry();
+    }
 }
