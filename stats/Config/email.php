@@ -49,37 +49,40 @@
  */
 class EmailConfig
 {
-
 	public $default = array(
-		'transport' => 'Smtp',
-		'from' => array('MobGame3zk4b52l1@gmail.com' => 'MobGame'),
-		'host' => 'ssl://smtp.gmail.com',
-		'port' => 465,
-		'timeout' => 10,
-		'username' => 'MobGame3zk4b52l1',
-		'password' => '3zk4b52l1',
-		'client' => null,
-		'log' => false,
-		'layout' => 'detault',
-		'template' => 'default',
-		'emailFormat' => 'both',
-		'charset' => 'utf-8',
-		'headerCharset' => 'utf-8',
+        'transport' => 'Smtp',
+        'from' => array('game.muriot@gmail.com' => 'MU Admin'),
+        'host' => 'ssl://smtp.gmail.com',
+        'port' => 465,
+        'timeout' => 10,
+        'username' => 'game.muriot@gmail.com',
+        'password' => 'muathuxanh@123',
+        'client' => null,
+        'log' => false,
+        'layout' => 'default',
+        'template' => 'default',
+        'emailFormat' => 'both',
+        'charset' => 'utf-8',
+        'headerCharset' => 'utf-8',
 	);
 
-	public $amazonses = array(
-		'transport' => 'Amazonses',
-		'from' => array('register@MobGame.com' => 'MobGame'),
-		'host' => 'ssl://email-smtp.us-east-1.amazonaws.com',
-		'port' => 465,
-		'timeout' => 10,
-		'username' => 'MobGame',
-		'password' => '*****',
-		'client' => null,
-		'log' => false,
-		'layout' => 'blank',
-		'emailFormat' => 'html'
-	);
+    public $amazonses = array(
+        'transport' => 'Smtp',
+        'from' => array('game.muriot@gmail.com' => 'MU Admin'),
+        'host' => 'ssl://smtp.gmail.com',
+        'port' => 465,
+        'timeout' => 10,
+        'username' => 'game.muriot@gmail.com',
+        'password' => 'muathuxanh@123',
+        'client' => null,
+        'log' => false,
+        'layout' => 'default',
+        'template' => 'default',
+        'emailFormat' => 'both',
+        'charset' => 'utf-8',
+        'headerCharset' => 'utf-8',
+    );
+
 	public $fast = array(
 		'from' => 'you@localhost',
 		'sender' => null,
