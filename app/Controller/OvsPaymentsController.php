@@ -915,8 +915,13 @@ class OvsPaymentsController extends AppController {
                             $price_end = 22000;
                         }
 
+                        $type = $wating_payment['WaitingPayment']['type'];
                         if( isset($this->request->query['PAYMENT_SYSTEM']) && $this->request->query['PAYMENT_SYSTEM'] == 'Mobiamo' ){
                             $price = ($price)/2;
+
+                            $type = Payment::TYPE_NETWORK_SMS;
+                            $this->WaitingPayment->id = $wating_payment['WaitingPayment']['id'];
+                            $this->WaitingPayment->saveField('type', $type, array('callbacks' => false));
                         }
 
 
@@ -927,7 +932,7 @@ class OvsPaymentsController extends AppController {
                             'game_id' => $game['id'],
                             'price' => $price,
                             'time' => time(),
-                            'type' => $wating_payment['WaitingPayment']['type'],
+                            'type' => $type,
                             'chanel' => $wating_payment['WaitingPayment']['chanel'],
                             'waiting_id' => $wating_payment['WaitingPayment']['id'],
                             'test'	=> $test_type,
