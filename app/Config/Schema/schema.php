@@ -329,6 +329,21 @@ class AppSchema extends CakeSchema {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
 	);
 
+	public $log_accounts_country_by_day = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'primary'),
+		'game_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10, 'key' => 'index'),
+		'country' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'day' => array('type' => 'date', 'null' => false, 'default' => null),
+		'value' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10),
+		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			'game_id_country_day' => array('column' => array('game_id', 'country', 'day'), 'unique' => 0)
+		),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
+	);
+
 	public $log_arppu_by_day = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'value' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10),
