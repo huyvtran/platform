@@ -770,7 +770,7 @@ class OvsPaymentsController extends AppController {
             $paymentLib = new PaymentLib();
 
             if( isset( $wating_payment['WaitingPayment']['status'] )
-                && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
+                && $wating_payment['WaitingPayment']['status'] != WaitingPayment::STATUS_COMPLETED
             ) {
                 require_once ROOT. DS . 'vendors' . DS . 'PaymentWall' . DS . 'lib' . DS . 'paymentwall.php';
 
@@ -888,7 +888,7 @@ class OvsPaymentsController extends AppController {
             $paymentLib = new PaymentLib();
 
             if( isset( $wating_payment['WaitingPayment']['status'] )
-                && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
+                && $wating_payment['WaitingPayment']['status'] != WaitingPayment::STATUS_COMPLETED
             ) {
                 require_once ROOT. DS . 'vendors' . DS . 'PaymentWall' . DS . 'lib' . DS . 'paymentwall.php';
 
