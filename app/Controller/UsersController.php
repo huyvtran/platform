@@ -599,12 +599,14 @@ class UsersController extends AppController {
 
 	public function admin_edit($id = null)
 	{
+        $this->User->recursive = -1;
 		if (!$id || !$user = $this->User->findById($id)) {
 			throw new NotFoundException("Can not find this user");
 		}
 
 		if (!empty($this->request->data)) {
 			$this->request->data['User']['active'] = 1;
+            $this->request->data['User']['payment'] = $user['User']['payment'];
 			$this->User->validator()->remove('password');
 			$this->User->validator()->remove('phone');
 
