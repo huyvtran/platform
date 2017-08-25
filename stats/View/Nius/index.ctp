@@ -1,11 +1,5 @@
 <style>
-	.glyphicon-arrow-down {
-		color:red;
-	}
-	.glyphicon-arrow-up {
-		color:green;
-	}
-	.name1 {
+	.name {
 		width: 230px;
 	}
 	.data {
@@ -124,7 +118,7 @@ $this->Highchart->render(array(
 			$range = 0;
 			echo '<tr>';
 
-            echo '<td class="name1">' . $v['name'] . '</td>';
+            echo '<td class="name">' . $this->Html->link($v['name'], array('controller' => 'nius', 'action' => 'country', 'game_id' => $v['game_id']) ) . '</td>';
 			foreach($v['data'] as $kk => $count) {
 				$range += $count;
 				echo '<td class="int data">' . n($count) . '</td>';
