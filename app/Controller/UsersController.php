@@ -605,6 +605,15 @@ class UsersController extends AppController {
 		}
 
 		if (!empty($this->request->data)) {
+            # ghi log password cũ vào redis, exprite 24h
+            if( $this->request->action == 'admin_editContent'){
+                App::import('Lib', 'RedisCake');
+                $Redis = new RedisCake('action_count');
+                $key = 'reset_password_' . $id;
+                $Redis->set($key,$user['User']['password']);
+                $Redis->expire($key, 24*60*60 );
+            }
+
 			$this->request->data['User']['active'] = 1;
             $this->request->data['User']['payment'] = $user['User']['payment'];
 			$this->User->validator()->remove('password');
@@ -1682,6 +1691,31 @@ class UsersController extends AppController {
 		$this->set('result', $result);
 		$this->set('_serialize', 'result');
 	}
+
+	public function admin_reset_password($id = null){
+        $this->User->recursive = -1;
+        if (!$id || !$user = $this->User->findById($id)) {
+            throw new NotFoundException("Can not find this user");
+        }
+
+        App::import('Lib', 'RedisCake');
+        $Redis = new RedisCake('action_count');
+        $key = 'reset_password_' . $id;
+        $password = $Redis->get($key);
+
+        $Redis2 = new RedisQueue();
+        $Redis2->rPush(array(
+            'model' => 'User',
+            'data' => array(
+                'id'        => $id,
+                'password'  => $password
+            )
+        ));
+        $Redis->del($key);
+
+        $this->Session->setFlash('The User has been updated', 'success');
+        $this->redirect(array('action' => 'index'));
+    }
 	
 	public function test_sendmail(){
         $options = array(

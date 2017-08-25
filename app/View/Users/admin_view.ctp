@@ -35,7 +35,6 @@ $this->extend('/Common/blank');
 				));
 				?>
 	</li>
-    <li>Password: <?php echo $user['User']['password'] ?></li>
 </ul>
 
 <h5>Accounts</h5>

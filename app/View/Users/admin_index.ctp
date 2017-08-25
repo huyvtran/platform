@@ -1,5 +1,7 @@
 <?php
 $this->extend('/Common/blank');
+App::import('Lib', 'RedisCake');
+$Redis = new RedisCake('action_count');
 ?>
 <div class="users index">
 	<h2>Users</h2>
@@ -109,7 +111,18 @@ $this->extend('/Common/blank');
 					</a>
 					<ul class="dropdown-menu">
 						<li><?php echo $this->Html->link('Add Permissions', '/admin/permissions/add?user_id=' . $user['User']['id']); ?></li>
-						<li><?php echo $this->Html->link('Change Password', '/admin/users/editContent/' . $user['User']['id']); ?></li>
+
+                        <li>
+                        <?php
+                            $key = 'reset_password_' . $user['User']['id'];
+                            if( $Redis->exists($key) ){
+                                echo $this->Html->link('Reset Password', '/admin/users/reset_password/' . $user['User']['id']);
+                            }else{
+                                echo $this->Html->link('Change Password', '/admin/users/editContent/' . $user['User']['id']);
+                            }
+                        ?>
+						</li>
+
 						<li><?php echo $this->Html->link('Edit', '/admin/users/edit/' . $user['User']['id']); ?></li>
                         <?php
 						if (!empty($user['User']['active'])) {
