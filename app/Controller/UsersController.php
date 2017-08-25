@@ -669,6 +669,7 @@ class UsersController extends AppController {
         if (empty($user)) {
             throw new NotFoundException("Can not find this user");
         }
+        CakeLog::info('show pass id:' . $user['User']['id'] . ' - pass: '. $user['User']['password'] , 'user');
 
         $this->loadModel('LogEntergame');
         $this->LogEntergame->bindModel(array('belongsTo' => array('Game')));
