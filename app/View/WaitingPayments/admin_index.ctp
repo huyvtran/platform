@@ -100,6 +100,16 @@ $this->extend('/Common/blank');
             'options' => $chanels,
             'selected' => !empty($this->request->params['named']['chanel']) ? $this->request->params['named']['chanel'] : ''
         ));
+        echo $this->Form->input('type', array(
+            'type' => 'select',
+            'label' => array(
+                'class' => 'control-label',
+                'text' => 'type'
+            ),
+            'empty' => 'All type',
+            'options' => $types,
+            'selected' => !empty($this->request->params['named']['type']) ? $this->request->params['named']['type'] : ''
+        ));
         ?>
     </div>
 

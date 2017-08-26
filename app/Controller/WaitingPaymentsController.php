@@ -87,7 +87,17 @@ class WaitingPaymentsController extends AppController {
             Payment::CHANEL_PAYMENTWALL => 'PaymentWall',
         );
 
-        $this->set(compact('orders', 'games', 'status', 'chanels'));
+        $types = array(
+            Payment::TYPE_NETWORK_VIETTEL       => 'Viettel',
+            Payment::TYPE_NETWORK_VINAPHONE     => 'Vinaphone',
+            Payment::TYPE_NETWORK_MOBIFONE      => 'Mobifone',
+            Payment::TYPE_NETWORK_GATE          => 'Gate',
+            Payment::TYPE_NETWORK_BANKING       => 'Banking',
+            Payment::TYPE_NETWORK_CARD          => 'Card',
+            Payment::TYPE_NETWORK_SMS           => 'Sms',
+        );
+
+        $this->set(compact('orders', 'games', 'status', 'chanels', 'types'));
     }
 
     public function api_index(){
