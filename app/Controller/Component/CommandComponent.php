@@ -56,7 +56,6 @@ class CommandComponent extends Component {
 		}
 
 		if ($return == true) {
-			$data = json_encode(Hash::filter($data));
 			return $data;
 		}
 		if (!empty($controller->request->params['ext']) && $controller->request->params['ext'] == 'json') {
