@@ -291,7 +291,7 @@ class UsersController extends AppController {
 		$this->User->validator()->remove('phone');
 
 		if ($this->Auth->user()) {
-			$data = $this->Command->authen_v26('login', true);
+			$data = $this->Command->authen('login', true);
 			$this->Log->logLogin();
 			$result = array(
 				'status' => 0,
@@ -303,7 +303,7 @@ class UsersController extends AppController {
 
 		if ($this->request->is('post')) {
 			if ($this->Auth->user()) {
-				$data = $this->Command->authen_v26('login', true);
+				$data = $this->Command->authen('login', true);
 				$this->Log->logLogin();
 				$result = array(
 					'status' => 0,
@@ -328,7 +328,7 @@ class UsersController extends AppController {
 				$this->User->read();
 				$this->Auth->login($this->User->data['User']);
 
-				$data = $this->Command->authen_v26('login', true);
+				$data = $this->Command->authen('login', true);
 				$this->Log->logLogin();
 
 				$result = array(
@@ -398,7 +398,7 @@ class UsersController extends AppController {
 			$prefix_user = $game['data']['prefix'] ;
 		}
 
-		CakeLog::info('api_login_v26 - game id:' . $game['id'] . '\n data:' . print_r($this->request->data,true), 'user');
+		CakeLog::info('api_login - game id:' . $game['id'] . '\n data:' . print_r($this->request->data,true), 'user');
 
 		$this->request->data['username'] = $prefix_user . $this->request->data['username'] ;
 		$this->request->data['password'] = $this->request->data['password'];
@@ -450,7 +450,7 @@ class UsersController extends AppController {
 					);
 				}
 				$dataSource->commit();
-				$data = $this->Command->authen_v26('login', true);
+				$data = $this->Command->authen('login', true);
 				$this->Log->logLogin();
 
 				$result = array(

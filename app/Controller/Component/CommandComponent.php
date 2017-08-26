@@ -43,16 +43,12 @@ class CommandComponent extends Component {
 			$accountId = $account['Account']['account_id'];
 		}
 
-		$data = array_merge(
-			array(
-				'User' => array(
-					'username' => $this->Auth->user('username'),
-					'account_id' => $accountId
-				)),
-			array(
-				'access_token' => $token['AccessToken']['token'],
-				'token_expire' => $token['AccessToken']['expired'])
-		);
+        $data = array(
+            'token'         => $token['AccessToken']['token'],
+            'account_id'	=> $accountId,
+            'user_id'		=> $userId,
+            'username' 	    => $this->Auth->user('username')
+        );
 
 		$this->Session->write('Auth.Account.id', $accountId);
 		if ($fixSecurity) {
