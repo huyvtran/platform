@@ -1668,6 +1668,7 @@ class UsersController extends AppController {
 
 		if (!empty($this->request->data)) {
 			$this->request->data['User'] = $this->request->data;
+            $this->request->data['User']['payment'] = $user['payment'];
 			$this->request->data['User']['id'] = $user['id'];
 			$this->request->data['User']['active'] = 1;
 
