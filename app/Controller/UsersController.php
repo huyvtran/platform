@@ -265,7 +265,7 @@ class UsersController extends AppController {
 		$prefix_user = '';
 		$game = $this->Common->currentGame();
 
-		CakeLog::info('api_register_v26 - game id:' . $game['id'] . '\n data:' . print_r($this->request->data,true), 'user');
+		CakeLog::info('api_register - game id:' . $game['id'] . '\n data:' . print_r($this->request->data,true), 'user');
 
 		if( !empty( $game['data']['prefix'] ) ){
 			$prefix_user = $game['data']['prefix'] ;
@@ -535,16 +535,12 @@ class UsersController extends AppController {
 									$user['User']['id'],
 									$this->Common->currentGame('id')
 								);
-								$data = array_merge(
-									array(
-										'User' => array(
-											'username' => $user['User']['username'],
-											'account_id' => $account['Account']['account_id']
-										)),
-									array(
-										'access_token' => $token['AccessToken']['token'],
-										'token_expire' => $token['AccessToken']['expired'])
-								);
+                                $data = array(
+                                    'token'         => $token['AccessToken']['token'],
+                                    'account_id'	=> $account['Account']['account_id'],
+                                    'user_id'		=> $user['User']['id'],
+                                    'username' 	    => $user['User']['username']
+                                );
 
 								$result = array(
 									'status' => 0,
