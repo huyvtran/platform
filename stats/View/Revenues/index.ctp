@@ -30,19 +30,6 @@ if (!$this->request->is('ajax')) {
 				echo $this->element('date_ranger_picker');
 				echo $this->Form->submit('Submit', array('class' => 'btn btn-default', 'div' => false));
 				echo $this->Form->end();
-//				$check = '';
-//				if (isset($this->request->params['named']['flag']) && $this->request->params['named']['flag'] == 1) $check = 'checked';
-//				echo $this->Form->create('Payment', array('inputDefaults' => array('div' => false, 'label' => false), 'class' => 'form-inline'));
-//				if (!in_array($this->Session->read('Auth.User.role'), array('Stats'))) {
-//					echo $this->Form->input('flag', array(
-//						'type' => 'checkbox',
-//						'id' => 'check',
-//						'before' => '<label>Show Event: </label> ',
-//						'onchange' => "this.form.submit()",
-//						$check
-//					));
-//				}
-//				echo $this->Form->end();
 				?>
 		</div>
 	</div>
@@ -104,10 +91,7 @@ if (!$this->request->is('ajax')) {
 				}
 				?>
 				<th class="int">AVG</th>
-				<th>In Range</th>
-				<?php if (!empty($gameTotals) && !$this->request->is('ajax')) { ?>
-					<th>All Time</th>
-				<?php } ?>
+				<th>Total</th>
 			</thead>
 			<tbody>
 
@@ -121,11 +105,7 @@ if (!$this->request->is('ajax')) {
 						foreach($rangeDates as $val) {
 							echo '<td></td>';
 						}
-						if (!empty($gameTotals) && !$this->request->is('ajax')) {
-							echo '<td></td><td></td><td></td>';
-						} else {
-							echo '<td></td><td></td>';
-						}
+                        echo '<td></td><td></td>';
 						?>
 					</tr>
 				<?php }?>
@@ -136,11 +116,7 @@ if (!$this->request->is('ajax')) {
 					foreach($rangeDates as $val) {
 						echo '<td></td>';
 					}
-					if (!empty($gameTotals) && !$this->request->is('ajax')) {
-						echo '<td></td><td></td><td></td>';
-					} else {
-						echo '<td></td><td></td>';
-					}
+                    echo '<td></td><td></td>';
 					?>
 				</tr>
 			<?php }?>
@@ -166,9 +142,6 @@ if (!$this->request->is('ajax')) {
 			}
 			echo '<td class="total int">' . n(array_sum($totals) / count($rangeDates)) . '</td>';
 			echo '<td class="total int">' . n(array_sum($totals)) . '</td>';
-			if (!empty($gameTotals) && !$this->request->is('ajax')) {
-				echo '<td><strong>' . n(array_sum($gameTotals)) . '</strong></td>';
-			}
 			echo '</tr>';
 
 			foreach($data as $v) {
@@ -199,20 +172,6 @@ if (!$this->request->is('ajax')) {
 								if ($rate > 10000) $rate = '&infin;';
 							}
 						}
-//						else {
-//							if ($value['Payment']['type'] == $v['game_id']) {
-//								if ($t > $value['sum']) {
-//									$rate = round((abs($t - $value['sum']) / $t) * 100, 1) . '%';
-//									$class = 'glyphicon glyphicon-arrow-up';
-//								} else if ($t < $value['sum']) {
-//									$rate = round((abs($t - $value['sum']) / $t) * 100, 1) . '%';
-//									$class = 'glyphicon glyphicon-arrow-down';
-//								} else if ($t == $value['sum']) {
-//									$rate = '&nbsp;<span title="no change">0%</span>';
-//								}
-//								if ($rate > 10000) $rate = '&infin;';
-//							}
-//						}
 					}
 				}
 				$a = n($t / count($rangeDates));
@@ -237,22 +196,14 @@ if (!$this->request->is('ajax')) {
 				<td class="int total total_data"><?php echo $a;?><?php echo ($class != '') ? '<label class="' . $class . '"></label>' : '';?><?php echo ($rate != '') ? $rate : '&nbsp;<span title="no data">--</span>';?></td>
 				<?php
 				echo '<td class="int total">' . n($t) . '</td>';
-				if (!empty($gameTotals) && !empty($gameTotals[$v['game_id']])) {
-					echo '<td class="int total">' . n($gameTotals[$v['game_id']]) . '</td>';
-				} else if (!empty($gameTotals) && !$this->request->is('ajax')) {
-					echo '<td class="int total">0</td>';
-				}
+
 				echo '</tr>';
 			}
 			?>
 			</tbody>
 		</table>
-		<?php if (!$this->request->is('ajax')) {?>
-            </div></div>
-		<?php } else { ?>
-            </div>
         </div>
-        <?php } ?>
+    </div>
 <?php if (!$this->request->is('ajax')) { ?>
 	<?php
 	# error dataTable js when show a game only
