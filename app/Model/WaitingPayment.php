@@ -20,6 +20,7 @@ class WaitingPayment extends AppModel {
         'game_id'   => array('type' => 'value'),
         'status'    => array('type' => 'value'),
         'chanel'    => array('type' => 'value'),
+        'type'      => array('type' => 'value'),
         'username'  => array('type' => 'like', 'field' => array('User.id', 'User.username', 'User.email')),
         'cardnumber'=> array('type' => 'value', 'field' => 'card_serial'),
         'cardcode'  => array('type' => 'value', 'field' => 'card_code'),
