@@ -41,7 +41,7 @@ class RevenuesController extends AppController {
         # END PERMISSIONS
         $fields_revenues = array('SUM(0.8*price) as sum', 'game_id', 'FROM_UNIXTIME(time, "%Y-%m-%d") as day', 'type');
         $fields_total = array('SUM(0.8*price) as sum', 'game_id', 'type');
-	    if( in_array($this->Auth->user('username'), array('quanvh')) ){
+	    if( in_array($this->Auth->user('username'), array('quanvh', 'admin')) ){
             $fields_revenues = array('SUM(price_end) as sum', 'game_id', 'FROM_UNIXTIME(time, "%Y-%m-%d") as day', 'type');
             $fields_total = array('SUM(price_end) as sum', 'game_id', 'type');
         }
