@@ -23,7 +23,7 @@ class LogComponent extends Component {
 		$data['os'] = $this->Controller->request->header('os');
 		$data['resolution'] = $this->Controller->request->header('resolution');
 		$data['sdk_ver'] = $this->Controller->request->header('sdk_version');
-		$data['g_ver'] = $this->Controller->request->header('app_version');
+		$data['g_ver'] = $this->Controller->request->header('game_version');
 		$data['network'] = $this->Controller->request->header('network');
 		$data['device'] = $this->Controller->request->header('device');
 		$data['created'] = date('Y-m-d H:i:s');
@@ -60,7 +60,7 @@ class LogComponent extends Component {
 		$data['ip'] = $this->Common->publicClientIp();
 		$data['os'] = $this->Controller->request->header('os');
 		$data['sdk_ver'] = $this->Controller->request->header('sdk_version');
-		$data['g_ver'] = $this->Controller->request->header('app_version');
+		$data['g_ver'] = $this->Controller->request->header('game_version');
 		$data['network'] = $this->Controller->request->header('network');
 		$data['device'] = $this->Controller->request->header('device');
 		$data['created'] = date('Y-m-d H:i:s');
