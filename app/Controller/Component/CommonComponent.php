@@ -375,4 +375,87 @@ class CommonComponent extends Component {
 		$result = trim($result, " \x00..\x1F");
 		return $result;
 	}
+
+    /**
+     * Check this game is maintaining or not
+     **/
+    public function isMaintained()
+    {
+        # chưa dựng tool
+        return false;
+
+        $controller = $this->Controller;
+        $appKey = $controller->request->header('app');
+
+        $maintenances = Cache::read('maintenance_' . $appKey, 'maintenance'); # return 0 if this game isn't maintain
+
+        if ($maintenances === false) {
+            $controller->loadModel('Maintenance');
+            $maintenances = $controller->Maintenance->isMaintained($appKey);
+            Cache::write('maintenance_' . $appKey, $maintenances, 'maintenance');
+        }
+
+        $username = $this->Auth->user('username');
+        $email = $this->Auth->user('email');
+
+        $m = false; # false: not maintain , true: maintaining
+        if (!empty($maintenances)) {
+            foreach ($maintenances as $key => $maintenance) {
+                $m = true;
+
+                $gameVersion = $controller->request->header('game_version');
+                $gameVersionCode = $controller->request->header('game_version_code');
+
+                # Check game version code (Android)
+                if (	empty($maintenance['Maintenance']['game_version'])
+                    &&	!empty($maintenance['Maintenance']['game_version_code'])
+                    && 	$gameVersionCode != $maintenance['Maintenance']['game_version_code']
+                ) {
+                    $m = false;
+                }
+
+
+                # Check app version
+                if (	empty($maintenance['Maintenance']['game_version_code'])
+                    &&	!empty($maintenance['Maintenance']['game_version'])
+                    && 	$gameVersion != $maintenance['Maintenance']['game_version']
+                ) {
+                    $m = false;
+                }
+
+                # Check both app version and app version code
+                if (	!empty($maintenance['Maintenance']['game_version_code'])
+                    &&	!empty($maintenance['Maintenance']['game_version'])
+                    && 	(	$gameVersion != $maintenance['Maintenance']['game_version']
+                        || 	$gameVersionCode != $maintenance['Maintenance']['game_version_code']
+                    )
+                ) {
+                    $m = false;
+                }
+
+                # Check user was allowed to test or not
+                if ($m == true && !empty($maintenance['Maintenance']['usertest'])) {
+                    $testUsers = array_map('trim', explode("\n", $maintenance['Maintenance']['usertest']));
+                    foreach ($testUsers as $key => $testUser) {
+                        if (	$username == $testUser
+                            || 	$email == $testUsers
+                            ||	preg_match("/$testUser/", $email)
+                            ||	preg_match("/$testUser/", $username)
+                        ) {
+                            $m = false;
+                        }
+                    }
+                }
+
+                if ($m == true) {
+                    break;
+                }
+            }
+        }
+
+        if ($m) {
+            return $maintenance;
+        }
+        return false;
+    }
 }
