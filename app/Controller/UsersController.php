@@ -476,65 +476,69 @@ class UsersController extends AppController {
 	}
 
 	public function api_change_password(){
-		try{
-			$result = array(
-				'status' => 1,
-				'messsage' => __('lỗi')
-			);
-			CakeLog::info('input api chang password:' . print_r($this->request->data,true));
+        try {
+            if ($this->request->is('post')) {
+                $this->Common->bruteForce(array(
+                    'ip' => $this->Common->publicClientIp(),
+                    'action' => 'api_change_password',
+                    $this->Common->currentGame('id'),
+                ), 60*60, 30);
+            }
+        } catch (Exception $e) {
+            $result = array(
+                'status' => 900,
+                'messsage' => 'vui lòng thử lại sau ít phút'
+            );
+            goto end;
+        }
 
-			if (!isset(
-				$this->request->data['username'],
-				$this->request->data['old_pass'],
-				$this->request->data['new_pass'],
-				$this->request->data['sign']
-			)) {
-				$result = array(
-					'status' => 2,
-					'message' => __('Thiếu thông tin đổi mật khẩu')
-				);
-				goto end;
-			}
+        try{
+            $result = array(
+                'status' => 1,
+                'messsage' => __('lỗi')
+            );
 
-			$sign = md5(
-				$this->request->data['username']
-				. $this->request->data['old_pass']
-				. $this->request->data['new_pass']
-				. $this->Common->currentGame('secret_key')
-				. $this->Common->currentGame('app')
-			);
+            if (!isset(
+                $this->request->data['username'],
+                $this->request->data['password'],
+                $this->request->data['new_password']
+            )) {
+                $result = array(
+                    'status' => 2,
+                    'message' => __('Thiếu thông tin đổi mật khẩu')
+                );
+                goto end;
+            }
 
-			if( $this->request->data['sign'] !== $sign ){
-				CakeLog::info('sign login:' . print_r($sign,true));
-				$result = array(
-					'status' => 3,
-					'message' => 'The sign is incorrect'
-				);
-				goto end;
-			}
+            $prefix_user = ''; // client gọi sang vẫn có tiền tố, ko check
 
-			$old_password = $this->request->data['old_pass'];
-			$new_pass = $this->request->data['new_pass'];
-			$username = $this->request->data['username'];
-			$user = $this->User->findByUsername($username);
-			if (!empty($user)) {
-				$this->User->data['User']['password'] = $new_pass;
-				$this->User->set($this->User->data);
-				if ($user['User']['password'] == Security::hash($old_password, 'sha1', true)) {
-					$this->User->validator()->remove('password', 'confirmPassword');
-					if ($this->User->validates(array('fieldList' => array('password')))) {
-						$this->User->id = $user['User']['id'];
-						$this->User->data['User']['password'] = Security::hash($new_pass, 'sha1', true);
-						if ($this->User->save($this->User->data, false, array('password'))) {
-							if (isset($user['User']['id']) && !empty($user['User']['id'])) {
-								$this->loadModel('AccessToken');
-								$token = $this->AccessToken->generateToken($this->Common->currentGame('app'), $user['User']['id']);
-								$this->loadModel('Account');
-								$this->Account->contain();
-								$account = $this->Account->findByUserIdAndGameId(
-									$user['User']['id'],
-									$this->Common->currentGame('id')
-								);
+            $old_password = $this->request->data['password'];
+
+            $this->request->data['User']['password'] = $this->request->data['new_password'];
+            $this->request->data['User']['username'] = $prefix_user . $this->request->data['username'];
+
+            $game = $this->Common->currentGame();
+
+            CakeLog::info('api_change_password - game id:' . $game['id'] . '\n data:' . print_r($this->request->data,true), 'user');
+            $user = $this->User->findByUsername($this->request->data['User']['username']);
+            if (!empty($user)) {
+                $this->User->data['User']['password'] = Security::hash($this->request->data['User']['password'], 'sha1', true);
+                $this->User->set($this->User->data);
+                if ($user['User']['password'] == Security::hash($old_password, 'sha1', true)) {
+                    $this->User->validator()->remove('password', 'confirmPassword');
+                    if ($this->User->validates(array('fieldList' => array('password')))) {
+                        $this->User->id = $user['User']['id'];
+                        if ($this->User->save($this->User->data, false, array('password'))) {
+                            if (isset($user['User']['id']) && !empty($user['User']['id'])) {
+                                $this->loadModel('AccessToken');
+                                $token = $this->AccessToken->generateToken($this->Common->currentGame('app'), $user['User']['id']);
+                                $this->loadModel('Account');
+                                $this->Account->contain();
+                                $account = $this->Account->findByUserIdAndGameId(
+                                    $user['User']['id'],
+                                    $this->Common->currentGame('id')
+                                );
+
                                 $data = array(
                                     'token'         => $token['AccessToken']['token'],
                                     'account_id'	=> $account['Account']['account_id'],
@@ -542,55 +546,54 @@ class UsersController extends AppController {
                                     'username' 	    => $user['User']['username']
                                 );
 
-								$result = array(
-									'status' => 0,
-									'data' => $data,
-									'message' => __('Đổi mật khẩu thành công')
-								);
-								goto end;
-							}
-						} else {
-							$result = array(
-								'status' => 6,
-								'message' => __('Đổi mật khẩu không thành công, không lưu được dữ liệu')
-							);
-							goto end;
-						}
-					} else {
-						if (!empty($this->User->validationErrors)) {
-							$result = array(
-								'status' => 7,
-								'message' => $this->User->validationErrors['password'][0]
-							);
-							goto end;
-						}
-					}
-				} else {
-					$result = array(
-						'status' => 5,
-						'message' => __('Mật khẩu cũ không chính xác')
-					);
-					goto end;
-				}
-			} else {
-				$result = array(
-					'status' => 4,
-					'message' => __('Không tìm thấy người chơi')
-				);
-				goto end;
-			}
-		}catch (Exception $e){
-			$result = array(
-				'status' => 500,
-				'message' => __('Lỗi không xác định')
-			);
-			goto end;
-		}
+                                $result = array(
+                                    'retcode' 	=> 0,
+                                    'data' 		=> $data,
+                                    'message' 	=> __('Đổi mật khẩu thành công')
+                                );
+                                goto end;
+                            }
+                        } else {
+                            $result = array(
+                                'retcode' 	=> 5,
+                                'retmsg' 	=> __('Đổi mật khẩu không thành công, không lưu được dữ liệu')
+                            );
+                            goto end;
+                        }
+                    } else {
+                        if (!empty($this->User->validationErrors)) {
+                            $result = array(
+                                'retcode' 	=> 5,
+                                'retmsg' 	=> $this->User->validationErrors['password'][0]
+                            );
+                            goto end;
+                        }
+                    }
+                } else {
+                    $result = array(
+                        'retcode' 	=> 5,
+                        'retmsg' 	=> __('Mật khẩu cũ không chính xác')
+                    );
+                    goto end;
+                }
+            } else {
+                $result = array(
+                    'retcode' 	=> 4,
+                    'retmsg' 	=> __('Không tìm thấy người chơi')
+                );
+                goto end;
+            }
+        }catch (Exception $e){
+            $result = array(
+                'retcode' 	=> 500,
+                'retmsg' 	=> __('Lỗi không xác định')
+            );
+            goto end;
+        }
 
-		end:
-		CakeLog::info('output api change password:' . print_r($result,true));
-		$this->set('result', $result);
-		$this->set('_serialize', 'result');
+        end:
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
 	}
 
 	public function admin_edit($id = null)
