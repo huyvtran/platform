@@ -4,9 +4,9 @@
     <!-- Logo -->
     <a href="<?php echo $this->Html->url('/')?>" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>VN</b>T</span>
+        <span class="logo-mini"><b>VNT</b></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>VN</b>Tap</span>
+        <span class="logo-lg"><?php echo $this->Html->image('logo.png', ['height' => '50px', 'alt' => 'VNTAP']); ?></span>
     </a>
 
     <!-- Header Navbar -->
