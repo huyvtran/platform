@@ -56,6 +56,7 @@ class AppController extends Controller {
 		'NRU' => array(
 			'categories' => array(
 				'NRU (Daily)' => '/nius/index',
+                'NRU (Countries)' => '/nius/country',
 			),
 			'activeMenu' => array('nius')
 		),
