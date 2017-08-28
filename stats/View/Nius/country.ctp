@@ -1,8 +1,8 @@
 <?php
 echo $this->extend('/Common/fluid');
 ?>
-<div class='row'>
-	<div class="col-md-8 offset1">
+<div class="box">
+    <div class="box-body">
 		<div>
 			<?php
 			echo $this->Form->create('LogAccountsCountryByDay', array('inputDefaults' => array('div' => false, 'label' => false), 'class' => 'form-inline'));
@@ -33,7 +33,11 @@ echo $this->extend('/Common/fluid');
 	</script>
 <?php goto a; } ?>
 
-<div id='chart'></div>
+<div class="box">
+    <div class="box-body">
+        <div id='chart'></div>
+    </div>
+</div>
 
 <?php
 $pointInterval = 3600 * 1000 * 24;
@@ -56,9 +60,9 @@ $this->Highchart->render(array(
 		)
 	)), $dataHighchart);
 ?>
-<div class='row'>
-<div class='md-col-12'>
-
+<div class="box">
+    <div class="box-body">
+		<div class="table-responsive">
 <table  class='table table-striped table-bordered responsive '>
 	<thead>
 		<tr>
@@ -171,8 +175,10 @@ $this->Highchart->render(array(
 </div>
 
 </div>
+
+</div>
 		
-<script type="text/javascript" charset="utf-8">
+<!--<script type="text/javascript" charset="utf-8">
 	$(function() {
 		var table = $('.table').DataTable( {
             "scrollX": "100%",
@@ -184,6 +190,6 @@ $this->Highchart->render(array(
 			bInfo: false
 		} );
 	} );
-</script>
+</script>-->
 <?php
 a:
