@@ -828,10 +828,13 @@ class OvsPaymentsController extends AppController {
                     $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
                     $result = $pingback->getErrorSummary();
                 }
+            }else{
+                #log order_id empty
+                if($wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_COMPLETED){
+                    $result = 'OK';
+                }
+                CakeLog::info('paymentwall log order_id empty:' . print_r($this->request->query, true), 'payment');
             }
-        }else{
-            #log order_id empty
-            CakeLog::info('paymentwall log order_id empty:' . print_r($this->request->query, true), 'payment');
         }
         echo $result; die;
     }
@@ -956,6 +959,9 @@ class OvsPaymentsController extends AppController {
                 }
             }else{
                 #log order_id empty
+                if($wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_COMPLETED){
+                    $result = 'OK';
+                }
                 CakeLog::info('paymentwall log order_id empty:' . print_r($this->request->query, true), 'payment');
             }
         }
