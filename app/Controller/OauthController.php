@@ -104,28 +104,26 @@ class OauthController extends AppController {
 		$this->set('_serialize', 'result');	
 	}
 
-	public function saveLogin()
+	public function getLogin()
 	{
 		$result = $this->Log->logLogin();
-		if ($this->Common->currentGame('os') != 'android') {
-			if ($result) {
-				$result = array(
-					'code' => 1,
-					'message' => 'OK'
-				);
-			} else {
-				$result = array(
-					'code' => 2,
-					'message' => 'Params is missing'
-				);
-			}
-		}
+        if ($result) {
+            $result = array(
+                'status' => 0,
+                'message' => 'OK'
+            );
+        } else {
+            $result = array(
+                'status' => 1,
+                'message' => 'Params is missing'
+            );
+        }
 		$this->set('result', $result);
 		$this->set('_serialize', 'result');
 		return $result;
 	}
 
-	public function saveCharacter()
+	public function getCharacter()
 	{
 		$result = $this->Log->logEntergame();
 		if ($result) {
@@ -259,6 +257,38 @@ class OauthController extends AppController {
 
             Cache::write('oauth_getgame_' . $this->request->header('app'), $result, 'info');
         }
+
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
+        return $result;
+    }
+
+    /**
+     * @header: app (*), token (*), device (*), network, game_version, sdk_version, resolution, os
+     * @method POST
+     * @param: token_notify
+     */
+    public function getInfoAuthen(){
+        if (!$this->request->header('app') || !$this->request->header('token')) {
+            throw new BadRequestException();
+        }
+
+        if ($this->Common->isMaintained()) {
+            $this->response->statusCode('403');
+            $this->set('result', new stdClass()); // return [], iphone can't detect value null
+            $this->set('_serialize', false);
+            return false;
+        }
+
+        $result = array();
+
+        #logLogin
+        $getLogin = $this->getLogin();
+        $result['getLogin'] = $getLogin;
+
+        #userInfo
+        $userInfo = $this->userInfo(true);
+        $result['userInfo'] = $userInfo;
 
         $this->set('result', $result);
         $this->set('_serialize', 'result');
