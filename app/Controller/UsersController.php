@@ -293,7 +293,6 @@ class UsersController extends AppController {
 
 		if ($this->Auth->user()) {
 			$data = $this->Command->authen('login', true);
-			$this->Log->logLogin();
 			$result = array(
 				'status' => 0,
 				'message' => __('đăng kí thành công'),
@@ -305,7 +304,6 @@ class UsersController extends AppController {
 		if ($this->request->is('post')) {
 			if ($this->Auth->user()) {
 				$data = $this->Command->authen('login', true);
-				$this->Log->logLogin();
 				$result = array(
 					'status' => 0,
 					'message' => __('đăng kí thành công'),
@@ -330,8 +328,6 @@ class UsersController extends AppController {
 				$this->Auth->login($this->User->data['User']);
 
 				$data = $this->Command->authen('login', true);
-				$this->Log->logLogin();
-
 				$result = array(
 					'status' => 0,
 					'message' => __('đăng kí thành công'),
@@ -452,8 +448,6 @@ class UsersController extends AppController {
 				}
 				$dataSource->commit();
 				$data = $this->Command->authen('login', true);
-				$this->Log->logLogin();
-
 				$result = array(
 					'data' => $data,
 					'status' 	=> 0,
