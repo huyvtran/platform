@@ -39,6 +39,7 @@ class UsersController extends AppController {
 		parent::beforeFilter();
 		$this->Auth->allow( 
 			'logout', 'api_register', 'api_login', 'api_change_password',
+			'api_play_now',
 			'api_login_takan', 'api_register_takan',
 			'api_login_ldr', 'api_register_ldr', 'api_change_password_ldr',
 			'api_register_v26', 'api_login_v26', 'api_change_password_v26'
@@ -1715,6 +1716,150 @@ class UsersController extends AppController {
 
         $this->Session->setFlash('The User has been updated', 'success');
         $this->redirect(array('action' => 'index'));
+    }
+
+    /**
+     * Nhận mac_address từ app
+     */
+    public function api_play_now()
+    {
+        $result = array(
+            'status' => 500,
+            'message' => 'error'
+        );
+
+        if ($this->request->is('post')) {
+
+            if (!isset(
+                $this->request->data['key'],
+                $this->request->data['mac_address']
+            )) {
+                $result = array(
+                    'status' => 900,
+                    'message' => __('Thiếu thông tin đăng ký')
+                );
+                goto end;
+            }
+
+            # Kiểm tra security key
+            if (strtolower($this->request->data['key']) != strtolower(Security::hash($this->request->data['mac_address'] . $this->Common->currentGame('secret_key'), 'sha1'))) {
+                throw new BadRequestException('Invalid Key');
+            }
+
+            # Login ngay lập tức nếu device_id (mac address, chưa update) đã có.
+            $this->User->contain(array(
+                'Account' => array(
+                    'conditions' => array(
+                        'game_id' => $this->Common->currentGame('id')
+                    )
+                )
+            ));
+            $user = $this->User->find('first', array(
+                'conditions' => array(
+                    'device_id' => $this->request->data['mac_address'],
+                    'email' => null
+                )
+            ));
+
+            # lock users
+            $this->User->query("SELECT * FROM users LIMIT 1 FOR UPDATE");
+            # lock accounts
+            $this->User->query("SELECT * FROM accounts LIMIT 1 FOR UPDATE");
+
+            if (!empty($user)) {
+                if (empty($user['Account'])) {
+                    $dataSource = $this->User->getDataSource();
+                    $dataSource->begin();
+                    $this->User->createAccount($this->Common->currentGame(), $user['User']['id']);
+                    $dataSource->commit();
+                }
+                $this->Auth->login($user['User']);
+                $data = $this->Command->authen('login', true);
+                $result = array(
+                    'status' => 0,
+                    'message' => __('đăng nhập thành công'),
+                    'data' => $data
+                );
+                goto end;
+            }
+
+            $this->Session->write('mac_address', $this->request->data['mac_address']);
+            $result = $this->_register_guest(true);
+            goto end;
+        }
+        CakeLog::info('reveiceMacAddress do not have data POST , SERVER info: ' . print_r($_SERVER, true), 'user');
+        throw new BadRequestException('Không có dữ liệu POST');
+
+        end:
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
+    }
+
+    protected function _register_guest($return = false)
+    {
+        $this->layout = 'login';
+
+        $result = array(
+            'status' => 500,
+            'message' => 'error'
+        );
+
+        if ($this->Auth->loggedIn()) {
+            $data = $this->Command->authen('login', true);
+            $result = array(
+                'status' => 0,
+                'message' => __('đăng nhập thành công'),
+                'data' => $data
+            );
+            if($return) return $result;
+        }
+
+        if (!$this->Session->read('mac_address')) {
+            throw new BadRequestException('Can not access directly');
+        }
+
+        $this->request->data['User']['device_id'] = $this->Session->read('mac_address');
+        $this->request->data['User']['active'] = true;
+        $this->request->data['User']['role'] = 'Guest';
+        $this->request->data['User']['country_code'] = $this->User->getCountry();
+
+        unset($this->User->validate['email']);
+        unset($this->User->validate['password']);
+        unset($this->User->validate['phone']);
+
+        $this->User->contain();
+        $lastUser = $this->User->find('first', array(
+            'order' => array('id' => 'DESC')
+        ));
+
+        $this->request->data['User']['username'] = 'Q' .sprintf('%02d', $lastUser['User']['id']) . rand(1, 9);
+
+        $dataSource = $this->User->getDataSource();
+        $dataSource->begin();
+
+        if ($this->User->save($this->request->data)) {
+            $this->User->createAccount($this->Common->currentGame());
+
+            $dataSource->commit();
+            $this->User->read();
+            $this->Auth->login($this->User->data['User']);
+
+            $data = $this->Command->authen('login', true);
+            $result = array(
+                'status' => 0,
+                'message' => __('đăng kí thành công'),
+                'data' => $data
+            );
+            if($return) return $result;
+
+        } else {
+            $dataSource->rollback();
+            if (!empty($this->User->validationErrors)) {
+                $this->Session->setFlash($this->User->validationErrors, 'error');
+            }
+        }
+
+        if($return) return $result;
     }
 	
 	public function test_sendmail(){
