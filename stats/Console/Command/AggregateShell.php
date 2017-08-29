@@ -126,16 +126,6 @@ class AggregateShell extends AppShell {
         $this->AggregateCountry->Niu($yesterday);
     }
 
-    # run start
-    public function setCNiu(){
-        $this->out(date('Y-m-d H:i:s') . " run all NIU by country");
-        for ($i = 23; $i >= 0; $i--){
-            $date = date('Y-m-d', strtotime("-$i days"));
-            $this->out('date: ' . $date . " - Start run aggregate NIU by country");
-            $this->AggregateCountry->Niu($date);
-        }
-    }
-
     public function Retention(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Retention");
 
@@ -219,5 +209,15 @@ class AggregateShell extends AppShell {
         $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate Revenues by country");
         $yesterday = date('d-m-Y', strtotime('yesterday'));
         $this->AggregateCountry->Revenue($yesterday);
+    }
+
+    # run start
+    public function setCRevenue(){
+        $this->out(date('Y-m-d H:i:s') . " run all NIU by country");
+        for ($i = 30; $i >= 0; $i--){
+            $date = date('Y-m-d', strtotime("-$i days"));
+            $this->out('date: ' . $date . " - Start run aggregate NIU by country");
+            $this->AggregateCountry->Revenue($date);
+        }
     }
 }

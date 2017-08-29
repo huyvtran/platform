@@ -97,7 +97,7 @@ class AggregateCountryTask extends Shell {
 	{
 
 		$payments = $this->Payment->find('all', array(
-			'fields' => array('user_id', 'game_id', 'SUM(price_end) as sum'),
+			'fields' => array('user_id', 'game_id', 'SUM(0.8*price) as sum'),
 			'conditions' => array(
 				'time >= ' => strtotime($date),
 				'time <= ' => strtotime($date) + 86399,
