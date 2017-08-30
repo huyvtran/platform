@@ -9,8 +9,8 @@
 		echo $this->Html->css('/bower_components/bootstrap/dist/css/bootstrap.min.css');
 		echo $this->Html->css('/bower_components/font-awesome/css/font-awesome.min.css');
 		echo $this->Html->css('/bower_components/Ionicons/css/ionicons.min.css');
-		echo $this->Html->css('/css/AdminLTE.min.css');
-		echo $this->Html->css('/css/skins/skin-blue.min.css');
+		echo $this->Html->css('/css/AdminLTE.css');
+		echo $this->Html->css('/css/skins/skin-black.css');
 		echo $this->Html->css('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic');
 		echo $this->Html->css('/bower_components/chosen/chosen.min.css');
 		echo $this->Html->css('/bower_components/pickadate/themes/default.css');
@@ -79,7 +79,7 @@
             }
         </style>
 	</head>
-	<body class="hold-transition skin-blue fixed sidebar-mini">
+	<body class="hold-transition skin-black fixed sidebar-mini">
         <div class="wrapper">
 		<?php
 

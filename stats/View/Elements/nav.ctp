@@ -85,17 +85,16 @@ if ($this->Session->read('Auth.User')) {
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-        <!-- Sidebar user panel (optional) -->
+        <!-- Sidebar user panel (optional)
         <div class="user-panel">
             <div class="pull-left image">
                 <?php echo $this->Html->image('avatar5.png', array('class' => 'img-circle', 'alt' => 'User Image')); ?>
             </div>
             <div class="pull-left info">
                 <p><?php echo $this->Session->read('Auth.User.username') ?></p>
-                <!-- Status -->
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
-        </div>
+        </div>-->
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
