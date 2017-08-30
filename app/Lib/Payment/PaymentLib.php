@@ -23,6 +23,7 @@ class PaymentLib {
 
     # default status is error
     public function setResolvedPayment($id, $status = 3) {
+        CakeLog::info('before save - waiting id: ' . $id .' - status:' . $status, 'payment');
         $this->WaitingPayment = ClassRegistry::init('WaitingPayment');
         $newData = array(
             'id'        => $id,
