@@ -59,14 +59,16 @@ class PaymentsController extends AppController {
 		# check to see if there is unresolved payment
 
         if ($this->request->is('post')) {
-            $chanel = Payment::CHANEL_HANOIPAY; // default
-            if( in_array($game['app'], array('cbf45aa058807a173cccd5a6ac74c9a3', '1f5d898444a64fbbbdd10a38e5363c7d', //p17
-                '2f9a1f92822b9f96fe6a20a68598023e', 'a8f01e2bec804367aad3ed5190ac595d', // t17
-                '368134ee5abfbce34ffab0ed6f5d2ee3', '339a82e78b8a6c61096bcd01a435c664', // p20
-                '443fe0ec835beae4ad944ee6da22729a', 'f26e77b1b71803f57ee7324b7355484d', // p21
-                '07079b885d5c848486d90cd69bdd99ef', '33a1963c804930fea2293b03e38e96aa' // p22
+            $chanel = Payment::CHANEL_VIPPAY; // default
+            if( in_array($game['app'], array(
+                'd77a238697e63e5056810448d460c0d7', 'ced3d169ffdb099ee6fede9d8f923f60', //r13
+                'a3fb6fd597a695212ec9cbd1f533f5e1', 'c8e35bf746e1f07c018719f605a1ae39', //r14
+                '52fc9a9c80be1d0c339d420e98ab7120', '297b1557bfe2e3737731e49308f34858', //r15
+                '237c67407f187e08af1c07d2c801e374', '7b02ce3348f590d1bc0b4fc7fb9dc1b5', //r16
+                '1fd09cdea352f3032abab576d7ef0b12', 'ff93e1c4fbd927edd69bb141faca7433', //r18
+                'd70086ba1b6198172e8b3be7de88d292', 'e7a537af8477e537702126e1b982145f'  //r19
             ))){
-                $chanel = Payment::CHANEL_VIPPAY;
+                $chanel = Payment::CHANEL_HANOIPAY;
             }
             #chuyển về hanoipay
 //            App::import('Lib', 'RedisCake');
