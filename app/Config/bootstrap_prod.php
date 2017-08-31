@@ -180,6 +180,9 @@ if (!empty($_GET['app'])) {
 if (!empty($_GET['token'])) {
 	$_SERVER['HTTP_TOKEN'] = $_GET['token'];
 }
+if (!empty($_GET['qtoken'])) {
+    $_SERVER['HTTP_TOKEN'] = $_GET['qtoken'];
+}
 
 foreach($_GET as $key => $getParam){
 	if (stripos($key, 'app_game_') == 0) {
