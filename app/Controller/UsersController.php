@@ -527,16 +527,12 @@ class UsersController extends AppController {
                             if (isset($user['User']['id']) && !empty($user['User']['id'])) {
                                 $this->loadModel('AccessToken');
                                 $token = $this->AccessToken->generateToken($this->Common->currentGame('app'), $user['User']['id']);
-                                $this->loadModel('Account');
-                                $this->Account->contain();
-                                $account = $this->Account->findByUserIdAndGameId(
-                                    $user['User']['id'],
-                                    $this->Common->currentGame('id')
-                                );
+
+                                $account_id = $this->Common->getAccount();
 
                                 $data = array(
                                     'token'         => $token['AccessToken']['token'],
-                                    'account_id'	=> $account['Account']['account_id'],
+                                    'account_id'	=> $account_id,
                                     'user_id'		=> $user['User']['id'],
                                     'username' 	    => $user['User']['username']
                                 );
