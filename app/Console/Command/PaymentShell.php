@@ -43,6 +43,7 @@ class PaymentShell extends AppShell {
                 'conditions' => array(
                     'WaitingPayment.id >'  => $lastPid,
                     'WaitingPayment.chanel'  => $chanel,
+                    'WaitingPayment.status <>'  => WaitingPayment::STATUS_COMPLETED,
                     'WaitingPayment.time >= ' => strtotime('-1 hour'),
                     'WaitingPayment.time < '  => strtotime('-15 minute')
                 ),
