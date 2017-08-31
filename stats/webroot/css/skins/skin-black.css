@@ -15,7 +15,7 @@
   border-right: 1px solid #eee;
 }
 .skin-black .main-header .navbar {
-  background-color: #ffffff;
+  background-color: rgb(236, 240, 245);
 }
 .skin-black .main-header .navbar .nav > li > a {
   color: #333333;
@@ -50,7 +50,7 @@
   border-right-width: 0;
 }
 .skin-black .main-header > .logo {
-  background-color: #ffffff;
+  background-color: rgb(236, 240, 245);
   color: #333333;
   border-bottom: 0 solid transparent;
   border-right: 1px solid #eee;
