@@ -69,7 +69,7 @@ if (!$this->request->is('ajax')) {
             }
             ?>
             <th class="int">AVG</th>
-            <th class='int'>In Range</th>
+            <th class='int'>Total</th>
             </thead>
             <tbody>
 

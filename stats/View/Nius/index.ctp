@@ -77,8 +77,8 @@ $this->Highchart->render(array(
 				echo "<th class='int'>" . date('d/m', strtotime($rangeDates[$i])) . "</th>";
 			}
 		?>
-		<td class='int total'>AVG</td>
-		<th class='int total'>In Range</th>
+		<th class='int total'>AVG</th>
+		<th class='int total'>Total</th>
 	</thead>
 	<tbody>
 		<tr class="selected-total">

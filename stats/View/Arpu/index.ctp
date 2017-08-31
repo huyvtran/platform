@@ -68,7 +68,7 @@ $this->Highchart->render(array(
 			}
 		?>
 		<td class='int total'>AVG</td>
-		<th class='int total'>In Range</th>
+		<th class='int total'>Total</th>
 	</thead>
 	<tbody>
 		<tr class="selected-total">

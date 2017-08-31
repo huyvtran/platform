@@ -65,7 +65,7 @@ $this->Highchart->render(array(
 				echo "<th class='int'>" . date('d/m', strtotime($rangeDates[$i])) . "</th>";
 			}
 		?>
-		<th class='int'>In Range</th>
+		<th class='int'>Total</th>
 	</thead>
 	<tbody>
 		<?php

@@ -61,7 +61,7 @@ $this->Highchart->render(array(
 				</th>
 				<?php endforeach; ?>
 				<th class="int">AVG</th>
-				<th class="int">In Range</th>
+				<th class="int">Total</th>
 				
 			</thead>			
 			<tbody>
