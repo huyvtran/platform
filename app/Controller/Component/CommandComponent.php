@@ -12,36 +12,18 @@ class CommandComponent extends Component {
 		$this->Controller = $controller;
 	}
 
-	public function authen($action = 'login', $return = false, $fixSecurity = false)
+	public function authen($action = 'login', $return = false)
 	{
 		$controller = $this->Controller;
 		$app = $controller->request->header('app');
 		$controller->loadModel('AccessToken');
-		$controller->loadModel('Account');
 		
 		$userId = $this->Auth->user('id');
 		if (!empty($userId)) {
 			$token = $controller->AccessToken->generateToken($app, $userId);
 		}
 
-		$controller->Account->contain();
-		$account = $controller->Account->findByUserIdAndGameId(
-			$this->Auth->user('id'),
-			$this->Common->currentGame('id')
-		);
-
-		if (empty($account)) {
-			CakeLog::error('Không tìm thấy account này ' . $this->Auth->user('id') . ' - ' . $this->Common->currentGame('id'));
-			$controller->Cookie->destroy();
-			$controller->Session->destroy();
-			$controller->Session->setFlash(__('Xin lỗi, đã có lỗi xảy ra!'), 'error');
-			$controller->redirect(array('controller'=> 'users', 'action' => 'index'));
-		}
-
-		$accountId = $account['Account']['id'];
-		if (!empty($account['Account']['account_id'])) {
-			$accountId = $account['Account']['account_id'];
-		}
+        $accountId = $this->Common->getAccount();
 
         $data = array(
             'token'         => $token['AccessToken']['token'],
@@ -51,13 +33,11 @@ class CommandComponent extends Component {
         );
 
 		$this->Session->write('Auth.Account.id', $accountId);
-		if ($fixSecurity) {
-			unset($data['User']['account_id']);
-		}
 
 		if ($return == true) {
 			return $data;
 		}
+
 		if (!empty($controller->request->params['ext']) && $controller->request->params['ext'] == 'json') {
 			$controller->viewClass = 'json';
 			$controller->response->header('Content-Type', 'application/json');
