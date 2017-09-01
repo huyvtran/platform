@@ -2,9 +2,9 @@
 
 class Vippay {
     
-    private $merchant_id = 9142; #8945 => thắng phạm
-	private $api_user = '165cb7d6da73452aa269129b2d79235f';
-	private $api_password = 'f73ead2b14194e4999bbaee3fe84421d';
+    private $merchant_id = 10363; # hoangdovan1960@gmail.com
+	private $api_user = 'ed71bc7889964623837f1f531431ba83';
+	private $api_password = '017f4d0b4fa147f8ae416447de904378';
 
     private $pin;
     private $seri;
