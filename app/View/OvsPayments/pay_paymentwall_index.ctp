@@ -1,13 +1,13 @@
 <style>
     .fa-image-bank{
         background-image: url("/uncommon/payment/images/logo_banking.png");
-        width: 128px;
-        height: 128px;
+        width: 64px;
+        height: 64px;
     }
     .fa-image-card{
         background-image: url("/uncommon/payment/images/logo_card.png");
-        width: 128px;
-        height: 128px;
+        width: 64px;
+        height: 64px;
     }
 </style>
 <body>
