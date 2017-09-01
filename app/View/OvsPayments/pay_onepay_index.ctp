@@ -26,7 +26,7 @@
                                 'token' => $token,
                                 'productId' => $product['Product']['id']
                             )
-                        )); ?>" class="btn btn-info btn-md" style="border: 1px #337ab7 solid !important; margin-top: 5px;">
+                        )); ?>" class="btn btn-info btn-md" style="border: 1px #337ab7 solid !important; margin-top: 5px; width: 110px;">
                             <font color="yellow"><b><?php echo number_format($product['Product']['platform_price'], 0, '.', ','); ?> Coin</b></font><br/>
                             <i class="fa fa-diamond fa-2x"></i><br/>
                             <?php echo $product['Product']['price']; ?>$
