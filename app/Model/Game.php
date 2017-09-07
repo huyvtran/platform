@@ -4,6 +4,9 @@ App::uses('AppModel', 'Model');
 
 class Game extends AppModel {
 
+    const GROUP_R01 = 1;
+    const GROUP_R02 = 2;
+
 	public $validationDomain = 'not_translate';
 
 	public $virtualFields = array(

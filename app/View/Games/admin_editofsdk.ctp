@@ -58,9 +58,18 @@ echo $this->Form->create('Game', array(
 
     <div class="span3">
         <?php
-            if( $this->Session->read('Auth.User.username') == 'quanvh')
-            echo $this->Form->input('Game.data.prefix',array('type'=>'text', 'label'=> '<strong>Prefix (không thay đổi)</strong>'));
+            if( $this->Session->read('Auth.User.username') == 'quanvh'){
+                echo $this->Form->input('Game.data.prefix',array('type'=>'text', 'label'=> '<strong>Prefix (không thay đổi)</strong>'));
 
+                $optionGroups = array(
+                    Game::GROUP_R01 => 'R01',
+                    Game::GROUP_R02 => 'R02'
+                );
+                echo $this->Form->input('group', array(
+                    'options' => $optionGroups,
+                    'empty' => '--Choose Group default--'
+                )); echo "<br/>";
+            }
             echo $this->Form->input('app_gaid', array('label' => '<strong>App Ga ID</strong>'));
         ?><br/>
     </div>

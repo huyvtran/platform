@@ -459,6 +459,7 @@ class GamesController extends AppController {
 
     public function admin_editofsdk($id = null)
     {
+        $this->loadModel('Game');
         if (!$this->Game->exists($id)) {
             throw new NotFoundException('Invalid game');
         }

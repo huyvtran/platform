@@ -45,6 +45,16 @@ class PaymentLib {
             switch ($data['chanel']){
                 case Payment::CHANEL_VIPPAY:
                     $vippay = new Vippay();
+                    $vippay->setMerchantId(10363); # hoangdovan1960@gmail.com
+                    $vippay->setMerchantUser('ed71bc7889964623837f1f531431ba83');
+                    $vippay->setMerchantPassword('017f4d0b4fa147f8ae416447de904378');
+                    $result = $vippay->call($data);
+                    break;
+                case Payment::CHANEL_VIPPAY_2:
+                    $vippay = new Vippay();
+                    $vippay->setMerchantId(10367); # quanglevinh1977@gmail.com
+                    $vippay->setMerchantUser('eb3b0fe3e28940799f624398a9ef6b77');
+                    $vippay->setMerchantPassword('5834af9820294e9285b66d09f7dde138');
                     $result = $vippay->call($data);
                     break;
                 case Payment::CHANEL_HANOIPAY:
@@ -145,7 +155,7 @@ class PaymentLib {
             ClassRegistry::init('Payment');
             $price_end = 0;
 
-            if($data['chanel'] == Payment::CHANEL_VIPPAY){
+            if( $data['chanel'] == Payment::CHANEL_VIPPAY || $data['chanel'] == Payment::CHANEL_VIPPAY_2){
                 switch ( $data['type'] ){
                     case Payment::TYPE_NETWORK_VIETTEL:
                     case Payment::TYPE_NETWORK_MOBIFONE:
@@ -172,7 +182,7 @@ class PaymentLib {
                         break;
                 }
 
-            }elseif ( $data['chanel'] == Payment::CHANEL_ONEPAY ){
+            }elseif ( $data['chanel'] == Payment::CHANEL_ONEPAY || $data['chanel'] == Payment::CHANEL_ONEPAY_2 ){
                 $price_end = $data['price'] * 0.967 - 3300;
             }elseif ( $data['chanel'] == Payment::CHANEL_PAYMENTWALL ){
                 return ;
