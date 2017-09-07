@@ -24,6 +24,9 @@ class Payment extends AppModel {
     const CHANEL_ONEPAY	    = 5;
     const CHANEL_PAYMENTWALL    = 6;
 
+    const CHANEL_VIPPAY_2	    = 7;
+    const CHANEL_ONEPAY_2	    = 8;
+
 	public $belongsTo = array(
 		'User', 'Game'
 	);

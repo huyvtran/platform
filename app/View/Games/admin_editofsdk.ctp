@@ -58,9 +58,9 @@ echo $this->Form->create('Game', array(
 
     <div class="span3">
         <?php
-            if( $this->Session->read('Auth.User.username') == 'quanvh')
-            echo $this->Form->input('Game.data.prefix',array('type'=>'text', 'label'=> '<strong>Prefix (không thay đổi)</strong>'));
-
+            if( $this->Session->read('Auth.User.username') == 'quanvh'){
+                echo $this->Form->input('Game.data.prefix',array('type'=>'text', 'label'=> '<strong>Prefix (không thay đổi)</strong>'));
+            }
             echo $this->Form->input('app_gaid', array('label' => '<strong>App Ga ID</strong>'));
         ?><br/>
     </div>
