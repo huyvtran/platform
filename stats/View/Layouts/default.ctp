@@ -32,17 +32,17 @@
 		echo $this->fetch('css');
 		$cssInline = $this->fetch('css-inline');
 		if (!empty($cssInline)){
-			echo "<style type = 'text/css'>$cssInline</style>"; 
+			echo "<style type = 'text/css'>$cssInline</style>";
 		}
 		if (env("SERVER_ADDR") == '127.0.0.1') {
 			echo $this->Html->css('debug');
 		}
-		
+
 		echo $this->Html->script('/js/jquery-2.0.3.min.js');
 		?>
 		<script type='text/javascript'>
 			var BASE_URL = '<?php echo Router::url("/", true);?>'
-		</script>		
+		</script>
 		<?php
         //Javascript
 		echo $this->Html->script('/bower_components/bootstrap/dist/js/bootstrap.min.js');
