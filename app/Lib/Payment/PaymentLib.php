@@ -145,7 +145,7 @@ class PaymentLib {
             ClassRegistry::init('Payment');
             $price_end = 0;
 
-            if($data['chanel'] == Payment::CHANEL_VIPPAY){
+            if( $data['chanel'] == Payment::CHANEL_VIPPAY || $data['chanel'] == Payment::CHANEL_VIPPAY_2){
                 switch ( $data['type'] ){
                     case Payment::TYPE_NETWORK_VIETTEL:
                     case Payment::TYPE_NETWORK_MOBIFONE:
@@ -172,7 +172,7 @@ class PaymentLib {
                         break;
                 }
 
-            }elseif ( $data['chanel'] == Payment::CHANEL_ONEPAY ){
+            }elseif ( $data['chanel'] == Payment::CHANEL_ONEPAY || $data['chanel'] == Payment::CHANEL_ONEPAY_2 ){
                 $price_end = $data['price'] * 0.967 - 3300;
             }elseif ( $data['chanel'] == Payment::CHANEL_PAYMENTWALL ){
                 return ;
