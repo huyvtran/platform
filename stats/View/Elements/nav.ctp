@@ -18,6 +18,9 @@
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
+                <li>
+                    <a href="<?php echo $this->Html->url('/')?>"><i class="fa fa-home"></i></a>
+                </li>
                 <?php
                 if ($this->Session->read('Auth.User')) {
                 ?>
