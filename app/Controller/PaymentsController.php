@@ -60,6 +60,9 @@ class PaymentsController extends AppController {
 
         if ($this->request->is('post')) {
             $chanel = Payment::CHANEL_VIPPAY; // default
+            if( $game['group'] == Game::GROUP_R01 ) $chanel = Payment::CHANEL_VIPPAY;
+            if( $game['group'] == Game::GROUP_R02 ) $chanel = Payment::CHANEL_VIPPAY_2;
+
             if( in_array($game['app'], array(
                 'd77a238697e63e5056810448d460c0d7', 'ced3d169ffdb099ee6fede9d8f923f60', //r13
                 'a3fb6fd597a695212ec9cbd1f533f5e1', 'c8e35bf746e1f07c018719f605a1ae39', //r14
@@ -70,13 +73,6 @@ class PaymentsController extends AppController {
             ))){
                 $chanel = Payment::CHANEL_HANOIPAY;
             }
-            #chuyển về hanoipay
-//            App::import('Lib', 'RedisCake');
-//            $Redis = new RedisCake('action_count');
-//            $Redis->incr('action_count_payment_all_game');
-//            $Redis->expire('action_count_payment_all_game', 60*60); // set 1h
-//            $count_redis = $Redis->get('action_count_payment_all_game');
-//            if( is_numeric($count_redis) && $count_redis%2 ) $chanel = Payment::CHANEL_HANOIPAY;
 
             $data = $this->request->data;
             $data = array_merge($data, array(
