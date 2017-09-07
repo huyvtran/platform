@@ -370,9 +370,22 @@ class OvsPaymentsController extends AppController {
 
         $chanel = Payment::CHANEL_ONEPAY;
         $type = Payment::TYPE_NETWORK_BANKING;
-        # set chanel defaul, có thể sẽ đc check theo chanel (Vippay, Vippay1, Vippay2...)
+        # set chanel defaul, có thể sẽ đc check theo chanel (1Pay 1, 1Pay 2 ...)
         $access_key = "diggr0l4g6k792oj528a";
         $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
+
+        if( in_array($user['email'], array('quanvuhong@gmail.com','1502896498@myapp.com')) ) {
+            $this->loadModel('Game');
+            if (!empty($game['group']) && $game['group'] == Game::GROUP_R01) {
+                $chanel = Payment::CHANEL_ONEPAY;
+                $access_key = "diggr0l4g6k792oj528a";
+                $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
+            } else if (!empty($game['group']) && $game['group'] == Game::GROUP_R02) {
+                $chanel = Payment::CHANEL_ONEPAY_2;
+                $access_key = "xr13xjpekax55j3jgsfs";
+                $secret = "rq10xl9fn20i2qlrqwc9gwdkmsd7cukx";
+            }
+        }
 
         # tạo giao dịch waiting_payment
         $data = array(
@@ -460,7 +473,20 @@ class OvsPaymentsController extends AppController {
             ) {
                 $access_key = "diggr0l4g6k792oj528a";
                 $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
-                $token = $this->request->header('qtoken');
+                $token = $this->request->header('token');
+
+                if( in_array($user['email'], array('quanvuhong@gmail.com','1502896498@myapp.com')) ) {
+                    $this->loadModel('Game');
+                    if (!empty($game['group']) && $game['group'] == Game::GROUP_R01) {
+                        $chanel = Payment::CHANEL_ONEPAY;
+                        $access_key = "diggr0l4g6k792oj528a";
+                        $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
+                    } else if (!empty($game['group']) && $game['group'] == Game::GROUP_R02) {
+                        $chanel = Payment::CHANEL_ONEPAY_2;
+                        $access_key = "xr13xjpekax55j3jgsfs";
+                        $secret = "rq10xl9fn20i2qlrqwc9gwdkmsd7cukx";
+                    }
+                }
 
                 App::uses('OnepayBanking', 'Payment');
                 $onepay = new OnepayBanking($access_key, $secret);
