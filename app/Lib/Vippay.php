@@ -16,6 +16,18 @@ class Vippay {
 
     private $note = '';
 
+    public function getMerchantId() {
+        return $this->merchant_id;
+    }
+
+    public function getMerchantUser() {
+        return $this->api_user;
+    }
+
+    public function getMerchantPassword() {
+        return $this->api_password;
+    }
+
     public function getPin() {
         return $this->pin;
     }
@@ -42,6 +54,18 @@ class Vippay {
 
     public function getNote() {
         return $this->note;
+    }
+
+    public function setMerchantId($merchant_id) {
+        $this->merchant_id = $merchant_id;
+    }
+
+    public function setMerchantUser($api_user) {
+        $this->api_user = $api_user;
+    }
+
+    public function setMerchantPassword($api_password) {
+        $this->api_password = $api_password;
     }
 
     public function setPin($pin) {
@@ -77,7 +101,7 @@ class Vippay {
             $this->saveVippay();
 
             $fields = array(
-                'merchant_id' => $this->merchant_id,
+                'merchant_id' => $this->getMerchantId(),
                 'pin' => $this->getPin(),
                 'seri' => $this->getSeri(),
                 'card_type' => $this->getCardType(),
@@ -89,7 +113,7 @@ class Vippay {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_USERPWD, $this->api_user . ":" . $this->api_password);
+            curl_setopt($ch, CURLOPT_USERPWD, $this->getMerchantUser() . ":" . $this->getMerchantPassword());
             $result = curl_exec($ch);
             $result = json_decode($result);
             return $result;
