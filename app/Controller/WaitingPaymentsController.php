@@ -80,10 +80,12 @@ class WaitingPaymentsController extends AppController {
         $this->loadModel('Payment');
         $chanels = array(
             Payment::CHANEL_VIPPAY      => 'Vippay',
+            Payment::CHANEL_VIPPAY_2    => 'Vippay 2',
             Payment::CHANEL_HANOIPAY    => 'Hanoipay',
             Payment::CHANEL_PAYPAL      => 'Paypal',
             Payment::CHANEL_MOLIN       => 'Molin',
             Payment::CHANEL_ONEPAY      => '1Pay',
+            Payment::CHANEL_ONEPAY_2    => '1Pay 2',
             Payment::CHANEL_PAYMENTWALL => 'PaymentWall',
         );
 
