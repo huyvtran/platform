@@ -60,8 +60,8 @@ class PaymentsController extends AppController {
 
         if ($this->request->is('post')) {
             $chanel = Payment::CHANEL_VIPPAY; // default
-            if( $game['group'] == Game::GROUP_R01 ) $chanel = Payment::CHANEL_VIPPAY;
-            if( $game['group'] == Game::GROUP_R02 ) $chanel = Payment::CHANEL_VIPPAY_2;
+//            if( $game['group'] == Game::GROUP_R01 ) $chanel = Payment::CHANEL_VIPPAY;
+//            if( $game['group'] == Game::GROUP_R02 ) $chanel = Payment::CHANEL_VIPPAY_2;
 
             if( in_array($game['app'], array(
                 'd77a238697e63e5056810448d460c0d7', 'ced3d169ffdb099ee6fede9d8f923f60', //r13
