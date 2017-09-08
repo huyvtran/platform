@@ -374,17 +374,15 @@ class OvsPaymentsController extends AppController {
         $access_key = "diggr0l4g6k792oj528a";
         $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
 
-        if( in_array($user['email'], array('quanvuhong@gmail.com','1502896498@myapp.com')) ) {
-            $this->loadModel('Game');
-            if (!empty($game['group']) && $game['group'] == Game::GROUP_R01) {
-                $chanel = Payment::CHANEL_ONEPAY;
-                $access_key = "diggr0l4g6k792oj528a";
-                $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
-            } else if (!empty($game['group']) && $game['group'] == Game::GROUP_R02) {
-                $chanel = Payment::CHANEL_ONEPAY_2;
-                $access_key = "xr13xjpekax55j3jgsfs";
-                $secret = "rq10xl9fn20i2qlrqwc9gwdkmsd7cukx";
-            }
+        $this->loadModel('Game');
+        if (!empty($game['group']) && $game['group'] == Game::GROUP_R01) {
+            $chanel = Payment::CHANEL_ONEPAY;
+            $access_key = "diggr0l4g6k792oj528a";
+            $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
+        } else if (!empty($game['group']) && $game['group'] == Game::GROUP_R02) {
+            $chanel = Payment::CHANEL_ONEPAY_2;
+            $access_key = "xr13xjpekax55j3jgsfs";
+            $secret = "rq10xl9fn20i2qlrqwc9gwdkmsd7cukx";
         }
 
         # tạo giao dịch waiting_payment
@@ -475,17 +473,13 @@ class OvsPaymentsController extends AppController {
                 $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
                 $token = $this->request->header('token');
 
-                if( in_array($user['email'], array('quanvuhong@gmail.com','1502896498@myapp.com')) ) {
-                    $this->loadModel('Game');
-                    if (!empty($game['group']) && $game['group'] == Game::GROUP_R01) {
-                        $chanel = Payment::CHANEL_ONEPAY;
-                        $access_key = "diggr0l4g6k792oj528a";
-                        $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
-                    } else if (!empty($game['group']) && $game['group'] == Game::GROUP_R02) {
-                        $chanel = Payment::CHANEL_ONEPAY_2;
-                        $access_key = "xr13xjpekax55j3jgsfs";
-                        $secret = "rq10xl9fn20i2qlrqwc9gwdkmsd7cukx";
-                    }
+                $this->loadModel('Game');
+                if (!empty($game['group']) && $game['group'] == Game::GROUP_R01) {
+                    $access_key = "diggr0l4g6k792oj528a";
+                    $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
+                } else if (!empty($game['group']) && $game['group'] == Game::GROUP_R02) {
+                    $access_key = "xr13xjpekax55j3jgsfs";
+                    $secret = "rq10xl9fn20i2qlrqwc9gwdkmsd7cukx";
                 }
 
                 App::uses('OnepayBanking', 'Payment');
