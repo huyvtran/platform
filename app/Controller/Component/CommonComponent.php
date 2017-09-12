@@ -458,4 +458,20 @@ class CommonComponent extends Component {
         }
         return false;
     }
+
+    public function hideFunction($name)
+    {
+        $gameVersion = $this->Controller->request->header('game_version');
+        $gameData = $this->currentGame();
+        if (	empty($gameData['data'][$name])
+            ||	(	!empty($gameData['data'][$name])
+                &&	( !empty($gameData['data']['hide_for_game_version'])
+                &&	$gameData['data']['hide_for_game_version'] != $gameVersion
+                )
+            )
+        ) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -258,6 +258,10 @@ class OauthController extends AppController {
             Cache::write('oauth_getgame_' . $this->request->header('app'), $result, 'info');
         }
 
+        if (!empty($result['data']['hide_login'])) {
+            $result['hide_login'] = $this->Common->hideFunction('hide_login');
+        }
+
         $this->set('result', $result);
         $this->set('_serialize', 'result');
         return $result;
