@@ -37,7 +37,6 @@ class CommonComponent extends Component {
 				$game = $this->Controller->Game->findByApp($appkey);
 				Cache::write('current_game_app_' . $appkey, $game, 'info');
 			}
-
 		} else {
 			# get current game from website
 			$websiteId = $this->currentWebsite('id');
@@ -461,17 +460,17 @@ class CommonComponent extends Component {
 
     public function hideFunction($name)
     {
-        $gameVersion = $this->Controller->request->header('game_version');
+        $gameVersion = $this->Controller->request->header('game-version');
         $gameData = $this->currentGame();
-        if (	empty($gameData['data'][$name])
-            ||	(	!empty($gameData['data'][$name])
+        if ( empty($gameData['data'][$name])
+            || ( !empty($gameData['data'][$name])
                 &&	( !empty($gameData['data']['hide_for_game_version'])
-                &&	$gameData['data']['hide_for_game_version'] != $gameVersion
+                &&	( $gameData['data']['hide_for_game_version'] != $gameVersion )
                 )
             )
         ) {
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 }
