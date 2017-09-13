@@ -19,8 +19,7 @@
             <ul class="nav navbar-nav">
                 <li>
                     <a href="#" onclick="return false">
-                        <i title="Admin Home" class="fa fa-home" style="color: white" onclick=";window.location.href=this.getAttribute('href');return false;" href="<?php echo $this->Html->url("/admin") ?>"></i>
-                        <span title="Pick a domain" class='text-warning'  onclick=";window.location.href=this.getAttribute('href');return false;"  href="<?php echo $this->Html->url(array(
+                        <span title="Pick a domain" onclick=";window.location.href=this.getAttribute('href');return false;"  href="<?php echo $this->Html->url(array(
                          'controller' => 'websites', 'admin' => true, 'action' => 'setsession'
                          ));
                          ?>">
