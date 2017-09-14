@@ -408,7 +408,8 @@ class OvsPaymentsController extends AppController {
         $onepay->setOrderId($order_id);
         $onepay->setNote($product['Product']['title']);
 
-        $orderOnepay = $onepay->create($product['Product']['platform_price']);
+        #$orderOnepay = $onepay->create($product['Product']['platform_price']);
+        $orderOnepay = $onepay->order($product['Product']['platform_price']);
 
         if( empty($orderOnepay) ){
             CakeLog::error('Lỗi tạo giao dịch - vippay banking', 'payment');
@@ -438,6 +439,7 @@ class OvsPaymentsController extends AppController {
         $transaction_status = false;
         if( !empty($this->request->query['response_code']) && !empty($this->request->query['order_id']) ){
             $orderId = $this->request->query['order_id'] ;
+            $trans_ref = $this->request->query['trans_ref'] ;
 
             $this->loadModel('WaitingPayment');
             $this->WaitingPayment->recursive = -1;
@@ -445,42 +447,66 @@ class OvsPaymentsController extends AppController {
 
             # ghi log onepay order
             $this->loadModel('Payment');
+            $this->loadModel('OnepayOrder');
+            $data_onepay_order = array(
+                'order_id'      => $orderId,
+                'order_info'    => $this->request->query['order_info'],
+                'order_type'    => $this->request->query['order_type'],
+                'user_id'       => $user['id'],
+                'game_id'       => $game['id'],
+                'amount'        => $this->request->query['amount'],
+                'card_name'     => $this->request->query['card_name'],
+                'card_type'     => $this->request->query['card_type'],
+                'response_code' => $this->request->query['response_code'],
+                'trans_status'  => $this->request->query['trans_status'],
+                'trans_ref'     => $this->request->query['trans_ref'],
+                'chanel'        => Payment::CHANEL_ONEPAY
+            );
+            CakeLog::info('data url callback - onepay:' . print_r($this->request->query, true) , 'payment');
+            $this->OnepayOrder->save($data_onepay_order);
 
             # check cổng trả về và commit giao dịch lên cổng
             if( $this->request->query['response_code'] == '00' && isset($wating_payment['WaitingPayment']['status'])
                 && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
             ) {
-                $this->loadModel('OnepayOrder');
-                $data_onepay_order = array(
-                    'order_id'      => $orderId,
-                    'order_info'    => $this->request->query['order_info'],
-                    'order_type'    => $this->request->query['order_type'],
-                    'user_id'       => $user['id'],
-                    'game_id'       => $game['id'],
-                    'amount'        => $this->request->query['amount'],
-                    'response_code' => $this->request->query['response_code'],
-                    'trans_status'  => $this->request->query['trans_status'],
-                    'trans_ref'     => $this->request->query['trans_ref'],
-                    'chanel'        => $wating_payment['WaitingPayment']['chanel']
-                );
-                CakeLog::info('data url callback - onepay:' . print_r($this->request->query, true) , 'payment');
-                $this->OnepayOrder->save($data_onepay_order);
+                $access_key = "diggr0l4g6k792oj528a";
+                $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
+                $token = $this->request->header('token');
 
-                $data_payment = array(
-                    'order_id' => $orderId,
-                    'user_id' => $user['id'],
-                    'game_id' => $game['id'],
-                    'price' => $wating_payment['WaitingPayment']['price'],
-                    'time' => time(),
-                    'type' => $wating_payment['WaitingPayment']['type'],
-                    'chanel' => $wating_payment['WaitingPayment']['chanel'],
-                    'waiting_id' => $wating_payment['WaitingPayment']['id']
-                );
+                $this->loadModel('Game');
+                if (!empty($game['group']) && $game['group'] == Game::GROUP_R01) {
+                    $access_key = "diggr0l4g6k792oj528a";
+                    $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
+                } else if (!empty($game['group']) && $game['group'] == Game::GROUP_R02) {
+                    $access_key = "xr13xjpekax55j3jgsfs";
+                    $secret = "rq10xl9fn20i2qlrqwc9gwdkmsd7cukx";
+                }
 
-                $this->view = 'success';
-                $sdk_message = __("Giao dịch thành công.");
-                $status_sdk = 0;
-                $transaction_status = true;
+                App::uses('OnepayBanking', 'Payment');
+                $onepay = new OnepayBanking($access_key, $secret);
+                $onepay->setGameApp($game['app']);
+                $onepay->setUserToken($token);
+                $onepay->setOrderId($orderId);
+                $data_commit = $onepay->close($trans_ref);
+
+                # cộng xu
+                if ( isset($data_commit['response_code']) && $data_commit['response_code'] == '00' ) {
+                    $data_payment = array(
+                        'order_id' => $orderId,
+                        'user_id' => $user['id'],
+                        'game_id' => $game['id'],
+                        'price' => $wating_payment['WaitingPayment']['price'],
+                        'time' => time(),
+                        'type' => $wating_payment['WaitingPayment']['type'],
+                        'chanel' => $wating_payment['WaitingPayment']['chanel'],
+                        'waiting_id' => $wating_payment['WaitingPayment']['id']
+                    );
+
+                    $this->view = 'success';
+                    $sdk_message = __("Giao dịch thành công.");
+                    $status_sdk = 0;
+                    $transaction_status = true;
+                }
             }
 
             App::uses('PaymentLib', 'Payment');
