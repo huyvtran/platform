@@ -85,6 +85,7 @@ class OnepayBanking {
             $url = 'http://visa.1pay.vn/visa-charging/api/handle/request';
             $json_bankCharging = $this->execPostRequest($url, $data);
             $decode_bankCharging = json_decode($json_bankCharging, true);  // decode json
+            CakeLog::info('onepay data :' . print_r($decode_bankCharging,true), 'payment');
             if( !empty($decode_bankCharging["pay_url"]) ) $pay_url = $decode_bankCharging["pay_url"];
         }catch (Exception $e){
             CakeLog::error('error create onepay - ' . print_r($e, true), 'payment');
