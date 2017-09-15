@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 App::uses('AppController', 'Controller');
 App::uses('PaymentLib', 'Payment');
@@ -408,8 +408,8 @@ class OvsPaymentsController extends AppController {
         $onepay->setOrderId($order_id);
         $onepay->setNote($product['Product']['title']);
 
-        $orderOnepay = $onepay->create($product['Product']['platform_price']);
-        #$orderOnepay = $onepay->order($product['Product']['platform_price']);
+        #$orderOnepay = $onepay->create($product['Product']['platform_price']);
+        $orderOnepay = $onepay->order($product['Product']['platform_price']);
 
         if( empty($orderOnepay) ){
             CakeLog::error('Lỗi tạo giao dịch - vippay banking', 'payment');
