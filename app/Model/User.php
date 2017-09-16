@@ -460,6 +460,7 @@ class User extends AppModel {
 	}
 
 	public function getCountry(){
+        $country = 'unknown';
 		try{
 			App::import('Lib', 'DetectIp');
 			$geo_id = new DetectIp();
@@ -469,7 +470,6 @@ class User extends AppModel {
 			$country = $record->country->names['en'];
 		}catch (Exception $e){
 			CakeLog::error('Detect country error : '.$e->getMessage());
-			$country = 'unknown';
 		}
 		return $country;
 	}
