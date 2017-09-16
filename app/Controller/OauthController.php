@@ -283,6 +283,11 @@ class OauthController extends AppController {
 
     public function api_tracking_install(){
         CakeLog::info('checking install:' . print_r($this->request->data,true));
+
+        $result = array();
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
+        return $result;
     }
 }
 
