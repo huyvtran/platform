@@ -8,7 +8,8 @@ class OauthController extends AppController {
 	{
 		parent::beforeFilter();
 		$this->Auth->allow(array(
-			'userInfo', 'api_userAuthen', 'token', 'getGame'
+			'userInfo', 'api_userAuthen', 'token', 'getGame',
+            'api_tracking_install'
 		));
 	}
 
@@ -278,6 +279,10 @@ class OauthController extends AppController {
         $this->set('result', $result);
         $this->set('_serialize', 'result');
         return $result;
+    }
+
+    public function api_tracking_install(){
+        CakeLog::info('checking install:' . print_r($this->request->data,true));
     }
 }
 
