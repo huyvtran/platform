@@ -1854,6 +1854,7 @@ class UsersController extends AppController {
 	
 	public function test_sendmail(){
         $options = array(
+            'from' => array('no-reply@plf.vntap.com' => 'VNTAP'),
             'template' => 'default',
             'subject' => __('Thay đổi mật khẩu tài khoản'),
             'layout' => 'default'
