@@ -676,6 +676,7 @@ class User extends AppModel {
         if ($this->validates()) {
             $this->data[$this->alias]['password'] = Security::hash($this->data[$this->alias]['new_password'], 'sha1', true);
             $this->data[$this->alias]['password_token'] = null;
+            $this->data[$this->alias]['email_verified'] = 1;
             $result = $this->save($this->data, array(
                 'validate' => false,
                 'callbacks' => false));
