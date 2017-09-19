@@ -196,7 +196,10 @@ class EmailMarketing extends AppModel {
             $emailBody = strtr($email['EmailMarketing']['body'], $params);
         }
 
-        $emailBody = $this->parseUnsubcribe($emailBody, $address, $email['Game']['id'], $email['Game']['Website']['url']);
+        $websiteUrl = 'http://admin.muoriginfree.com:8880';
+        if( !empty($email['Game']['Website']['url']) ) $websiteUrl = $email['Game']['Website']['url'];
+        
+        $emailBody = $this->parseUnsubcribe($emailBody, $address, $email['Game']['id'], $websiteUrl);
 
         # Gắn email gửi vào từng link track trong email
         $LinkTracking = ClassRegistry::init('LinkTracking');
