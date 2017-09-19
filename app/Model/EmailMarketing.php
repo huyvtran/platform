@@ -246,7 +246,7 @@ class EmailMarketing extends AppModel {
             }
 
             $Email = new AppEmail($config);
-            $from = array( key($Email->getConfigFrom()) => $email['Game']['title']);
+            $from = array( key($Email->getConfigFrom()) => substr($email['Game']['title'], 6));
 
             if ($email['EmailMarketing']['total'] > 10000) {
                 $Email->addHeaders(array('Precedence' => 'bulk'));
