@@ -596,4 +596,92 @@ class User extends AppModel {
 			debug($e->getMessage());
 		}
 	}
+
+    /**
+     * Checks if an email is in the system, validated and if the user is active so that the user is allowed to reste his password
+     *
+     * @param array $postData post data from controller
+     * @return mixed False or user data as array on success
+     */
+    public function passwordReset($postData = array(),$word = 16) {
+        if( empty($postData[$this->alias]['email']) ||  strpos($postData[$this->alias]['email'], '@myapp.com') == true ){
+            $this->invalidate('email', 'This Email Address exists but was never validated.');
+            return false;
+        }
+
+        $this->recursive = -1;
+        $user = $this->find('first', array(
+            'conditions' => array(
+                $this->alias . '.email' => $postData[$this->alias]['email']
+            )));
+
+        if (!empty($user)) {
+            $twodays = time() + 86400 * 2; # expire 2day
+            $token = $this->generateToken($word);
+            $user[$this->alias]['password_token'] = $token;
+            $user[$this->alias]['email_token_expires'] = date('Y-m-d H:i:s', $twodays);
+            $user = $this->save($user, false);
+            $this->data = $user;
+            return $user;
+        } elseif (!empty($user) && $user[$this->alias]['email_verified'] == 0){
+            $this->invalidate('email', 'This Email Address exists but was never validated.');
+        } else {
+            $this->invalidate('email', 'This Email Address does not exist in the system.');
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks the token for a password change
+     * @param string $token Token
+     * @return mixed False or user data as array
+     */
+    public function getUserByPasswordToken($token = null) {
+        $user = $this->find('first', array(
+            'contain' => array(),
+            'conditions' => array(
+                $this->alias . '.password_token' => $token,
+                $this->alias . '.email_token_expires >=' => date('Y-m-d H:i:s'),
+                $this->alias . '.active' => 1
+            )
+        ));
+
+        if (empty($user)) {
+            return false;
+        }
+        return $user;
+    }
+
+    /**
+     * Resets the password
+     *
+     * @param array $postData Post data from controller
+     * @return boolean True on success
+     */
+    public function resetPassword($postData = array()) {
+        $result = false;
+
+        $tmp = $this->validate;
+        unset($tmp['password']['confirmPassword']);
+        $this->validate = array(
+            'new_password' => $tmp['password'],
+            'confirm_password' => array(
+                'required' => array(
+                    'rule' => array('compareFields', 'new_password', 'confirm_password'),
+                    'message' => 'Mật khẩu không trùng khớp.')));
+
+        $this->set($postData);
+
+        if ($this->validates()) {
+            $this->data[$this->alias]['password'] = Security::hash($this->data[$this->alias]['new_password'], 'sha1', true);
+            $this->data[$this->alias]['password_token'] = null;
+            $result = $this->save($this->data, array(
+                'validate' => false,
+                'callbacks' => false));
+        }
+
+        $this->validate = $tmp;
+        return $result;
+    }
 }
