@@ -366,28 +366,28 @@ class OvsPaymentsController extends AppController {
             $wating_payment = $this->WaitingPayment->findByOrderIdAndUserId($orderId, $user['id']);
 
             $this->loadModel('Payment');
+            $this->loadModel('OnepayOrder');
+            $data_onepay_order = array(
+                'order_id'      => $orderId,
+                'order_info'    => $this->request->query['order_info'],
+                'order_type'    => $this->request->query['order_type'],
+                'user_id'       => $user['id'],
+                'game_id'       => $game['id'],
+                'amount'        => $this->request->query['amount'],
+                'card_name'     => $this->request->query['card_name'],
+                'card_type'     => $this->request->query['card_type'],
+                'response_code' => $this->request->query['response_code'],
+                'trans_status'  => $this->request->query['trans_status'],
+                'trans_ref'     => $this->request->query['trans_ref'],
+                'chanel'        => $wating_payment['WaitingPayment']['chanel']
+            );
+            CakeLog::info('data url callback - onepay:' . print_r($this->request->query, true) , 'payment');
+            $this->OnepayOrder->save($data_onepay_order);
+
             # check cổng trả về và commit giao dịch lên cổng
             if( $this->request->query['response_code'] == '00' && isset($wating_payment['WaitingPayment']['status'])
                 && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
             ) {
-                $this->loadModel('OnepayOrder');
-                $data_onepay_order = array(
-                    'order_id'      => $orderId,
-                    'order_info'    => $this->request->query['order_info'],
-                    'order_type'    => $this->request->query['order_type'],
-                    'user_id'       => $user['id'],
-                    'game_id'       => $game['id'],
-                    'amount'        => $this->request->query['amount'],
-                    'card_name'     => $this->request->query['card_name'],
-                    'card_type'     => $this->request->query['card_type'],
-                    'response_code' => $this->request->query['response_code'],
-                    'trans_status'  => $this->request->query['trans_status'],
-                    'trans_ref'     => $this->request->query['trans_ref'],
-                    'chanel'        => $wating_payment['WaitingPayment']['chanel']
-                );
-                CakeLog::info('data url callback - onepay:' . print_r($this->request->query, true) , 'payment');
-                $this->OnepayOrder->save($data_onepay_order);
-
                 # cộng xu
                 $data_payment = array(
                     'order_id' => $orderId,
