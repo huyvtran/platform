@@ -473,4 +473,8 @@ class CommonComponent extends Component {
         }
         return true;
     }
+
+    public function verifyRecaptcha( $captcha ){
+        return true;
+    }
 }

@@ -603,7 +603,7 @@ class User extends AppModel {
      * @param array $postData post data from controller
      * @return mixed False or user data as array on success
      */
-    public function passwordReset($postData = array(),$word = 16) {
+    public function generatePasswordTokenByEmail($postData = array(),$word = 16) {
         if( empty($postData[$this->alias]['email']) ||  strpos($postData[$this->alias]['email'], '@myapp.com') == true ){
             $this->invalidate('email', 'This Email Address exists but was never validated.');
             return false;
@@ -623,8 +623,6 @@ class User extends AppModel {
             $user = $this->save($user, false);
             $this->data = $user;
             return $user;
-        } elseif (!empty($user) && $user[$this->alias]['email_verified'] == 0){
-            $this->invalidate('email', 'This Email Address exists but was never validated.');
         } else {
             $this->invalidate('email', 'This Email Address does not exist in the system.');
         }

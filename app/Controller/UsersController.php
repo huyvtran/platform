@@ -1857,14 +1857,15 @@ class UsersController extends AppController {
     {
         $this->layout = 'default_bootstrap';
         $options = array(
+            'from' => array('no-reply@muoriginfree.com' => 'Admin Riot'),
             'template' => 'password_reset_request',
             'subject' => __('Thay đổi mật khẩu tài khoản'),
             'layout' => 'default'
         );
 
         if (!empty($this->request->data)) {
-            if (true || $this->Common->verifyRecaptcha($this->request->data['User']['captcha'])) {
-                $user = $this->User->passwordReset($this->request->data);
+            if ( $this->Common->verifyRecaptcha($this->request->data['User']['captcha']) ) {
+                $user = $this->User->generatePasswordTokenByEmail($this->request->data);
                 if (!empty($user)) {
                     try {
                     $Email = new CakeEmail('amazonses');
