@@ -1870,6 +1870,7 @@ class UsersController extends AppController {
                     try {
                     $Email = new CakeEmail('amazonses');
                     $Email->to($user['User']['email'])
+                        ->from($options['from'])
                         ->subject($options['subject'])
                         ->viewVars(array(
                             'user' => $user['User'],
