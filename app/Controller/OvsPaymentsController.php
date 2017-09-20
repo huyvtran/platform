@@ -462,7 +462,7 @@ class OvsPaymentsController extends AppController {
                     'response_code' => $this->request->query['response_code'],
                     'trans_status'  => $this->request->query['trans_status'],
                     'trans_ref'     => $this->request->query['trans_ref'],
-                    'chanel'        => Payment::CHANEL_ONEPAY
+                    'chanel'        => $wating_payment['WaitingPayment']['chanel']
                 );
                 CakeLog::info('data url callback - onepay:' . print_r($this->request->query, true) , 'payment');
                 $this->OnepayOrder->save($data_onepay_order);
