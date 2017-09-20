@@ -263,6 +263,7 @@ class EmailMarketing extends AppModel {
                 ->viewVars(array(
                     'emailAddress' => $address
                 ))
+                ->template('default', 'marketings'. DS . 'default')
                 ->emailFormat('html');
 
             if ($test) {
