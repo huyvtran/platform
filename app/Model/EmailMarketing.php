@@ -260,6 +260,9 @@ class EmailMarketing extends AppModel {
             $Email->to($address)
                 ->subject($title)
                 ->from($from)
+                ->viewVars(array(
+                    'emailAddress' => $address
+                ))
                 ->emailFormat('html');
 
             if ($test) {

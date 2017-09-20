@@ -19,17 +19,17 @@
         <td >
             <div style="margin: 10px;border: 1px solid #c1c1c1;border-radius: 6px;-moz-border-radius: 6px;background: #fff;overflow: hidden">
                 <div style="padding: 20px 34px ">
+                    <?php if( !empty($websiteUrl) ){ ?>
                     <div align="center">
-
                         <a href='http://<?php echo $websiteUrl ?>' target="_blank">
                             <?php
                             echo '<img src="https://scontent.fhan6-1.fna.fbcdn.net/v/t1.0-9/19554544_1693330710972219_7002250465989034999_n.png?oh=8265739d05a5268502b8030763149353&oe=59C4006B" style="display: block; max-width: 40%;">';
                             ?>
                         </a>
                     </div>
-                    <?php
-                    echo $content_for_layout;
-                    ?>
+                    <?php } ?>
+
+                    <?php echo $content_for_layout; ?>
                 </div>
                 <?php
                 if($this->request->action != 'unsubscribe'){
