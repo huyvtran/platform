@@ -110,4 +110,15 @@ class LogShell extends AppShell {
 		}
 	}
 
+	public function test(){
+        CakeResque::enqueue(
+            'default',
+            'Log',
+            array('test2')
+        );
+    }
+
+    public function test2(){
+        CakeLog::info('test cakeresque');
+    }
 }
