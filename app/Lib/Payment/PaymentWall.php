@@ -70,7 +70,7 @@ class PaymentWall {
         Paymentwall_Base::setSecretKey($this->secret);
 
         $widget = new Paymentwall_Widget(
-            $this->getOrderId(),
+            $this->getUserToken(),
             $widget_code,
             array(
                 new Paymentwall_Product(
@@ -128,7 +128,7 @@ class PaymentWall {
         Paymentwall_Base::setSecretKey($this->secret);
 
         $widget = new Paymentwall_Widget(
-            $this->getOrderId(),
+            $this->getUserToken(),
             $widget_code,
             array(),
             array(
