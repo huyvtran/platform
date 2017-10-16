@@ -5,9 +5,11 @@ class PaymentWall {
     private $access_key ;
 	private $secret ;
 
+    private $user_id = 1;
     private $user_token;
     private $game_app;
     private $order_id;
+
 
     private $note = ' ';
     private $user_created = ' ';
@@ -18,6 +20,14 @@ class PaymentWall {
         $this->secret       = $secret;
         $this->user_token   = $user_token;
         $this->game_app     = $game_app;
+    }
+
+    public function getUserId() {
+        return $this->user_id;
+    }
+
+    public function setUserId($user_id) {
+        $this->user_id = $user_id;
     }
 
     public function getUserToken() {
@@ -70,7 +80,7 @@ class PaymentWall {
         Paymentwall_Base::setSecretKey($this->secret);
 
         $widget = new Paymentwall_Widget(
-            $this->getUserToken(),
+            $this->getUserId(),
             $widget_code,
             array(
                 new Paymentwall_Product(
@@ -128,7 +138,7 @@ class PaymentWall {
         Paymentwall_Base::setSecretKey($this->secret);
 
         $widget = new Paymentwall_Widget(
-            $this->getUserToken(),
+            $this->getUserId(),
             $widget_code,
             array(),
             array(
