@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 App::uses('AppController', 'Controller');
 App::uses('PaymentLib', 'Payment');
@@ -257,87 +257,9 @@ class OvsPaymentsController extends AppController {
         }
     }
 
-    public function pay_vippay_index(){
-        $this->loadModel('Payment');
-        $this->pay_index(Payment::CHANEL_VIPPAY, 'VND');
-    }
-
-    public function pay_vippay_order(){
-        $game = $this->Common->currentGame();
-        if( empty($game) || !$this->Auth->loggedIn() ){
-            CakeLog::error('Vui lòng login - vippay banking', 'payment');
-            throw new NotFoundException('Vui lòng login');
-        }
-
-        $productId = $this->request->query('productId');
-        if( empty($this->request->query('productId')) ){
-            CakeLog::error('Chưa chọn gói xu - vippay banking', 'payment');
-            throw new NotFoundException('Chưa chọn gói xu');
-        }
-
-        $this->loadModel('Product');
-        $this->Product->recursive = -1;
-        $product = $this->Product->findById($productId);
-
-        if( empty($product) ){
-            CakeLog::error('Không có gói xu phù hợp - vippay banking', 'payment');
-            throw new NotFoundException('Không có gói xu phù hợp');
-        }
-
-        $bank_type = $this->request->query('bank_type');
-        if(!in_array($bank_type, array('Visa', 'Master'))){
-            CakeLog::error('Loại thẻ không phù hợp - vippay banking', 'payment');
-            throw new NotFoundException('Loại thẻ không phù hợp');
-        }
-
-        $this->loadModel('Payment');
-        $this->loadModel('WaitingPayment');
-
-        $user = $this->Auth->user();
-        $order_id = microtime(true) * 10000;
-
-        $chanel = Payment::CHANEL_VIPPAY;
-        # set chanel defaul, có thể sẽ đc check theo chanel (Vippay, Vippay1, Vippay2...)
-        $merchant_id = 8945;
-        $api_user = "6433e60201c2412ca9d211ed2d9a8caa";
-        $api_password = "f3197fbb40b748e9b6123cf2739bbdf2";
-        $type = Payment::TYPE_NETWORK_BANKING;
-
-        # tạo giao dịch waiting_payment
-        $data = array(
-            'order_id'  => $order_id,
-            'user_id'   => $user['id'],
-            'game_id'   => $game['id'],
-            'price'     => $product['Product']['platform_price'],
-            'status'    => WaitingPayment::STATUS_WAIT,
-            'time'      => time(),
-            'type'      => $type,
-            'chanel'    => $chanel,
-        );
-
-        $unresolvedPayment = $this->WaitingPayment->save($data);
-
-        # xử lý mua hàng qua vippay
-        $token = $this->request->header('token');
-        App::uses('VippayBanking', 'Payment');
-        $vippay = new VippayBanking($merchant_id, $api_user, $api_password);
-        $vippay->setGameApp($game['app']);
-        $vippay->setUserToken($token);
-        $vippay->setOrderId($order_id);
-
-        $orderVippay = $vippay->create($product['Product']['price'], $bank_type);
-        if( empty($orderVippay) ){
-            CakeLog::error('Lỗi tạo giao dịch - vippay banking', 'payment');
-            throw new NotFoundException('Lỗi tạo giao dịch, vui lòng thử lại');
-        }
-        $this->redirect($orderVippay);
-    }
-
     public function pay_onepay_index(){
         $this->loadModel('Payment');
-        $this->pay_index(Payment::CHANEL_ONEPAY, 'VND');
-//        $this->layout = 'payment';
-//        $this->view = 'maintain';
+        $this->pay_index(Payment::CHANEL_PAYPAL, 'VND');
     }
 
     public function pay_onepay_order(){
@@ -370,9 +292,20 @@ class OvsPaymentsController extends AppController {
 
         $chanel = Payment::CHANEL_ONEPAY;
         $type = Payment::TYPE_NETWORK_BANKING;
-        # set chanel defaul, có thể sẽ đc check theo chanel (Vippay, Vippay1, Vippay2...)
+        # set chanel defaul, có thể sẽ đc check theo chanel (1Pay 1, 1Pay 2 ...)
         $access_key = "diggr0l4g6k792oj528a";
         $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
+
+        $this->loadModel('Game');
+        if (!empty($game['group']) && $game['group'] == Game::GROUP_R01) {
+            $chanel = Payment::CHANEL_ONEPAY;
+            $access_key = "diggr0l4g6k792oj528a";
+            $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
+        } else if (!empty($game['group']) && $game['group'] == Game::GROUP_R02) {
+            $chanel = Payment::CHANEL_ONEPAY_2;
+            $access_key = "xr13xjpekax55j3jgsfs";
+            $secret = "rq10xl9fn20i2qlrqwc9gwdkmsd7cukx";
+        }
 
         # tạo giao dịch waiting_payment
         $data = array(
@@ -397,11 +330,10 @@ class OvsPaymentsController extends AppController {
         $onepay->setOrderId($order_id);
         $onepay->setNote($product['Product']['title']);
 
-        #$orderOnepay = $onepay->create($product['Product']['platform_price']);
-        $orderOnepay = $onepay->order($product['Product']['platform_price']);
+        $orderOnepay = $onepay->create($product['Product']['platform_price']);
+        #$orderOnepay = $onepay->order($product['Product']['platform_price']);
 
         if( empty($orderOnepay) ){
-            CakeLog::error('Lỗi tạo giao dịch - vippay banking', 'payment');
             throw new NotFoundException('Lỗi tạo giao dịch, vui lòng thử lại');
         }
 
@@ -428,13 +360,11 @@ class OvsPaymentsController extends AppController {
         $transaction_status = false;
         if( !empty($this->request->query['response_code']) && !empty($this->request->query['order_id']) ){
             $orderId = $this->request->query['order_id'] ;
-            $trans_ref = $this->request->query['trans_ref'] ;
 
             $this->loadModel('WaitingPayment');
             $this->WaitingPayment->recursive = -1;
             $wating_payment = $this->WaitingPayment->findByOrderIdAndUserId($orderId, $user['id']);
 
-            # ghi log onepay order
             $this->loadModel('Payment');
             $this->loadModel('OnepayOrder');
             $data_onepay_order = array(
@@ -449,7 +379,7 @@ class OvsPaymentsController extends AppController {
                 'response_code' => $this->request->query['response_code'],
                 'trans_status'  => $this->request->query['trans_status'],
                 'trans_ref'     => $this->request->query['trans_ref'],
-                'chanel'        => Payment::CHANEL_ONEPAY
+                'chanel'        => $wating_payment['WaitingPayment']['chanel']
             );
             CakeLog::info('data url callback - onepay:' . print_r($this->request->query, true) , 'payment');
             $this->OnepayOrder->save($data_onepay_order);
@@ -458,35 +388,26 @@ class OvsPaymentsController extends AppController {
             if( $this->request->query['response_code'] == '00' && isset($wating_payment['WaitingPayment']['status'])
                 && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
             ) {
-                $access_key = "diggr0l4g6k792oj528a";
-                $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
-                $token = $this->request->header('qtoken');
-
-                App::uses('OnepayBanking', 'Payment');
-                $onepay = new OnepayBanking($access_key, $secret);
-                $onepay->setGameApp($game['app']);
-                $onepay->setUserToken($token);
-                $onepay->setOrderId($orderId);
-                $data_commit = $onepay->close($trans_ref);
-
                 # cộng xu
-                if ( isset($data_commit['response_code']) && $data_commit['response_code'] == '00' ) {
-                    $data_payment = array(
-                        'order_id' => $orderId,
-                        'user_id' => $user['id'],
-                        'game_id' => $game['id'],
-                        'price' => $wating_payment['WaitingPayment']['price'],
-                        'time' => time(),
-                        'type' => $wating_payment['WaitingPayment']['type'],
-                        'chanel' => $wating_payment['WaitingPayment']['chanel'],
-                        'waiting_id' => $wating_payment['WaitingPayment']['id']
-                    );
+                $data_payment = array(
+                    'order_id' => $orderId,
+                    'user_id' => $user['id'],
+                    'game_id' => $game['id'],
+                    'price' => $wating_payment['WaitingPayment']['price'],
+                    'time' => time(),
+                    'type' => $wating_payment['WaitingPayment']['type'],
+                    'chanel' => $wating_payment['WaitingPayment']['chanel'],
+                    'waiting_id' => $wating_payment['WaitingPayment']['id']
+                );
 
-                    $this->view = 'success';
-                    $sdk_message = __("Giao dịch thành công.");
-                    $status_sdk = 0;
-                    $transaction_status = true;
-                }
+                $this->view = 'success';
+                $sdk_message = __("Giao dịch thành công.");
+                $status_sdk = 0;
+                $transaction_status = true;
+            }elseif ( isset($wating_payment['WaitingPayment']['status'])
+                && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_COMPLETED
+            ){
+                goto a;
             }
 
             App::uses('PaymentLib', 'Payment');
@@ -498,76 +419,7 @@ class OvsPaymentsController extends AppController {
                 $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
             }
 
-            if( !empty($game['data']['payment']['url_sdk']) ){
-                $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message . '&status=' . $status_sdk);
-            }
-        }
-    }
-
-    public function pay_onepay_response2(){
-        $this->layout = 'payment';
-        $this->view = 'error';
-        $sdk_message = __("Giao dịch thất bại.");
-        $status_sdk = 1;
-
-        $game = $this->Common->currentGame();
-        if( empty($game) || !$this->Auth->loggedIn() ){
-            CakeLog::error('Vui lòng login - onepay banking', 'payment');
-            throw new NotFoundException('Vui lòng login');
-        }
-        $user = $this->Auth->user();
-
-        if( !empty($this->request->query['response_code']) && !empty($this->request->query['order_id']) ){
-            $orderId = $this->request->query['order_id'] ;
-            $this->loadModel('WaitingPayment');
-            $this->WaitingPayment->recursive = -1;
-            $wating_payment = $this->WaitingPayment->findByOrderIdAndUserId($orderId, $user['id']);
-
-            # ghi log onepay order
-            $this->loadModel('Payment');
-            $this->loadModel('OnepayOrder');
-            $data_onepay_order = array(
-                'order_id'      => $orderId,
-                'order_info'    => $this->request->query['order_info'],
-                'order_type'    => $this->request->query['order_type'],
-                'user_id'       => $user['id'],
-                'game_id'       => $game['id'],
-                'amount'        => $this->request->query['amount'],
-                'response_code' => $this->request->query['response_code'],
-                'trans_status'  => $this->request->query['trans_status'],
-                'trans_ref'     => $this->request->query['trans_ref'],
-                'chanel'        => Payment::CHANEL_ONEPAY
-            );
-            CakeLog::info('data url callback - onepay:' . print_r($this->request->query, true) , 'payment');
-            $this->OnepayOrder->save($data_onepay_order);
-
-            App::uses('PaymentLib', 'Payment');
-            $paymentLib = new PaymentLib();
-            # cộng xu
-            if( $this->request->query['response_code'] == '00' && isset($wating_payment['WaitingPayment']['status'])
-                && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
-            ){
-                $data_payment = array(
-                    'order_id'  => $orderId,
-                    'user_id'   => $user['id'],
-                    'game_id'   => $game['id'],
-                    'price'     => $wating_payment['WaitingPayment']['price'],
-                    'time'      => time(),
-                    'type'      => $wating_payment['WaitingPayment']['type'],
-                    'chanel'    => $wating_payment['WaitingPayment']['chanel'],
-                    'waiting_id'=> $wating_payment['WaitingPayment']['id']
-                );
-
-
-                $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
-                $paymentLib->add($data_payment);
-                $this->view = 'success';
-                $sdk_message = __("Giao dịch thành công.");
-                $status_sdk = 0;
-            }else{
-                $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
-            }
-
+            a:
             if( !empty($game['data']['payment']['url_sdk']) ){
                 $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message . '&status=' . $status_sdk);
             }
@@ -622,6 +474,7 @@ class OvsPaymentsController extends AppController {
         $paymentWall = new PaymentWall($access_key, $secret, $token, $game['app']);
         $paymentWall->setOrderId($order_id);
         $paymentWall->setUserCreated($user['created']);
+        $paymentWall->setUserId($user['id']);
 
         $url = $paymentWall->create_card();
 
@@ -692,6 +545,7 @@ class OvsPaymentsController extends AppController {
         $paymentWall->setOrderId($order_id);
         $paymentWall->setNote($product['Product']['title']);
         $paymentWall->setUserCreated($user['created']);
+        $paymentWall->setUserId($user['id']);
 
         $url = $paymentWall->create($product['Product']);
 
@@ -800,7 +654,7 @@ class OvsPaymentsController extends AppController {
                         if( isset($this->request->query['PAYMENT_SYSTEM']) && $this->request->query['PAYMENT_SYSTEM'] == 'Mobiamo' ){
                             $price = ($wating_payment['WaitingPayment']['price'])/2;
                         }else{
-                            $price = ($price)*0.85;
+                            #$price = ($price)*0.85; 
                         }
 
                         // deliver the product
@@ -966,76 +820,5 @@ class OvsPaymentsController extends AppController {
             }
         }
         echo $result; die;
-    }
-
-    public function pay_paymentwall_response2(){
-        CakeLog::info('check log paymentwall response:' . print_r($this->request->query, true), 'payment');
-        $this->layout = 'payment';
-        $this->view = 'error';
-        $sdk_message = __("Giao dịch thất bại.");
-        $status_sdk = 1;
-
-        $game = $this->Common->currentGame();
-        if( empty($game) || !$this->Auth->loggedIn() ){
-            CakeLog::error('Vui lòng login - paymentwall', 'payment');
-            throw new NotFoundException('Vui lòng login');
-        }
-        $user = $this->Auth->user();
-        
-        if(  !empty($this->request->query['order_id']) ){
-            $orderId = $this->request->query['order_id'] ;
-
-            $this->loadModel('WaitingPayment');
-            $this->WaitingPayment->recursive = -1;
-            $wating_payment = $this->WaitingPayment->findByOrderId($orderId);
-
-            # check cổng trả về và commit giao dịch lên cổng
-            App::uses('PaymentLib', 'Payment');
-            $paymentLib = new PaymentLib();
-
-            if( isset( $wating_payment['WaitingPayment']['status'] )
-                && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
-            ) {
-                $access_key = "b16230d530d4e02c13801d17dfad7f84";
-                $secret = "b1b48f5f2240ad9a5918e66c6feec5ff";
-                $token = $this->request->header('qtoken');
-
-                App::uses('PaymentWall', 'Payment');
-                $paymentWall = new PaymentWall($access_key, $secret, $token, $game['app']);
-                $paymentWall->setOrderId($orderId);
-
-                # cộng xu
-                $payment_wall_commit = $paymentWall->close();
-                CakeLog::info('payment_wall_commit:' . $payment_wall_commit , 'payment');
-                if ( $payment_wall_commit == WaitingPayment::STATUS_COMPLETED ) {
-                    $data_payment = array(
-                        'order_id' => $orderId,
-                        'user_id' => $user['id'],
-                        'game_id' => $game['id'],
-                        'price' => $wating_payment['WaitingPayment']['price'],
-                        'time' => time(),
-                        'type' => $wating_payment['WaitingPayment']['type'],
-                        'chanel' => $wating_payment['WaitingPayment']['chanel'],
-                        'waiting_id' => $wating_payment['WaitingPayment']['id']
-                    );
-
-                    $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
-                    $paymentLib->add($data_payment);
-
-                    $this->view = 'success';
-                    $sdk_message = __("Giao dịch thành công.");
-                    $status_sdk = 0;
-                }elseif ( $payment_wall_commit == WaitingPayment::STATUS_ERROR ){
-                    $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
-                }elseif ( $payment_wall_commit == WaitingPayment::STATUS_QUEUEING ){
-                    $sdk_message = __("Chờ xác admin xác nhận giao dịch.");
-                    $status_sdk = 1;
-                }
-            }
-
-            if( !empty($game['data']['payment']['url_sdk']) ){
-                $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message . '&status=' . $status_sdk);
-            }
-        }
     }
 }

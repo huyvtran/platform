@@ -8,7 +8,8 @@ class OauthController extends AppController {
 	{
 		parent::beforeFilter();
 		$this->Auth->allow(array(
-			'userInfo', 'api_userAuthen', 'token', 'getGame'
+			'userInfo', 'api_userAuthen', 'token', 'getGame',
+            'api_tracking_install'
 		));
 	}
 
@@ -218,45 +219,30 @@ class OauthController extends AppController {
         if (!$this->request->header('app')) {
             throw new BadRequestException();
         }
-        $this->loadModel('Game');
-        $this->Game->contain();
 
-        $result = Cache::read('oauth_getgame_' . $this->request->header('app'), 'info');
+        $game = $this->Common->currentGame();
 
-        if ($result === false) {
-            $result = $this->Game->find('first', array(
-                'conditions' => array('app' => $this->request->header('app')),
-                'fields' => array(
-                    'title', 'appstore_link', 'support_email', 'fbpage_id',
-                    'app_gaid', 'language_default', 'fb_appid', 'data'
-                ),
-                'recursive' => -1
-            ));
-
-            if (!empty($result['Game'])) {
-                $result = Hash::filter($result['Game']);
-            } else {
-                throw new BadRequestException();
-            }
-
-            if (!empty($result['data']['appsflyer'])) {
-                $result['appsflyer'] = $result['data']['appsflyer'];
-                if (!empty($result['appsflyer']['is_use_http'])) {
-                    $result['appsflyer']['is_use_http'] = (bool) $result['appsflyer']['is_use_http'];
-                }
-            }
-
-            if (!empty($result['data']['google_iab'])) {
-                $result['google_iab'] = $result['data']['google_iab'];
-            }
-            if (isset($result['google_iab']['token'])) {
-                unset($result['google_iab']['token']);
-            }
-
-            unset($result['data']);
-
-            Cache::write('oauth_getgame_' . $this->request->header('app'), $result, 'info');
+        if (empty($game)) {
+            throw new BadRequestException();
         }
+
+        $result = array(
+            'app'       => $game['app'],
+            'title'     => $game['title'],
+            'language'  => $game['language_default'],
+        );
+        if (!empty($game['data']['appsflyer'])) {
+            $result['appsflyer'] = $game['data']['appsflyer'];
+            if (!empty($game['appsflyer']['is_use_http'])) {
+                $result['appsflyer']['is_use_http'] = (bool) $game['appsflyer']['is_use_http'];
+            }
+        }
+
+        if (!empty($game['data']['google_iab'])) {
+            $result['google_iab'] = $game['data']['google_iab'];
+        }
+
+        $result['hide_login'] = $this->Common->hideFunction('hide_login');
 
         $this->set('result', $result);
         $this->set('_serialize', 'result');
@@ -290,6 +276,15 @@ class OauthController extends AppController {
         $userInfo = $this->userInfo(true);
         $result['userInfo'] = $userInfo;
 
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
+        return $result;
+    }
+
+    public function api_tracking_install(){
+        CakeLog::info('checking install:' . print_r($this->request->data,true));
+
+        $result = array();
         $this->set('result', $result);
         $this->set('_serialize', 'result');
         return $result;

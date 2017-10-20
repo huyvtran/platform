@@ -89,6 +89,8 @@ class OnepayBanking {
         }catch (Exception $e){
             CakeLog::error('error create onepay - ' . print_r($e, true), 'payment');
         }
+        CakeLog::info('onepay url :' . print_r($pay_url,true), 'payment');
+        CakeLog::info('onepay send data :' . print_r($data,true), 'payment');
         return $pay_url;
     }
 

@@ -78,32 +78,11 @@ class Game extends AppModel {
 		array_unshift($ids, $game['id']);
 		return $ids;
 	}
-	
-	public function beforeSave($options = array())
-	{
-		$this->recursive = -1;
-		$old = $this->find('first', array($this->primaryKey => $this->id));
-		if ($old && isset($this->data['Game']['jailbreak_link'])){
-			if ($this->data['Game']['jailbreak_link'] != $old['Game']['jailbreak_link']) {
-				Cache::delete('md5_file', 'android_installer');
-			}
-		}
-
-		return true;
-	}
 
 	public function afterSave($created)
 	{
 		# Clear detect request to which game, or website in CommonComponent
 		Cache::clear(false, 'info');
-		
-		$this->contain(array('Website'));
-		$game = $this->findById($this->data[$this->alias]['id']);
-		
-		clearCachefile(array(
-			$game['Game']['app'] . '_plf_games_dashboard',
-			'games_view_' . $game['Game']['slug']
-		));
 		clearCachefile('config_language_games', '', '');
 	}
 

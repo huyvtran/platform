@@ -170,11 +170,17 @@ $this->extend('/Common/blank');
                         case Payment::CHANEL_VIPPAY :
                             $chanel = 'Vippay';
                             break;
+                        case Payment::CHANEL_VIPPAY_2 :
+                            $chanel = 'Vippay 2';
+                            break;
                         case Payment::CHANEL_HANOIPAY :
                             $chanel = 'Hanoipay';
                             break;
                         case Payment::CHANEL_ONEPAY :
                             $chanel = '1Pay';
+                            break;
+                        case Payment::CHANEL_ONEPAY_2 :
+                            $chanel = '1Pay 2';
                             break;
                         case Payment::CHANEL_PAYMENTWALL :
                             $chanel = 'PayWall';

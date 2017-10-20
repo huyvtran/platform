@@ -45,6 +45,19 @@ echo $this->Form->create('Game', array(
 
         <div class='row'>
             <div class='span3'>
+                <a href="#" class='show-config-box'>Show or hide config (for Apple/Google Play/Store... reviews)</a>
+                <div class='config-box'>
+                    <div class='option_app_google'>
+                        <?php
+                        echo $this->Form->input('Game.data.hide_login', array('type' => 'checkbox'));
+                        echo $this->Form->input('Game.data.hide_payment', array('type' => 'checkbox'));
+                        echo $this->Form->input('Game.data.hide_for_game_version', array('type' => 'text','label' => '<strong>Choose app version</strong> <em><small>(leave blank it will use this status for all app version - SDK)</small></em>'));
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class='span3'>
                 <a href="#" class='show-config-box'>Payment config</a>
                 <div class='config-box'>
                     <?php

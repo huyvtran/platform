@@ -42,7 +42,8 @@ class UsersController extends AppController {
 			'api_play_now',
 			'api_login_takan', 'api_register_takan',
 			'api_login_ldr', 'api_register_ldr', 'api_change_password_ldr',
-			'api_register_v26', 'api_login_v26', 'api_change_password_v26'
+			'api_register_v26', 'api_login_v26', 'api_change_password_v26',
+            'reset_password_web', 'reset_password_web_comfirm'
 		);
 	}
 
@@ -1851,9 +1852,77 @@ class UsersController extends AppController {
 
         if($return) return $result;
     }
+
+    public function reset_password_web()
+    {
+        $this->layout = 'default_bootstrap';
+        $options = array(
+            'from' => array('no-reply@muoriginfree.com' => 'Admin Riot'),
+            'template' => 'password_reset_request',
+            'subject' => __('Thay đổi mật khẩu tài khoản'),
+            'layout' => 'default'
+        );
+
+        if (!empty($this->request->data)) {
+            if ( $this->Common->verifyRecaptcha($this->request->data['User']['captcha']) ) {
+                $user = $this->User->generatePasswordTokenByEmail($this->request->data);
+                if (!empty($user)) {
+                    try {
+                    $Email = new CakeEmail('amazonses');
+                    $Email->to($user['User']['email'])
+                        ->from($options['from'])
+                        ->subject($options['subject'])
+                        ->viewVars(array(
+                            'user' => $user['User'],
+                            'websiteUrl' => 'truyenthuyetrong.com',
+                            'emailAddress' => $user['User']['email']
+                        ))
+                        ->template($options['template'], $options['layout'])
+                        ->emailFormat('html')
+                        ->send();
+                    }catch (Exception $e){
+                        CakeLog::error($e->getMessage());
+                    }
+                    $this->redirect(array('action' => 'reset_password_web_comfirm'));
+                } else {
+                    unset($this->request->data['User']['captcha']);
+                    $this->Session->setFlash(__('Địa chỉ email không tồn tại.'), 'error');
+                }
+            } else {
+                unset($this->request->data['User']['captcha']);
+                $this->Session->setFlash(__('Mã xác nhận không đúng.'), 'error');
+            }
+        }
+    }
+
+    /**
+     * tool change passwword on admin
+     */
+    public function reset_password_web_comfirm()
+    {
+        if ($this->request->is('post')) {
+            $user = $this->User->getUserByPasswordToken(strtolower($this->request->data['User']['token']));
+            if (empty($user)) {
+                $this->Session->setFlash('Invalid PIN code', 'error');
+                $this->redirect(array('controller' => 'users', 'action' => 'reset_password_web_comfirm'));
+            } else {
+                if (!empty($this->request->data) && $this->User->resetPassword(Set::merge($user, $this->request->data))) {
+                    $this->Session->setFlash('Changed password successfully', 'success');
+                    $this->redirect(array('controller' => 'users', 'action' => 'login'));
+                } else {
+                    if (!empty($this->User->validationErrors)) {
+                        $this->Session->setFlash($this->User->validationErrors, 'error');
+                    }
+                    $this->redirect(array('controller' => 'users', 'action' => 'reset_password_web_comfirm'));
+                }
+            }
+        }
+        $this->layout = 'default_bootstrap';
+    }
 	
 	public function test_sendmail(){
         $options = array(
+            'from' => array('no-reply@plf.vntap.com' => 'VNTAP'),
             'template' => 'default',
             'subject' => __('Thay đổi mật khẩu tài khoản'),
             'layout' => 'default'

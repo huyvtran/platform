@@ -196,7 +196,10 @@ class EmailMarketing extends AppModel {
             $emailBody = strtr($email['EmailMarketing']['body'], $params);
         }
 
-        $emailBody = $this->parseUnsubcribe($emailBody, $address, $email['Game']['id'], $email['Game']['Website']['url']);
+        $websiteUrl = 'http://admin.muoriginfree.com:8880';
+        if( !empty($email['Game']['Website']['url']) ) $websiteUrl = $email['Game']['Website']['url'];
+        
+        $emailBody = $this->parseUnsubcribe($emailBody, $address, $email['Game']['id'], $websiteUrl);
 
         # Gắn email gửi vào từng link track trong email
         $LinkTracking = ClassRegistry::init('LinkTracking');
@@ -231,22 +234,22 @@ class EmailMarketing extends AppModel {
             $Redis = new RedisCake('action_count');
             $count_redis = $Redis->get('count_email_marketing_all_game');
             if( is_numeric($count_redis) ){
-                $check_config_email = $count_redis%3 ;
-                switch ($check_config_email){
-                    case 0:
-                        $config = "amazonses";
-                        break;
-                    case 1:
-                        $config = "amazonses1";
-                        break;
-                    case 2:
-                        $config = "amazonses2";
-                        break;
-                }
+//                $check_config_email = $count_redis%3 ;
+//                switch ($check_config_email){
+//                    case 0:
+//                        $config = "amazonses";
+//                        break;
+//                    case 1:
+//                        $config = "amazonses1";
+//                        break;
+//                    case 2:
+//                        $config = "amazonses2";
+//                        break;
+//                }
             }
 
             $Email = new AppEmail($config);
-            $from = array( key($Email->getConfigFrom()) => $email['Game']['title']);
+            $from = array( key($Email->getConfigFrom()) => substr($email['Game']['title'], 6));
 
             if ($email['EmailMarketing']['total'] > 10000) {
                 $Email->addHeaders(array('Precedence' => 'bulk'));
@@ -257,6 +260,10 @@ class EmailMarketing extends AppModel {
             $Email->to($address)
                 ->subject($title)
                 ->from($from)
+                ->viewVars(array(
+                    'emailAddress' => $address
+                ))
+                ->template('default', 'marketings'. DS . 'default')
                 ->emailFormat('html');
 
             if ($test) {
