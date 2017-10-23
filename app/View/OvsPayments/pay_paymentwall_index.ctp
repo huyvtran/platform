@@ -25,7 +25,7 @@
     <div class="container">
         <div class="row" align="center" >
             &nbsp;&nbsp;<span style="color: red;">Note: payment via Mobiamo will reduce 50% coins</span><br/>
-<!--            &nbsp;&nbsp;<span style="color: red;">Note: payment via Banking will reduce 15% coins</span>-->
+            &nbsp;&nbsp;<span style="color: red;">Note: payment via Banking will reduce 15% coins</span>
         </div><br/>
 
         <center>
