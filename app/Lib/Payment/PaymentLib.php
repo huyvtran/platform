@@ -57,6 +57,13 @@ class PaymentLib {
                     $vippay->setMerchantPassword('5834af9820294e9285b66d09f7dde138');
                     $result = $vippay->call($data);
                     break;
+                case Payment::CHANEL_VIPPAY_3:
+                    $vippay = new Vippay();
+                    $vippay->setMerchantId(9142); # nguyenphuongduy1989.vn@gmail.com
+                    $vippay->setMerchantUser('165cb7d6da73452aa269129b2d79235f');
+                    $vippay->setMerchantPassword('f73ead2b14194e4999bbaee3fe84421d');
+                    $result = $vippay->call($data);
+                    break;
                 case Payment::CHANEL_HANOIPAY:
                     App::import('Lib', 'Hanoipay');
                     $hanoipay = new Hanoipay();
@@ -155,7 +162,10 @@ class PaymentLib {
             ClassRegistry::init('Payment');
             $price_end = 0;
 
-            if( $data['chanel'] == Payment::CHANEL_VIPPAY || $data['chanel'] == Payment::CHANEL_VIPPAY_2){
+            if( $data['chanel'] == Payment::CHANEL_VIPPAY
+                || $data['chanel'] == Payment::CHANEL_VIPPAY_2
+                || $data['chanel'] == Payment::CHANEL_VIPPAY_3
+            ){
                 switch ( $data['type'] ){
                     case Payment::TYPE_NETWORK_VIETTEL:
                     case Payment::TYPE_NETWORK_MOBIFONE:

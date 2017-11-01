@@ -75,6 +75,12 @@ class PaymentsController extends AppController {
                 $chanel = Payment::CHANEL_HANOIPAY;
             }
 
+            if( in_array($game['app'], array(
+                '09a6e4b219d357facd5014e3585aa831', '4d84ffc6edda35edf6d01eb426af0144'  //r28
+            ))){
+                $chanel = Payment::CHANEL_VIPPAY_3;
+            }
+
             $data = $this->request->data;
             $data = array_merge($data, array(
                 'user_id' => $user['id'],
