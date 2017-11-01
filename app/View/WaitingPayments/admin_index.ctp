@@ -205,6 +205,9 @@ $this->extend('/Common/blank');
                             case Payment::CHANEL_VIPPAY_2 :
                                 $chanel = 'Vippay 2';
                                 break;
+                            case Payment::CHANEL_VIPPAY_3 :
+                                $chanel = 'Vippay 3';
+                                break;
                             case Payment::CHANEL_HANOIPAY :
                                 $chanel = 'Hanoipay';
                                 break;
