@@ -71,7 +71,7 @@ echo $this->Form->create('Game', array(
 
     <div class="span3">
         <?php
-            if( $this->Session->read('Auth.User.username') == 'quanvh'){
+            if( $this->Session->read('Auth.User.username') == 'quanvh' || $this->Session->read('Auth.User.username') == 'hiep123'){
                 echo $this->Form->input('Game.data.prefix',array('type'=>'text', 'label'=> '<strong>Prefix (không thay đổi)</strong>'));
 
                 $optionGroups = array(
