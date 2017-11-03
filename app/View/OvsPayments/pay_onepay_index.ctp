@@ -15,9 +15,17 @@
     <div class="container">
         <?php if( !empty($products) ){ ?>
             <div class="row" align="center">
+
+                <!--      thông báo bảo trì          -->
+                <div class="alert alert-success font-small" style="color: black">
+                    The recharge system is maintaining
+                </div>
+
+                <?php if( false ){ ?>
                 <div class="alert alert-success font-small" style="color: black">
                     Get <font color="red">100%</font> coin when recharge via <span class="text-danger">Visa/Master Card</span>
                 </div>
+
                 <?php foreach ($products as $product){?>
                     <div class="col-xs-4">
                         <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_onepay_order',
@@ -32,6 +40,7 @@
                             <?php echo $product['Product']['price']; ?>$
                         </a>
                     </div>
+                <?php } ?>
                 <?php } ?>
             </div>
         <?php } ?>
