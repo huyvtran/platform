@@ -17,11 +17,11 @@
             <div class="row" align="center">
 
                 <!--      thông báo bảo trì          -->
-<!--                <div class="alert alert-success font-small" style="color: black">-->
-<!--                    The recharge system is maintaining-->
-<!--                </div>-->
+                <div class="alert alert-success font-small" style="color: black">
+                    The recharge system is maintaining
+                </div>
 
-                <?php if( true ){ ?>
+                <?php if( false ){ ?>
                 <div class="alert alert-success font-small" style="color: black">
                     Get <font color="red">100%</font> coin when recharge via <span class="text-danger">Visa/Master Card</span>
                 </div>
