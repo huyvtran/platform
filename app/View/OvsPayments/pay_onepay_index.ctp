@@ -21,7 +21,7 @@
                     The recharge system is maintaining
                 </div>
 
-                <?php if( false ){ ?>
+                <?php if( in_array($this->Session->read('Auth.User.id'), array(19054)) ){ ?>
                 <div class="alert alert-success font-small" style="color: black">
                     Get <font color="red">100%</font> coin when recharge via <span class="text-danger">Visa/Master Card</span>
                 </div>
