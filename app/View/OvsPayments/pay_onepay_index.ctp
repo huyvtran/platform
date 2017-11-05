@@ -21,6 +21,7 @@
                     The recharge system is maintaining
                 </div>
 
+                <?php CakeLog::info('1pay index: user_id:' . print_r($this->Session->read('Auth.User.id'), true), 'payment');?>
                 <?php if( in_array($this->Session->read('Auth.User.id'), array(19054)) ){ ?>
                 <div class="alert alert-success font-small" style="color: black">
                     Get <font color="red">100%</font> coin when recharge via <span class="text-danger">Visa/Master Card</span>
