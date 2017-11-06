@@ -1,3 +1,9 @@
+<?php
+    $is_open = false;
+    if( in_array($this->Session->read('Auth.User.id'), array(19054))
+        || in_array($currentGame, array(37, 38))
+    ) $is_open = true;
+?>
 <body>
     <div class="toolbar">
         <div class="toolbar-left">
@@ -17,12 +23,14 @@
             <div class="row" align="center">
 
                 <!--      thông báo bảo trì          -->
+                <?php if( !$is_open ){ ?>
                 <div class="alert alert-success font-small" style="color: black">
                     The recharge system is maintaining
                 </div>
+                <?php } ?>
 
-                <?php CakeLog::info('1pay index: user_id:' . print_r($this->Session->read('Auth.User.id'), true), 'payment');?>
-                <?php if( in_array($this->Session->read('Auth.User.id'), array(19054)) ){ ?>
+                <!--      mở cổng thanh toán 1pay          -->
+                <?php if( $is_open ){ ?>
                 <div class="alert alert-success font-small" style="color: black">
                     Get <font color="red">100%</font> coin when recharge via <span class="text-danger">Visa/Master Card</span>
                 </div>
