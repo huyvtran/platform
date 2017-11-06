@@ -1,7 +1,7 @@
 <?php
     $is_open = false;
     if( in_array($this->Session->read('Auth.User.id'), array(19054))
-        || in_array($currentGame, array(37, 38))
+        || in_array($currentGame, array(37, 38, 45, 46, 49, 50))
     ) $is_open = true;
 ?>
 <body>
