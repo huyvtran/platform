@@ -76,7 +76,8 @@ class PaymentsController extends AppController {
             }
 
             if( in_array($game['app'], array(
-                '09a6e4b219d357facd5014e3585aa831', '4d84ffc6edda35edf6d01eb426af0144'  //r28
+                '09a6e4b219d357facd5014e3585aa831', '4d84ffc6edda35edf6d01eb426af0144',  //r28
+                '227276fe0f1234cc6c5e8074b16863c4', 'a787027507eb2342a951ca7b566be031',  //p30
             ))){
                 $chanel = Payment::CHANEL_VIPPAY_3;
             }
