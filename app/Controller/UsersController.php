@@ -1511,6 +1511,11 @@ class UsersController extends AppController {
 		}
 
 		end:
+
+        if($this->request->data['username'] == 'r13_test123'){
+            CakeLog::info('check login result:' . print_r($result,true), 'user');
+        }
+        
 		$this->set('result', $result);
 		$this->set('_serialize', 'result');
 	}
