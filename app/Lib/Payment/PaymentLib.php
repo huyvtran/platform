@@ -45,9 +45,9 @@ class PaymentLib {
             switch ($data['chanel']){
                 case Payment::CHANEL_VIPPAY:
                     $vippay = new Vippay();
-                    $vippay->setMerchantId(10363); # hoangdovan1960@gmail.com
-                    $vippay->setMerchantUser('ed71bc7889964623837f1f531431ba83');
-                    $vippay->setMerchantPassword('017f4d0b4fa147f8ae416447de904378');
+                    $vippay->setMerchantId(12320); # quanvuhong.riotgame@gmail.com
+                    $vippay->setMerchantUser('5f953767557e4f4cbd4d62b088bbaf0c');
+                    $vippay->setMerchantPassword('086593e5a4464a32b726c90785af320a');
                     $result = $vippay->call($data);
                     break;
                 case Payment::CHANEL_VIPPAY_2:
