@@ -3,6 +3,8 @@
 App::uses('AppModel', 'Model');
 
 class Bonus extends AppModel {
+	public $useTable = 'bonuses';
+
     public $actsAs = array(
         'Search.Searchable',
         'Utils.Publishable' => array(
