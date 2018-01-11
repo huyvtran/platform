@@ -1,5 +1,5 @@
 <?php
-App::uses('BonusController', 'Controller');
+App::uses('BonusesController', 'Controller');
 
 /**
  * BonusController Test Case
