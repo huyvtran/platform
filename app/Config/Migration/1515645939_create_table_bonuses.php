@@ -28,8 +28,8 @@ class CreateTableBonuses extends CakeMigration {
 					'status' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'after' => 'bonus'),
 					'chanel' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'after' => 'status'),
 					'note' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8', 'after' => 'chanel'),
-					'created' => array('type' => 'datetime', 'null' => true, 'default' => 'current_timestamp()', 'after' => 'note'),
-					'modified' => array('type' => 'datetime', 'null' => true, 'default' => 'current_timestamp()', 'after' => 'created'),
+					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL, 'after' => 'note'),
+					'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL, 'after' => 'created'),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
 					),
