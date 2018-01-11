@@ -236,6 +236,7 @@ class AppSchema extends CakeSchema {
 		'last_username' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'published_date' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'group' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 5),
+		'top' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
 			'app_key' => array('column' => 'app', 'unique' => 0)
