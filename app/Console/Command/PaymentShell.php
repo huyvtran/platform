@@ -105,8 +105,8 @@ class PaymentShell extends AppShell
 			],
 		]);
 
-		$getModayOfWeek = strtotime('monday this week');
-		$getSundayOfWeek = strtotime(date('Y-m-d 23:59:29', strtotime('sunday this week')));
+		$getModayOfWeek = isset($this->args[0]) ? strtotime($this->args[0]) : strtotime('monday this week');
+		$getSundayOfWeek = isset($this->args[1]) ? strtotime($this->args[1] . ' 23:59:59') : strtotime(date('Y-m-d 23:59:29', strtotime('sunday this week')));
 
 		foreach ($games as $game) {
 			#lay thong tin cua android va ios
