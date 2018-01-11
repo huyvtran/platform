@@ -112,7 +112,8 @@ $this->extend('/Common/blank');
 					<td class="actions btn-group">
 						<?php
 						if ( empty($comp['Bonus']['status']) ) {
-							echo $this->Html->link('bonus', array('action' => 'bonus', $comp['Bonus']['id']), array('class' => 'btn btn-mini'));
+							echo $this->Html->link('Bonus', array('action' => 'bonus', $comp['Bonus']['id']), array('class' => 'btn btn-mini'));
+							echo $this->Html->link('Edit', array('action' => 'edit', $comp['Bonus']['id']), array('class' => 'btn btn-mini'));
 						}
 						?>
 					</td>

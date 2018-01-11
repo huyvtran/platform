@@ -72,10 +72,17 @@ class BonusesController extends AppController
 		$this->loadModel('Payment');
 	}
 
-	public function admin_add()
+	public function admin_add($id = null)
 	{
 		$this->loadModel('Game');
 		$this->loadModel('Payment');
+
+		if (!empty($id)) {
+			$bonus = $this->Bonus->findById($id);
+			if (empty($bonus)) {
+				throw new NotFound('Không tìm thấy Bonus Payment này');
+			}
+		}
 
 		$games = $this->Bonus->Game->find('list', array(
 			'fields' => array('id', 'title_os'),
@@ -91,9 +98,14 @@ class BonusesController extends AppController
 				'game_id' => $this->request->data['Bonus']['game_id'],
 				'price' => 0,
 				'bonus' => $this->request->data['Bonus']['bonus'],
+				'type' => 1,
 				'status' => 0,
 				'chanel' => Payment::CHANEL_BONUS,
 			];
+
+			if (!empty($id)) {
+				$data['Bonus']['id'] = $bonus['Bonus']['id'];
+			}
 
 			try {
 				if ($this->Bonus->save($data)) {
@@ -108,6 +120,25 @@ class BonusesController extends AppController
 			}
 		}
 
+		if( $id ){
+			$this->request->data = $bonus;
+		}
+
 		$this->set(compact('games'));
+		$this->view = 'admin_add';
+	}
+
+	public function admin_edit($id)
+	{
+		debug($this->request->data);
+		$this->Bonus->recursive = -1;
+		if (!$id || !$bonus = $this->Bonus->findById($id)) {
+			throw new NotFoundException('Không tìm thấy giao dịch này');
+		}
+		if( !empty($bonus['Bonus']['status'])){
+			throw new NotFoundException('Giao dịch đã được bù');
+		}
+
+		$this->admin_add($id);
 	}
 }

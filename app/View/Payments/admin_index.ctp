@@ -1,4 +1,4 @@
-<?php 
+<?php
 $this->extend('/Common/blank');
 ?>
 
@@ -22,6 +22,9 @@ $this->extend('/Common/blank');
                 'after' => '</div>',
             )
         ));
+	if (!empty($this->data['Bonus']['id'])) {
+		echo $this->Form->input('id');
+	}
     ?>
     <div class="span4">
         <?php
