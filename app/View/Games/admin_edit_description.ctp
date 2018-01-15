@@ -121,7 +121,6 @@ $this->extend('/Common/blank');
         echo "<h5 class='page-header'>Publishing</h5>";
         echo $this->Form->input('status', array('label' => 'Show on stats'));
         echo $this->Form->input('Game.data.is_close', array('type'=>'checkbox','label' => 'Close this game'));
-        echo $this->Form->input('Game.top', array('type'=>'checkbox','label' => 'Bonus for top payment'));
     ?>
     </div>
 

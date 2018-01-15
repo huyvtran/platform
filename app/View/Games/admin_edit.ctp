@@ -56,6 +56,9 @@ $this->extend('/Common/blank');
                 echo $this->Form->input('fb_appid', array('label' => 'Fb Appid (*)'));
                 echo $this->Form->input('fb_appsecret');
             }
+
+            echo "<br/>";
+            echo $this->Form->input('Game.top', array('type'=>'checkbox','label' => 'Bonus for top payment'));
 			?>
 		</div>
 		<div class='span3'>
