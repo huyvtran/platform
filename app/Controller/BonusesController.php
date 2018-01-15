@@ -92,23 +92,14 @@ class BonusesController extends AppController
 		));
 
 		if ($this->request->is('post') || $this->request->is('put')) {
-			$data = [
-				'order_id' => microtime(true) * 10000,
-				'user_id' => $this->request->data['Bonus']['user_id'],
-				'game_id' => $this->request->data['Bonus']['game_id'],
-				'price' => 0,
-				'bonus' => $this->request->data['Bonus']['bonus'],
-				'type' => 1,
-				'status' => 0,
-				'chanel' => Payment::CHANEL_BONUS,
-			];
-
-			if (!empty($id)) {
-				$data['Bonus']['id'] = $bonus['Bonus']['id'];
-			}
+            $this->request->data['Bonus']['order_id']   = microtime(true) * 10000;
+            $this->request->data['Bonus']['price']      = 0;
+            $this->request->data['Bonus']['type']       = 1;
+            $this->request->data['Bonus']['chanel']     = Payment::CHANEL_BONUS;
 
 			try {
-				if ($this->Bonus->save($data)) {
+                $this->Bonus->create();
+				if ($this->Bonus->save($this->request->data)) {
 					$this->Session->setFlash('Bonus Payment has been saved');
 					$this->redirect(array('action' => 'index'));
 				} else {
@@ -130,7 +121,6 @@ class BonusesController extends AppController
 
 	public function admin_edit($id)
 	{
-		debug($this->request->data);
 		$this->Bonus->recursive = -1;
 		if (!$id || !$bonus = $this->Bonus->findById($id)) {
 			throw new NotFoundException('Không tìm thấy giao dịch này');
@@ -141,4 +131,38 @@ class BonusesController extends AppController
 
 		$this->admin_add($id);
 	}
+
+    public function admin_bonus($id)
+    {
+        $this->loadModel('Bonus');
+        if (!$id || !$bonus = $this->Bonus->findById($id)) {
+            throw new NotFoundException('Không tìm thấy giao dịch này');
+        }
+
+        if( !empty($bonus['Bonus']['status']) ) {
+            throw new NotFoundException('Đã thực hiện bonus giao dịch này');
+        }
+
+        $dataSource = $this->Bonus->getDataSource();
+        $dataSource->begin();
+
+        $this->Bonus->id = $id;
+        if ($this->Bonus->publish($id)) {
+            $this->Bonus->User->recursive = -1;
+            $user = $this->Bonus->User->findById($bonus['Bonus']['user_id']);
+            $updatePay = $user['User']['payment'] + $bonus['Bonus']['bonus'];
+            $this->Bonus->User->id = $bonus['Bonus']['user_id'];
+            if( $this->Bonus->User->saveField('payment', $updatePay, array('callbacks' => false)) ){
+                $this->Session->setFlash('Giao dịch thành công', 'success');
+                $dataSource->commit();
+            }else{
+                $this->Session->setFlash('Lỗi xảy ra', 'error');
+                $dataSource->rollback();
+            }
+        } else {
+            $this->Session->setFlash('Lỗi xảy ra', 'error');
+            $dataSource->rollback();
+        }
+        $this->redirect($this->referer(array('action' => 'index'), true));
+    }
 }

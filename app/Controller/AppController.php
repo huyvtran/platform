@@ -71,7 +71,9 @@ class AppController extends Controller {
                 'Payment - Index'	=> '/admin/payments',
                 'Payment - compense'=> '/admin/CompensePayments',
                 'Payment - compense add' => '/admin/CompensePayments/add',
-                'Email Marketing'   => '/admin/EmailMarketings',
+                'Payment - bonus'       => '/admin/Bonuses',
+                'Payment - bonus add'   => '/admin/Bonuses/add',
+                'Email Marketing'       => '/admin/EmailMarketings',
             ),
             'activeMenu' => array('tools')
         ),

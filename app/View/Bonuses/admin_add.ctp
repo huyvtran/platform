@@ -12,7 +12,6 @@ $this->extend('/Common/blank');
 	<div class='row'>
 		<?php
 		echo $this->Form->create('Bonus',array(
-			'action' => 'add',
 			'class' => 'form-horizontal',
 			'inputDefaults' => array(
 				'label' => array(
@@ -23,6 +22,10 @@ $this->extend('/Common/blank');
 				'after' => '</div>',
 			)
 		));
+
+        if ($this->action == 'admin_edit') {
+            echo $this->Form->input('id');
+        }
 		?>
 		<div class="span4">
 			<?php

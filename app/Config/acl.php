@@ -137,6 +137,8 @@ $config['rules'] = array(
 	'allow' => array(
 		'*' => 'Role/Admin',
 
+        'Bonuses/*'             => 'Role/Content',
+
         'CompensePayments/*'    => 'Role/Content',
 
         'EmailMarketings/*'     => 'Role/Content, Role/Marketing',
