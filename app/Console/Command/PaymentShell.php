@@ -127,6 +127,7 @@ class PaymentShell extends AppShell
 			$dataToInsert = [];
 			for ($i = 0; $i < count($getTopPaymentByGame); $i++) {
 				# check
+                /*
 				$getLogTopPayment = $Bonus->find('all', [
 					'conditions' => [
 						'user_id' => $getTopPaymentByGame[$i]['payments']['user_id'],
@@ -138,6 +139,7 @@ class PaymentShell extends AppShell
 					goto end;
 				}
 				unset($getLogTopPayment);
+                */
 
 				# tinh so tien bonus
 				if ($i == 0) {
