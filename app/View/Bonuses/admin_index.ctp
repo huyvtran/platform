@@ -23,7 +23,7 @@ $this->extend('/Common/blank');
 		)
 	));
 	?>
-	<div class="span6">
+	<div class="span4">
 		<?php
 		echo $this->Form->input('game_id.', array(
 			'type' => 'select',
@@ -47,7 +47,22 @@ $this->extend('/Common/blank');
 		?>
 	</div>
 
-	<div class="span6">
+    <div class="span4">
+        <?php
+        echo $this->Form->input('status', array(
+            'type' => 'select',
+            'label' => array(
+                'class' => 'control-label',
+                'text' => 'status'
+            ),
+            'empty' => 'All status',
+            'options' => array('Wait', 'Success'),
+            'selected' => !empty($this->request->params['named']['status']) ? $this->request->params['named']['status'] : ''
+        )); echo "<br/>";
+        ?>
+    </div>
+
+	<div class="span4">
 		<div class="form-actions">
 			<?php
 			echo $this->Form->button('Search', array(

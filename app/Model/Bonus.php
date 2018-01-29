@@ -33,9 +33,9 @@ class Bonus extends AppModel {
     public $belongsTo = array( 'Game' , 'User');
 
 	public $filterArgs = array(
-		'game_id' => array('type' => 'value'),
-		'username' => array('type' => 'like', 'field' => array('User.id', 'User.username', 'User.email')),
-		//'type' => array('type' => 'value'),
+		'game_id'   => array('type' => 'value'),
+		'username'  => array('type' => 'like', 'field' => array('User.id', 'User.username', 'User.email')),
+        'status'    => array('type' => 'value'),
 		//'from_time' => array('type' => 'expression', 'method' => 'fromTimeCond', 'field' => 'CompensePayment.modified >= '),
 		//'to_time' => array('type' => 'expression', 'method' => 'toTimeCond', 'field' => 'CompensePayment.modified <= '),
 	);
