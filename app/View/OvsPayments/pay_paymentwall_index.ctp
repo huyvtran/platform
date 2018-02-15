@@ -26,7 +26,7 @@
         <div class="row" align="center" >
 <!--            &nbsp;&nbsp;<span style="color: red;">Note: payment via SMS will reduce 50% coins</span><br/>-->
 <!--            &nbsp;&nbsp;<span style="color: red;">Note: payment via Banking will reduce 15% coins</span>-->
-            &nbsp;&nbsp;<span style="color: red;">Note: get 100% coins when recharge via SMS</span>
+            &nbsp;&nbsp;<span style="color: red;">Note: get 100% coins when recharge via SMS</span><br/>
             &nbsp;&nbsp;<span style="color: red;">Note: get 100% coins when recharge via Banking</span>
         </div><br/>
 
