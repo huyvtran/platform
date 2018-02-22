@@ -87,6 +87,7 @@ class WaitingPaymentsController extends AppController {
             Payment::CHANEL_ONEPAY      => '1Pay',
             Payment::CHANEL_ONEPAY_2    => '1Pay 2',
             Payment::CHANEL_PAYMENTWALL => 'PaymentWall',
+            Payment::CHANEL_APPOTA      => 'Appota',
         );
 
         $types = array(
