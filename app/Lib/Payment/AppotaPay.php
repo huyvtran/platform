@@ -166,7 +166,7 @@ class AppotaPay
         $api_url = $this->getApiUrl() . $this->getVersion() . DS . 'services' . DS . 'pay_visa?api_key=' . $this->getApiKey() . '&lang=' . $this->getLang();
 
         // sandbox
-        $api_url = $this->getApiUrl() . $this->getVersion() . DS . 'sandbox' . DS . 'services' . DS . 'pay_visa?api_key=' . $this->getApiKey() . '&lang=' . $this->getLang();
+        //$api_url = $this->getApiUrl() . $this->getVersion() . DS . 'sandbox' . DS . 'services' . DS . 'pay_visa?api_key=' . $this->getApiKey() . '&lang=' . $this->getLang();
 
         $success_url = $error_url = Configure::read('AppotaPay.ReturnUrl')
             . '?app=' . $this->getGameApp()
@@ -246,7 +246,8 @@ class AppotaPay
         // build api url
         $api_url = $this->getApiUrl() . $this->getVersion() . DS . 'services' . DS . 'check_transaction_status?api_key=' . $this->getApiKey() . '&lang=' . $this->getLang();
         // sandbox
-        $api_url = $this->getApiUrl() . $this->getVersion() . DS . 'sandbox' . DS . 'services' . DS . 'check_transaction_status?api_key=' . $this->getApiKey() . '&lang=' . $this->getLang();
+        //$api_url = $this->getApiUrl() . $this->getVersion() . DS . 'sandbox' . DS . 'services' . DS . 'check_transaction_status?api_key=' . $this->getApiKey() . '&lang=' . $this->getLang();
+
         // build params
         $params = array(
             'developer_trans_id' => $this->getOrderId(),
