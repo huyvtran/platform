@@ -166,7 +166,6 @@ class AppotaPay
         $api_url = $this->getApiUrl() . $this->getVersion() . DS . 'services' . DS . 'pay_visa?api_key=' . $this->getApiKey() . '&lang=' . $this->getLang();
         // sandbox
         //$api_url = $this->getApiUrl() . $this->getVersion() . DS . 'sandbox' . DS . 'services' . DS . 'pay_visa?api_key=' . $this->getApiKey() . '&lang=' . $this->getLang();
-        CakeLog::info('url request payment appota:' . $api_url);
 
         $success_url = $error_url = Configure::read('AppotaPay.ReturnUrl')
             . '?app=' . $this->getGameApp()

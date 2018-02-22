@@ -337,6 +337,7 @@ class OvsPaymentsController extends AppController {
         if( empty($orderOnepay) ){
             throw new NotFoundException('Lỗi tạo giao dịch, vui lòng thử lại');
         }
+        CakeLog::info('url request payment appota:' . $orderOnepay);
 
         # chuyển trạng thái queue trong giao dịch
         App::uses('PaymentLib', 'Payment');
