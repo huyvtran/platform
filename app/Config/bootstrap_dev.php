@@ -208,8 +208,8 @@ Configure::write('Paypal', array(
     'mode'      => 'sandbox'
 ));
 
-Configure::write('VippayBanking', array(
-    'ReturnUrl' => 'http://cms.platform.net.local/vippay',
+Configure::write('AppotaPay', array(
+    'ReturnUrl' => 'http://muplf.local/OvsPayments/pay_appota_response',
 ));
 
 Configure::write('OnepayBanking', array(

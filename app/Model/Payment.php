@@ -32,6 +32,8 @@ class Payment extends AppModel
 
 	const CHANEL_BONUS = 10;
 
+    const CHANEL_APPOTA = 11;
+
 	public $belongsTo = [
 		'User', 'Game',
 	];

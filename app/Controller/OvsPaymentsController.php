@@ -821,4 +821,193 @@ class OvsPaymentsController extends AppController {
         }
         echo $result; die;
     }
+
+    public function pay_appota_index(){
+        $this->loadModel('Payment');
+        $this->pay_index(Payment::CHANEL_PAYPAL, 'VND');
+    }
+
+    public function pay_appota_order(){
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            CakeLog::error('Vui lòng login - appota banking', 'payment');
+            throw new NotFoundException('Vui lòng login');
+        }
+
+        $productId = $this->request->query('productId');
+        if( empty($this->request->query('productId')) ){
+            CakeLog::error('Chưa chọn gói xu - appota banking', 'payment');
+            throw new NotFoundException('Chưa chọn gói xu');
+        }
+
+        $this->loadModel('Product');
+        $this->Product->recursive = -1;
+        $product = $this->Product->findById($productId);
+
+        if( empty($product) ){
+            CakeLog::error('Không có gói xu phù hợp - appota banking', 'payment');
+            throw new NotFoundException('Không có gói xu phù hợp');
+        }
+
+        $this->loadModel('Payment');
+        $this->loadModel('WaitingPayment');
+
+        $user = $this->Auth->user();
+        $order_id = microtime(true) * 10000;
+
+        $chanel = Payment::CHANEL_APPOTA;
+        $type = Payment::TYPE_NETWORK_BANKING;
+
+        # set chanel defaul, có thể sẽ đc check theo chanel (AppotaPay 1, AppotaPay 2 ...)
+        $api_key    = 'A180561-7XJCXZ-ECC265A7F4C3B6E2';
+        $api_secret = 'pY4Mt9c2AJfu8ZG5';
+
+//        $this->loadModel('Game');
+//        if (!empty($game['group']) && $game['group'] == Game::GROUP_R01) {
+//            $chanel = Payment::CHANEL_ONEPAY;
+//            $access_key = "diggr0l4g6k792oj528a";
+//            $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
+//        } else if (!empty($game['group']) && $game['group'] == Game::GROUP_R02) {
+//            $chanel = Payment::CHANEL_ONEPAY_2;
+//            $access_key = "xr13xjpekax55j3jgsfs";
+//            $secret = "rq10xl9fn20i2qlrqwc9gwdkmsd7cukx";
+//        }
+
+        # tạo giao dịch waiting_payment
+        $data = array(
+            'order_id'  => $order_id,
+            'user_id'   => $user['id'],
+            'game_id'   => $game['id'],
+            'price'     => $product['Product']['platform_price'],
+            'status'    => WaitingPayment::STATUS_WAIT,
+            'time'      => time(),
+            'type'      => $type,
+            'chanel'    => $chanel,
+        );
+
+        $unresolvedPayment = $this->WaitingPayment->save($data);
+
+        # xử lý mua hàng qua vippay
+        $token = $this->request->header('token');
+        App::uses('AppotaPay', 'Payment');
+        $appota = new AppotaPay($api_key, $api_secret, $game['app'], $token);
+        $appota->setOrderId($order_id);
+//        $onepay->setNote($product['Product']['title']);
+
+        $client_ip = $this->Common->publicClientIp();
+        $orderAppota = $appota->getPaymentBankUrl($product['Product']['platform_price'], $client_ip);
+
+        if( empty($orderAppota) ){
+            throw new NotFoundException('Lỗi tạo giao dịch, vui lòng thử lại');
+        }
+
+        # chuyển trạng thái queue trong giao dịch
+        App::uses('PaymentLib', 'Payment');
+        $payLib = new PaymentLib();
+        $payLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_QUEUEING);
+        $this->redirect($orderAppota);
+    }
+
+    public function pay_appota_response(){
+        $this->layout = 'payment';
+        $this->view = 'error';
+        $sdk_message = __("Giao dịch thất bại.");
+        $status_sdk = 1;
+
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            CakeLog::error('Vui lòng login - appota banking', 'payment');
+            throw new NotFoundException('Vui lòng login');
+        }
+        $user = $this->Auth->user();
+
+        $transaction_status = false;
+        if( !empty($this->request->query['order_id']) ){
+            $orderId = $this->request->query['order_id'] ;
+
+            $this->loadModel('WaitingPayment');
+            $this->WaitingPayment->recursive = -1;
+            $wating_payment = $this->WaitingPayment->findByOrderIdAndUserId($orderId, $user['id']);
+
+            if( empty($wating_payment['WaitingPayment']) ) goto a;
+
+            $this->loadModel('Payment');
+            $this->loadModel('AppotaOrder');
+            $data_appota_order = array(
+                'order_id'      => $orderId,
+                'status'        => $this->request->query['status'],
+                'sandbox'       => $this->request->query['sandbox'],
+                'user_id'       => $user['id'],
+                'game_id'       => $game['id'],
+                'amount'        => $this->request->query['amount'],
+                'trans_id'      => $this->request->query['transaction_id'],
+                'type'          => $this->request->query['type'],
+                'currency'      => $this->request->query['currency'],
+                'country_code'  => $this->request->query['country_code'],
+                'chanel'        => $wating_payment['WaitingPayment']['chanel']
+            );
+
+            CakeLog::info('data url callback - appota:' . print_r($this->request->query, true) , 'payment');
+            $this->AppotaOrder->save($data_appota_order);
+
+            # check cổng trả về và commit giao dịch lên cổng
+            # xử lý mua hàng qua appota
+            if( $this->request->query['status'] == 1 && isset($wating_payment['WaitingPayment']['status'])
+                && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
+            ) {
+                # set chanel defaul, có thể sẽ đc check theo chanel (AppotaPay 1, AppotaPay 2 ...)
+                $api_key    = 'A180561-7XJCXZ-ECC265A7F4C3B6E2';
+                $api_secret = 'pY4Mt9c2AJfu8ZG5';
+                $token = $this->request->header('token');
+
+                App::uses('AppotaPay', 'Payment');
+                $appota = new AppotaPay($api_key, $api_secret, $game['app'], $token);
+                $appota->setOrderId($orderId);
+
+                $verify_transaction = $appota->verifyBankTransactionIpnHash($this->request->query);
+                if( $verify_transaction ) {
+                    $check_transaction = $appota->checkTransaction();
+                    # cộng xu
+                    if (!empty($check_transaction) && $check_transaction['error_code'] == 0) {
+                        $data_payment = array(
+                            'order_id' => $orderId,
+                            'user_id' => $user['id'],
+                            'game_id' => $game['id'],
+                            'price' => $wating_payment['WaitingPayment']['price'],
+                            'time' => time(),
+                            'type' => $wating_payment['WaitingPayment']['type'],
+                            'chanel' => $wating_payment['WaitingPayment']['chanel'],
+                            'waiting_id' => $wating_payment['WaitingPayment']['id']
+                        );
+
+                        $this->view = 'success';
+                        $sdk_message = __("Giao dịch thành công.");
+                        $status_sdk = 0;
+                        $transaction_status = true;
+                    } elseif (in_array($check_transaction['error_code'], array(40, 41, 91))) {
+                        #Hệ thống cổng bảo trì hoặc trạng thái chờ
+                        goto a;
+                    }
+                }
+            }elseif ( isset($wating_payment['WaitingPayment']['status'])
+                && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_COMPLETED
+            ){
+                goto a;
+            }
+
+            App::uses('PaymentLib', 'Payment');
+            $paymentLib = new PaymentLib();
+            if( $transaction_status ){
+                $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+                $paymentLib->add($data_payment);
+            }else{
+                $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+            }
+
+            a:
+            if( !empty($game['data']['payment']['url_sdk']) ){
+                $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message . '&status=' . $status_sdk);
+            }
+        }
+    }
 }

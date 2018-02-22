@@ -160,7 +160,7 @@ class PaymentLib {
     private function __getPriceEnd(&$data){
         if( !empty($data) ){
             ClassRegistry::init('Payment');
-            $price_end = 0;
+            $price_end = $data['price'];
 
             if( $data['chanel'] == Payment::CHANEL_VIPPAY
                 || $data['chanel'] == Payment::CHANEL_VIPPAY_2
@@ -196,6 +196,8 @@ class PaymentLib {
                 $price_end = $data['price'] * 0.967 - 3300;
             }elseif ( $data['chanel'] == Payment::CHANEL_PAYMENTWALL ){
                 return ;
+            }elseif ( $data['chanel'] == Payment::CHANEL_APPOTA ){
+                $price_end = $data['price'] * 0.96 - 7150;
             }
 
             $data['price_end'] = $price_end;
