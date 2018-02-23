@@ -30,7 +30,10 @@ class PaymentShell extends AppShell
 		];
 
 		foreach ($chanels as $chanel => $name) {
-			if ($chanel !== Payment::CHANEL_PAYMENTWALL) continue;
+			if ( !in_array($chanel, array(
+			    Payment::CHANEL_PAYMENTWALL,
+                Payment::CHANEL_APPOTA
+            ))) continue;
 
 			$lastPid = $this->Variable->getVar('payment_last_pid_checked_by_chanel_' . $chanel);
 			if (!$lastPid) $lastPid = 0;
