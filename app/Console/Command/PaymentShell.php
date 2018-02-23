@@ -24,7 +24,7 @@ class PaymentShell extends AppShell
 			Payment::CHANEL_VIPPAY => 'Vippay',
 			Payment::CHANEL_HANOIPAY => 'Hanoipay',
 			Payment::CHANEL_PAYPAL => 'Paypal',
-			Payment::CHANEL_MOLIN => 'Molin',
+			Payment::CHANEL_APPOTA => 'Appota',
 			Payment::CHANEL_ONEPAY => 'OnePay',
 			Payment::CHANEL_PAYMENTWALL => 'PaymentWall',
 		];
@@ -79,6 +79,10 @@ class PaymentShell extends AppShell
 		$this->WaitingPayment->id = $wating['id'];
 		$this->WaitingPayment->saveField('status', WaitingPayment::STATUS_ERROR, ['callbacks' => false]);
 	}
+
+	private function __Appota($waiting){
+	    $this->__PaymentWall($waiting);
+    }
 
 	public function getTop()
 	{
