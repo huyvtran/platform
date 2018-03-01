@@ -232,11 +232,8 @@ class UsersController extends AppController {
 						),
 					),
 				),
-				'hasOne' => array(
-					'LogUpdatedAccount'
-				)
 			));
-			$this->User->contain(array('Game', 'LogUpdatedAccount'));
+			$this->User->contain(array('Game'));
 		}
 		$this->User->recursive = -1;
 		$users = $this->Paginator->paginate();
