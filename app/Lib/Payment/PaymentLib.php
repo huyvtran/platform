@@ -197,7 +197,7 @@ class PaymentLib {
             }elseif ( $data['chanel'] == Payment::CHANEL_PAYMENTWALL ){
                 return ;
             }elseif ( $data['chanel'] == Payment::CHANEL_APPOTA ){
-                $price_end = $data['price'] * 0.96 - 7150;
+                $price_end = $data['price'] * 0.94 - 7150;
             }
 
             $data['price_end'] = $price_end;
