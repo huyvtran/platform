@@ -263,9 +263,12 @@ class OvsPaymentsController extends AppController {
         $this->view = 'pay_appota_index';
 
         try {
-            $country = $this->Payment->User->getCountry();
-            if(!in_array($country, array('Philippines', 'United States'))){
-                $this->view = 'pay_onepay_index';
+            $user = $this->Auth->user();
+            if(!in_array($user['country_code'], array('Philippines', 'United States')) ) {
+                $country = $this->Payment->User->getCountry();
+                if (!in_array($country, array('Philippines', 'United States'))) {
+                    $this->view = 'pay_onepay_index';
+                }
             }
         }catch (Exception $e){
             CakeLog::info('error country:' . $e->getMessage() , 'payment' );
