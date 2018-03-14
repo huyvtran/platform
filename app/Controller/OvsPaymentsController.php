@@ -261,6 +261,15 @@ class OvsPaymentsController extends AppController {
         $this->loadModel('Payment');
         $this->pay_index(Payment::CHANEL_PAYPAL, 'VND');
         $this->view = 'pay_appota_index';
+
+        try {
+            $country = $this->Payment->User->getCountry();
+            if(!in_array($country, array('Philippines', 'United States'))){
+                $this->view = 'pay_onepay_index';
+            }
+        }catch (Exception $e){
+            CakeLog::info('error country:' . $e->getMessage() , 'payment' );
+        }
     }
 
     public function pay_onepay_order(){
