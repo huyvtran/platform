@@ -1069,6 +1069,7 @@ class OvsPaymentsController extends AppController {
                         'recursive' => -1,
                         'contain'   => array('WaitingPayment', 'User', 'Game'),
                     ));
+                    $data = $data[0];
 
                     break;
             }
