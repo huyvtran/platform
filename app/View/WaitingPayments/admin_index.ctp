@@ -228,7 +228,12 @@ $this->extend('/Common/blank');
                                 break;
                         }
                     }
-                    echo $this->Html->link($chanel, array('controller' => 'OvsPayments', 'action' => 'detail', 'chanel' => $chanel, 'order_id' => $payment['WaitingPayment']['order_id']));
+                    echo $this->Html->link($chanel, array(
+                            'controller' => 'OvsPayments',
+                            'action' => 'detail',
+                            'chanel' => $payment['WaitingPayment']['chanel'],
+                            'order_id' => $payment['WaitingPayment']['order_id']
+                        ));
                     ?>
                 </td>
                 <td> <?php if( !empty($payment['Payment']['note']) ) echo $payment['Payment']['note']; ?> </td>
