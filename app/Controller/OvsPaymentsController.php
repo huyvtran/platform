@@ -1030,7 +1030,49 @@ class OvsPaymentsController extends AppController {
     }
 
     public function admin_detail(){
-        Configure::write('debug', 2);
-        debug($this->request);die;
+	    if(!empty($this->request->params['named'])){
+	        $this->loadModel('Payment');
+	        $data = false;
+	        switch ($this->request->params['named']['chanel']){
+                case Payment::CHANEL_ONEPAY :
+                case Payment::CHANEL_ONEPAY_2:
+                    $this->loadModel('OnepayOrder');
+                    $this->OnepayOrder->bindModel(array(
+                        'hasOne' => array(
+                            'WaitingPayment' => array(
+                                'foreignKey' => false,
+                                'conditions' => array_merge(
+                                    array('WaitingPayment.order_id = OnepayOrder.order_id')
+                                )
+                            ),
+                            'User' => array(
+                                'foreignKey' => false,
+                                'conditions' => array_merge(
+                                    array('User.id = OnepayOrder.user_id')
+                                )
+                            ),
+                            'Game' => array(
+                                'foreignKey' => false,
+                                'conditions' => array_merge(
+                                    array('Game.id = OnepayOrder.game_id')
+                                )
+                            )
+                        )
+                    ));
+
+                    $data = $this->OnepayOrder->find('all', array(
+                        'fields'     => array('OnepayOrder.*','WaitingPayment.*', 'User.username', 'Game.title' ),
+                        'conditions' => array(
+                            'OnepayOrder.order_id'   => $this->request->params['named']['order_id'],
+                        ),
+                        'recursive' => -1,
+                    ));
+
+                    break;
+            }
+
+            Configure::write('debug', 2);
+	        debug($data);die;
+        }
     }
 }
