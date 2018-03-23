@@ -85,7 +85,6 @@ class WaitingPaymentsController extends AppController {
             WaitingPayment::STATUS_ERROR        => 'error',
         );
 
-
         $chanels = array(
             Payment::CHANEL_VIPPAY      => 'Vippay',
             Payment::CHANEL_VIPPAY_2    => 'Vippay 2',
@@ -97,6 +96,13 @@ class WaitingPaymentsController extends AppController {
             Payment::CHANEL_PAYMENTWALL => 'PaymentWall',
             Payment::CHANEL_APPOTA      => 'Appota',
         );
+
+        if($this->Auth->User('username') == 'cskh1pay'){
+            $chanels = array(
+                Payment::CHANEL_ONEPAY      => '1Pay',
+                Payment::CHANEL_ONEPAY_2    => '1Pay 2',
+            );
+        }
 
         $types = array(
             Payment::TYPE_NETWORK_VIETTEL       => 'Viettel',
