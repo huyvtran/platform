@@ -153,7 +153,7 @@ $config['rules'] = array(
         'payments/api_pay'  => 'Role/User',
         'payments/pay'      => 'Role/User',
         'payments/api_charge'   => 'Role/User',
-        'payments/admin_index'  => 'Role/Content, Role/Distributor',
+        'payments/admin_index'  => 'Role/Content',
         'payments/pay_list'  => 'Role/User',
         'payments/pay_paypal_index'     => 'Role/User',
         'payments/pay_paypal_order'     => 'Role/User',
@@ -195,7 +195,7 @@ $config['rules'] = array(
 
 		'users/api_update_info' => 'Role/User',
 
-        'WaitingPayments/admin_index'   => 'Role/Content',
+        'WaitingPayments/admin_index'   => 'Role/Content, Role/Distributor',
         'WaitingPayments/api_index'     => 'Role/User',
 
 		'websites/admin_setsession' => 'Role/Content, Role/Marketing, Role/Developer',
