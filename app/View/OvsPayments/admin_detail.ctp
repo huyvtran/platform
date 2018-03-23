@@ -1,7 +1,7 @@
 <?php
 $this->extend('/Common/blank');
 ?>
-<h3 class='page-header'></h3>
+<h3 class='page-header'>Payment Detail Management</h3>
 <h5>User</h5>
 <ul class='unstyled'>
 	<li>user id  : <?php echo $data['User']['id'] ?></li>
@@ -19,9 +19,9 @@ $this->extend('/Common/blank');
     <li>price pay : <?php echo $data['WaitingPayment']['price'] ?></li>
     <?php
     if ($data['WaitingPayment']['status'])
-        $status =  "<span style='color:green'>Active</span>";
+        $status =  "<span style='color:green'>Success</span>";
     else
-        $status = "<span style='color:red'>Deactive</span>";
+        $status = "<span style='color:red'>Error</span>";
     ?>
     <li>status    : <?php echo $status ?></li>
     <li>time start: <?php echo $data['WaitingPayment']['created'] ?></li>
