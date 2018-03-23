@@ -1028,4 +1028,9 @@ class OvsPaymentsController extends AppController {
             }
         }
     }
+
+    public function admin_detail(){
+        Configure::write('debug', 2);
+        debug($this->request);die;
+    }
 }
