@@ -32,9 +32,17 @@ class WaitingPaymentsController extends AppController {
             }
         }
 
-        $parsedConditions = array_merge(array(
-            'WaitingPayment.game_id' => $this->Session->read('Auth.User.permission_game_default')
-        ), $parsedConditions);
+        $this->loadModel('Payment');
+
+        if($this->Auth->User('username') == 'cskh1pay'){
+            $parsedConditions = array_merge(array(
+                'WaitingPayment.chanel' => array(Payment::CHANEL_ONEPAY, Payment::CHANEL_ONEPAY_2)
+            ), $parsedConditions);
+        }else{
+            $parsedConditions = array_merge(array(
+                'WaitingPayment.game_id' => $this->Session->read('Auth.User.permission_game_default')
+            ), $parsedConditions);
+        }
 
         $this->WaitingPayment->bindModel(array(
             'hasOne' => array(
@@ -77,7 +85,7 @@ class WaitingPaymentsController extends AppController {
             WaitingPayment::STATUS_ERROR        => 'error',
         );
 
-        $this->loadModel('Payment');
+
         $chanels = array(
             Payment::CHANEL_VIPPAY      => 'Vippay',
             Payment::CHANEL_VIPPAY_2    => 'Vippay 2',

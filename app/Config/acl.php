@@ -153,13 +153,14 @@ $config['rules'] = array(
         'payments/api_pay'  => 'Role/User',
         'payments/pay'      => 'Role/User',
         'payments/api_charge'   => 'Role/User',
-        'payments/admin_index'  => 'Role/Content',
+        'payments/admin_index'  => 'Role/Content, Role/Distributor',
         'payments/pay_list'  => 'Role/User',
         'payments/pay_paypal_index'     => 'Role/User',
         'payments/pay_paypal_order'     => 'Role/User',
         'payments/pay_paypal_response'  => 'Role/User',
 
-        'OvsPayments/pay_list'  => 'Role/User',
+        'OvsPayments/pay_list'      => 'Role/User',
+        'OvsPayments/admin_detail'  => 'Role/Content, Role/Distributor',
 
         'OvsPayments/pay_paypal_index'     => 'Role/User',
         'OvsPayments/pay_paypal_order'     => 'Role/User',
