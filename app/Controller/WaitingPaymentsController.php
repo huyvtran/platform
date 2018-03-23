@@ -64,7 +64,7 @@ class WaitingPaymentsController extends AppController {
                 ),
                 'order' => array('WaitingPayment.id' => 'DESC'),
                 'recursive' => -1,
-                'limit' => 20
+                'limit' => 10
             )
         );
 
