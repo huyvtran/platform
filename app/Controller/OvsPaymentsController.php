@@ -1061,7 +1061,8 @@ class OvsPaymentsController extends AppController {
                     ));
 
                     $data = $this->OnepayOrder->find('all', array(
-                        'fields'     => array('OnepayOrder.*','WaitingPayment.*', 'User.username', 'Game.title' ),
+                        'fields'     => array('OnepayOrder.*','WaitingPayment.*', 'Game.title', 'Game.os',
+                            'User.username', 'User.id', 'User.country_code', 'User.created'),
                         'conditions' => array(
                             'OnepayOrder.order_id'   => $this->request->params['named']['order_id'],
                         ),
@@ -1072,8 +1073,8 @@ class OvsPaymentsController extends AppController {
                     break;
             }
 
-            Configure::write('debug', 2);
-	        debug($data);die;
+            $this->layout = 'default_bootstrap';
+            $this->set(compact('data'));
         }
     }
 }
