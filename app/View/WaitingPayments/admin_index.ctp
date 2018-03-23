@@ -186,8 +186,8 @@ $this->extend('/Common/blank');
             ?>
             <tr style="<?php echo $style; ?>">
                 <td><?php echo h($payment['WaitingPayment']['id']); ?>&nbsp;</td>
-                <td> <?php echo $this->Html->link($payment['User']['username'], array('controller' => 'users', 'action' => 'view', $payment['User']['id'])); ?> </td>
-                <td> <?php echo $payment['Game']['title'] . ' ' . $payment['Game']['os']; ?> </td>
+                <td> <?php echo $this->Html->link(substr($payment['User']['username'], 3), array('controller' => 'users', 'action' => 'view', $payment['User']['id'])); ?> </td>
+                <td> <?php echo substr($payment['Game']['title'], 5) . ' ' . $payment['Game']['os']; ?> </td>
                 <td> <?php echo $payment['WaitingPayment']['order_id']; ?> </td>
                 <td> <?php echo $payment['WaitingPayment']['card_code']; ?> </td>
                 <td> <?php echo $payment['WaitingPayment']['card_serial']; ?> </td>
