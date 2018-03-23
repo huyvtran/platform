@@ -1066,6 +1066,7 @@ class OvsPaymentsController extends AppController {
                             'OnepayOrder.order_id'   => $this->request->params['named']['order_id'],
                         ),
                         'recursive' => -1,
+                        'contain'   => array('WaitingPayment', 'User', 'Game'),
                     ));
 
                     break;
