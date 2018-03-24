@@ -64,6 +64,9 @@ class PaymentsController extends AppController {
             if( !empty($game['group']) && $game['group'] == Game::GROUP_R01 ) $chanel = Payment::CHANEL_VIPPAY;
             if( !empty($game['group']) && $game['group'] == Game::GROUP_R02 ) $chanel = Payment::CHANEL_VIPPAY_2;
 
+            # chuyển kênh
+            $chanel = Payment::CHANEL_VIPPAY_2;
+
             if( in_array($game['app'], array(
                 'd77a238697e63e5056810448d460c0d7', 'ced3d169ffdb099ee6fede9d8f923f60', //r13
                 'a3fb6fd597a695212ec9cbd1f533f5e1', 'c8e35bf746e1f07c018719f605a1ae39', //r14
