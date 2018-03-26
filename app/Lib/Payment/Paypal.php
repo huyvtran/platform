@@ -74,11 +74,6 @@ class Paypal {
             ->setRedirectUrls($redirectUrl)
             ->setTransactions([$transaction]);
 
-        CakeLog::info('check url callback:'
-            . Configure::read('Paypal.ReturnUrl') . '?app=' . $this->appkey . '&qtoken=' . $this->user_token
-            . '----' . Configure::read('Paypal.CancelUrl' )
-        );
-        
         try{
             $payment->create($this->paypal);
         }catch (Exception $e){
@@ -89,5 +84,24 @@ class Paypal {
         $linkPaypal = $payment->getApprovalLink();
         if( !empty($linkPaypal) ) return $linkPaypal;
         return false;
+    }
+
+    public function getPayment($paymentId){
+        $result = \PayPal\Api\Payment::get($paymentId, $this->paypal);
+        return $result;
+    }
+
+    public function execute($paymentId, $payerID){
+        $payment = $this->getPayment($paymentId);
+        $execution = new \PayPal\Api\PaymentExecution();
+        $execution->setPayerId($payerID);
+        try {
+            $payment->execute($execution, $this->paypal);
+            $payment = $this->getPayment($paymentId);
+        }catch (Exception $e){
+            CakeLog::info('paypal execute:' . $e->getMessage(), 'payment');
+        }
+
+        return $payment;
     }
 }

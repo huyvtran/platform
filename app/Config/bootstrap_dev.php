@@ -199,13 +199,13 @@ foreach($_GET as $key => $getParam){
 }
 
 Configure::write('Paypal', array(
-    'clientId'  => 'AUw5RTbPUM9k_U8ZYJBJvx40_z0WDQIxDjZenTqceqav9JXsjzTI-FxZYdFL5c1vbH4_JdGN_zlDU2GH',
-    'secret'    => 'ENcJa84TPyYUuIaY_aPArIXWBKR6KkKrlM9wVgotKY1uqjEOHAJa_jGcmML59rRzHKL3rONZIhFNsY85',
-    'ReturnUrl' => 'http://cms.platform.net.local/OvsPayments/pay_paypal_response',
-    'CancelUrl' => 'http://cms.platform.net.local/OvsPayments/pay_error',
+    'clientId'  => 'AQABty31Og7hvOFBKn_6BCgaqxXwIhLs2SR8Y_wXI8W73X10ytu8RgwlDFztnVHR0rx_WvuAqWG7AK_o',
+    'secret'    => 'ELev0jfpIly5cj4qtKbGqQX4wh4KLqOLXnkRe8SFmJKPrRLkMvYRbyPfj73QAhSmBxbjj3SPNiU4IFxo',
+    'ReturnUrl' => 'http://admin.muplf.local/OvsPayments/pay_paypal_response',
+    'CancelUrl' => 'http://admin.muplf.local/OvsPayments/pay_error',
     'TokenUrl'  => 'https://api.sandbox.paypal.com/v1/oauth2/token',
     'PaymentUrl'=> 'https://api.sandbox.paypal.com/v1/payments/payment/',
-    'mode'      => 'sandbox'
+    'mode'      => 'sandbox',
 ));
 
 Configure::write('AppotaPay', array(

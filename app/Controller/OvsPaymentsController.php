@@ -152,106 +152,116 @@ class OvsPaymentsController extends AppController {
         }
         $user = $this->Auth->user();
 
-        $paypal_id = $this->request->query('paymentId');
-        if( empty($paypal_id) ){
-            CakeLog::error('Lỗi giao dịch - paypal response', 'payment');
-            throw new NotFoundException('Lỗi giao dịch');
+        $payment_id = $this->request->query('paymentId');
+        $payer_id  = $this->request->query('PayerID');
+        if( empty($payment_id) || empty($payer_id) ){
+            CakeLog::error(__('Lỗi giao dịch paypal') , 'payment');
+            goto end;
         }
 
-        $clientId = Configure::read('Paypal.clientId');
-        $secret = Configure::read('Paypal.secret');
+        # xử lý mua hàng qua paypal
+        try {
+            $token = $this->request->query('qtoken');
+            App::uses('Paypal', 'Payment');
+            $paypal = new Paypal($game['app'], $token);
+            $paypalObj = $paypal->getPayment($payment_id);
 
-        $paypal_token_url = Configure::read('Paypal.TokenUrl');
-        $paypal_payment_url = Configure::read('Paypal.PaymentUrl');
+            if (is_object($paypalObj) && $paypalObj->getState() == 'created') {
+                $result = $paypal->execute($payment_id, $payer_id);
+                if ($result->getState() == 'approved') {
+                    $transactionObj = $result->getTransactions();
+                    if (!empty($transactionObj[0]) && is_object($transactionObj[0])) {
+                        $transactionObj = $transactionObj[0];
+                        $orderId = $transactionObj->getInvoiceNumber();
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $paypal_token_url);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERPWD, $clientId.":".$secret);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
+                        $amongObj = $transactionObj->getAmount();
 
-        $result = curl_exec($ch);
-        curl_close($ch);
+                        $relatedObj = $transactionObj->getRelatedResources();
+                        $relatedObj = $relatedObj[0];
 
-        if(!empty($result)) {
-            $json = json_decode($result);
-            $accessToken = $json->access_token;
+                        $saleObj = $relatedObj->getSale();
 
-            $ch1 = curl_init();
-            curl_setopt($ch1, CURLOPT_URL, $paypal_payment_url . $paypal_id);
-            curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch1, CURLOPT_HTTPHEADER, array(
-                'Authorization: Bearer ' . $accessToken,
-                'Accept: application/json',
-                'Content-Type: application/json'
-            ));
+                        # ghi log paypal_order
+                        $data_paypal = array(
+                            'user_id' => $user['id'],
+                            'game_id' => $game['id'],
+                            'order_id' => $orderId,
+                            'paypal_id' => $paypalObj->getId(),
+                            'state' => $paypalObj->getState(),
+                            'paypal_create_time' => $paypalObj->getCreateTime(),
+                            'paypal_update_time' => $paypalObj->getUpdateTime(),
+                            'amount_total' => $amongObj->getTotal(),
+                            'amount_currency' => $amongObj->getCurrency(),
+                            'sale_state' => $saleObj->getState(),
+                            'sale_id' => $saleObj->getId(),
+                        );
 
-            $result = curl_exec($ch1);
-            curl_close($ch1);
-            $result = json_decode($result);
-            CakeLog::info('paypal response:' . print_r($result, true), 'payment');
-            if( !empty($result->transactions[0]->invoice_number) ){
-                $orderId = $result->transactions[0]->invoice_number ;
-                $this->loadModel('WaitingPayment');
-                $this->WaitingPayment->recursive = -1;
-                $wating_payment = $this->WaitingPayment->findByOrderId($orderId);
+                        $this->loadModel('PaypalOrder');
+                        $existedAOrder = $this->PaypalOrder->find('first', array(
+                            'conditions' => array(
+                                'PaypalOrder.order_id' => $orderId
+                            )
+                        ));
 
-                # ghi log paypal_order
-                $data_paypal = array(
-                    'user_id'   => $user['id'],
-                    'game_id'   => $game['id'],
-                    'order_id'  => $orderId,
-                    'paypal_id' => $result->id,
-                    'state'     => $result->state,
-                    'paypal_create_time'    => $result->create_time,
-                    'paypal_update_time'    => $result->update_time,
-                    'amount_total'          => $result->transactions[0]->amount->total,
-                    'amount_currency'       => $result->transactions[0]->amount->currency,
-                    'sale_state'            => $result->transactions[0]->related_resources[0]->sale->state,
-                    'sale_id'               => $result->transactions[0]->related_resources[0]->sale->id,
-                    'data'                  => json_encode($result),
-                );
-                $this->loadModel('PaypalOrder');
-                $paypalOrderObj = new PaypalOrder();
-                $paypalOrderObj->save($data_paypal);
+                        if (!empty($existedAOrder)) {
+                            CakeLog::error(__('Giao dịch đã tồn tại'), 'payment');
+                            goto end;
+                        }
 
-                # cộng xu
-                if( isset($wating_payment['WaitingPayment']['status'])
-                    && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
-                    && $data_paypal['amount_currency'] == 'USD' && $data_paypal['sale_state'] == 'completed'
-                ){
-                    $data_payment = array(
-                        'order_id'  => $orderId,
-                        'user_id'   => $user['id'],
-                        'game_id'   => $game['id'],
-                        'price'     => $wating_payment['WaitingPayment']['price'],
-                        'time'      => time(),
-                        'type'      => $wating_payment['WaitingPayment']['type'],
-                        'chanel'    => $wating_payment['WaitingPayment']['chanel'],
-                        'waiting_id'=> $wating_payment['WaitingPayment']['id']
-                    );
+                        $paypalOrderObj = new PaypalOrder();
+                        $paypalOrderObj->save($data_paypal);
 
-                    $this->view = 'success';
-                    $sdk_message = __("Giao dịch thành công.");
-                    $status_sdk = 0;
-                    $transaction_status = true;
-                }
+                        $this->loadModel('WaitingPayment');
+                        $this->WaitingPayment->recursive = -1;
+                        $wating_payment = $this->WaitingPayment->findByOrderId($orderId);
 
-                App::uses('PaymentLib', 'Payment');
-                $paymentLib = new PaymentLib();
-                if( $transaction_status ){
-                    $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
-                    $paymentLib->add($data_payment);
-                }else{
-                    $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+                        # cộng xu
+                        if (isset($wating_payment['WaitingPayment']['status'])
+                            && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
+                            && $data_paypal['sale_state'] == 'completed'
+                        ) {
+                            $price_end = $wating_payment['WaitingPayment']['price'] - (6801 + ($wating_payment['WaitingPayment']['price'])*0.039);
+                            $data_payment = array(
+                                'order_id' => $orderId,
+                                'user_id' => $user['id'],
+                                'game_id' => $game['id'],
+                                'price' => $wating_payment['WaitingPayment']['price'],
+                                'price_end'     => $price_end,
+                                'time' => time(),
+                                'type' => $wating_payment['WaitingPayment']['type'],
+                                'chanel' => $wating_payment['WaitingPayment']['chanel'],
+                                'waiting_id' => $wating_payment['WaitingPayment']['id']
+                            );
+
+                            $data_view = array(
+                                'order_id'  => $orderId,
+                                'price_end' => $wating_payment['WaitingPayment']['price'],
+                                'price_game'=> 0,
+                            );
+                            $this->set('data_payment', $data_view);
+
+                            $sdk_message = __("Giao dịch thành công.");
+                            $status_sdk = 0;
+                            $this->view = 'success';
+                            $transaction_status = true;
+                        }
+
+                        App::uses('PaymentLib', 'Payment');
+                        $paymentLib = new PaymentLib();
+                        if ($transaction_status) {
+                            $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+                            $paymentLib->add($data_payment);
+                        } else {
+                            $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+                        }
+                    }
                 }
             }
+        }catch (Exception $e){
+            CakeLog::error(__('Lỗi giao dịch paypal') . ':' . $e->getMessage(), 'payment');
         }
 
+        end:
         if( !empty($game['data']['payment']['url_sdk']) ){
             $this->redirect($game['data']['payment']['url_sdk'] . '?msg=' . $sdk_message . '&status=' . $status_sdk);
         }
