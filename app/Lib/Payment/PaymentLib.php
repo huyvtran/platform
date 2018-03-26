@@ -194,7 +194,7 @@ class PaymentLib {
 
             }elseif ( $data['chanel'] == Payment::CHANEL_ONEPAY || $data['chanel'] == Payment::CHANEL_ONEPAY_2 ){
                 $price_end = $data['price'] * 0.967 - 3300;
-            }elseif ( $data['chanel'] == Payment::CHANEL_PAYMENTWALL ){
+            }elseif ( $data['chanel'] == Payment::CHANEL_PAYMENTWALL || $data['chanel'] == Payment::CHANEL_PAYPAL){
                 return ;
             }elseif ( $data['chanel'] == Payment::CHANEL_APPOTA ){
                 $price_end = $data['price'] * 0.94 - 7150;
