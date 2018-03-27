@@ -220,7 +220,7 @@ class OvsPaymentsController extends AppController {
                             && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
                             && $data_paypal['sale_state'] == 'completed'
                         ) {
-                            $price_end = $wating_payment['WaitingPayment']['price'] - (6801 + ($wating_payment['WaitingPayment']['price'])*0.039);
+                            $price_end = $wating_payment['WaitingPayment']['price'] - (6801 + ($wating_payment['WaitingPayment']['price'])*0.045);
                             $data_payment = array(
                                 'order_id' => $orderId,
                                 'user_id' => $user['id'],

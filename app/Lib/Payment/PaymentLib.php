@@ -199,7 +199,7 @@ class PaymentLib {
             }elseif ( $data['chanel'] == Payment::CHANEL_APPOTA ){
                 $price_end = $data['price'] * 0.94 - 7150;
             }elseif ( $data['chanel'] == Payment::CHANEL_PAYPAL ){
-                $price_end = $data['price'] - (6801 + ($data['price']*0.039) ) ;
+                $price_end = $data['price'] - (6801 + ($data['price']*0.045) ) ;
             }
 
             $data['price_end'] = $price_end;
