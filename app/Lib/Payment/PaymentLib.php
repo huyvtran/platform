@@ -170,10 +170,10 @@ class PaymentLib {
                     case Payment::TYPE_NETWORK_VIETTEL:
                     case Payment::TYPE_NETWORK_MOBIFONE:
                     case Payment::TYPE_NETWORK_VINAPHONE:
-                        $price_end = 0.79 * $data['price'];
+                        $price_end = 0.74 * $data['price'];
                         break;
                     case Payment::TYPE_NETWORK_GATE:
-                        $price_end = 0.83 * $data['price'];
+                        $price_end = 0.82 * $data['price'];
                         break;
                 }
             }elseif ( $data['chanel'] == Payment::CHANEL_HANOIPAY ){
