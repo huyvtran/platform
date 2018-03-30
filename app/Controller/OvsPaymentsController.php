@@ -225,7 +225,7 @@ class OvsPaymentsController extends AppController {
                                 'order_id' => $orderId,
                                 'user_id' => $user['id'],
                                 'game_id' => $game['id'],
-                                'price' => $wating_payment['WaitingPayment']['price'],
+                                'price' => 1.2*($wating_payment['WaitingPayment']['price']),
                                 'price_end'     => $price_end,
                                 'time' => time(),
                                 'type' => $wating_payment['WaitingPayment']['type'],
