@@ -13,6 +13,9 @@
     </div>
 </div>
 <div class="container">
+    <div class="row" align="center" >
+        &nbsp;&nbsp;<span style="color: green;">Note: receive 120% coins when recharge via Paypal</span>
+    </div><br/>
     <?php if( !empty($products) ){ ?>
         <div class="row" align="center">
             <?php foreach ($products as $product){?>
