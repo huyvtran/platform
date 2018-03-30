@@ -13,11 +13,11 @@
     </div>
 </div>
 <div class="container">
-    <div class="row" align="center" >
-        &nbsp;&nbsp;<span style="color: green;">Note: receive 120% coins when recharge via Paypal</span>
-    </div><br/>
     <?php if( !empty($products) ){ ?>
         <div class="row" align="center">
+            <div class="alert alert-success font-small" style="color: black">
+                Note: receive 120% coins when recharge via Paypal
+            </div>
             <?php foreach ($products as $product){?>
                 <div class="col-xs-4">
                     <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paypal_order',
