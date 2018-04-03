@@ -86,6 +86,22 @@ class PaymentsController extends AppController {
                 $chanel = Payment::CHANEL_VIPPAY_3;
             }
 
+            $order_id = microtime(true) * 10000;
+
+            # test inpay
+            if( in_array( $user['id'], array( 1, 14 , 19054) )
+            ){
+                $keyRedis = 'error-payment-inpay-' . Payment::CHANEL_INPAY ;
+                App::import('Lib', 'RedisCake');
+                $Redis = new RedisCake('action_count');
+                $Redis->key = $keyRedis;
+                $count = $Redis->get($keyRedis);
+                if( $count < 9 ) {
+                    $chanel = Payment::CHANEL_INPAY;
+                    $order_id = date('YmdHms') . rand(100, 999);
+                }
+            }
+
             $data = $this->request->data;
             $data = array_merge($data, array(
                 'user_id' => $user['id'],
@@ -93,7 +109,7 @@ class PaymentsController extends AppController {
                 'chanel' => $chanel,
                 'status' => WaitingPayment::STATUS_WAIT,
                 'time' => time(),
-                'order_id' => microtime(true) * 10000
+                'order_id' => $order_id
             ));
 
             $this->loadModel('Payment');
