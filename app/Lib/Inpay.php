@@ -1,6 +1,6 @@
 <?php
 class Inpay {
-    private $subcpId    = 455;
+    private $subcpId    = '0455';
     private $aeskey     = 'XPCQW6L28SHN0HSV';
     private $secret     = '0VIPEZ3KOW4B5L88W1PW';
     private $gameCode   = 'R01';
@@ -240,7 +240,7 @@ class Inpay {
             $ch = curl_init('http://api.inpay.vn/cardcharging');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json', 'Content-Type: application/json'));
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
             curl_setopt($ch, CURLOPT_TIMEOUT, 5);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);

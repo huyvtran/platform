@@ -71,7 +71,7 @@ class PaymentLib {
                     break;
                 case Payment::CHANEL_INPAY:
                     App::import('Lib', 'Inpay'); #quanvuhong.riotgame@gmail.com
-                    $vippay = new Inpay(455, 'XPCQW6L28SHN0HSV', '0VIPEZ3KOW4B5L88W1PW');
+                    $vippay = new Inpay('0455', 'XPCQW6L28SHN0HSV', '0VIPEZ3KOW4B5L88W1PW');
                     $result = $vippay->call($data);
                     break;
             }
