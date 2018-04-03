@@ -2,7 +2,6 @@
 <div class="container-fluid" style="max-width: 800px">
     <br/><br/>
     <div id="page-wrapper">
-		<center><span style="color: red;"><?php echo "Note: Mobifone network is maintainning"; ?></span></center>
         <form  method="post" id="frmInvite" name="frmInvite">
             <div class="form-group">
                 <label class="col-xs-3 control-label" id="label-seri">Seri thẻ</label>

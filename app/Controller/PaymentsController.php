@@ -395,137 +395,64 @@ class PaymentsController extends AppController {
         $this->set(compact('token', 'game'));
     }
 
-    public function pay_paypal_index(){
-        $game = $this->Common->currentGame();
-        if( empty($game) || !$this->Auth->loggedIn() ){
-            CakeLog::error('Vui lòng login', 'payment');
-            throw new NotFoundException('Vui lòng login');
-        }
-
-        $token = $this->request->header('token');
-
-        //get currency
-        $currency = $this->request->query('currency');
-        if (!$currency) {
-            $currency = 'USD';
-        } else {
-            $currency = strtolower($currency);
-        }
-
-        $gameData = $game['data'];
-        if (!isset($gameData['vcurrency']['type']) || empty($gameData['vcurrency']['type']))
-            $vcurrencyType = "diamond";
-        else
-            $vcurrencyType = $gameData['vcurrency']['type'];
-
-        //get list price
-        $this->loadModel('Product');
-        $products = $this->Product->find('all', array(
-            'conditions' => array(
-                'Product.game_id' => $game['id'],
-            ),
-            'order'     => array('Product.platform_price' => 'asc' ),
-            'recursive' => -1
-        ));
-
-        $this->set(compact('products', 'vcurrencyType', 'currency', 'game', 'token'));
+    public function admin_inpay(){
+        $this->view = 'pay';
         $this->layout = 'payment';
+
         $this->loadModel('Payment');
-    }
 
-    public function pay_paypal_order(){
-        $game = $this->Common->currentGame();
-        if( empty($game) || !$this->Auth->loggedIn() ){
-            CakeLog::error('Vui lòng login', 'payment');
-            throw new NotFoundException('Vui lòng login');
-        }
+        # sử dụng inpay
+        if ($this->request->is('post')) {
 
-        $token = $this->request->header('token');
+            $keyRedis = 'error-payment-inpay-' . Payment::CHANEL_INPAY;
+            App::import('Lib', 'RedisCake');
+            $Redis = new RedisCake('action_count');
+            $Redis->key = $keyRedis;
+            $count = $Redis->get($keyRedis);
+            if ($count < 9) {
+                $chanel = Payment::CHANEL_INPAY;
+                $order_id = date('YmdHms') . rand(100, 999);
+            } else {
+                echo 'quá 10 lần gạch thẻ lỗi, vui lòng chờ 5 phút';
+                die;
+            }
 
-        //get currency
-        $currency = $this->request->query('currency');
-        if (!$currency) {
-            $currency = 'USD';
-        } else {
-            $currency = strtolower($currency);
-        }
+            $this->loadModel('WaitingPayment');
 
-        $productId = $this->request->query('productId');
-        if( empty($this->request->query('productId')) ){
-            CakeLog::error('Chưa chọn gói xu - paypal', 'payment');
-            throw new NotFoundException('Chưa chọn gói xu');
-        }
-
-        $this->loadModel('Product');
-        $this->Product->recursive = -1;
-        $product = $this->Product->findById($productId);
-
-        if( empty($product) ){
-            CakeLog::error('Không có gói xu phù hợp - paypal', 'payment');
-            throw new NotFoundException('Không có gói xu phù hợp');
-        }
-
-        # xử lý mua hàng qua paypal
-        App::uses('Paypal', 'Payment');
-        $paypal = new Paypal($game['app'], $token);
-        $linkPaypal = $paypal->buy($product['Product']['title'], $product['Product']['price'], $currency);
-        if( empty($linkPaypal) ){
-            CakeLog::error('Lỗi tạo giao dịch - paypal', 'payment');
-            throw new NotFoundException('Lỗi tạo giao dịch, vui lòng thử lại');
-        }
-        $this->redirect($linkPaypal);
-    }
-
-    public function pay_paypal_response(){
-        $game = $this->Common->currentGame();
-        if( empty($game) || !$this->Auth->loggedIn() ){
-            CakeLog::error('Vui lòng login', 'payment');
-            throw new NotFoundException('Vui lòng login');
-        }
-        $user = $this->Auth->user();
-
-        $paypal_id = $this->request->query('paymentId');
-        if( empty($paypal_id) ){
-            CakeLog::error('Lỗi giao dịch - paypal response', 'payment');
-            throw new NotFoundException('Lỗi giao dịch');
-        }
-
-        $clientId = Configure::read('Paypal.clientId');
-        $secret = Configure::read('Paypal.secret');
-
-        $paypal_token_url = Configure::read('Paypal.TokenUrl');
-        $paypal_payment_url = Configure::read('Paypal.PaymentUrl');
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $paypal_token_url);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERPWD, $clientId.":".$secret);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
-
-        $result = curl_exec($ch);
-        curl_close($ch);
-
-        if(!empty($result)) {
-            $json = json_decode($result);
-            $accessToken = $json->access_token;
-
-            $ch1 = curl_init();
-            curl_setopt($ch1, CURLOPT_URL, $paypal_payment_url . $paypal_id);
-            curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch1, CURLOPT_HTTPHEADER, array(
-                'Authorization: Bearer ' . $accessToken,
-                'Accept: application/json',
-                'Content-Type: application/json'
+            $data = $this->request->data;
+            $data = array_merge($data, array(
+                'chanel' => $chanel,
+                'order_id' => $order_id,
+                'user_id' => 1,
+                'game_id' => 1,
+                'status' => WaitingPayment::STATUS_WAIT,
+                'time' => time(),
             ));
 
-            $result = curl_exec($ch1);
-            curl_close($ch1);
+            $unresolvedPayment = $this->WaitingPayment->save($data);
 
-            echo "<pre>"; print_r(json_decode($result));die;
+            App::import('Lib', 'Inpay'); #quanvuhong.riotgame@gmail.com
+            $inppay = new Inpay('0455', 'XPCQW6L28SHN0HSV', '0VIPEZ3KOW4B5L88W1PW');
+            $result = $inppay->call($data);
+
+            $paymentLib = new PaymentLib();
+            if($result['status'] == 0) {
+                $this->Session->setFlash('Nạp thẻ thành công');
+                $paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+            }else{
+                if( !empty($result['data']['obj']['errorDesc']) ) {
+                    $this->Session->setFlash($result['data']['obj']['errorDesc']);
+                }else{
+                    $this->Session->setFlash('Nạp thẻ thất bại');
+                }
+
+                $paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+            }
+            $result = $result['data'];
+
+            $this->set(compact('result'));
+            $this->view = 'admin_inpay';
+            $this->layout = 'default_bootstrap';
         }
     }
 }
