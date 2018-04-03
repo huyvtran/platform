@@ -316,7 +316,7 @@ class Inpay {
                     'type'  => $data['type'],
                     'chanel'    => $data['chanel'],
 
-                    'order_id'  => $this->getOrderId(),
+                    'order_id'  => $data['order_id'],
                     'user_id'   => $this->getUserId(),
                     'game_id'   => $this->getGameId(),
 
