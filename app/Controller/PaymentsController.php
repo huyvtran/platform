@@ -88,18 +88,15 @@ class PaymentsController extends AppController {
 
             $order_id = microtime(true) * 10000;
 
-            # test inpay
-            if( in_array( $user['id'], array( 1, 14 , 19054) )
-            ){
-                $keyRedis = 'error-payment-inpay-' . Payment::CHANEL_INPAY ;
-                App::import('Lib', 'RedisCake');
-                $Redis = new RedisCake('action_count');
-                $Redis->key = $keyRedis;
-                $count = $Redis->get($keyRedis);
-                if( $count < 9 ) {
-                    $chanel = Payment::CHANEL_INPAY;
-                    $order_id = date('YmdHms') . rand(100, 999);
-                }
+            # sử dụng inpay
+            $keyRedis = 'error-payment-inpay-' . Payment::CHANEL_INPAY ;
+            App::import('Lib', 'RedisCake');
+            $Redis = new RedisCake('action_count');
+            $Redis->key = $keyRedis;
+            $count = $Redis->get($keyRedis);
+            if( $count < 9 ) {
+                $chanel = Payment::CHANEL_INPAY;
+                $order_id = date('YmdHms') . rand(100, 999);
             }
 
             $data = $this->request->data;
