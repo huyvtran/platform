@@ -86,6 +86,7 @@ class WaitingPaymentsController extends AppController {
         );
 
         $chanels = array(
+            Payment::CHANEL_INPAY       => 'Inpay',
             Payment::CHANEL_VIPPAY      => 'Vippay',
             Payment::CHANEL_VIPPAY_2    => 'Vippay 2',
             Payment::CHANEL_HANOIPAY    => 'Hanoipay',

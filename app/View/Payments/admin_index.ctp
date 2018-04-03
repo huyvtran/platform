@@ -223,6 +223,9 @@ $this->extend('/Common/blank');
                         case Payment::CHANEL_APPOTA :
                             $chanel = 'Appota';
                             break;
+                        case Payment::CHANEL_INPAY :
+                            $chanel = 'Inpay';
+                            break;
                     }
                     echo $chanel;
                     ?>
