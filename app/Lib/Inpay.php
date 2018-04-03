@@ -302,7 +302,7 @@ class Inpay {
             $keyRedis = 'error-payment-inpay-' . $data['chanel'];
             App::import('Lib', 'RedisCake');
             $Redis = new RedisCake('action_count');
-            $Redis->key = $keyRedis;
+            $Redis->incr($keyRedis);
             $Redis->delete();
 
             # update trạng thái thành công
