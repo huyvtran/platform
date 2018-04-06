@@ -178,7 +178,7 @@ class PaymentLib {
                         $price_end = 0.74 * $data['price'];
                         break;
                     case Payment::TYPE_NETWORK_GATE:
-                        $price_end = 0.82 * $data['price'];
+                        $price_end = 0.79 * $data['price'];
                         break;
                 }
             }elseif ( $data['chanel'] == Payment::CHANEL_HANOIPAY ){
