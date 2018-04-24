@@ -270,9 +270,9 @@ class OvsPaymentsController extends AppController {
     public function pay_onepay_index(){
         $this->loadModel('Payment');
         $this->pay_index(Payment::CHANEL_PAYPAL, 'VND');
-        $this->view = 'pay_appota_index';
+        $this->view = 'maintain';
 
-        /*try {
+        try {
             $user = $this->Auth->user();
             if(!in_array($user['country_code'], array('Philippines', 'United States')) ) {
                 $country = $this->Payment->User->getCountry();
@@ -282,7 +282,7 @@ class OvsPaymentsController extends AppController {
             }
         }catch (Exception $e){
             CakeLog::info('error country:' . $e->getMessage() , 'payment' );
-        }*/
+        }
     }
 
     public function pay_onepay_order(){
@@ -315,20 +315,20 @@ class OvsPaymentsController extends AppController {
 
         $chanel = Payment::CHANEL_ONEPAY;
         $type = Payment::TYPE_NETWORK_BANKING;
-        # set chanel defaul, có thể sẽ đc check theo chanel (1Pay 1, 1Pay 2 ...)
-        $access_key = "diggr0l4g6k792oj528a";
-        $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
+        # set chanel defaul, có thể sẽ đc check theo chanel truemoney
+        $access_key = "w1g998earl15prvzs2k4";
+        $secret = "xr4m3lpwhj0egvlj965armf6od606cm3";
 
-        $this->loadModel('Game');
-        if (!empty($game['group']) && $game['group'] == Game::GROUP_R01) {
-            $chanel = Payment::CHANEL_ONEPAY;
-            $access_key = "diggr0l4g6k792oj528a";
-            $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
-        } else if (!empty($game['group']) && $game['group'] == Game::GROUP_R02) {
-            $chanel = Payment::CHANEL_ONEPAY_2;
-            $access_key = "xr13xjpekax55j3jgsfs";
-            $secret = "rq10xl9fn20i2qlrqwc9gwdkmsd7cukx";
-        }
+//        $this->loadModel('Game');
+//        if (!empty($game['group']) && $game['group'] == Game::GROUP_R01) {
+//            $chanel = Payment::CHANEL_ONEPAY;
+//            $access_key = "diggr0l4g6k792oj528a";
+//            $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
+//        } else if (!empty($game['group']) && $game['group'] == Game::GROUP_R02) {
+//            $chanel = Payment::CHANEL_ONEPAY_2;
+//            $access_key = "xr13xjpekax55j3jgsfs";
+//            $secret = "rq10xl9fn20i2qlrqwc9gwdkmsd7cukx";
+//        }
 
         # tạo giao dịch waiting_payment
         $data = array(

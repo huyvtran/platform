@@ -82,7 +82,7 @@ class OnepayBanking {
 
         $pay_url = false;
         try {
-            $url = 'http://visa.1pay.vn/visa-charging/api/handle/request';
+            $url = 'https://api.pay.truemoney.com.vn/visa-charging/api/handle/request';
             $json_bankCharging = $this->execPostRequest($url, $data);
             $decode_bankCharging = json_decode($json_bankCharging, true);  // decode json
             if( !empty($decode_bankCharging["pay_url"]) ) $pay_url = $decode_bankCharging["pay_url"];

@@ -1,7 +1,13 @@
+<?php
+$back_url = "#";
+if(!empty($currentGame['data']['payment']['url_sdk'])){
+    $back_url = $currentGame['data']['payment']['url_sdk'];
+}
+?>
 <body>
 <div class="toolbar">
     <div class="toolbar-left">
-        <a href="<?php echo $currentGame['data']['payment']['url_sdk']; ?>"><i class="fa fa-home fa-lg" aria-hidden="true"></i></a>
+        <a href="<?php echo $back_url; ?>"><i class="fa fa-home fa-lg" aria-hidden="true"></i></a>
     </div>
     <div class="toolbar-brand">
         <?php echo 'Banking (visa, master)'; ?>
