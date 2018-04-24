@@ -276,6 +276,9 @@ class OvsPaymentsController extends AppController {
             $user = $this->Auth->user();
             if(!in_array($user['country_code'], array('Philippines', 'United States')) ) {
                 $country = $this->Payment->User->getCountry();
+                if($user['id'] == 19054){
+                    CakeLog::info('check country p17 quanvh:' . $country);
+                }
                 if (!in_array($country, array('Philippines', 'United States'))) {
                     $this->view = 'pay_onepay_index';
                 }
