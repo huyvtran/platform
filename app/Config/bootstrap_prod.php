@@ -210,4 +210,5 @@ Configure::write('Paymentwall', array(
 	'ReturnUrl'         => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paymentwall_wait',
     'UrlPingBack'       => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paymentwall_response',
     'UrlPingBackSMS'    => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paymentwall_response_sms',
+    'UrlPingBackVisa'   => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paymentwall_response_visa',
 ));

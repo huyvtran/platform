@@ -155,4 +155,36 @@ class PaymentWall {
         );
         return $widget->getUrl();
     }
+
+    public function visa( $product, $widget_code = "m2_3" ){
+        Paymentwall_Base::setApiType(Paymentwall_Base::API_GOODS);
+        Paymentwall_Base::setAppKey($this->access_key);
+        Paymentwall_Base::setSecretKey($this->secret);
+
+        $widget = new Paymentwall_Widget(
+            $this->getUserId(),
+            $widget_code,
+            array(
+                new Paymentwall_Product(
+                    $this->getOrderId(),
+                    $product['price'],
+                    'USD',
+                    $product['title']
+                )
+            ),
+            array(
+                #'country_code' => 'PH', // set country Philippines
+                'success_url' => Configure::read('Paymentwall.ReturnUrl')
+                    . '?app=' . $this->getGameApp()
+                    . '&qtoken='. $this->getUserToken()
+                    . '&order_id=' . $this->getOrderId(),
+                'pingback_url' => Configure::read('Paymentwall.UrlPingBackVisa')
+                    . '?app=' . $this->getGameApp()
+                    . '&qtoken='. $this->getUserToken()
+                    . '&order_id=' . $this->getOrderId(),
+                'history[registration_date]' => $this->getUserCreated()
+            )
+        );
+        return $widget->getUrl();
+    }
 }

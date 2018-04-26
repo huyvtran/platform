@@ -184,6 +184,7 @@ $config['rules'] = array(
         'OvsPayments/pay_paymentwall_response'  => 'Role/User',
         'OvsPayments/pay_paymentwall_bank'      => 'Role/User',
         'OvsPayments/pay_paymentwall_card'      => 'Role/User',
+        'OvsPayments/pay_paymentwall_visa'      => 'Role/User',
 
         'permissions/*' => 'Role/Developer',
         'permissions/admin_delete' => 'Role/Content',

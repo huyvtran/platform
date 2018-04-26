@@ -9,7 +9,7 @@ class OvsPaymentsController extends AppController {
 		parent::beforeFilter();
         $this->Auth->allow(array(
             'pay_error', 'pay_paymentwall_wait', 'pay_paymentwall_response',
-            'pay_paymentwall_response_sms'
+            'pay_paymentwall_response_sms', 'pay_paymentwall_response_visa'
         ));
 	}
 
@@ -466,6 +466,12 @@ class OvsPaymentsController extends AppController {
         $this->set('title_for_app', 'Banking (visa, master ...)');
     }
 
+    public function pay_paymentwall_visa(){
+        $this->loadModel('Payment');
+        $this->pay_index(Payment::CHANEL_PAYPAL, 'USD');
+        $this->set('title_for_app', 'Banking (visa, master ...)');
+    }
+
     public function pay_paymentwall_card(){
         $game = $this->Common->currentGame();
         if( empty($game) || !$this->Auth->loggedIn() ){
@@ -554,6 +560,10 @@ class OvsPaymentsController extends AppController {
         $access_key = "b16230d530d4e02c13801d17dfad7f84";
         $secret = "b1b48f5f2240ad9a5918e66c6feec5ff";
         $token = $this->request->header('token');
+        if( !empty($this->request->query('visa'))){
+            $access_key = "91cf18a7e7363951c06332f8d0f06b9c";
+            $secret = "075e964d39c99e7f7761452637ebaaf7";
+        }
 
         # tạo giao dịch waiting_payment
         $data = array(
@@ -575,7 +585,11 @@ class OvsPaymentsController extends AppController {
         $paymentWall->setUserCreated($user['created']);
         $paymentWall->setUserId($user['id']);
 
-        $url = $paymentWall->create($product['Product']);
+        if( !empty($this->request->query('visa'))){
+            $url = $paymentWall->visa($product['Product']);
+        }else{
+            $url = $paymentWall->create($product['Product']);
+        }
 
         if( empty($url) ){
             CakeLog::error('Lỗi tạo giao dịch - paymentwall', 'payment');
@@ -596,7 +610,11 @@ class OvsPaymentsController extends AppController {
         $this->view = 'wait';
     }
 
-    public function pay_paymentwall_response(){
+    public function pay_paymentwall_response_visa(){
+	    $this->pay_paymentwall_response(true);
+    }
+
+    public function pay_paymentwall_response($visa = false){
         CakeLog::info('paymentwall pingback:' . print_r($this->request->query, true), 'payment');
 
         if ($this->request->query('app_key')) {
@@ -658,6 +676,10 @@ class OvsPaymentsController extends AppController {
 
                 $access_key = "b16230d530d4e02c13801d17dfad7f84";
                 $secret = "b1b48f5f2240ad9a5918e66c6feec5ff";
+                if( $visa ){
+                    $access_key = "91cf18a7e7363951c06332f8d0f06b9c";
+                    $secret = "075e964d39c99e7f7761452637ebaaf7";
+                }
 
                 # cộng xu
                 Paymentwall_Base::setApiType(Paymentwall_Base::API_GOODS);
