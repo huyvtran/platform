@@ -5,7 +5,7 @@ $this->extend('/Common/blank');
 <h5>Info</h5>
 <ul class='unstyled'>
 	<li>Id: <?php echo $user['User']['id'] ?></li>
-	<li>Email: <?php echo $user['User']['email'] ?></li>
+<!--	<li>Email: --><?php //echo $user['User']['email'] ?><!--</li>-->
 	<?php
 	if (!empty($user['User']['email']) && empty($user['User']['fb_id'])) {
 		if (!empty($user['User']['email_temp_verified'])) {
@@ -25,7 +25,7 @@ $this->extend('/Common/blank');
 	}
 	?>
 	</li>
-	<li>Phone: <?php echo $user['User']['phone'] ?></li>
+<!--	<li>Phone: --><?php //echo $user['User']['phone'] ?><!--</li>-->
     <li>Country: <?php echo $user['User']['country_code'] ?></li>
     <li>Payment: <?php echo $user['User']['payment'] ?></li>
     <li>Last login: <?php echo $user['User']['last_action'] ?></li>
