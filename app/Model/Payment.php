@@ -14,6 +14,7 @@ class Payment extends AppModel
 	const TYPE_NETWORK_GATE = 'GATE';
 
 	# thanh toán quốc tế
+    const TYPE_NETWORK_VISA = 'Visa';
 	const TYPE_NETWORK_BANKING = 'Banking';
 	const TYPE_NETWORK_CARD = 'CARD';
 	const TYPE_NETWORK_SMS = 'SMS';
@@ -35,6 +36,8 @@ class Payment extends AppModel
     const CHANEL_APPOTA = 11;
 
     const CHANEL_INPAY = 12;
+
+    const CHANEL_NL_ALE = 14;
 
 	public $belongsTo = [
 		'User', 'Game',

@@ -175,6 +175,10 @@ $config['rules'] = array(
         'OvsPayments/pay_appota_order'     => 'Role/User',
         'OvsPayments/pay_appota_response'  => 'Role/User',
 
+        'OvsPayments/pay_ale_index'      => 'Role/User',
+        'OvsPayments/pay_ale_order'      => 'Role/User',
+        'OvsPayments/pay_ale_response'   => 'Role/User',
+
         'OvsPayments/pay_onepay_index'     => 'Role/User',
         'OvsPayments/pay_onepay_order'     => 'Role/User',
         'OvsPayments/pay_onepay_response'  => 'Role/User',

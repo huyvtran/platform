@@ -202,6 +202,11 @@ Configure::write('AppotaPay', array(
     'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_appota_response',
 ));
 
+Configure::write('Ale', array(
+    'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_ale_response',
+    'CancelUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_error',
+));
+
 Configure::write('OnepayBanking', array(
 	'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_onepay_response',
 ));

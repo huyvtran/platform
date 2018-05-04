@@ -1114,4 +1114,228 @@ class OvsPaymentsController extends AppController {
             $this->set(compact('data'));
         }
     }
+
+    public function pay_ale_index(){
+        $this->loadModel('Payment');
+        $this->pay_index(Payment::CHANEL_PAYPAL, 'USD');
+        $this->set('title_for_app', 'Banking (visa, master)');
+    }
+
+    public function pay_ale_order(){
+        $token = $this->request->header('token');
+        $this->set(compact('token'));
+
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            throw new NotFoundException('Vui lòng login');
+        }
+        $user = $this->Auth->user();
+
+        if ($this->request->is('post') || $this->request->is('put')) {
+            $productId = $this->request->query('productId');
+            if( empty($this->request->query('productId')) ){
+                throw new NotFoundException(__('Chưa chọn gói xu'));
+            }
+
+            $this->loadModel('Product');
+            $this->Product->recursive = -1;
+            $product = $this->Product->findById($productId);
+
+            if( empty($product) ){
+                throw new NotFoundException(__('Không có gói xu phù hợp'));
+            }
+
+            if (empty($this->request->data['buyer_name']) || empty($this->request->data['buyer_email'])
+                || empty($this->request->data['buyer_phone']) || empty($this->request->data['buyer_address'])
+                || empty($this->request->data['buyer_city']) || empty($this->request->data['buyer_country'])
+            ) {
+                $messageFlash = __('Thiếu thông tin nạp coin');
+                if (empty($this->request->data['buyer_name'])) $messageFlash = __('Vui lòng điền họ tên');
+                if (empty($this->request->data['buyer_email'])) $messageFlash = __('Vui lòng điền thông tin email');
+                if (empty($this->request->data['buyer_phone'])) $messageFlash = __('Vui lòng điền thông tin điện thoại');
+                if (empty($this->request->data['buyer_address'])) $messageFlash = __('Vui lòng điền thông tin nơi ở');
+                if (empty($this->request->data['buyer_city'])) $messageFlash = __('Vui lòng điền thông tin city');
+                if (empty($this->request->data['buyer_country'])) $messageFlash = __('Vui lòng điền thông tin country');
+                $this->Session->setFlash($messageFlash, null, array(), 'payment');
+                goto end;
+            }
+
+            # verify email
+            if( empty(filter_var($this->request->data['buyer_email'], FILTER_VALIDATE_EMAIL)) ){
+                $this->Session->setFlash(__("Thông tin email không chính xác"), null, array(), 'payment');
+                goto end;
+            }
+
+            $this->loadModel('Payment');
+            $this->loadModel('WaitingPayment');
+
+            $chanel = Payment::CHANEL_NL_ALE;
+            $type = Payment::TYPE_NETWORK_VISA;
+
+            $order_id = microtime(true) * 10000;
+            # tạo giao dịch waiting_payment
+            $data = array(
+                'order_id'  => $order_id,
+                'user_id'   => $user['id'],
+                'game_id'   => $game['id'],
+                'price'     => $product['Product']['platform_price'],
+                'status'    => WaitingPayment::STATUS_WAIT,
+                'time'      => time(),
+                'type'      => $type,
+                'chanel'    => $chanel,
+            );
+            $unresolvedPayment = $this->WaitingPayment->save($data);
+
+            $mc_token = 'tqtLWMqnKkqi3NRP32amXwSxJuFOCL';
+            $mc_checksum = 'Sj21QrpiNpI6DrFutfRWUetCwCK4CU';
+            $mc_encrypt = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCIZlME8jWIGDQRmLQxmw/8Gd8vgcoHLPNoaAnmq8WKvQb2Tk6uI0wyOqOI2IHNZm/k5Wz6NQvsiFgLWTXhtpyvaMfAFLQzc9cYWy6yBd+56QGYiYIMJdsR1wIkBZLQ5UPQleVXrnyhs1NPnZVJU0BsRurmQiHFSi1mHqtiZUQ1RQIDAQAB';
+            App::uses('AlePay', 'Payment');
+            $aleObj = new AlePay($mc_token, $mc_checksum, $mc_encrypt, $game['app'], $token);
+            $aleObj->setOrderId($order_id);
+
+            # tính theo usd
+            $orderNL = $aleObj->visa($product['Product']['price'], $this->request->data);
+
+            # chuyển trạng thái queue trong giao dịch
+            App::uses('PaymentLib', 'Payment');
+            $payLib = new PaymentLib();
+
+            if( empty($orderNL['token']) || empty($orderNL['checkoutUrl'])){
+                $payLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+                throw new NotFoundException(__('Lỗi tạo giao dịch, vui lòng thử lại'));
+            }
+
+            $this->loadModel('NlvisaOrder');
+            $this->NlvisaOrder->save(array(
+                'NlvisaOrder' => array(
+                    'order_id' => $order_id,
+                    'game_id' => $game['id'],
+                    'user_id' => $user['id'],
+                    'nl_token' => $orderNL['token']
+                )
+            ));
+
+            $payLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_QUEUEING);
+            $this->redirect($orderNL['checkoutUrl']);
+            end:
+        }
+
+        $this->set('title_for_app', 'Banking (visa, master)');
+        $this->layout = 'payment';
+    }
+
+    public function pay_ale_response(){
+        $this->layout = 'payment';
+        $this->view = 'error';
+
+        CakeLog::info('check request ale response:' . print_r($this->request, true), 'payment');
+        $game = $this->Common->currentGame();
+        $this->Common->setTheme();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            throw new NotFoundException('Vui lòng login');
+        }
+        $user = $this->Auth->user();
+
+        $token = $this->request->header('token');
+        $this->set(compact('token'));
+
+        $transaction_status = false;
+
+        if( empty($this->request->query['data'])
+            ||  empty($this->request->query['checksum'])
+            ||  empty($this->request->query['order_id'])
+        ){
+            goto end;
+        }
+
+        # sử lý thêm data và checksum ale
+
+        $order_id = $this->request->query['order_id'] ;
+
+        $this->loadModel('NlvisaOrder');
+        $this->loadModel('WaitingPayment');
+        $this->WaitingPayment->bindModel(array(
+            'hasOne' => array(
+                'NlvisaOrder' => array(
+                    'foreignKey' => false,
+                    'conditions' => array_merge(
+                        array('WaitingPayment.order_id = NlvisaOrder.order_id')
+                    )
+                )
+            )
+        ));
+
+        $this->WaitingPayment->recursive = 0;
+        $wating_payment = $this->WaitingPayment->findByOrderIdAndUserId($order_id, $user['id']);
+
+        App::uses('PaymentLib', 'Payment');
+        $paymentLib = new PaymentLib();
+
+        # check cổng trả về và commit giao dịch lên cổng
+        if( isset($wating_payment['WaitingPayment']['status'])
+            && $wating_payment['WaitingPayment']['status'] != WaitingPayment::STATUS_COMPLETED
+            && !empty($wating_payment['NlvisaOrder']['nl_token'])
+        ) {
+            $mc_token = 'tqtLWMqnKkqi3NRP32amXwSxJuFOCL';
+            $mc_checksum = 'Sj21QrpiNpI6DrFutfRWUetCwCK4CU';
+            $mc_encrypt = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCIZlME8jWIGDQRmLQxmw/8Gd8vgcoHLPNoaAnmq8WKvQb2Tk6uI0wyOqOI2IHNZm/k5Wz6NQvsiFgLWTXhtpyvaMfAFLQzc9cYWy6yBd+56QGYiYIMJdsR1wIkBZLQ5UPQleVXrnyhs1NPnZVJU0BsRurmQiHFSi1mHqtiZUQ1RQIDAQAB';
+            App::uses('AlePay', 'Payment');
+            $aleObj = new AlePay($mc_token, $mc_checksum, $mc_encrypt, $game['app'], $token);
+            $ale_reponse = $aleObj->getTransactionDetail($wating_payment['NlvisaOrder']['nl_token']);
+            if( !empty($ale_reponse) ){
+                $data_ale = array(
+                    'total_amount'      => $ale_reponse['amount'],
+                    'currency'          => $ale_reponse['currency'],
+                    'nl_status'         => $ale_reponse['status'],
+                    'buyer_name'        => $ale_reponse['buyerName'],
+                    'buyer_email'       => $ale_reponse['buyerEmail'],
+                    'buyer_phone'       => $ale_reponse['buyerPhone'],
+                    'card_number'       => $ale_reponse['cardNumber'],
+                    'nl_method'         => $ale_reponse['method'],
+                    'nl_data'           => json_encode($ale_reponse),
+                );
+
+                $this->NlvisaOrder->id = $wating_payment['NlvisaOrder']['id'];
+                $this->NlvisaOrder->save($data_ale);
+
+                # cộng xu
+                $data_payment = array(
+                    'waiting_id'	=> $wating_payment['WaitingPayment']['id'],
+                    'time'          => time(),
+                    'chanel'        => $wating_payment['WaitingPayment']['chanel'],
+                    'type'          => $wating_payment['WaitingPayment']['type'],
+
+                    'order_id'      => $order_id,
+                    'user_id'       => $user['id'],
+                    'game_id'       => $game['id'],
+
+                    'price'         => $wating_payment['WaitingPayment']['price'],
+                    'price_end'     => ($wating_payment['WaitingPayment']['price'])*0.965 - 7700,
+                );
+
+                $data_view = array(
+                    'order_id'  => $order_id,
+                    'price_end' => $wating_payment['WaitingPayment']['price'],
+                    'price_game'=> 0,
+                );
+                $this->set('data_payment', $data_view);
+
+                $this->view = 'success';
+                $transaction_status = true;
+
+                $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+                $paymentLib->add($data_payment);
+            }
+        }elseif ( isset($wating_payment['WaitingPayment']['status'])
+            && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_COMPLETED
+        ){
+            $transaction_status = true;
+            goto end;
+        }
+
+        end:
+        if( !$transaction_status && !empty($wating_payment['WaitingPayment']['id']) ){
+            $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+        }
+    }
 }

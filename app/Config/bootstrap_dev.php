@@ -212,6 +212,11 @@ Configure::write('AppotaPay', array(
     'ReturnUrl' => 'http://muplf.local/OvsPayments/pay_appota_response',
 ));
 
+Configure::write('Ale', array(
+    'ReturnUrl' => 'http://admin.muplf.local/OvsPayments/pay_ale_response',
+    'CancelUrl' => 'http://admin.muplf.local/OvsPayments/pay_error',
+));
+
 Configure::write('OnepayBanking', array(
     'ReturnUrl' => 'http://cms.platform.net.local/OvsPayments/pay_onepay_response',
 ));
