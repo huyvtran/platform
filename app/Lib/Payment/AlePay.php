@@ -217,6 +217,7 @@ class AlePay {
         );
 
         $nl_result = $this->CheckoutCall($post_url, $post_field);
+        CakeLog::info('input order:' . print_r($params, true), 'payment');
         CakeLog::info('create order ale:' . print_r( $nl_result, true), 'payment');
         if( isset($nl_result['errorCode']) && $nl_result['errorCode'] == '000'){
             return $this->decrypt($nl_result['data']);
