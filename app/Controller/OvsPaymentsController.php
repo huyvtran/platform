@@ -1229,7 +1229,7 @@ class OvsPaymentsController extends AppController {
         $this->layout = 'payment';
         $this->view = 'error';
 
-        CakeLog::info('check request ale response:' . print_r($this->request, true), 'payment');
+        CakeLog::info('check request ale response:' . print_r($this->request->query, true), 'payment');
         $game = $this->Common->currentGame();
         $this->Common->setTheme();
         if( empty($game) || !$this->Auth->loggedIn() ){
@@ -1268,6 +1268,9 @@ class OvsPaymentsController extends AppController {
 
         $this->WaitingPayment->recursive = 0;
         $wating_payment = $this->WaitingPayment->findByOrderIdAndUserId($order_id, $user['id']);
+
+        Configure::write('debug', 2);
+        debug($wating_payment);die;
 
         App::uses('PaymentLib', 'Payment');
         $paymentLib = new PaymentLib();
