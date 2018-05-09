@@ -225,6 +225,7 @@ class AlePay {
         $post_field = array('transactionCode' => $ale_token );
         $post_url = 'https://alepay.vn/checkout/v1/get-transaction-info';
         $nl_result = $this->CheckoutCall($post_url, $post_field);
+        CakeLog::info('get transaction ale:' . print_r( $nl_result, true), 'payment');
         if( isset($nl_result['errorCode']) && $nl_result['errorCode'] == '000'){
             return $this->decrypt($nl_result['data']);
         }
