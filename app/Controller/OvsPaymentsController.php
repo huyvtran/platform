@@ -1269,9 +1269,6 @@ class OvsPaymentsController extends AppController {
         $this->WaitingPayment->recursive = 0;
         $wating_payment = $this->WaitingPayment->findByOrderIdAndUserId($order_id, $user['id']);
 
-        Configure::write('debug', 2);
-        debug($wating_payment);die;
-
         App::uses('PaymentLib', 'Payment');
         $paymentLib = new PaymentLib();
 
@@ -1286,6 +1283,10 @@ class OvsPaymentsController extends AppController {
             App::uses('AlePay', 'Payment');
             $aleObj = new AlePay($mc_token, $mc_checksum, $mc_encrypt, $game['app'], $token);
             $ale_reponse = $aleObj->getTransactionDetail($wating_payment['NlvisaOrder']['nl_token']);
+
+            Configure::write('debug', 2);
+            debug($ale_reponse);die;
+
             if( !empty($ale_reponse) ){
                 $data_ale = array(
                     'total_amount'      => $ale_reponse['amount'],
