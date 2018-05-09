@@ -1284,8 +1284,7 @@ class OvsPaymentsController extends AppController {
             $aleObj = new AlePay($mc_token, $mc_checksum, $mc_encrypt, $game['app'], $token);
             $ale_reponse = $aleObj->getTransactionDetail($wating_payment['NlvisaOrder']['nl_token']);
 
-            Configure::write('debug', 2);
-            debug($ale_reponse);die;
+            CakeLog::info('check request ale response 2:' . print_r($ale_reponse, true), 'payment');
 
             if( !empty($ale_reponse) ){
                 $data_ale = array(
