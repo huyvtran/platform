@@ -8,7 +8,7 @@ class AlePay {
     protected $appkey;
 
     protected $checkout_type = 1; // chỉ thanh toán thường
-    protected $currency = 'VND';
+    protected $currency = 'USD';
 
     protected $order_id;
 
