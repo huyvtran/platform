@@ -1195,6 +1195,7 @@ class OvsPaymentsController extends AppController {
 
             # tính theo usd
             $orderNL = $aleObj->visa($product['Product']['price'], $this->request->data);
+            CakeLog::info('check visa ale' . print_r($orderNL, true), 'payment');
 
             # chuyển trạng thái queue trong giao dịch
             App::uses('PaymentLib', 'Payment');
