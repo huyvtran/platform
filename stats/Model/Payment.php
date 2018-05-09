@@ -14,7 +14,7 @@ class Payment extends AppModel {
 	
 	public $filterArgs = array(
 		'game_id' => array('type' => 'value'),
-		'type' => array('type' => 'value'),
+		'chanel' => array('type' => 'value'),
 		'fromTime' => array('type' => 'expression', 'method' => 'fromTimeCond', 'field' => 'Payment.time >= '),
 		'toTime' => array('type' => 'expression', 'method' => 'toTimeCond', 'field' => 'Payment.time <= ')
 	);

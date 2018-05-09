@@ -35,7 +35,7 @@ class RevenuesController extends AppController {
 
 	    $addGroupBy = array();
 	    if (!empty($this->request->params['named']['game_id']) && !$this->request->is('ajax')) {
-//		    $addGroupBy = array('type');
+		    $addGroupBy = array('chanel');
 	    }
 
         # END PERMISSIONS
@@ -64,10 +64,18 @@ class RevenuesController extends AppController {
 //        debug($this->Payment->getLastQuery());
 //        debug($revenues);die;
 
-        $payTypes = array(
-            'VTT' => 'VTT',
-            'VMS' => 'VMS',
-            'VNP' => 'VNP'
+        $chanels = array(
+            1 => 'Vippay 1',
+            7 => 'Vippay 2',
+            9 => 'Vippay 3',
+            2 => 'Hanoipay',
+            3 => 'Paypal',
+            5 => '1Pay 1',
+            8 => '1Pay 2',
+            6 => 'Paymentwall',
+            11 => 'Appota',
+            12 => 'Inpay',
+            14 => 'Ale/NL'
         );
 
         # tính cho lượt trước để so sánh tỉ lệ tăng hay giảm với hiện tại
@@ -118,7 +126,7 @@ class RevenuesController extends AppController {
                 'Game.status' => 1
             )
         ));
-        $this->set(compact('games', 'fromTime', 'toTime', 'revenues', 'data', 'rangeDates', 'gameTotals', 'payTypes', 'idToName', 'data2', 'total'));
+        $this->set(compact('games', 'fromTime', 'toTime', 'revenues', 'data', 'rangeDates', 'gameTotals', 'chanels', 'idToName', 'data2', 'total'));
     }
 
     public function country() {
