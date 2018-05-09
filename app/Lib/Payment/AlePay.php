@@ -1,4 +1,6 @@
 <?php
+include(ROOT . DS . 'vendors' . DS . 'Rsa' . DS . 'index.php');
+
 class AlePay {
     protected $mc_token = 'tqtLWMqnKkqi3NRP32amXwSxJuFOCL';
     protected $mc_checksum = 'Sj21QrpiNpI6DrFutfRWUetCwCK4CU';
@@ -152,8 +154,6 @@ class AlePay {
     }
 
     public function encrypt($data){
-        include(ROOT . DS . 'vendors' . DS . 'Rsa' . DS . 'index.php');
-
         $rsa = new Crypt_RSA();
         $rsa->loadKey($this->getMcEncrypt());
         $rsa->setEncryptionMode(CRYPT_RSA_ENCRYPTION_PKCS1);
@@ -163,8 +163,6 @@ class AlePay {
 
     public function decrypt($data)
     {
-        include(ROOT . DS . 'vendors' . DS . 'Rsa' . DS . 'index.php');
-
         $ciphertext = base64_decode($data);
         $rsa = new Crypt_RSA();
         $rsa->loadKey($this->getMcEncrypt());
@@ -217,7 +215,8 @@ class AlePay {
         $nl_result = $this->CheckoutCall($post_url, $post_field);
         CakeLog::info('create order ale:' . print_r( $nl_result, true), 'payment');
         if( isset($nl_result['errorCode']) && $nl_result['errorCode'] == '000'){
-            return $this->decrypt($nl_result['data']);
+            $result = $this->decrypt($nl_result['data']);
+            return $result;
         }
         return false;
     }
