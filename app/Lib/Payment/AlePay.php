@@ -165,10 +165,10 @@ class AlePay {
     {
         include(ROOT . DS . 'vendors' . DS . 'Rsa' . DS . 'index.php');
 
-        $rsa = new Crypt_RSA();
-        $rsa->setEncryptionMode(CRYPT_RSA_ENCRYPTION_PKCS1);
         $ciphertext = base64_decode($data);
+        $rsa = new Crypt_RSA();
         $rsa->loadKey($this->getMcEncrypt());
+        $rsa->setEncryptionMode(CRYPT_RSA_ENCRYPTION_PKCS1);
         $output = $rsa->decrypt($ciphertext);
         return json_decode($output, true);
     }
@@ -181,13 +181,11 @@ class AlePay {
             . '?app=' . $this->getAppkey()
             . '&qtoken='. $this->getUserToken()
             . '&order_id=' . $this->getOrderId();
-//        $return_url = urlencode($return_url);
 
         $cancel_url = Configure::read('Ale.CancelUrl')
             . '?app=' . $this->getAppkey()
             . '&qtoken='. $this->getUserToken()
             . '&order_id=' . $this->getOrderId();
-//        $cancel_url = urlencode($cancel_url);
 
         $params = array(
             'orderCode'     => (string) $this->getOrderId(), //Mã hóa đơn do website bán hàng sinh ra
@@ -217,7 +215,6 @@ class AlePay {
         );
 
         $nl_result = $this->CheckoutCall($post_url, $post_field);
-        CakeLog::info('input order:' . print_r($params, true), 'payment');
         CakeLog::info('create order ale:' . print_r( $nl_result, true), 'payment');
         if( isset($nl_result['errorCode']) && $nl_result['errorCode'] == '000'){
             return $this->decrypt($nl_result['data']);

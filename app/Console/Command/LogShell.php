@@ -120,5 +120,19 @@ class LogShell extends AppShell {
 
     public function test2(){
         CakeLog::info('test cakeresque');
+
+        $text = 'WZ0rX45WlPsSjQmKsrUD0SK4EpkL3yts9q3KUlYJiZ2LKH9WlZAbzXOAdn5pw2+B2btnUdaFiSpz1BqiJKkEmIedU6r5F58XHzToKWr69K9IE+dVWTTRMFmHQV7a2SowslJ+l4OaVdCwTdmif8j83y3W+4N9RBB9swqW1qRrEbM=';
+
+        $mc_token = 'tqtLWMqnKkqi3NRP32amXwSxJuFOCL';
+        $mc_checksum = 'Sj21QrpiNpI6DrFutfRWUetCwCK4CU';
+        $mc_encrypt = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCIZlME8jWIGDQRmLQxmw/8Gd8vgcoHLPNoaAnmq8WKvQb2Tk6uI0wyOqOI2IHNZm/k5Wz6NQvsiFgLWTXhtpyvaMfAFLQzc9cYWy6yBd+56QGYiYIMJdsR1wIkBZLQ5UPQleVXrnyhs1NPnZVJU0BsRurmQiHFSi1mHqtiZUQ1RQIDAQAB';
+        App::uses('AlePay', 'Payment');
+        $aleObj = new AlePay($mc_token, $mc_checksum, $mc_encrypt, 'a', 'b');
+
+        # tính theo usd
+        $orderNL = $aleObj->decrypt($text);
+
+        Configure::write('debug', 2);
+        debug($orderNL);
     }
 }
