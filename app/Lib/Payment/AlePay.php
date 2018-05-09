@@ -181,13 +181,13 @@ class AlePay {
             . '?app=' . $this->getAppkey()
             . '&qtoken='. $this->getUserToken()
             . '&order_id=' . $this->getOrderId();
-        $return_url = urlencode($return_url);
+//        $return_url = urlencode($return_url);
 
         $cancel_url = Configure::read('Ale.CancelUrl')
             . '?app=' . $this->getAppkey()
             . '&qtoken='. $this->getUserToken()
             . '&order_id=' . $this->getOrderId();
-        $cancel_url = urlencode($cancel_url);
+//        $cancel_url = urlencode($cancel_url);
 
         $params = array(
             'orderCode'     => (string) $this->getOrderId(), //Mã hóa đơn do website bán hàng sinh ra
