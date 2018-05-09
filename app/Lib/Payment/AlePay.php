@@ -170,7 +170,7 @@ class AlePay {
         $ciphertext = base64_decode($data);
         $rsa->loadKey($this->getMcEncrypt());
         $output = $rsa->decrypt($ciphertext);
-        return $output;
+        return json_decode($output, true);
     }
 
     # tạo giao dịch
