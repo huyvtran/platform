@@ -25,7 +25,7 @@ if (!$this->request->is('ajax')) {
 				echo $this->Form->create('Payment', array('inputDefaults' => array('div' => false, 'label' => false), 'class' => 'form-inline'));
 				echo $this->Form->input('game_id', array('empty' => '--All Games--', 'options' => $games)) . ' ';
 				echo $this->Form->input('chanel', array(
-					'empty' => '--All Types--',
+					'empty' => '--All Chanels --',
 					'options' => $chanels,
 					'style' => 'width: 154px;'
                 ));
