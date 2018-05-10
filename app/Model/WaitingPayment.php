@@ -10,6 +10,7 @@ class WaitingPayment extends AppModel {
 	const STATUS_QUEUEING  	= 1; // chờ cổng game trả về, có thể bị timeout
 	const STATUS_COMPLETED  = 2; // xác nhận thành công
 	const STATUS_ERROR  	= 3; // cổng game trả về, thẻ lỗi hoặc đã sử dụng
+    const STATUS_REVIEW  	= 4; // cổng game trả về, thẻ đã bị trừ tiền nhưng có khả năng hoàn trả
 
     public $actsAs = array(
         'Search.Searchable'

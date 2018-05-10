@@ -14,7 +14,7 @@
 </div>
 <div class="container">
     <div class="row" align="center">
-        <h3 style="text-align: center">Giao dịch thành công.</h3>
+        <h3 style="text-align: center">The transaction was successfully.</h3>
     </div>
 </div>
 </div>
