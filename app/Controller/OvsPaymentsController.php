@@ -1212,7 +1212,8 @@ class OvsPaymentsController extends AppController {
                     'order_id' => $order_id,
                     'game_id' => $game['id'],
                     'user_id' => $user['id'],
-                    'nl_token' => $orderNL['token']
+                    'nl_token' => $orderNL['token'],
+                    'buyer_data' => json_encode($this->request->data)
                 )
             ));
 
