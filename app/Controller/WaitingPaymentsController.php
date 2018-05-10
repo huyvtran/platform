@@ -23,14 +23,14 @@ class WaitingPaymentsController extends AppController {
             $parsedConditions = $this->WaitingPayment->parseCriteria($this->passedArgs);
         }
 
-        /*if( !empty($this->passedArgs) && empty($parsedConditions)
+        if( !empty($this->passedArgs) && empty($parsedConditions)
         ){
             if (	(count($this->passedArgs) == 1 && empty($this->passedArgs['page']))
                 ||	count($this->passedArgs) > 1
             ) {
                 $this->Session->setFlash("Can not find anyone match this conditions", "error");
             }
-        }*/
+        }
 
         $this->loadModel('Payment');
 
