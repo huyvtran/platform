@@ -96,6 +96,7 @@ class WaitingPaymentsController extends AppController {
             Payment::CHANEL_ONEPAY_2    => '1Pay 2',
             Payment::CHANEL_PAYMENTWALL => 'PaymentWall',
             Payment::CHANEL_APPOTA      => 'Appota',
+            Payment::CHANEL_NL_ALE      => 'Ale/NL',
         );
 
         if($this->Auth->User('username') == 'cskh1pay'){
