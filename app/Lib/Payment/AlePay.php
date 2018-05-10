@@ -222,7 +222,13 @@ class AlePay {
     }
 
     public function getTransactionDetail($ale_token){
-        $post_field = array('transactionCode' => $ale_token );
+        $data = array('transactionCode' => $ale_token );
+        $post_field = array(
+            'token'     => $this->getMcToken(),
+            'data'      => $data,
+            'checksum'  => md5($data . $this->getMcChecksum())
+        );
+
         $post_url = 'https://alepay.vn/checkout/v1/get-transaction-info';
         $nl_result = $this->CheckoutCall($post_url, $post_field);
         CakeLog::info('get transaction ale:' . print_r( $nl_result, true), 'payment');
