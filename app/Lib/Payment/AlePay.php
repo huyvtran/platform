@@ -203,7 +203,7 @@ class AlePay {
             'paymentHours'  => '24', //Địa chỉ người mua hàng
         );
 
-        $post_url = 'https://alepay.vn/checkout/v1/request-order';
+        $post_url = 'https://alepay.vn/checkout/v1/request-order?lang=eng';
         $data = $this->encrypt(json_encode($params));
 
         $post_field = array(
