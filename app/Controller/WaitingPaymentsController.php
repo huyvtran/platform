@@ -23,14 +23,14 @@ class WaitingPaymentsController extends AppController {
             $parsedConditions = $this->WaitingPayment->parseCriteria($this->passedArgs);
         }
 
-        if( !empty($this->passedArgs) && empty($parsedConditions)
+        /*if( !empty($this->passedArgs) && empty($parsedConditions)
         ){
             if (	(count($this->passedArgs) == 1 && empty($this->passedArgs['page']))
                 ||	count($this->passedArgs) > 1
             ) {
                 $this->Session->setFlash("Can not find anyone match this conditions", "error");
             }
-        }
+        }*/
 
         $this->loadModel('Payment');
 
@@ -63,6 +63,8 @@ class WaitingPaymentsController extends AppController {
             )
         ));
 
+        $limit = 10;
+        if( !empty($this->passedArgs['number']) ) $limit = $this->passedArgs['number'];
         $this->paginate = array(
             'WaitingPayment' => array(
                 'fields' => array('WaitingPayment.*','Payment.*', 'User.username', 'User.id', 'Game.title', 'Game.os'),
@@ -72,7 +74,7 @@ class WaitingPaymentsController extends AppController {
                 ),
                 'order' => array('WaitingPayment.id' => 'DESC'),
                 'recursive' => -1,
-                'limit' => 10
+                'limit' => $limit
             )
         );
 

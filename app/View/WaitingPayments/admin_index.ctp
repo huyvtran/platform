@@ -44,6 +44,17 @@ $this->extend('/Common/blank');
                 'text' => 'Username'
             ),
         ));
+
+        echo $this->Form->input('number', array(
+            'type' => 'select',
+            'label' => array(
+                'class' => 'control-label',
+                'text' => 'Recod'
+            ),
+            'empty' => '10',
+            'options' => array(10 => 10, 20 => 20, 30 => 30),
+            'selected' => !empty($this->request->params['named']['number']) ? $this->request->params['named']['number'] : ''
+        ));
         ?>
     </div>
 
