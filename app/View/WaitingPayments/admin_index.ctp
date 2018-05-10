@@ -51,7 +51,7 @@ $this->extend('/Common/blank');
                 'class' => 'control-label',
                 'text' => 'Recod'
             ),
-            'empty' => '10',
+            'empty' => '20',
             'options' => array(10 => 10, 20 => 20, 30 => 30),
             'selected' => !empty($this->request->params['named']['number']) ? $this->request->params['named']['number'] : ''
         ));

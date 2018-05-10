@@ -63,7 +63,7 @@ class WaitingPaymentsController extends AppController {
             )
         ));
 
-        $limit = 10;
+        $limit = 20;
         if( !empty($this->passedArgs['number']) ) $limit = $this->passedArgs['number'];
         $this->paginate = array(
             'WaitingPayment' => array(
