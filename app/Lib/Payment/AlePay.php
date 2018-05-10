@@ -196,7 +196,7 @@ class AlePay {
             'cancelUrl'	    => $cancel_url, //Địa chỉ website nhận "Hủy giao dịch"
             'buyerName'		=> urlencode($buyer['buyer_name']), //Tên người mua hàng
             'buyerEmail'    => $buyer['buyer_email'], //Địa chỉ Email người mua
-            'buyerPhone'    => urlencode($buyer['buyer_phone']), //Điện thoại người mua
+            'buyerPhone'    => $buyer['buyer_phone'], //Điện thoại người mua
             'buyerAddress'  => urlencode($buyer['buyer_address']), //Địa chỉ người mua hàng
             'buyerCity'     => urlencode($buyer['buyer_city']), //Địa chỉ người mua hàng
             'buyerCountry'  => urlencode($buyer['buyer_country']), //Địa chỉ người mua hàng
