@@ -206,7 +206,7 @@
                         'type' => 'text',
                         'id' => 'fullname',
                         'required' => 'required',
-                        'placeholder' => __('Họ tên')
+                        'placeholder' => __('Fullname')
                     ));
                     ?>
                 </div>
@@ -242,7 +242,7 @@
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-addon">
-                        <i class="fa fa-fw fa-phone"></i>
+                        <i class="fa fa-fw fa-home"></i>
                     </div>
                     <?php echo $this->Form->input('buyer_address', array(
                         'class' => 'form-control',
@@ -256,7 +256,7 @@
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-addon">
-                        <i class="fa fa-fw fa-phone"></i>
+                        <i class="fa fa-fw location_city"></i>
                     </div>
                     <?php echo $this->Form->input('buyer_city', array(
                         'class' => 'form-control',
@@ -270,7 +270,7 @@
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-addon">
-                        <i class="fa fa-fw fa-phone"></i>
+                        <i class="fa fa-fw fa-globe"></i>
                     </div>
                     <?php echo $this->Form->input('buyer_country', array(
                         'class' => 'form-control',
@@ -283,7 +283,7 @@
             </div>
 
             <div class="form-group">
-                <?php echo $this->Form->button(__('Gửi'), array('class' => 'btn btn-primary btn-block')) ?>
+                <?php echo $this->Form->button(__('Send'), array('class' => 'btn btn-primary btn-block')) ?>
             </div>
             <?php echo $this->Form->end(); ?>
         </div>
