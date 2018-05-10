@@ -223,10 +223,12 @@ class AlePay {
 
     public function getTransactionDetail($ale_token){
         $data = array('transactionCode' => $ale_token );
+        $data = $this->encrypt(json_encode($data));
+
         $post_field = array(
             'token'     => $this->getMcToken(),
             'data'      => $data,
-            'checksum'  => md5($data . $this->getMcChecksum())
+            'checksum'  => md5($data . $this->getMcChecksum()),
         );
 
         $post_url = 'https://alepay.vn/checkout/v1/get-transaction-info';

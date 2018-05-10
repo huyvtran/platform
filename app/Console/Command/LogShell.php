@@ -121,7 +121,7 @@ class LogShell extends AppShell {
     public function test2(){
         CakeLog::info('test cakeresque');
 
-        $text = 'WZ0rX45WlPsSjQmKsrUD0SK4EpkL3yts9q3KUlYJiZ2LKH9WlZAbzXOAdn5pw2+B2btnUdaFiSpz1BqiJKkEmIedU6r5F58XHzToKWr69K9IE+dVWTTRMFmHQV7a2SowslJ+l4OaVdCwTdmif8j83y3W+4N9RBB9swqW1qRrEbM=';
+        $text = 'Vm1JbzB6RDFsUHhQT0NGdk4vaFFnajg3MXVkVWR6MHJBek1BMjNVaGo5T2RzMTVjTjFXVTJOdDZYVFByUXMwNnVwdXhrOWdSU0pIcXk0dUsvSWlJdndMMG5oMkMySSt2Wjd1UVYvMlVlTVJWUHhrUXM4V2NQZmJPYU5ObkhPaVh4bm1ROTkrUG4vQldVeUtxditHVmNLNFQvYkg2cFRhbTJwQ3IvNkYzU2FBPQ==';
 
         $mc_token = 'tqtLWMqnKkqi3NRP32amXwSxJuFOCL';
         $mc_checksum = 'Sj21QrpiNpI6DrFutfRWUetCwCK4CU';
@@ -129,10 +129,10 @@ class LogShell extends AppShell {
         App::uses('AlePay', 'Payment');
         $aleObj = new AlePay($mc_token, $mc_checksum, $mc_encrypt, 'a', 'b');
 
-        # tính theo usd
-        $orderNL = $aleObj->decrypt($text);
+        $tranNL = $aleObj->decrypt(base64_decode($text));
+//        $tran_id = 'ALE0058QY';
+//        $tranNL = $aleObj->getTransactionDetail($tran_id);
 
-        Configure::write('debug', 2);
-        debug($orderNL);
+        debug($tranNL);
     }
 }
