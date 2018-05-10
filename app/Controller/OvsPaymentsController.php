@@ -1068,50 +1068,57 @@ class OvsPaymentsController extends AppController {
     public function admin_detail(){
 	    if(!empty($this->request->params['named'])){
 	        $this->loadModel('Payment');
-	        $data = false;
+	        $data = $model = false;
 	        switch ($this->request->params['named']['chanel']){
                 case Payment::CHANEL_ONEPAY :
                 case Payment::CHANEL_ONEPAY_2:
-                    $this->loadModel('OnepayOrder');
-                    $this->OnepayOrder->bindModel(array(
-                        'hasOne' => array(
-                            'WaitingPayment' => array(
-                                'foreignKey' => false,
-                                'conditions' => array_merge(
-                                    array('WaitingPayment.order_id = OnepayOrder.order_id')
-                                )
-                            ),
-                            'User' => array(
-                                'foreignKey' => false,
-                                'conditions' => array_merge(
-                                    array('User.id = OnepayOrder.user_id')
-                                )
-                            ),
-                            'Game' => array(
-                                'foreignKey' => false,
-                                'conditions' => array_merge(
-                                    array('Game.id = OnepayOrder.game_id')
-                                )
-                            )
-                        )
-                    ));
-
-                    $data = $this->OnepayOrder->find('all', array(
-                        'fields'     => array('OnepayOrder.*','WaitingPayment.*', 'Game.title', 'Game.os',
-                            'User.username', 'User.id', 'User.country_code', 'User.created'),
-                        'conditions' => array(
-                            'OnepayOrder.order_id'   => $this->request->params['named']['order_id'],
-                        ),
-                        'recursive' => -1,
-                        'contain'   => array('WaitingPayment', 'User', 'Game'),
-                    ));
-                    $data = $data[0];
-
+                    $model = 'OnepayOrder';
+                    break;
+                case Payment::CHANEL_NL_ALE :
+                    $model = 'NlvisaOrder';
+                    $this->view = 'admin_detail_ale';
                     break;
             }
 
+            if( $model ) {
+                $this->loadModel($model);
+                $this->{$model}->bindModel(array(
+                    'hasOne' => array(
+                        'WaitingPayment' => array(
+                            'foreignKey' => false,
+                            'conditions' => array_merge(
+                                array('WaitingPayment.order_id = ' . $model .'.order_id')
+                            )
+                        ),
+                        'User' => array(
+                            'foreignKey' => false,
+                            'conditions' => array_merge(
+                                array('User.id = ' . $model .'.user_id')
+                            )
+                        ),
+                        'Game' => array(
+                            'foreignKey' => false,
+                            'conditions' => array_merge(
+                                array('Game.id = ' . $model .'.game_id')
+                            )
+                        )
+                    )
+                ));
+
+                $data = $this->{$model}->find('all', array(
+                    'fields' => array( $model .'.*', 'WaitingPayment.*', 'Game.title', 'Game.os',
+                        'User.username', 'User.id', 'User.country_code', 'User.created'),
+                    'conditions' => array(
+                        $model .'.order_id' => $this->request->params['named']['order_id'],
+                    ),
+                    'recursive' => -1,
+                    'contain' => array('WaitingPayment', 'User', 'Game'),
+                ));
+                $data = $data[0];
+            }
+
             $this->layout = 'default_bootstrap';
-            $this->set(compact('data'));
+            $this->set(compact('data', 'model'));
         }
     }
 

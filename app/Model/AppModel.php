@@ -42,4 +42,13 @@ class AppModel extends Model {
 		$extra['contain'] = array();
 		return $this->find('count', array_merge($parameters, $extra));
 	}
+
+    // show query
+    function getLastQuery()
+    {
+        $dbo = $this->getDatasource();
+        $logs = $dbo->getLog();
+        $lastLog = end($logs['log']);
+        return $lastLog['query'];
+    }
 }
