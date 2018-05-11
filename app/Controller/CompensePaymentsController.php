@@ -78,7 +78,7 @@ class CompensePaymentsController extends AppController {
         # tìm giao dịch waiting theo order_id
         $this->loadModel('WaitingPayment');
         $this->WaitingPayment->recursive = -1;
-        $wating = $this->WaitingPayment->findByOrderIdAndStatus( $compense['CompensePayment']['order_id'], array(WaitingPayment::STATUS_QUEUEING, WaitingPayment::STATUS_ERROR) );
+        $wating = $this->WaitingPayment->findByOrderIdAndStatus( $compense['CompensePayment']['order_id'], array(WaitingPayment::STATUS_QUEUEING, WaitingPayment::STATUS_ERROR, WaitingPayment::STATUS_REVIEW) );
         if( empty($wating) ) {
             $msgFlash = "Order Id:" . $compense['CompensePayment']['order_id'] . " - không tìm thấy giao dịch hoặc giao dịch đã được bù - vui lòng kiểm tra lại";
             $this->Session->setFlash($msgFlash, 'error');
