@@ -81,10 +81,11 @@ class WaitingPaymentsController extends AppController {
         $orders = $this->paginate();
 
         $status = array(
-            WaitingPayment::STATUS_WAIT         => 'create',
-            WaitingPayment::STATUS_QUEUEING     => 'wait',
-            WaitingPayment::STATUS_COMPLETED    => 'success',
-            WaitingPayment::STATUS_ERROR        => 'error',
+            WaitingPayment::STATUS_WAIT         => 'Create',
+            WaitingPayment::STATUS_QUEUEING     => 'Wait',
+            WaitingPayment::STATUS_COMPLETED    => 'Success',
+            WaitingPayment::STATUS_ERROR        => 'Error',
+            WaitingPayment::STATUS_REVIEW       => 'Review',
         );
 
         $chanels = array(
