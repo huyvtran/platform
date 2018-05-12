@@ -185,7 +185,7 @@
             </a>
         </div>
     </div>
-    <div class="container">
+    <div class="container" style="width: 450px;">
         <div class="app-body">
             <div class="alert alert-success font-small" style="color: black">
                 <span style="color: red;">Note: don't support virtual cards</span><br/>
