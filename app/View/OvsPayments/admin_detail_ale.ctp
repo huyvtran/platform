@@ -20,8 +20,10 @@ $this->extend('/Common/blank');
             <li>order pay : <?php echo $data['WaitingPayment']['order_id'] ?></li>
             <li>price pay : <?php echo $data['WaitingPayment']['price'] ?></li>
             <?php
-            if ($data['WaitingPayment']['status'])
+            if ($data['WaitingPayment']['status'] == 2)
                 $status =  "<span style='color:green'>Success</span>";
+            else if ($data['WaitingPayment']['status'] == 4)
+                $status = "<span style='color:red'>Review</span>";
             else
                 $status = "<span style='color:red'>Error</span>";
             ?>
