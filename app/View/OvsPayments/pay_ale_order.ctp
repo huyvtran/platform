@@ -80,6 +80,7 @@
 
     .app-body {
         margin: 0 25px;
+        margin-bottom: 25px;
     }
 
     .app-helper a {
@@ -287,7 +288,6 @@
             </div>
             <?php echo $this->Form->end(); ?>
         </div>
-
     </div>
 </div>
 </body>
