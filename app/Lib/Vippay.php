@@ -193,7 +193,7 @@ class Vippay {
                 'messsage'  => 'thẻ lỗi hoặc đã được sử dụng',
                 'data'      => array(
                     'obj'   => $resultVippay,
-                    'price' => $resultVippay->info_card,
+                    //'price' => $resultVippay->info_card,
                     'time'  => time(),
                     'type'  => $data['type'],
                     'chanel'    => $data['chanel'],
@@ -209,7 +209,7 @@ class Vippay {
                 'messsage'  => 'chưa xác định chờ hệ thống thanh toán trả về',
                 'data'      => array(
                     'obj'   => $resultVippay,
-                    'price' => $resultVippay->info_card,
+                    //'price' => $resultVippay->info_card,
                     'time'  => time(),
                     'type'  => $data['type'],
                     'chanel'    => $data['chanel'],
