@@ -226,3 +226,8 @@ Configure::write('Paymentwall', array(
     'UrlPingBack' => 'http://cms.platform.net.local/OvsPayments/pay_paymentwall_response',
     'UrlPingBackSMS' => 'http://cms.platform.net.local/OvsPayments/pay_paymentwall_response_sms',
 ));
+
+Configure::write('QuickPay', array(
+    'ReturnUrl' => 'http://admin.muplf.local/OvsPayments/pay_quick_response',
+    'CancelUrl' => 'http://admin.muplf.local/OvsPayments/pay_error',
+));

@@ -1355,4 +1355,112 @@ class OvsPaymentsController extends AppController {
             $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
         }
     }
+
+    public function pay_quick_index(){
+        $this->loadModel('Payment');
+        $this->pay_index(Payment::CHANEL_PAYPAL, 'USD');
+        $this->set('title_for_app', 'Banking (visa, master)');
+    }
+
+    public function pay_quick_order(){
+        $token = $this->request->header('token');
+        $this->set(compact('token'));
+
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            throw new NotFoundException('Vui lòng login');
+        }
+        $user = $this->Auth->user();
+
+        if ($this->request->is('post') || $this->request->is('put')) {
+            $productId = $this->request->query('productId');
+            if( empty($this->request->query('productId')) ){
+                throw new NotFoundException(__('Chưa chọn gói xu'));
+            }
+
+            $this->loadModel('Product');
+            $this->Product->recursive = -1;
+            $product = $this->Product->findById($productId);
+
+            if( empty($product) ){
+                throw new NotFoundException(__('Không có gói xu phù hợp'));
+            }
+
+            if (empty($this->request->data['customer_name']) || empty($this->request->data['customer_email'])
+                || empty($this->request->data['customer_phone'])
+            ) {
+                $messageFlash = __('Thiếu thông tin nạp coin');
+                if (empty($this->request->data['customer_name'])) $messageFlash = __('Vui lòng điền họ tên');
+                if (empty($this->request->data['customer_email'])) $messageFlash = __('Vui lòng điền thông tin email');
+                if (empty($this->request->data['customer_phone'])) $messageFlash = __('Vui lòng điền thông tin điện thoại');
+                $this->Session->setFlash($messageFlash, null, array(), 'payment');
+                goto end;
+            }
+
+            # verify email
+            if( empty(filter_var($this->request->data['customer_email'], FILTER_VALIDATE_EMAIL)) ){
+                $this->Session->setFlash(__("Thông tin email không chính xác"), null, array(), 'payment');
+                goto end;
+            }
+
+            $this->loadModel('Payment');
+            $this->loadModel('WaitingPayment');
+
+            $chanel = Payment::CHANEL_QUICKPAY;
+            $type = Payment::TYPE_NETWORK_VISA;
+
+            $order_id = microtime(true) * 10000;
+            # tạo giao dịch waiting_payment
+            $data = array(
+                'order_id'  => $order_id,
+                'user_id'   => $user['id'],
+                'game_id'   => $game['id'],
+                'price'     => $product['Product']['platform_price'],
+                'status'    => WaitingPayment::STATUS_WAIT,
+                'time'      => time(),
+                'type'      => $type,
+                'chanel'    => $chanel,
+            );
+            $unresolvedPayment = $this->WaitingPayment->save($data);
+
+            $mc_token = 'ddd31ae0bd74f0cbf96f104bc152cee7a44ec0e0292568089a90b5667f19df38';
+            App::uses('QuickPay', 'Payment');
+            $quickObj = new QuickPay($mc_token, $game['app'], $token);
+            $quickObj->setOrderId($order_id);
+
+            # tính theo usd
+            $orderQuick = $quickObj->visa($product['Product']['price'], $this->request->data);
+
+            # chuyển trạng thái queue trong giao dịch
+            App::uses('PaymentLib', 'Payment');
+            $payLib = new PaymentLib();
+
+            if( empty($orderQuick['url']) ){
+                $payLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
+                throw new NotFoundException(__('Lỗi tạo giao dịch, vui lòng thử lại'));
+            }
+
+            $this->loadModel('QuickpayOrder');
+            $this->QuickpayOrder->save(array(
+                'QuickpayOrder' => array(
+                    'order_id' => $order_id,
+                    'game_id' => $game['id'],
+                    'user_id' => $user['id'],
+                    'quick_id' => $orderQuick['id'],
+                    'customer_data' => json_encode($this->request->data)
+                )
+            ));
+
+            $payLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_QUEUEING);
+            $this->redirect($orderQuick['url']);
+            end:
+        }
+
+        $this->set('title_for_app', 'Banking (visa, master)');
+        $this->layout = 'payment';
+    }
+
+    public function pay_quick_response(){
+	    CakeLog::info('quick pay response:' . print_r($this->request, true), 'payment');
+    }
 }

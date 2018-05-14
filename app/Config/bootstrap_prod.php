@@ -217,3 +217,8 @@ Configure::write('Paymentwall', array(
     'UrlPingBackSMS'    => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paymentwall_response_sms',
     'UrlPingBackVisa'   => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paymentwall_response_visa',
 ));
+
+Configure::write('QuickPay', array(
+    'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_quick_response',
+    'CancelUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_error',
+));

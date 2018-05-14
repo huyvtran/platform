@@ -16,3 +16,4 @@ hiddenconfig.php
 /stats/Config/database_prod.php
 /app/Console/cake
 /stats/Console/cake
+/composer.lock
