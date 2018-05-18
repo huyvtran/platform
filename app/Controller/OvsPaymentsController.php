@@ -1315,6 +1315,11 @@ class OvsPaymentsController extends AppController {
                     $this->view = 'error';
                     return ;
                 }
+
+                $price = $wating_payment['WaitingPayment']['price'];
+                # tăng 30% all game
+                $price += 0.3*$price ;
+
                 # cộng xu
                 $data_payment = array(
                     'waiting_id'	=> $wating_payment['WaitingPayment']['id'],
@@ -1326,13 +1331,13 @@ class OvsPaymentsController extends AppController {
                     'user_id'       => $user['id'],
                     'game_id'       => $game['id'],
 
-                    'price'         => $wating_payment['WaitingPayment']['price'],
+                    'price'         => $price,
                     'price_end'     => ($wating_payment['WaitingPayment']['price'])*0.965 - 7700,
                 );
 
                 $data_view = array(
                     'order_id'  => $order_id,
-                    'price_end' => $wating_payment['WaitingPayment']['price'],
+                    'price_end' => $price,
                     'price_game'=> 0,
                 );
                 $this->set('data_payment', $data_view);
