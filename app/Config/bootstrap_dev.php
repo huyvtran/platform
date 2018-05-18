@@ -209,7 +209,7 @@ Configure::write('Paypal', array(
 ));
 
 Configure::write('AppotaPay', array(
-    'ReturnUrl' => 'http://muplf.local/OvsPayments/pay_appota_response',
+    'ReturnUrl' => 'http://admin.muplf.local/OvsPayments/OvsPayments/pay_appota_response',
 ));
 
 Configure::write('Ale', array(
@@ -218,13 +218,13 @@ Configure::write('Ale', array(
 ));
 
 Configure::write('OnepayBanking', array(
-    'ReturnUrl' => 'http://cms.platform.net.local/OvsPayments/pay_onepay_response',
+    'ReturnUrl' => 'http://admin.muplf.local/OvsPayments/OvsPayments/pay_onepay_response',
 ));
 
 Configure::write('Paymentwall', array(
-	'ReturnUrl' => 'http://cms.platform.net.local/OvsPayments/pay_paymentwall_wait',
-    'UrlPingBack' => 'http://cms.platform.net.local/OvsPayments/pay_paymentwall_response',
-    'UrlPingBackSMS' => 'http://cms.platform.net.local/OvsPayments/pay_paymentwall_response_sms',
+	'ReturnUrl' => 'http://admin.muplf.local/OvsPayments/OvsPayments/pay_paymentwall_wait',
+    'UrlPingBack' => 'http://admin.muplf.local/OvsPayments/OvsPayments/pay_paymentwall_response',
+    'UrlPingBackSMS' => 'http://admin.muplf.local/OvsPayments/OvsPayments/pay_paymentwall_response_sms',
 ));
 
 Configure::write('QuickPay', array(

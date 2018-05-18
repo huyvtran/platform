@@ -198,6 +198,16 @@ foreach($_GET as $key => $getParam){
 	}
 }
 
+Configure::write('Paypal', array(
+    'clientId'  => 'AYFmk4DUu7GPimCAQEruxB7By-bvQQnNgW_avHQ1S0snZ2w0A0DO8BKE2W-YeoC1dFIpUuk2O4DvdoRN',
+    'secret'    => 'EB71qDxidp6kFjXOY9uTyEtR6S5QgBdveKCubGMYXuLO3GYkAlPYhxpyrFVn9k8qL2MNt4K5FEKjwZTd',
+    'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paypal_response',
+    'CancelUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_error',
+    'TokenUrl'  => 'https://api.paypal.com/v1/oauth2/token',
+    'PaymentUrl'=> 'https://api.paypal.com/v1/payments/payment/',
+    'mode'      => 'live',
+));
+
 Configure::write('AppotaPay', array(
     'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_appota_response',
 ));
