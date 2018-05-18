@@ -63,6 +63,11 @@ class OvsPaymentsController extends AppController {
         $this->loadModel('Payment');
         $this->pay_index(Payment::CHANEL_PAYPAL, 'USD');
         $this->set('title_for_app', 'Banking (visa, master)');
+
+        App::import('Lib', 'RedisCake');
+        $Redis = new RedisCake('action_count');
+        $redis_price = $Redis->get('paypal_key_' . Configure::read('Paypal.clientId'));
+        if( $redis_price > 490 ) $this->view = 'maintain';
     }
 
     public function pay_paypal_order(){
@@ -244,6 +249,14 @@ class OvsPaymentsController extends AppController {
                             $status_sdk = 0;
                             $this->view = 'success';
                             $transaction_status = true;
+
+                            # xử lý queue
+                            App::import('Lib', 'RedisCake');
+                            $Redis = new RedisCake('action_count');
+                            $redis_price = $Redis->get('paypal_key_' . Configure::read('Paypal.clientId'));
+                            if( empty($redis_price) ) $redis_price = $amongObj->getCurrency();
+                            else $redis_price += $amongObj->getCurrency();
+                            $Redis->set('paypal_key_' . Configure::read('Paypal.clientId'), $redis_price);
                         }
 
                         App::uses('PaymentLib', 'Payment');
