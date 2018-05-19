@@ -41,6 +41,8 @@ class Payment extends AppModel
 
     const CHANEL_QUICKPAY  = 15;
 
+    const CHANEL_MANUAL  = 16;
+
 	public $belongsTo = [
 		'User', 'Game',
 	];
