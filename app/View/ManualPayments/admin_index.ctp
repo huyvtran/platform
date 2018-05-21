@@ -159,7 +159,7 @@ $this->extend('/Common/blank');
             <th><?php echo $this->Paginator->sort('order_id'); ?></th>
             <th><?php echo $this->Paginator->sort('card_code'); ?></th>
             <th><?php echo $this->Paginator->sort('card_serial'); ?></th>
-            <th><?php echo $this->Paginator->sort('price'); ?></th>
+            <th><?php echo $this->Paginator->sort('card_price'); ?></th>
             <th><?php echo $this->Paginator->sort('time'); ?></th>
             <th><?php echo $this->Paginator->sort('type'); ?></th>
             <th><?php echo $this->Paginator->sort('detail', 'Note'); ?></th>
@@ -180,7 +180,7 @@ $this->extend('/Common/blank');
                 <td> <?php echo $payment['CardManual']['order_id']; ?> </td>
                 <td> <?php echo $payment['CardManual']['card_code']; ?> </td>
                 <td> <?php echo $payment['CardManual']['card_serial']; ?> </td>
-                <td> <?php if( !empty($payment['CardManual']['price']) ) echo number_format($payment['CardManual']['price'], 0, '.', ','); ?> </td>
+                <td> <?php if( !empty($payment['CardManual']['card_price']) ) echo number_format($payment['CardManual']['card_price'], 0, '.', ','); ?> </td>
                 <td> <?php echo $payment['CardManual']['time']; ?> </td>
                 <td> <?php echo $payment['CardManual']['type']; ?> </td>
                 <td> <?php if( !empty($payment['CardManual']['detail']) ) echo $payment['CardManual']['detail']; ?> </td>

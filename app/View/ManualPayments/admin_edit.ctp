@@ -54,6 +54,15 @@ $this->extend('/Common/blank');
                 )
             ));
 
+            echo $this->Form->input('card_price', array(
+                'type' => 'text',
+                'readonly' => 'readonly',
+                'label' => array(
+                    'text' => 'Price from user',
+                    'class' => 'control-label',
+                )
+            ));
+
             echo $this->Form->input('type', array(
                 'type' => 'text',
                 'readonly' => 'readonly',
