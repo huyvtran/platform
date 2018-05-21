@@ -18,7 +18,7 @@
                     <p class="help-block" id="help-mathe"></p>
                 </div>
             </div>
-            <!--<div class="form-group">
+            <div class="form-group">
                 <label class="col-xs-3 control-label" id="label-PIN">Price</label>
                 <div class="col-xs-9">
                     <select name="card_price" id="CardManualStatus" class="form-control input-sm">
@@ -33,7 +33,7 @@
                     </select>
                     <p class="help-block" id="help-mathe"></p>
                 </div>
-            </div>-->
+            </div>
             <div class="form-group">
                 <label class="col-xs-3 control-label">Loại thẻ</label>
                 <div class="col-xs-9">
