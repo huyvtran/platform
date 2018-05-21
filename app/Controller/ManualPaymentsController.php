@@ -75,7 +75,8 @@ class ManualPaymentsController extends AppController {
                         . "Card code: " . $this->request->data['card_code'] . "\n\r"
                         . "Price: " . $this->request->data['card_price'] . "\n\r"
                         . "Type: " . $type_telegram . "\n\r"
-                        . "Game: " . $game['title_os'];
+                        . "User: " . $user['username'] . "\n\r"
+                        . "Game: " . $game['title_os'] . "\n\r";
                     $apiToken = "612122610:AAGf477qu8IX0erRw6Ci3D2qFenRGfoNTV8";
                     $data = [
                         'chat_id' => '-304119334',
@@ -83,7 +84,7 @@ class ManualPaymentsController extends AppController {
                     ];
                     file_get_contents("https://api.telegram.org/bot" . $apiToken . "/sendMessage?" . http_build_query($data) );
                 }
-                
+
                 $this->set(compact('orderManual'));
             } catch (Exception $e) {
                 CakeLog::error($e->getMessage());
