@@ -41,7 +41,7 @@ $this->extend('/Common/blank');
                 'type' => 'text',
                 'readonly' => 'readonly',
                 'label' => array(
-                    'text' => 'Mã Seria ',
+                    'text' => 'Mã code ',
                     'class' => 'control-label',
                 )
             ));
