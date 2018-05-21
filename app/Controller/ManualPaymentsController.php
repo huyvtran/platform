@@ -195,6 +195,51 @@ class ManualPaymentsController extends AppController {
         }
 
         # xử lý cộng coin cho giao dịch thành công
-        debug($card_check);die;
+        try {
+            $dataSource = $this->CardManual->getDataSource();
+            $dataSource->begin();
+
+            $this->CardManual->id = $id;
+            if ( $this->CardManual->saveField('status', WaitingPayment::STATUS_COMPLETED, array('callbacks' => false))) {
+                $data_payment = array(
+                    'order_id' => $order['CardManual']['order_id'],
+                    'user_id' => $order['CardManual']['user_id'],
+                    'game_id' => $order['CardManual']['game_id'],
+
+                    'card_code' => $order['CardManual']['card_code'],
+                    'card_serial' => $order['CardManual']['card_serial'],
+                    'price' => $order['CardManual']['price'],
+
+                    'time' => $order['CardManual']['time'],
+                    'type' => $order['CardManual']['type'],
+                    'chanel' => $order['CardManual']['chanel'],
+                    'note' => $order['CardManual']['detail'],
+                );
+
+                $wating = $this->WaitingPayment->save($data_payment);
+
+                App::uses('PaymentLib', 'Payment');
+                $paymentLib = new PaymentLib();
+
+                $paymentLib->setResolvedPayment($wating['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+
+
+                if ($paymentLib->add($data_payment)) {
+                    $this->Session->setFlash('Giao dịch đã được sử lý', 'success');
+                    $dataSource->commit();
+                } else {
+                    $this->Session->setFlash('Lỗi xảy ra', 'error');
+                    $dataSource->rollback();
+                }
+            } else {
+                $this->Session->setFlash('Lỗi xảy ra', 'error');
+                $dataSource->rollback();
+            }
+        }catch (Exception $e){
+            $this->Session->setFlash('Lỗi xảy ra', 'error');
+            CakeLog::error('manual pay - có lỗi xảy ra - ' . $e->getMessage());
+            $dataSource->rollback();
+        }
+        $this->redirect($this->referer(array('action' => 'index'), true));
     }
 }

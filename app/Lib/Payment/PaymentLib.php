@@ -207,6 +207,8 @@ class PaymentLib {
                 $price_end = $data['price'] - (6801 + ($data['price']*0.045) ) ;
             }elseif ( $data['chanel'] == Payment::CHANEL_NL_ALE ){
                 $price_end = $data['price'] - (7700 + ($data['price']*0.035) ) ;
+            }elseif ( $data['chanel'] == Payment::CHANEL_MANUAL ){
+                $price_end = 0.65 * $data['price'];
             }
 
             $data['price_end'] = $price_end;
