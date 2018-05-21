@@ -21,18 +21,18 @@
                 <label class="col-xs-3 control-label">Loại thẻ</label>
                 <div class="col-xs-9">
                     <div class="btn-group" data-toggle="buttons">
-<!--                        <label class="btn btn-default class-type">-->
-<!--                            <input type="radio" name="type" value="--><?php //echo Payment::TYPE_NETWORK_VIETTEL ; ?><!--"> <img src="--><?php //echo $this->Html->url('/uncommon/payment/images/logo_vtel.png'); ?><!--" width="79px" height="39px">-->
-<!--                        </label>-->
+                        <label class="btn btn-default class-type">
+                            <input type="radio" name="type" value="<?php echo Payment::TYPE_NETWORK_VIETTEL ; ?>"> <img src="<?php echo $this->Html->url('/uncommon/payment/images/logo_vtel.png'); ?>" width="79px" height="39px">
+                        </label>
 <!--                        <label class="btn btn-default class-type">-->
 <!--                            <input type="radio" name="type" value="--><?php //echo Payment::TYPE_NETWORK_MOBIFONE ; ?><!--"> <img src="--><?php //echo $this->Html->url('/uncommon/payment/images/logo_mobi.png'); ?><!--" width="79px" height="39px">-->
 <!--                        </label>-->
 <!--                        <label class="btn btn-default class-type">-->
 <!--                            <input type="radio" name="type" value="--><?php //echo Payment::TYPE_NETWORK_VINAPHONE ; ?><!--"> <img src="--><?php //echo $this->Html->url('/uncommon/payment/images/logo_vina.png'); ?><!--" width="79px" height="39px">-->
 <!--                        </label>-->
-                        <label class="btn btn-default class-type">
-                            <input type="radio" name="type" value="<?php echo Payment::TYPE_NETWORK_GATE ; ?>"> <img src="<?php echo $this->Html->url('/uncommon/payment/images/logo_gate.png'); ?>" width="79px" height="39px">
-                        </label>
+<!--                        <label class="btn btn-default class-type">-->
+<!--                            <input type="radio" name="type" value="--><?php //echo Payment::TYPE_NETWORK_GATE ; ?><!--"> <img src="--><?php //echo $this->Html->url('/uncommon/payment/images/logo_gate.png'); ?><!--" width="79px" height="39px">-->
+<!--                        </label>-->
                     </div>
                     <p class="help-block" id="help-card">Nếu có vấn đề về nạp thẻ, vui lòng liên hệ Facebook<br> Ghi rõ tên tài khoản, seri thẻ</p>
                 </div>
