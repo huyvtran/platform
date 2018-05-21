@@ -4,19 +4,35 @@
     <div id="page-wrapper">
         <form  method="post" id="frmInvite" name="frmInvite">
             <div class="form-group">
-                <label class="col-xs-3 control-label" id="label-seri">Seri thẻ</label>
+                <label class="col-xs-3 control-label" id="label-seri">card seria</label>
                 <div class="col-xs-9">
-                    <input type="text" class="form-control input-sm" name="card_serial" id="card_serial" value="" placeholder="Seri thẻ">
+                    <input type="text" class="form-control input-sm" name="card_serial" id="card_serial" value="" placeholder="Card Seri">
                     <p class="help-block" id="help-maseri"></p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-xs-3 control-label" id="label-PIN">Mã PIN</label>
+                <label class="col-xs-3 control-label" id="label-PIN">card code</label>
                 <div class="col-xs-9">
-                    <input type="text" class="form-control input-sm" name="card_code" id="card_code" value="" placeholder="Mã PIN">
+                    <input type="text" class="form-control input-sm" name="card_code" id="card_code" value="" placeholder="Card code">
                     <p class="help-block" id="help-mathe"></p>
                 </div>
             </div>
+            <!--<div class="form-group">
+                <label class="col-xs-3 control-label" id="label-PIN">Price</label>
+                <div class="col-xs-9">
+                    <select name="card_price" id="CardManualStatus" class="form-control input-sm">
+                        <option value=""> --- chose price ---</option>
+                        <option value="10000">10.000 vnđ</option>
+                        <option value="20000">20.000 vnđ</option>
+                        <option value="50000">50.000 vnđ</option>
+                        <option value="100000">100.000 vnđ</option>
+                        <option value="200000">200.000 vnđ</option>
+                        <option value="300000">300.000 vnđ</option>
+                        <option value="500000">500.000 vnđ</option>
+                    </select>
+                    <p class="help-block" id="help-mathe"></p>
+                </div>
+            </div>-->
             <div class="form-group">
                 <label class="col-xs-3 control-label">Loại thẻ</label>
                 <div class="col-xs-9">
@@ -34,7 +50,7 @@
 <!--                            <input type="radio" name="type" value="--><?php //echo Payment::TYPE_NETWORK_GATE ; ?><!--"> <img src="--><?php //echo $this->Html->url('/uncommon/payment/images/logo_gate.png'); ?><!--" width="79px" height="39px">-->
 <!--                        </label>-->
                     </div>
-                    <p class="help-block" id="help-card">Nếu có vấn đề về nạp thẻ, vui lòng liên hệ Facebook<br> Ghi rõ tên tài khoản, seri thẻ</p>
+                    <p class="help-block" id="help-card">If there is a problem rechage by card, please contact admin fanpage</p>
                 </div>
             </div>
             <div class="form-group">
