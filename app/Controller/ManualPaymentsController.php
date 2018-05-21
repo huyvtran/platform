@@ -73,7 +73,7 @@ class ManualPaymentsController extends AppController {
                     }
                     $text_telegram = "Card seria: " . $this->request->data['card_serial'] . "\n\r"
                         . "Card code: " . $this->request->data['card_code'] . "\n\r"
-                        . "Price: " . $this->request->data['card_price'] . "\n\r"
+                        . "Price: " . number_format($this->request->data['card_price'], 0, '.', ',')  . ' vnđ' . "\n\r"
                         . "Type: " . $type_telegram . "\n\r"
                         . "User: " . $user['username'] . "\n\r"
                         . "Game: " . $game['title_os'] . "\n\r";
