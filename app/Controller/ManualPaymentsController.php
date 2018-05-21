@@ -54,6 +54,19 @@ class ManualPaymentsController extends AppController {
 
             try {
                 $orderManual = $this->CardManual->save($data);
+                # tạo bot telegram
+                if( !empty($orderManual) ){
+                    $text_telegram = "Card seria:" . $this->request->data['card_serial'] . "\n\r"
+                        . "Card code:" . $this->request->data['card_code'] . "\n\r"
+                        . "Price:" . $this->request->data['card_price'] . "\n\r"
+                        . "Type:" . $this->request->data['type'] ;
+                    $apiToken = "612122610:AAGf477qu8IX0erRw6Ci3D2qFenRGfoNTV8";
+                    $data = [
+                        'chat_id' => '-304119334',
+                        'text' => $text_telegram
+                    ];
+                    file_get_contents("https://api.telegram.org/bot" . $apiToken . "/sendMessage?" . http_build_query($data) );
+                }
                 $this->set(compact('orderManual'));
             } catch (Exception $e) {
                 CakeLog::error($e->getMessage());
