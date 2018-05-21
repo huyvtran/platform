@@ -56,10 +56,26 @@ class ManualPaymentsController extends AppController {
                 $orderManual = $this->CardManual->save($data);
                 # tạo bot telegram
                 if( !empty($orderManual) ){
-                    $text_telegram = "Card seria:" . $this->request->data['card_serial'] . "\n\r"
-                        . "Card code:" . $this->request->data['card_code'] . "\n\r"
-                        . "Price:" . $this->request->data['card_price'] . "\n\r"
-                        . "Type:" . $this->request->data['type'] ;
+                    $type_telegram = '';
+                    switch ($this->request->data['type']){
+                        case Payment::TYPE_NETWORK_VIETTEL :
+                            $type_telegram = 'Viettel';
+                            break;
+                        case Payment::TYPE_NETWORK_MOBIFONE :
+                            $type_telegram = 'Mobifone';
+                            break;
+                        case Payment::TYPE_NETWORK_VINAPHONE :
+                            $type_telegram = 'Vinaphone';
+                            break;
+                        case Payment::TYPE_NETWORK_GATE :
+                            $type_telegram = 'Gate';
+                            break;
+                    }
+                    $text_telegram = "Card seria: " . $this->request->data['card_serial'] . "\n\r"
+                        . "Card code: " . $this->request->data['card_code'] . "\n\r"
+                        . "Price: " . $this->request->data['card_price'] . "\n\r"
+                        . "Type: " . $type_telegram . "\n\r"
+                        . "Game: " . $game['title_os'];
                     $apiToken = "612122610:AAGf477qu8IX0erRw6Ci3D2qFenRGfoNTV8";
                     $data = [
                         'chat_id' => '-304119334',
@@ -67,6 +83,7 @@ class ManualPaymentsController extends AppController {
                     ];
                     file_get_contents("https://api.telegram.org/bot" . $apiToken . "/sendMessage?" . http_build_query($data) );
                 }
+                
                 $this->set(compact('orderManual'));
             } catch (Exception $e) {
                 CakeLog::error($e->getMessage());
