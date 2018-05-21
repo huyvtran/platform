@@ -3,6 +3,7 @@
     <br/><br/>
     <div id="page-wrapper">
         <form  method="post" id="frmInvite" name="frmInvite">
+            <center> <span style="color: red"><?= $this->Session->flash('error'); ?> </span></center><br/>
             <div class="form-group">
                 <label class="col-xs-3 control-label" id="label-seri">card seria</label>
                 <div class="col-xs-9">

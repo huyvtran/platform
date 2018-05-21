@@ -30,6 +30,15 @@ class ManualPaymentsController extends AppController {
         if ($this->request->is('post')) {
             $this->render('/Payments/order');
 
+            if( empty($this->request->data['card_serial'])
+                || empty($this->request->data['card_code'])
+                || empty($this->request->data['type'])
+            ){
+                $this->Session->setFlash('');
+                $this->Session->setFlash('Card seri, card code are not empty', false, false, 'error');
+                $this->render('/Payments/pay');
+            }
+
             $chanel = Payment::CHANEL_MANUAL; // default
             $order_id = microtime(true) * 10000;
 

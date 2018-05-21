@@ -10,6 +10,19 @@ class CardManual extends AppModel {
         'Search.Searchable'
     );
 
+    public $validate = array(
+        'card_code' => array(
+            'notEmpty' => array(
+                'rule' => 'notEmpty'
+            )
+        ),
+        'card_serial' => array(
+            'notEmpty' => array(
+                'rule' => 'notEmpty'
+            )
+        ),
+    );
+
     public $filterArgs = array(
         'order_id'  => array('type' => 'value'),
         'game_id'   => array('type' => 'value'),
