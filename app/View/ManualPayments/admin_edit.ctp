@@ -49,7 +49,7 @@ $this->extend('/Common/blank');
                 'type' => 'text',
                 'readonly' => 'readonly',
                 'label' => array(
-                    'text' => 'Mã thẻ',
+                    'text' => 'Mã Seria',
                     'class' => 'control-label',
                 )
             ));
