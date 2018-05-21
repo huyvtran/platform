@@ -160,6 +160,9 @@ $config['rules'] = array(
         'payments/pay_paypal_order'     => 'Role/User',
         'payments/pay_paypal_response'  => 'Role/User',
 
+        'ManualPayments/index'          => 'Role/User',
+        'ManualPayments/admin_index'    => 'Role/Content',
+
         'OvsPayments/pay_list'      => 'Role/User',
         'OvsPayments/admin_detail'  => 'Role/Content, Role/Distributor',
 

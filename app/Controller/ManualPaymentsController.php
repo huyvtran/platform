@@ -55,6 +55,7 @@ class ManualPaymentsController extends AppController {
     public function admin_index(){
         $this->layout = 'default_bootstrap';
 
+        $this->loadModel('CardManual');
         $this->Prg->commonProcess('CardManual');
         $this->request->data['CardManual'] = $this->passedArgs;
 

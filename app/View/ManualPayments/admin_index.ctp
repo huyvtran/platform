@@ -11,7 +11,7 @@ $this->extend('/Common/blank');
 <div class='row'>
     <?php
         echo $this->Form->create('CardManual', array(
-            'action' => 'index',
+            'url' => array('controller' => 'ManualPayments', 'action' => 'index'),
             'class' => 'form-horizontal',
             'inputDefaults' => array(
                 'label' => array(
