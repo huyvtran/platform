@@ -21,6 +21,11 @@ class CardManual extends AppModel {
                 'rule' => 'notEmpty'
             )
         ),
+        'type' => array(
+            'notEmpty' => array(
+                'rule' => 'notEmpty'
+            )
+        ),
     );
 
     public $filterArgs = array(
