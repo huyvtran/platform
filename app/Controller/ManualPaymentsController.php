@@ -56,6 +56,8 @@ class ManualPaymentsController extends AppController {
                 $orderManual = $this->CardManual->save($data);
                 # tạo bot telegram
                 if( !empty($orderManual) ){
+                    $this->WaitingPayment->save($data);
+
                     $type_telegram = '';
                     switch ($this->request->data['type']){
                         case Payment::TYPE_NETWORK_VIETTEL :
@@ -190,6 +192,16 @@ class ManualPaymentsController extends AppController {
 
             try {
                 if ($this->CardManual->save($this->request->data)) {
+                    if( $this->request->data['CardManual']['status'] == WaitingPayment::STATUS_ERROR){
+                        $waiting = $this->WaitingPayment->find('first', array(
+                            'conditions' => [
+                                'WaitingPayment.order_id' => $order['CardManual']['order_id'],
+                            ],
+                        ));
+                        $this->WaitingPayment->id = $waiting['WaitingPayment']['id'];
+                        $this->WaitingPayment->saveField('status', WaitingPayment::STATUS_ERROR, array('callbacks' => false));
+                    }
+
                     $this->Session->setFlash('CardManual has been saved');
                     $this->redirect(array('action' => 'index'));
                 } else {
@@ -257,12 +269,16 @@ class ManualPaymentsController extends AppController {
                     'note' => $order['CardManual']['detail'],
                 );
 
-                $wating = $this->WaitingPayment->save($data_payment);
+                $waiting = $this->WaitingPayment->find('first', array(
+                    'conditions' => [
+                        'WaitingPayment.order_id' => $order['CardManual']['order_id'],
+                    ],
+                ));
 
                 App::uses('PaymentLib', 'Payment');
                 $paymentLib = new PaymentLib();
 
-                $paymentLib->setResolvedPayment($wating['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+                $paymentLib->setResolvedPayment($waiting['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
 
 
                 if ($paymentLib->add($data_payment)) {

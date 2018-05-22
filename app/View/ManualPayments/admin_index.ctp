@@ -181,7 +181,7 @@ $this->extend('/Common/blank');
                 <td> <?php echo $payment['CardManual']['card_code']; ?> </td>
                 <td> <?php echo $payment['CardManual']['card_serial']; ?> </td>
                 <?php
-                $card_price = '';
+                $card_price = 0;
                 if( !empty($payment['CardManual']['card_price']) ) $card_price = $payment['CardManual']['card_price'];
                 if( !empty($payment['CardManual']['price']) ) $card_price = $payment['CardManual']['price'];
                 ?>
