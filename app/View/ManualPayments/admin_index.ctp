@@ -180,7 +180,12 @@ $this->extend('/Common/blank');
                 <td> <?php echo $payment['CardManual']['order_id']; ?> </td>
                 <td> <?php echo $payment['CardManual']['card_code']; ?> </td>
                 <td> <?php echo $payment['CardManual']['card_serial']; ?> </td>
-                <td> <?php if( !empty($payment['CardManual']['card_price']) ) echo number_format($payment['CardManual']['card_price'], 0, '.', ','); ?> </td>
+                <?php
+                $card_price = '';
+                if( !empty($payment['CardManual']['card_price']) ) $card_price = $payment['CardManual']['card_price'];
+                if( !empty($payment['CardManual']['price']) ) $card_price = $payment['CardManual']['price'];
+                ?>
+                <td> <?php echo number_format($card_price, 0, '.', ','); ?> </td>
                 <td> <?php echo $payment['CardManual']['time']; ?> </td>
                 <td> <?php echo $payment['CardManual']['type']; ?> </td>
                 <td> <?php if( !empty($payment['CardManual']['detail']) ) echo $payment['CardManual']['detail']; ?> </td>
