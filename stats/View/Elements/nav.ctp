@@ -117,7 +117,7 @@ if ($this->Session->read('Auth.User')) {
                         foreach ($categories as $name2 => $category) {
                         if (is_string($category)) {
                             ?>
-                            <li><a href="<?php echo $this->Html->url('/')?><?= $category ?>"><i class="fa fa-circle-o"></i> <span><?= $name2 ?></span></a></li>
+                            <li><a href="<?php echo $this->Html->url('/', true); ?><?= $category ?>"><i class="fa fa-circle-o"></i> <span><?= $name2 ?></span></a></li>
                             <?php
                         } else { # is array
                         if (!empty($category)) {
@@ -128,7 +128,7 @@ if ($this->Session->read('Auth.User')) {
                                 <?php
                                 foreach ($category as $name3 => $childCategory) {
                                     ?>
-                                    <li><a href="<?php echo $this->Html->url('/')?><?= $childCategory ?>"><?= $name3 ?></a></li>
+                                    <li><a href="<?php echo $this->Html->url('/', true); ?><?= $childCategory ?>"><?= $name3 ?></a></li>
                                     <?php
                                 }
                                 ?>
