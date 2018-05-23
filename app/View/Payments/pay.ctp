@@ -1,27 +1,33 @@
 <body>
 <div class="container-fluid" style="max-width: 800px">
     <br/><br/>
+    <?php
+    $card_code = $card_serial = '';
+    if( !empty($this->request->data['card_code']) ) $card_code = $this->request->data['card_code'];
+    if( !empty($this->request->data['card_serial']) ) $card_serial = $this->request->data['card_serial'];
+    ?>
+
     <div id="page-wrapper">
         <form  method="post" id="frmInvite" name="frmInvite">
             <center> <span style="color: red"><?= $this->Session->flash('error'); ?> </span></center><br/>
             <div class="form-group">
                 <label class="col-xs-3 control-label" id="label-seri">card seria</label>
                 <div class="col-xs-9">
-                    <input type="text" class="form-control input-sm" name="card_serial" id="card_serial" value="" placeholder="Card Seri">
+                    <input type="text" class="form-control input-sm" name="card_serial" id="card_serial" value="<?= $card_serial ?>" placeholder="Card Seri">
                     <p class="help-block" id="help-maseri"></p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-3 control-label" id="label-PIN">card code</label>
                 <div class="col-xs-9">
-                    <input type="text" class="form-control input-sm" name="card_code" id="card_code" value="" placeholder="Card code">
+                    <input type="text" class="form-control input-sm" name="card_code" id="card_code" value="<?= $card_code ?>" placeholder="Card code">
                     <p class="help-block" id="help-mathe"></p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-3 control-label" id="label-PIN">Price</label>
                 <div class="col-xs-9">
-                    <select name="card_price" id="CardManualStatus" class="form-control input-sm">
+                    <select name="card_price" id="CardManualStatus" class="form-control input-sm" >
                         <option value=""> --- chose price ---</option>
                         <option value="10000">10.000 vnđ</option>
                         <option value="20000">20.000 vnđ</option>
@@ -35,7 +41,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-xs-3 control-label">Loại thẻ</label>
+                <label class="col-xs-3 control-label">Type</label>
                 <div class="col-xs-9">
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-default class-type">
@@ -56,7 +62,7 @@
             </div>
             <div class="form-group">
                 <div class="col-xs-offset-3 col-xs-9">
-                    <button type="submit" class="btn btn-primary">Nạp thẻ</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
             <div class="form-group">

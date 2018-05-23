@@ -30,13 +30,29 @@ class ManualPaymentsController extends AppController {
         if ($this->request->is('post')) {
             $this->render('/Payments/order');
 
-            if( empty($this->request->data['card_serial'])
-                || empty($this->request->data['card_code'])
-                || empty($this->request->data['type'])
-            ){
-                $this->Session->setFlash('');
-                $this->Session->setFlash('Card seri, card code are not empty', false, false, 'error');
+            $checkEnd = false;
+            $msgFlash = '';
+            if( empty($this->request->data['card_serial']) ){
+                $msgFlash = 'Card serial is not empty';
+                $checkEnd = true;
+            }
+            if( empty($this->request->data['card_code']) ){
+                $msgFlash = 'Card code is not empty';
+                $checkEnd = true;
+            }
+            if( empty($this->request->data['card_price']) ){
+                $msgFlash = 'Price is not empty';
+                $checkEnd = true;
+            }
+            if( empty($this->request->data['type']) ){
+                $msgFlash = 'Type is not empty';
+                $checkEnd = true;
+            }
+
+            if( $checkEnd ){
+                $this->Session->setFlash($msgFlash, false, false, 'error');
                 $this->render('/Payments/pay');
+                goto end;
             }
 
             $chanel = Payment::CHANEL_MANUAL; // default
@@ -93,6 +109,7 @@ class ManualPaymentsController extends AppController {
                 CakeLog::error($e->getMessage());
             }
         }
+        end:
     }
 
     public function admin_index(){
