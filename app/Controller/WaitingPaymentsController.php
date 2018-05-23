@@ -138,7 +138,7 @@ class WaitingPaymentsController extends AppController {
         $this->loadModel('Payment');
         $gameIds = $this->Payment->Game->getSimilarGameId($game);
 
-        $limit = 5;
+        $limit = 20;
         $page = 1;
         if ( !empty($this->request->query('page')) ){
             $page = $this->request->query('page');
