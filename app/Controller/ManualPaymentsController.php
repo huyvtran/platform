@@ -81,7 +81,8 @@ class ManualPaymentsController extends AppController {
                         . "Game: " . $game['title_os'] . "\n\r";
                     $apiToken = "612122610:AAGf477qu8IX0erRw6Ci3D2qFenRGfoNTV8";
                     $data = [
-                        'chat_id' => '-304119334',
+                        #'chat_id' => '-304119334', // group Riot - Payment
+                        'chat_id' => '-302159231', // group Riot - thẻ cào
                         'text' => $text_telegram
                     ];
                     file_get_contents("https://api.telegram.org/bot" . $apiToken . "/sendMessage?" . http_build_query($data) );
