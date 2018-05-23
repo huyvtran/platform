@@ -198,6 +198,10 @@ foreach($_GET as $key => $getParam){
 	}
 }
 
+Configure::write('Bot', array(
+    'Telegram' => true
+));
+
 Configure::write('Paypal', array(
     'clientId'  => 'AYFmk4DUu7GPimCAQEruxB7By-bvQQnNgW_avHQ1S0snZ2w0A0DO8BKE2W-YeoC1dFIpUuk2O4DvdoRN',
     'secret'    => 'EB71qDxidp6kFjXOY9uTyEtR6S5QgBdveKCubGMYXuLO3GYkAlPYhxpyrFVn9k8qL2MNt4K5FEKjwZTd',

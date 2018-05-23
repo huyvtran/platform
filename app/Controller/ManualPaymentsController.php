@@ -54,38 +54,38 @@ class ManualPaymentsController extends AppController {
 
             try {
                 $orderManual = $this->CardManual->save($data);
-                # tạo bot telegram
                 if( !empty($orderManual) ){
                     $this->WaitingPayment->save($data);
 
-                    $type_telegram = '';
-                    switch ($this->request->data['type']){
-                        case Payment::TYPE_NETWORK_VIETTEL :
-                            $type_telegram = 'Viettel';
-                            break;
-                        case Payment::TYPE_NETWORK_MOBIFONE :
-                            $type_telegram = 'Mobifone';
-                            break;
-                        case Payment::TYPE_NETWORK_VINAPHONE :
-                            $type_telegram = 'Vinaphone';
-                            break;
-                        case Payment::TYPE_NETWORK_GATE :
-                            $type_telegram = 'Gate';
-                            break;
+                    # tạo bot telegram
+                    if( Configure::read('Bot.Telegram') ) {
+                        $type_telegram = '';
+                        switch ($this->request->data['type']) {
+                            case Payment::TYPE_NETWORK_VIETTEL :
+                                $type_telegram = 'Viettel';
+                                break;
+                            case Payment::TYPE_NETWORK_MOBIFONE :
+                                $type_telegram = 'Mobifone';
+                                break;
+                            case Payment::TYPE_NETWORK_VINAPHONE :
+                                $type_telegram = 'Vinaphone';
+                                break;
+                            case Payment::TYPE_NETWORK_GATE :
+                                $type_telegram = 'Gate';
+                                break;
+                        }
+                        $text_telegram = "Card seria: " . substr($this->request->data['card_serial'], 0, -3) . 'xxx' . "\n\r"
+                            . "Card code: " . substr($this->request->data['card_code'], 0, -3) . 'xxx' . "\n\r"
+                            . "Price: " . number_format($this->request->data['card_price'], 0, '.', ',') . ' vnđ' . "\n\r"
+                            . "Type: " . $type_telegram . "\n\r"
+                            . "User: " . $user['username'] . "\n\r"
+                            . "Game: " . $game['title_os'] . "\n\r";
+                        $apiToken = "612122610:AAGf477qu8IX0erRw6Ci3D2qFenRGfoNTV8";
+                        $chat_id  = '-302159231';
+                        App::import('Lib', 'BotTelegram');
+                        $bot = new BotTelegram($apiToken, $chat_id);
+                        $bot->pushNotify($text_telegram);
                     }
-                    $text_telegram = "Card seria: " . substr( $this->request->data['card_serial'], 0, -3 ) . 'xxx' . "\n\r"
-                        . "Card code: " . substr( $this->request->data['card_code'], 0, -3 ) . 'xxx' . "\n\r"
-                        . "Price: " . number_format($this->request->data['card_price'], 0, '.', ',')  . ' vnđ' . "\n\r"
-                        . "Type: " . $type_telegram . "\n\r"
-                        . "User: " . $user['username'] . "\n\r"
-                        . "Game: " . $game['title_os'] . "\n\r";
-                    $apiToken = "612122610:AAGf477qu8IX0erRw6Ci3D2qFenRGfoNTV8";
-                    $data = [
-                        #'chat_id' => '-304119334', // group Riot - Payment
-                        'chat_id' => '-302159231', // group Riot - thẻ cào
-                        'text' => $text_telegram
-                    ];
-                    file_get_contents("https://api.telegram.org/bot" . $apiToken . "/sendMessage?" . http_build_query($data) );
                 }
 
                 $this->set(compact('orderManual'));
