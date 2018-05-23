@@ -76,7 +76,7 @@ class Payment extends AppModel
 
 	public function convertType($type)
 	{
-		$result = "";
+		$result = $type;
 		switch ($type) {
 			case Payment::TYPE_NETWORK_VIETTEL :
 				$result = "Viettel";
