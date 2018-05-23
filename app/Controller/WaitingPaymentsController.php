@@ -193,7 +193,7 @@ class WaitingPaymentsController extends AppController {
             if( !empty($item['Payment']['price']) ) $item_price = $item['Payment']['price'];
 
             $item_type = '';
-            if( !empty($item['Payment']['type']) ){
+            if( !empty($item['WaitingPayment']['type']) ){
                 $item_type = $this->Payment->convertType( $item['WaitingPayment']['type'] );
             }
 
