@@ -175,16 +175,16 @@ class WaitingPaymentsController extends AppController {
             if( isset($item['WaitingPayment']['status']) ){
                 switch ( $item['WaitingPayment']['status'] ){
                     case WaitingPayment::STATUS_WAIT :
-                        $item_status = "Tạo giao dịch";
+                        $item_status = "Create";
                         break;
                     case WaitingPayment::STATUS_QUEUEING :
-                        $item_status = "Chờ giao dịch";
+                        $item_status = "Wait";
                         break;
                     case WaitingPayment::STATUS_COMPLETED :
-                        $item_status = "Thành công";
+                        $item_status = "Success";
                         break;
                     case WaitingPayment::STATUS_ERROR :
-                        $item_status = "Thẻ lỗi";
+                        $item_status = "Error";
                         break;
                 }
             }
