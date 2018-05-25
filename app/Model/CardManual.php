@@ -13,12 +13,32 @@ class CardManual extends AppModel {
     public $validate = array(
         'card_code' => array(
             'notEmpty' => array(
-                'rule' => 'notEmpty'
+                'rule' => 'notEmpty',
+                'message' => 'Vui lòng nhập mã thẻ'
             )
         ),
         'card_serial' => array(
             'notEmpty' => array(
-                'rule' => 'notEmpty'
+                'rule' => 'notEmpty',
+                'message' => 'Vui lòng nhập seria thẻ'
+            )
+        ),
+        'card_price' => array(
+            'notEmpty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Vui lòng chọn giá thẻ'
+            )
+        ),
+        'price' => array(
+            'notEmpty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Vui lòng chọn giá thẻ.'
+            )
+        ),
+        'type' => array(
+            'notEmpty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Vui lòng chọn loại thẻ'
             )
         ),
     );

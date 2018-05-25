@@ -19,7 +19,6 @@ class ManualPaymentsController extends AppController {
         $this->loadModel('CardManual');
 
         $this->layout = 'payment';
-        $this->render('/Payments/pay');
 
         $game = $this->Common->currentGame();
         if( empty($game) || !$this->Auth->loggedIn() ){
@@ -28,31 +27,8 @@ class ManualPaymentsController extends AppController {
         $user = $this->Auth->user();
 
         if ($this->request->is('post')) {
-            $this->render('/Payments/order');
-
-            $checkEnd = false;
-            $msgFlash = '';
-            if( empty($this->request->data['card_serial']) ){
-                $msgFlash = 'Card serial is not empty';
-                $checkEnd = true;
-            }
-            if( empty($this->request->data['card_code']) ){
-                $msgFlash = 'Card code is not empty';
-                $checkEnd = true;
-            }
-            if( empty($this->request->data['card_price']) ){
-                $msgFlash = 'Price is not empty';
-                $checkEnd = true;
-            }
             if( empty($this->request->data['type']) ){
-                $msgFlash = 'Type is not empty';
-                $checkEnd = true;
-            }
-
-            if( $checkEnd ){
-                $this->Session->setFlash($msgFlash, false, false, 'error');
-                $this->render('/Payments/pay');
-                goto end;
+                $this->request->data['type'] = '';
             }
 
             $chanel = Payment::CHANEL_MANUAL; // default
@@ -72,6 +48,7 @@ class ManualPaymentsController extends AppController {
                 $orderManual = $this->CardManual->save($data);
                 if( !empty($orderManual) ){
                     $this->WaitingPayment->save($data);
+                    $this->view = 'order';
 
                     # tạo bot telegram
                     if( Configure::read('Bot.Telegram') ) {
@@ -102,9 +79,11 @@ class ManualPaymentsController extends AppController {
                         $bot = new BotTelegram($apiToken, $chat_id);
                         $bot->pushNotify($text_telegram);
                     }
+                }else{
+                    $msgFlash = $this->CardManual->validationErrors;
+                    $this->Session->setFlash($msgFlash, 'error', false, 'error');
                 }
 
-                $this->set(compact('orderManual'));
             } catch (Exception $e) {
                 CakeLog::error($e->getMessage());
             }
