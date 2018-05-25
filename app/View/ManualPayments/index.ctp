@@ -96,6 +96,7 @@ if( !empty($currentGame['data']['payment']['url_sdk']) ) {
         <div class="form-group">
             <div class="col-xs-offset-2 col-xs-9">
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <p class="help-block" id="help-card"></p>
             </div>
         </div>
         <?php echo $this->Form->end(); ?>
