@@ -302,6 +302,11 @@ class OvsPaymentsController extends AppController {
         }
     }
 
+    public function pay_onepay_atm(){
+        $this->loadModel('Payment');
+        $this->pay_index(Payment::CHANEL_PAYPAL, 'VND');
+    }
+
     public function pay_onepay_order(){
         $game = $this->Common->currentGame();
         if( empty($game) || !$this->Auth->loggedIn() ){

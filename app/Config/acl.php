@@ -183,6 +183,7 @@ $config['rules'] = array(
         'OvsPayments/pay_ale_response'   => 'Role/User',
 
         'OvsPayments/pay_onepay_index'     => 'Role/User',
+        'OvsPayments/pay_onepay_atm'        => 'Role/User',
         'OvsPayments/pay_onepay_order'     => 'Role/User',
         'OvsPayments/pay_onepay_response'  => 'Role/User',
 
