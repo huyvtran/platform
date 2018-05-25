@@ -14,31 +14,31 @@ class CardManual extends AppModel {
         'card_code' => array(
             'notEmpty' => array(
                 'rule' => 'notEmpty',
-                'message' => 'Vui lòng nhập mã thẻ'
+                'message' => 'Please enter a card code'
             )
         ),
         'card_serial' => array(
             'notEmpty' => array(
                 'rule' => 'notEmpty',
-                'message' => 'Vui lòng nhập seria thẻ'
+                'message' => 'Please enter a card seria'
             )
         ),
         'card_price' => array(
             'notEmpty' => array(
                 'rule' => 'notEmpty',
-                'message' => 'Vui lòng chọn giá thẻ'
+                'message' => 'Please chose a price'
             )
         ),
         'price' => array(
             'notEmpty' => array(
                 'rule' => 'notEmpty',
-                'message' => 'Vui lòng chọn giá thẻ.'
+                'message' => 'Please chose a price'
             )
         ),
         'type' => array(
             'notEmpty' => array(
                 'rule' => 'notEmpty',
-                'message' => 'Vui lòng chọn loại thẻ'
+                'message' => 'Please chose a type'
             )
         ),
     );
