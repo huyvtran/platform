@@ -1,9 +1,9 @@
 <?php
 
 class OnepayBanking {
-    
+
     private $access_key ;
-	private $secret ;
+    private $secret ;
 
     private $user_token;
     private $game_app;
@@ -64,10 +64,11 @@ class OnepayBanking {
     }
 
     # amount: số tiền vnđ
+    # chạy service visa
     public function create($amount){
         $access_key = $this->access_key;
         $secret     = $this->secret;
-        $return_url = urlencode(Configure::read('OnepayBanking.ReturnUrl') . '?app=' . $this->getGameApp() . '&qtoken=' . $this->getUserToken());
+        $return_url = urlencode(Configure::read('OnepayBanking.ReturnUrl') . '?app=' . $this->getGameApp() . '&token=' . $this->getUserToken());
         $order_id   = $this->getOrderId();
         $order_info = $this->getNote();
 
@@ -87,9 +88,8 @@ class OnepayBanking {
             $decode_bankCharging = json_decode($json_bankCharging, true);  // decode json
             if( !empty($decode_bankCharging["pay_url"]) ) $pay_url = $decode_bankCharging["pay_url"];
         }catch (Exception $e){
-            CakeLog::error('error create onepay - ' . print_r($e, true), 'payment');
+            CakeLog::error('error visa onepay - ' . print_r($e, true), 'payment');
         }
-        $pay_url .= '&lang=en';
         CakeLog::info('onepay url :' . print_r($pay_url,true), 'payment');
         CakeLog::info('onepay send data :' . print_r($data,true), 'payment');
         return $pay_url;
@@ -117,7 +117,7 @@ class OnepayBanking {
 
         $pay_url = false;
         try {
-            $url = 'http://api.1pay.vn/bank-charging/service/v2';
+            $url = 'https://api.pay.truemoney.com.vn/visa-charging/api/handle/request';
             $json_bankCharging = $this->execPostRequest($url, $data);
             $decode_bankCharging = json_decode($json_bankCharging, true);  // decode json
             if( !empty($decode_bankCharging["pay_url"]) ) $pay_url = $decode_bankCharging["pay_url"];
@@ -143,7 +143,7 @@ class OnepayBanking {
         $data.= "&signature=" . $signature;
 
         try {
-            $url = 'http://api.1pay.vn/bank-charging/service/v2';
+            $url = 'https://api.pay.truemoney.com.vn/visa-charging/api/query';
             $json_bankCommit = $this->execPostRequest($url, $data);
             $result = json_decode($json_bankCommit, true);  // decode json
             CakeLog::info('onepay commit data :' . print_r($result, true) ,'payment');
@@ -151,6 +151,74 @@ class OnepayBanking {
             return $result;
         }catch (Exception $e){
             CakeLog::error('error create onepay - ' . print_r($e, true), 'payment');
+        }
+
+        return false;
+    }
+
+    # chạy dịch vụ atm
+    public function orderAtm($amount){
+        $access_key = $this->access_key;
+        $secret     = $this->secret;
+
+        $return_url = Configure::read('OnepayBanking.ReturnUrl') . '?app=' . $this->getGameApp() . '&token=' . $this->getUserToken();
+        $return_url_encode = urlencode($return_url);
+        $order_id   = $this->getOrderId();
+        $order_info = 'Goi ' . $amount;
+        $command    = 'request_transaction';
+
+        $data = "access_key=" . $access_key;
+        $data .= "&amount=" . $amount;
+        $data .= "&command=" . $command;
+        $data .= "&order_id=" . $order_id;
+        $data .= "&order_info=" . $order_info;
+
+        $dataSign = $data .  "&return_url=" . $return_url;
+
+        $data .= "&return_url=" . $return_url_encode;
+
+        $signature = hash_hmac("sha256", $dataSign, $secret);
+
+        $data.= "&signature=" . $signature;
+
+        $pay_url = false;
+        try {
+            $url = 'https://api.pay.truemoney.com.vn/bank-charging/service/v2';
+            $json_bankCharging = $this->execPostRequest($url, $data);
+            CakeLog::info('atm: ' . print_r($json_bankCharging,true), 'payment');
+
+            $decode_bankCharging = json_decode($json_bankCharging, true);  // decode json
+            CakeLog::info('data: ' . print_r($data,true), 'payment');
+            if( !empty($decode_bankCharging["pay_url"]) ) $pay_url = $decode_bankCharging["pay_url"];
+        }catch (Exception $e){
+            CakeLog::error('error order atm onepay - ' . print_r($e, true), 'payment');
+        }
+        CakeLog::info('atm onepay url :' . print_r($pay_url,true), 'payment');
+        return $pay_url;
+    }
+
+    public function closeAtm($trans_ref){
+        $access_key = $this->access_key;
+        $secret     = $this->secret;
+        $command    = 'get_transaction_detail';
+
+        $data = "access_key=" . $access_key;
+        $data .= "&command=" . $command;
+        $data .= "&trans_ref=" . $trans_ref;
+
+        $signature = hash_hmac("sha256", $data, $secret);
+
+        $data.= "&signature=" . $signature;
+
+        try {
+            $url = 'https://api.pay.truemoney.com.vn/bank-charging/service/v2';
+            $json_bankCommit = $this->execPostRequest($url, $data);
+            $result = json_decode($json_bankCommit, true);  // decode json
+            CakeLog::info('onepay atm commit data :' . print_r($result, true) ,'payment');
+
+            return $result;
+        }catch (Exception $e){
+            CakeLog::error('error create onepay atm- ' . print_r($e, true), 'payment');
         }
 
         return false;

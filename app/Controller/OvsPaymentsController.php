@@ -332,20 +332,13 @@ class OvsPaymentsController extends AppController {
 
         $chanel = Payment::CHANEL_ONEPAY;
         $type = Payment::TYPE_NETWORK_BANKING;
+        if( !empty($this->request->query('visa')) ){
+            $type = Payment::TYPE_NETWORK_VISA;
+        }
+
         # set chanel defaul, có thể sẽ đc check theo chanel truemoney
         $access_key = "w1g998earl15prvzs2k4";
         $secret = "xr4m3lpwhj0egvlj965armf6od606cm3";
-
-//        $this->loadModel('Game');
-//        if (!empty($game['group']) && $game['group'] == Game::GROUP_R01) {
-//            $chanel = Payment::CHANEL_ONEPAY;
-//            $access_key = "diggr0l4g6k792oj528a";
-//            $secret = "mq1kbecvhya1jgnrrskqmzegh93ogomq";
-//        } else if (!empty($game['group']) && $game['group'] == Game::GROUP_R02) {
-//            $chanel = Payment::CHANEL_ONEPAY_2;
-//            $access_key = "xr13xjpekax55j3jgsfs";
-//            $secret = "rq10xl9fn20i2qlrqwc9gwdkmsd7cukx";
-//        }
 
         # tạo giao dịch waiting_payment
         $data = array(
@@ -370,13 +363,16 @@ class OvsPaymentsController extends AppController {
         $onepay->setOrderId($order_id);
         $onepay->setNote($product['Product']['title']);
 
-        $orderOnepay = $onepay->create($product['Product']['platform_price']);
-        #$orderOnepay = $onepay->order($product['Product']['platform_price']);
+        if( !empty($this->request->query('visa')) ){
+            $orderOnepay = $onepay->create($product['Product']['platform_price']);
+        }else{
+            $orderOnepay = $onepay->orderAtm($product['Product']['platform_price']);
+        }
 
         if( empty($orderOnepay) ){
             throw new NotFoundException('Lỗi tạo giao dịch, vui lòng thử lại');
         }
-        CakeLog::info('url request payment appota:' . $orderOnepay);
+        CakeLog::info('url request payment truemoney:' . $orderOnepay);
 
         # chuyển trạng thái queue trong giao dịch
         App::uses('PaymentLib', 'Payment');
@@ -399,7 +395,7 @@ class OvsPaymentsController extends AppController {
         $user = $this->Auth->user();
 
         $transaction_status = false;
-        if( !empty($this->request->query['response_code']) && !empty($this->request->query['order_id']) ){
+        if( !empty($this->request->query['order_id']) ){
             $orderId = $this->request->query['order_id'] ;
 
             $this->loadModel('WaitingPayment');
@@ -422,29 +418,36 @@ class OvsPaymentsController extends AppController {
                 'trans_ref'     => $this->request->query['trans_ref'],
                 'chanel'        => $wating_payment['WaitingPayment']['chanel']
             );
-            CakeLog::info('data url callback - onepay:' . print_r($this->request->query, true) , 'payment');
+            CakeLog::info('data url callback - onepay atm:' . print_r($this->request->query, true) , 'payment');
             $this->OnepayOrder->save($data_onepay_order);
 
             # check cổng trả về và commit giao dịch lên cổng
-            if( $this->request->query['response_code'] == '00' && isset($wating_payment['WaitingPayment']['status'])
+            if( isset($wating_payment['WaitingPayment']['status'])
                 && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_QUEUEING
             ) {
-                # cộng xu
-                $data_payment = array(
-                    'order_id' => $orderId,
-                    'user_id' => $user['id'],
-                    'game_id' => $game['id'],
-                    'price' => $wating_payment['WaitingPayment']['price'],
-                    'time' => time(),
-                    'type' => $wating_payment['WaitingPayment']['type'],
-                    'chanel' => $wating_payment['WaitingPayment']['chanel'],
-                    'waiting_id' => $wating_payment['WaitingPayment']['id']
-                );
+                $access_key = "w1g998earl15prvzs2k4";
+                $secret = "xr4m3lpwhj0egvlj965armf6od606cm3";
+                App::uses('OnepayBanking', 'Payment');
+                $onepay = new OnepayBanking($access_key, $secret);
+                $closeOnepay = $onepay->closeAtm($this->request->query['trans_ref']);
+                if( !empty($closeOnepay['response_code']) && $closeOnepay['response_code'] == '00'){
+                    # cộng xu
+                    $data_payment = array(
+                        'order_id' => $orderId,
+                        'user_id' => $user['id'],
+                        'game_id' => $game['id'],
+                        'price' => $wating_payment['WaitingPayment']['price'],
+                        'time' => time(),
+                        'type' => $wating_payment['WaitingPayment']['type'],
+                        'chanel' => $wating_payment['WaitingPayment']['chanel'],
+                        'waiting_id' => $wating_payment['WaitingPayment']['id']
+                    );
 
-                $this->view = 'success';
-                $sdk_message = __("Giao dịch thành công.");
-                $status_sdk = 0;
-                $transaction_status = true;
+                    $this->view = 'success';
+                    $sdk_message = __("Giao dịch thành công.");
+                    $status_sdk = 0;
+                    $transaction_status = true;
+                }
             }elseif ( isset($wating_payment['WaitingPayment']['status'])
                 && $wating_payment['WaitingPayment']['status'] == WaitingPayment::STATUS_COMPLETED
             ){
