@@ -11,16 +11,16 @@ class CardManual extends AppModel {
     );
 
     public $validate = array(
-        'card_code' => array(
-            'notEmpty' => array(
-                'rule' => 'notEmpty',
-                'message' => 'Please enter a card code'
-            )
-        ),
         'card_serial' => array(
             'notEmpty' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Please enter a card seria'
+            )
+        ),
+		'card_code' => array(
+            'notEmpty' => array(
+                'rule' => 'notEmpty',
+                'message' => 'Please enter a card code'
             )
         ),
         'card_price' => array(
