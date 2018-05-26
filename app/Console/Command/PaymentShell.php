@@ -32,8 +32,14 @@ class PaymentShell extends AppShell
 		foreach ($chanels as $chanel => $name) {
 			if ( !in_array($chanel, array(
 			    Payment::CHANEL_PAYMENTWALL,
-                Payment::CHANEL_APPOTA
+                Payment::CHANEL_APPOTA,
+                Payment::CHANEL_NL_ALE
             ))) continue;
+
+			if( $chanel == Payment::CHANEL_NL_ALE){
+			    $this->__Nl_Ale();
+			    continue;
+            }
 
 			$lastPid = $this->Variable->getVar('payment_last_pid_checked_by_chanel_' . $chanel);
 			if (!$lastPid) $lastPid = 0;
@@ -85,6 +91,46 @@ class PaymentShell extends AppShell
 
 	private function __Appota($waiting){
 	    $this->__PaymentWall($waiting);
+    }
+
+    private function __Nl_Ale(){
+        $lastPid = $this->Variable->getVar('payment_last_pid_checked_by_chanel_' . Payment::CHANEL_NL_ALE);
+        if (!$lastPid) $lastPid = 0;
+
+        $this->out($this->nl(0));
+        $this->out("chanel: " . Payment::CHANEL_NL_ALE . ' - lastPid: ' . $lastPid);
+
+        $this->WaitingPayment->bindModel([
+            'belongsTo' => ['Game', 'User'],
+        ]);
+        $watingPayments = $this->WaitingPayment->find('all', [
+            'conditions' => [
+                'WaitingPayment.id >' => $lastPid,
+                'WaitingPayment.chanel' => Payment::CHANEL_NL_ALE,
+                'WaitingPayment.status <>' => WaitingPayment::STATUS_COMPLETED,
+                #'WaitingPayment.time >= ' => strtotime('-1 hour'),
+                'WaitingPayment.time < ' => strtotime('-1 week'),
+            ],
+            'contain' => ["User", "Game"],
+        ]);
+
+        if (empty($watingPayments)) {
+            return;
+        }
+
+        # check từng giao dịch trong trạng thái chờ
+        foreach ($watingPayments as $wating) {
+            # this WatingPayment was checked
+            if (!empty($wating['WaitingPayment']['id']) && $lastPid >= $wating['WaitingPayment']['id']) {
+                $this->out("Checked pid: " . $wating['WaitingPayment']['id']);
+                continue;
+            } else {
+                $this->out("saved pid: " . $wating['WaitingPayment']['id']);
+                $this->Variable->setVar("payment_last_pid_checked_by_chanel_" . Payment::CHANEL_NL_ALE, $wating['WaitingPayment']['id']);
+            }
+
+            $this->__PaymentWall($wating['WaitingPayment']);
+        }
     }
 
 	public function getTop()
