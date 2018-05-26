@@ -27,6 +27,7 @@ class PaymentShell extends AppShell
 			Payment::CHANEL_APPOTA => 'Appota',
 			Payment::CHANEL_ONEPAY => 'OnePay',
 			Payment::CHANEL_PAYMENTWALL => 'PaymentWall',
+            Payment::CHANEL_NL_ALE => 'Nl_Ale'
 		];
 
 		foreach ($chanels as $chanel => $name) {
