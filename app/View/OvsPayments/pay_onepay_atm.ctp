@@ -34,7 +34,7 @@
                 <?php if( $is_open ){ ?>
                 <div class="alert alert-success font-small" style="color: black">
                     <span style="color: red;">Note: don't support virtual cards</span><br/>
-                    Get <font color="red">100%</font> coin when recharge via <span class="text-danger">Visa/Master Card</span>
+                    Get <font color="red">150%</font> coin when recharge via <span class="text-danger">E-banking</span>
                 </div>
 
                 <?php foreach ($products as $product){?>
