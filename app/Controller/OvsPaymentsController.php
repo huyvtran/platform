@@ -437,11 +437,14 @@ class OvsPaymentsController extends AppController {
                 $closeOnepay = $onepay->closeAtm($this->request->query['trans_ref']);
                 if( !empty($closeOnepay['response_code']) && $closeOnepay['response_code'] == '00'){
                     # cộng xu
+                    $price = 1.5 *($wating_payment['WaitingPayment']['price']);
+                    $price_end = 0.989*($wating_payment['WaitingPayment']['price']) - 1100;
                     $data_payment = array(
                         'order_id' => $orderId,
                         'user_id' => $user['id'],
                         'game_id' => $game['id'],
-                        'price' => $wating_payment['WaitingPayment']['price'],
+                        'price' => $price,
+                        'price_end' => $price_end,
                         'time' => time(),
                         'type' => $wating_payment['WaitingPayment']['type'],
                         'chanel' => $wating_payment['WaitingPayment']['chanel'],
