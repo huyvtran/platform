@@ -102,7 +102,8 @@ class PaymentWall {
                     . '&qtoken='. $this->getUserToken()
                     . '&order_id=' . $this->getOrderId()
                     . '&merchant_order_id=' . $this->getOrderId(),
-                'history[registration_date]' => $this->getUserCreated()
+                'history[registration_date]' => $this->getUserCreated(),
+                'merchant_order_id'  => $this->getOrderId(),
             )
         );
         return $widget->getUrl();
@@ -154,7 +155,8 @@ class PaymentWall {
                     . '&qtoken='. $this->getUserToken()
                     . '&order_id=' . $this->getOrderId()
                     . '&merchant_order_id=' . $this->getOrderId(),
-                'history[registration_date]' => $this->getUserCreated()
+                'history[registration_date]' => $this->getUserCreated(),
+                'merchant_order_id'  => $this->getOrderId(),
             )
         );
         return $widget->getUrl();
@@ -188,7 +190,8 @@ class PaymentWall {
                     . '&qtoken='. $this->getUserToken()
                     . '&order_id=' . $this->getOrderId()
                     . '&merchant_order_id=' . $this->getOrderId(),
-                'history[registration_date]' => $this->getUserCreated()
+                'history[registration_date]' => $this->getUserCreated(),
+                'merchant_order_id'  => $this->getOrderId(),
             )
         );
         return $widget->getUrl();
