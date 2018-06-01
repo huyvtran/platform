@@ -27,4 +27,19 @@ class NavHelper extends AppHelper {
 				echo 'active';
 		}
 	}
+
+    public function hideFunction($name, $gameData)
+    {
+        $gameVersion = $this->request->header('game-version');
+        if ( empty($gameData['data'][$name])
+            || ( !empty($gameData['data'][$name])
+                &&	( !empty($gameData['data']['hide_for_game_version'])
+                    &&	( $gameData['data']['hide_for_game_version'] != $gameVersion )
+                )
+            )
+        ) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -1429,7 +1429,7 @@ class UsersController extends AppController {
 			goto end;
 		}
 
-		$prefix_user = 'p03_';
+		$prefix_user = '';
 		$game = $this->Common->currentGame();
         if( !empty( $game['data']['prefix'] ) ){
             $prefix_user = $game['data']['prefix'] ;
