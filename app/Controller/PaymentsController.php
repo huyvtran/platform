@@ -507,4 +507,300 @@ class PaymentsController extends AppController {
 
         $this->set(compact('user','token', 'game', 'products'));
     }
+
+    public function order()
+    {
+        $result = [
+            'status'  => 1,
+            'message' => 'error',
+        ];
+
+        $this->loadModel('Payment');
+        $game = $this->Common->currentGame();
+        if (empty($game) || !$this->Auth->loggedIn()) {
+            if (!empty($this->request->params['ext']) && $this->request->params['ext'] == 'json') {
+                $result = [
+                    'status'  => 2,
+                    'message' => __('Vui lòng login'),
+                ];
+                goto end;
+            }
+
+            throw new NotFoundException(__('Vui lòng login'));
+        }
+        $user = $this->Auth->user();
+
+        $productId = 0;
+        if (!empty($this->request->query('plf_product_id'))) {
+            $productId = $this->request->query('plf_product_id');
+        }
+
+        $this->loadModel('Product');
+        $this->Product->recursive = -1;
+        $product = $this->Product->findById($productId);
+
+        if (empty($product)) {
+            if (!empty($this->request->params['ext']) && $this->request->params['ext'] == 'json') {
+                $result = [
+                    'status'  => 3,
+                    'message' => __('Không có gói xu inapp phù hợp'),
+                ];
+                goto end;
+            }
+
+            throw new NotFoundException(__('Không có gói xu inapp phù hợp'));
+        }
+
+        $this->loadModel('WaitingPayment');
+        # tạo giao dịch waiting_payment chuyển thẳng ở trạng thái chờ
+        if (!empty($game['os']) && $game['os'] == 'ios') $chanel = Payment::CHANEL_APPLE;
+        if (!empty($game['os']) && $game['os'] == 'android') $chanel = Payment::CHANEL_GOOGLE;
+        $data_payment = [
+            'order_id' => microtime(true) * 10000,
+            'user_id'  => $user['id'],
+            'game_id'  => $game['id'],
+            'price'    => $product['Product']['platform_price'],
+            'status'   => WaitingPayment::STATUS_QUEUEING,
+            'time'     => time(),
+            'type'     => Payment::TYPE_NETWORK_INAPP,
+            'chanel'   => $chanel,
+        ];
+        $unresolvedPayment = $this->WaitingPayment->save($data_payment);
+
+        if (empty($unresolvedPayment['WaitingPayment'])) {
+            if (!empty($this->request->params['ext']) && $this->request->params['ext'] == 'json') {
+                $result = [
+                    'status'  => 4,
+                    'message' => __('Lỗi tạo giao dịch'),
+                ];
+                goto end;
+            }
+
+            throw new NotFoundException(__('Lỗi tạo giao dịch'));
+        }
+
+        $data = [
+            'tran_id'    => $unresolvedPayment['WaitingPayment']['order_id'],
+            'product_id' => $product['Product']['appleid'],
+        ];
+
+        if (!empty($this->request->params['ext']) && $this->request->params['ext'] == 'json') {
+            $result = [
+                'status'  => 0,
+                'data'    => $data,
+                'message' => __('Tạo giao dịch thành công'),
+            ];
+            goto end;
+        }
+
+        $data = json_encode(Hash::filter($data));
+        $command = 'PaymentStartInapp';
+
+        $this->set(compact('data', 'command'));
+        $this->layout = 'jscmd';
+        $this->render('/Oauth/jscmd');
+        $this->response->send();
+        $this->_stop();
+
+        end:
+        if (!empty($this->request->params['ext']) && $this->request->params['ext'] == 'json') {
+            $this->set('result', $result);
+            $this->set('_serialize', 'result');
+        }
+    }
+
+    public function api_googleVerify()
+    {
+        $result = [
+            'status' => 1,
+            'mesage' => 'empty',
+        ];
+        CakeLog::info('check pay:' . print_r($this->request->data, true), 'payment');
+
+        $game = $this->Common->currentGame();
+        if (empty($game) || !$this->Auth->loggedIn()) {
+            CakeLog::error('Invalid token or appkey', 'payment');
+            $result = [
+                'status' => 2,
+                'mesage' => __('Token hoặc appkey không hợp lệ'),
+            ];
+            goto end;
+        }
+        $user = $this->Auth->user();
+
+        $tranReceipt = json_decode($this->request->data('purchaseData'));
+        $googleData = $tranReceipt;
+        $signature = $this->request->data('dataSignature');
+
+        //get public key
+        $gameData = $game['data'];
+        $publicKey = $gameData['google_iab']['hashkey'];
+
+        App::uses('GooglePlayInvalidArgumentException', 'Payment' . DS . 'Google');
+        App::uses('GooglePlayRuntimeException', 'Payment' . DS . 'Google');
+        App::uses('GooglePlayOrder', 'Payment' . DS . 'Google');
+        App::uses('GooglePlayResponseData', 'Payment' . DS . 'Google');
+        App::uses('GooglePlayResponseValidator', 'Payment' . DS . 'Google');
+
+        try {
+            $validator = new GooglePlayResponseValidator($publicKey, $googleData->packageName);
+            $valid = $validator->verify($this->request->data('purchaseData'), $signature);
+
+            if ((!$valid) || ($googleData->purchaseState != 0)) {
+                $result = [
+                    'status'  => 3,
+                    'message' => __('Giao dịch không hợp lệ'),
+                ];
+                CakeLog::info(print_r($result, true), 'payment');
+                goto end;
+            }
+        } catch (Exception $e) {
+            $result = [
+                'status'  => 11,
+                'message' => 'This google payment is illegal 5 - user id:' . $user['id'],
+            ];
+            CakeLog::error(print_r($result, true), 'payment');
+            goto end;
+        }
+
+        $transId = $this->request->data('tran_id'); // lấy order_id từ client gửi lên (order của plf)
+        $role_id = $area_id = '1';
+        if (!empty($this->request->header('role_id'))) $role_id = $this->request->header('role_id');
+        if (!empty($this->request->header('area_id'))) $area_id = $this->request->header('area_id');
+
+        # check save google_inapp_oders
+        try {
+            $this->loadModel('GoogleInappOrder');
+            //check if order exists
+            if (isset($googleData->orderId)) {
+                $googleOderId = $googleData->orderId;
+                $test_type = 0;
+            } else {
+                $googleOderId = $googleData->purchaseToken;
+                $test_type = 1;
+            }
+            $existedGOrder = $this->GoogleInappOrder->find('first', [
+                'conditions' => [
+                    'GoogleInappOrder.google_order_id' => $googleOderId,
+                ],
+            ]);
+            if ($existedGOrder) {
+                $result = [
+                    'status'  => 4,
+                    'message' => __('Giao dịch đã tồn tại'),
+                ];
+                CakeLog::info(print_r($result, true), 'payment');
+                goto end;
+            }
+
+            $arrGoogleOrder = [
+                'order_id'          => $transId,
+                'user_id'           => $user['id'],
+                'game_id'           => $game['id'],
+                'role_id'           => $role_id,
+                'area_id'           => $area_id,
+                'google_order_id'   => $googleOderId,
+                'package_name'      => $googleData->packageName,
+                'google_product_id' => $googleData->productId,
+                'purchase_time'     => $googleData->purchaseTime,
+                'purchase_state'    => $googleData->purchaseState,
+                'purchase_token'    => $googleData->purchaseToken,
+                'signature'         => $signature,
+            ];
+            CakeLog::info('google order:' . print_r($arrGoogleOrder, true), 'payment');
+
+            if (!$this->GoogleInappOrder->save($arrGoogleOrder)) {
+                $result = [
+                    'status'  => 19,
+                    'message' => 'This google payment is illegal 6 - user id:' . $user['id'],
+                ];
+
+                goto end;
+            }
+        } catch (Exception $e) {
+            $result = [
+                'status'  => 19,
+                'message' => 'This google payment is illegal 6 - user id:' . $user['id'],
+                'data'    => $e->getMessage(),
+            ];
+            CakeLog::error(print_r($result, true), 'payment');
+            goto end;
+        }
+
+        try {
+            # check giao dịch đã được tạo chưa
+            $this->loadModel('WaitingPayment');
+            $unresolvedPayment = $this->WaitingPayment->find('first', [
+                'conditions' => [
+                    'WaitingPayment.order_id' => $transId,
+                ],
+            ]);
+            if (empty($unresolvedPayment)) {
+                $result = [
+                    'status'  => 5,
+                    'message' => __('Giao dịch không tồn tại'),
+                ];
+                CakeLog::info(print_r($result, true), 'payment');
+                goto end;
+            }
+
+            # lưu dữ liệu thanh toán
+            $this->loadModel('Product');
+            $productId = $googleData->productId;
+            $product = $this->Product->find('first', [
+                'conditions' => [
+                    'Product.appleid' => $productId,
+                ],
+            ]);
+            if (empty($product)) {
+                $result = [
+                    'status'  => 6,
+                    'message' => __('Không có gói xu phù hợp'),
+                ];
+                CakeLog::info(print_r($result, true), 'payment');
+                goto end;
+            }
+
+            # trạng thái thành công, lưu dữ liệu payment
+            $paymentLib = new PaymentLib();
+            $data_payment = [
+                'waiting_id' => $unresolvedPayment['WaitingPayment']['id'],
+                'time'       => time(),
+                'type'       => $unresolvedPayment['WaitingPayment']['type'],
+                'test'       => $test_type,
+                'chanel'     => $unresolvedPayment['WaitingPayment']['chanel'],
+                'order_id'   => $transId,
+                'user_id'    => $user['id'],
+                'game_id'    => $game['id'],
+
+                'role_id' => $role_id,
+                'area_id' => $area_id,
+
+                'product_id' => $product['Product']['productid'],
+
+                'price'      => $product['Product']['platform_price'],
+                'price_end'  => ($product['Product']['platform_price']) * 0.7,
+                'price_game' => $product['Product']['game_price'],
+            ];
+
+            $paymentLib->add($data_payment);
+            $paymentLib->setResolvedPayment($unresolvedPayment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+            $result = [
+                'status'  => 0,
+                'tran_id' => $transId,
+                'message' => __('Giao dịch thành công'),
+            ];
+        } catch (Exception $e) {
+            $result = [
+                'status'  => 8,
+                'message' => 'This google payment is illegal 4 - user id:' . $user['id'],
+                'data' => $e->getMessage()
+            ];
+            CakeLog::error(print_r($result, true), 'payment');
+            goto end;
+        }
+        end:
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
+    }
 }

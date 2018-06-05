@@ -11,7 +11,7 @@ if ($game['os'] == 'ios' || $MobileDetect->isiOS() ) {
         <div class="row" align="center"><br/>
             <?php foreach ($products as $product){?>
                 <?php
-                    $link_inapp = $this->Html->url(array( 'controller' => 'Payments', 'action' => 'inapp',
+                    $link_inapp = $this->Html->url(array( 'controller' => 'Payments', 'action' => 'order',
                         '?' => array(
                             'app'   => $game['app'],
                             'token' => $token,

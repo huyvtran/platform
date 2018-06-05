@@ -19,6 +19,8 @@ class Payment extends AppModel
 	const TYPE_NETWORK_CARD = 'CARD';
 	const TYPE_NETWORK_SMS = 'SMS';
 
+	const TYPE_NETWORK_INAPP = 'Inapp';
+
 	const CHANEL_VIPPAY = 1;
 	const CHANEL_HANOIPAY = 2;
 	const CHANEL_PAYPAL = 3;
@@ -42,6 +44,10 @@ class Payment extends AppModel
     const CHANEL_QUICKPAY  = 15;
 
     const CHANEL_MANUAL  = 16;
+
+    const CHANEL_APPLE = 17;
+
+    const CHANEL_GOOGLE = 18;
 
 	public $belongsTo = [
 		'User', 'Game',

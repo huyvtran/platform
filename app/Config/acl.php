@@ -152,11 +152,13 @@ $config['rules'] = array(
 
         'payments/api_pay'      => 'Role/User',
         'payments/index'        => 'Role/User',
+        'payments/order'        => 'Role/User',
         'payments/pay'          => 'Role/User',
         'payments/api_charge'   => 'Role/User',
         'payments/admin_index'  => 'Role/Content',
         'payments/admin_inpay'  => 'Role/Content',
         'payments/pay_list'  => 'Role/User',
+        'payments/api_googleVerify'     => 'Role/User',
         'payments/pay_paypal_index'     => 'Role/User',
         'payments/pay_paypal_order'     => 'Role/User',
         'payments/pay_paypal_response'  => 'Role/User',
