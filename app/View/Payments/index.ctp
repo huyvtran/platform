@@ -26,9 +26,7 @@
             'action' => 'inapp',
             '?' => [
                 'app'   => $game['app'],
-                'token' => $token,
-                'role_id'   => $role_id,
-                'area_id'   => $area_id
+                'token' => $token
             ]
         ]); ?>" class="card-type">
         <span class="card-icon">
@@ -43,9 +41,7 @@
                 'action' => 'recharge',
                 '?' => [
                     'app'   => $game['app'],
-                    'token' => $token,
-                    'role_id'   => $role_id,
-                    'area_id'   => $area_id
+                    'token' => $token
                 ]
             ]); ?>" class="card-type">
                 <span class="card-icon">
@@ -59,9 +55,7 @@
                 'action' => 'choose_pay',
                 '?' => [
                     'app'   => $game['app'],
-                    'token' => $token,
-                    'role_id'   => $role_id,
-                    'area_id'   => $area_id
+                    'token' => $token
                 ]
             ]); ?>" class="card-type">
                 <span class="card-icon">

@@ -470,13 +470,6 @@ class PaymentsController extends AppController {
         $user = $this->Auth->user();
         $token = $this->request->header('token');
 
-        if (!empty($this->request->header('role_id'))) $role_id = $this->request->header('role_id');
-        if (!empty($this->request->header('area_id'))) $area_id = $this->request->header('area_id');
-
-        if (!isset($role_id, $area_id)) {
-            throw new NotFoundException(__('Không tìm thấy id nhân vật hoặc id server'));
-        }
-
         # tìm token và game phù hợp
         # sử lý web, không dùng chuyển sang cms
 //        if (!$token) {
@@ -501,6 +494,6 @@ class PaymentsController extends AppController {
 //            }
 //        }
 
-        $this->set(compact('user','token', 'game', 'role_id', 'area_id'));
+        $this->set(compact('user','token', 'game'));
     }
 }
