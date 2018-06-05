@@ -5,21 +5,8 @@ if( !empty($currentGame['data']['payment']['url_sdk']) ) {
 }
 ?>
 <body>
-    <div class="toolbar">
-        <div class="toolbar-left">
-            <a href="<?php echo $url_sdk; ?>"><i class="fa fa-home fa-lg" aria-hidden="true"></i></a>
-        </div>
-        <div class="toolbar-brand">
-            <?php echo __('Nạp thẻ'); ?>
-        </div>
-        <div class="toolbar-right">
-            <a href="#" onclick="document.location = 'js-oc:kunlunClose:null';return false">
-                <i class="fa fa-times fa-lg" aria-hidden="true"></i>
-            </a>
-        </div>
-    </div>
     <div class="container">
-        <div class="row" align="center">
+        <div class="row" align="center"><br/>
             <?php foreach ($products as $product){?>
                 <div class="col-xs-4">
                     <a href="<?php echo $this->Html->url(array( 'controller' => 'Payments', 'action' => 'inapp',
