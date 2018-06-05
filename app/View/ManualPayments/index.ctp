@@ -77,9 +77,9 @@ if( !empty($currentGame['data']['payment']['url_sdk']) ) {
             <label class="col-xs-2 control-label">Type</label>
             <div class="col-xs-9">
                 <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default class-type">
-                        <input type="radio" name="type" value="<?php echo Payment::TYPE_NETWORK_VIETTEL ; ?>"> <img src="<?php echo $this->Html->url('/uncommon/payment/images/logo_vtel.png'); ?>" width="79px" height="39px">
-                    </label>
+<!--                    <label class="btn btn-default class-type">-->
+<!--                        <input type="radio" name="type" value="--><?php //echo Payment::TYPE_NETWORK_VIETTEL ; ?><!--"> <img src="--><?php //echo $this->Html->url('/uncommon/payment/images/logo_vtel.png'); ?><!--" width="79px" height="39px">-->
+<!--                    </label>-->
                     <label class="btn btn-default class-type">
                         <input type="radio" name="type" value="<?php echo Payment::TYPE_NETWORK_VINAPHONE ; ?>"> <img src="<?php echo $this->Html->url('/uncommon/payment/images/logo_vina.png'); ?>" width="79px" height="39px">
                     </label>
