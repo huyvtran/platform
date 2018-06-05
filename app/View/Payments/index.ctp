@@ -1,68 +1,42 @@
-<div class="wrapper">
-    <nav class="navbar navbar-default">
-        <div class="container">
-            <div class="nav navbar-left">
-                <a href="#"><i class="fa fa-home fa-2x"></i></a>
-            </div>
-
-            <?php echo __('Nạp thẻ'); ?>
-
-            <div class="nav navbar-right">
-            </div>
+<?php
+$url_sdk = "";
+if( !empty($currentGame['data']['payment']['url_sdk']) ) {
+    $url_sdk = $currentGame['data']['payment']['url_sdk'];
+}
+?>
+<body>
+    <div class="toolbar">
+        <div class="toolbar-left">
+            <a href="<?php echo $url_sdk; ?>"><i class="fa fa-home fa-lg" aria-hidden="true"></i></a>
         </div>
-    </nav>
-    <div class="clearfix"></div>
-
-    <ul class="crumbs list-unstyled">
-        <li class="active"><?php echo __('Cách nạp'); ?></li>
-        <li><?php echo __('Chọn gói'); ?></li>
-        <li><?php echo __('Hoàn thành'); ?></li>
-    </ul>
-    <div class="clearfix"></div>
-
-    <div class="container page-wrapper">
-        <a href="<?php echo $this->Html->url([
-            'controller' => 'Payments',
-            'action' => 'inapp',
-            '?' => [
-                'app'   => $game['app'],
-                'token' => $token
-            ]
-        ]); ?>" class="card-type">
-        <span class="card-icon">
-            <img src="/payment/images/apple-store.png" alt="Apple Store">
-        </span>
-            <span> <?php echo __('Nạp từ store'); ?> </span>
-        </a>
-
-        <?php if( !$this->Nav->hideFunction('hide_payment', $game) ){ ?>
-            <a href="<?php echo $this->Html->url([
-                'controller' => 'Payments',
-                'action' => 'recharge',
-                '?' => [
-                    'app'   => $game['app'],
-                    'token' => $token
-                ]
-            ]); ?>" class="card-type">
-                <span class="card-icon">
-                    <img src="/payment/images/bag.png" alt="Mobile Card">
-                </span>
-                <span> <?php echo __('Rút tiền game'); ?> </span>
+        <div class="toolbar-brand">
+            <?php echo __('Nạp thẻ'); ?>
+        </div>
+        <div class="toolbar-right">
+            <a href="#" onclick="document.location = 'js-oc:kunlunClose:null';return false">
+                <i class="fa fa-times fa-lg" aria-hidden="true"></i>
             </a>
-
-            <a href="<?php echo $this->Html->url([
-                'controller' => 'Payments',
-                'action' => 'choose_pay',
-                '?' => [
-                    'app'   => $game['app'],
-                    'token' => $token
-                ]
-            ]); ?>" class="card-type">
-                <span class="card-icon">
-                    <img src="/payment/images/credit-card-orange.png" alt="Mobile Card">
-                </span>
-                <span> <?php echo __('Phương thức nạp'); ?> </span>
-            </a>
-        <?php } ?>
+        </div>
     </div>
-</div>
+    <div class="container">
+        <div class="row" align="center">
+            <?php foreach ($products as $product){?>
+                <div class="col-xs-4">
+                    <a href="<?php echo $this->Html->url(array( 'controller' => 'Payments', 'action' => 'inapp',
+                        '?' => array(
+                            'app'   => $game['app'],
+                            'token' => $token,
+                            'productId' => $product['Product']['id']
+                        )
+                    )); ?>" class="btn btn-info btn-md" style="border: 1px #337ab7 solid !important; margin-top: 5px; width: 110px;">
+                        <font color="yellow"><?php echo number_format($product['Product']['platform_price'], 0, '.', ','); ?> Coin</font><br/>
+                        <font color="#ffd700"> <b>+ 10% </b></font>
+                        <br/>
+                        <i class="fa fa-diamond fa-2x"></i><br/>
+                        <?php echo $product['Product']['price']; ?>$
+                    </a>
+                </div>
+            <?php } ?>
+        </div>
+    </div>
+</body>

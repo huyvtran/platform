@@ -470,6 +470,17 @@ class PaymentsController extends AppController {
         $user = $this->Auth->user();
         $token = $this->request->header('token');
 
+        $this->loadModel('Payment');
+        $this->loadModel('Product');
+        $products = $this->Product->find('all', array(
+            'conditions' => array(
+                'Product.game_id'   => $game['id'],
+                'Product.chanel'    => Payment::CHANEL_PAYPAL,
+            ),
+            'order'     => array('Product.platform_price' => 'asc' ),
+            'recursive' => -1
+        ));
+
         # tìm token và game phù hợp
         # sử lý web, không dùng chuyển sang cms
 //        if (!$token) {
@@ -494,6 +505,6 @@ class PaymentsController extends AppController {
 //            }
 //        }
 
-        $this->set(compact('user','token', 'game'));
+        $this->set(compact('user','token', 'game', 'products'));
     }
 }
