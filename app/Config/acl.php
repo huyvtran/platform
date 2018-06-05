@@ -150,8 +150,9 @@ $config['rules'] = array(
 
 		'Oauth/*' => 'Role/User',
 
-        'payments/api_pay'  => 'Role/User',
-        'payments/pay'      => 'Role/User',
+        'payments/api_pay'      => 'Role/User',
+        'payments/index'        => 'Role/User',
+        'payments/pay'          => 'Role/User',
         'payments/api_charge'   => 'Role/User',
         'payments/admin_index'  => 'Role/Content',
         'payments/admin_inpay'  => 'Role/Content',
