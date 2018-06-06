@@ -27,6 +27,10 @@ if( !empty($currentGame['data']['payment']['url_sdk']) ) {
     <center> <span style="color: red"><?= $this->Session->flash('error'); ?> </span></center>
     <div id="page-wrapper">
         <?php
+            $maintain = false;
+            if($maintain){
+        ?>
+        <?php
         echo $this->Form->create(false, array(
             'inputDefaults' => array(
                 'class' => 'form-control input-sm',
@@ -100,6 +104,11 @@ if( !empty($currentGame['data']['payment']['url_sdk']) ) {
             </div>
         </div>
         <?php echo $this->Form->end(); ?>
+        <?php }else{ ?>
+                <div class="alert alert-success font-small" style="color: black">
+                    The recharge system is maintaining.
+                </div>
+        <?php } ?>
     </div><br/><br/>
 </div>
 </body>
