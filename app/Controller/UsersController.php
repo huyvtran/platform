@@ -1298,7 +1298,7 @@ class UsersController extends AppController {
 			goto end;
 		}
 
-		$prefix_user = 'p03_';
+		$prefix_user = '';
 		$game = $this->Common->currentGame();
 
         CakeLog::info('api_register_v26 - game id:' . $game['id'] . '\n data:' . print_r($this->request->data,true), 'user');
