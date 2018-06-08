@@ -126,6 +126,7 @@ class WaitingPaymentsController extends AppController {
         $game = $this->Common->currentGame();
         if( empty($game) || !$this->Auth->loggedIn() ){
             CakeLog::error('Vui lòng login', 'payment');
+            $this->render('/Payments/error');
             $result = array(
                 'status' => 1,
                 'message' => 'error',
@@ -168,6 +169,8 @@ class WaitingPaymentsController extends AppController {
             'offset'    => $offset,
             'order'     => array('WaitingPayment.id desc')
         ));
+
+        $this->set(compact('data', 'user'));
 
         $data_tmp = array();
         foreach ($data as $item){
@@ -219,7 +222,11 @@ class WaitingPaymentsController extends AppController {
         );
 
         end:
-        $this->set('result', $result);
-        $this->set('_serialize', 'result');
+        if (!empty($this->request->params['ext']) && $this->request->params['ext'] == 'json') {
+            $this->set('result', $result);
+            $this->set('_serialize', 'result');
+        }else{
+            $this->Common->setTheme();
+        }
     }
 }
