@@ -226,6 +226,7 @@ class WaitingPaymentsController extends AppController {
             $this->set('result', $result);
             $this->set('_serialize', 'result');
         }else{
+            $this->layout = 'payment';
             $this->Common->setTheme();
         }
     }
