@@ -81,6 +81,10 @@ class Game extends AppModel {
 
 	public function afterSave($created)
 	{
+        App::import('Lib', 'RedisCake');
+        $Redis = new RedisCake('action_count');
+        $Redis->set('list_game_last_update', date('Y-m-d H:i:s'));
+
 		# Clear detect request to which game, or website in CommonComponent
 		Cache::clear(false, 'info');
 		clearCachefile('config_language_games', '', '');

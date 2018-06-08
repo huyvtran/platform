@@ -9,7 +9,7 @@ class OauthController extends AppController {
 		parent::beforeFilter();
 		$this->Auth->allow(array(
 			'userInfo', 'api_userAuthen', 'token', 'getGame',
-            'api_tracking_install'
+            'api_tracking_install', 'api_list_game'
 		));
 	}
 
@@ -285,6 +285,44 @@ class OauthController extends AppController {
         CakeLog::info('checking install:' . print_r($this->request->data,true));
 
         $result = array();
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
+        return $result;
+    }
+
+    public function api_list_game(){
+        try {
+            $this->loadModel('Game');
+            $this->Game->recursive = -1;
+            $games = $this->Game->find('all', array(
+                'fields' => array('title', 'app', 'secret_key',
+                    'slug', 'alias', 'short_words', 'status',
+                    'os', 'language_default', 'modified'
+                ),
+                'conditions' => array(
+                    'status' => true
+                )
+            ));
+            $games = Hash::extract($games, '{n}.Game');
+
+            App::import('Lib', 'RedisCake');
+            $Redis = new RedisCake('action_count');
+
+            $result = array(
+                'error_code' => 0,
+                'system' => 'mu_plf',
+                'last_update' => $Redis->get('list_game_last_update'),
+                'message' => 'success',
+                'data' => $games
+            );
+        }catch (Exception $e){
+            CakeLog::error('list game error:' . $e->getMessage());
+            $result = array(
+                'error_code' => $e->getCode(),
+                'message' => $e->getMessage(),
+            );
+        }
+
         $this->set('result', $result);
         $this->set('_serialize', 'result');
         return $result;
