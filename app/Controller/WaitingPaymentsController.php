@@ -126,7 +126,7 @@ class WaitingPaymentsController extends AppController {
         $game = $this->Common->currentGame();
         if( empty($game) || !$this->Auth->loggedIn() ){
             CakeLog::error('Vui lòng login', 'payment');
-            $this->render('/Payments/error');
+            $this->view = 'error';
             $result = array(
                 'status' => 1,
                 'message' => 'error',
