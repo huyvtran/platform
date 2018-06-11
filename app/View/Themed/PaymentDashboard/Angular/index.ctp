@@ -251,11 +251,7 @@
                         // maintain
                         if(data.retcode == 99){
                             // maintain
-                            if(APP_KEY == '647f2395559c3ba04c162219451bfc2b' && GAME_VERSION == '1.8'){
-                                window.location.href = "#/maintain/";
-                            }else {
-                                AppSDKexecute('SDKMaintain');
-                            }
+                            AppSDKexecute('SDKMaintain');
                         }else if (data.retcode != 0) {
                             AppSDKexecute('SDKErrorMessage', data.message);
                         } else {
@@ -281,10 +277,10 @@
                     })
                     .success(function(data) {
                         // maintain
-                        if(data.status == 99){
+                        if(data.retcode == 99){
                             // maintain
                             AppSDKexecute('SDKMaintain');
-                        }else if (data.status != 0) {
+                        }else if (data.retcode != 0) {
                             AppSDKexecute('SDKErrorMessage', data.message);
                         } else {
                             AppSDKexecute('SDKLoginSuccess', data.data);
