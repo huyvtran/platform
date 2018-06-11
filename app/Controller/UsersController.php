@@ -124,19 +124,26 @@ class UsersController extends AppController {
 			$this->Cookie->destroy();
 			$this->Session->destroy();
 			$this->Session->setFlash($message);
-			if ($this->request->query('app')){
-				$website_url = $this->Common->currentWebsite('url');
-				$this->redirect('http://' . $website_url);
-			}
-			if($this->request->query('reditectTo')){
-				$website_url = $this->request->query('reditectTo');
-				$this->redirect('http://' . $website_url);
-			}
 		}
-		if ($this->request->query('next')) {
-			$this->redirect($this->request->query('next'));
-		}
-		$this->redirect($this->referer('/', true));
+
+        if (!empty($this->request->params['ext']) && $this->request->params['ext'] == 'json') {
+            $this->set('result', array(
+                'status' => 0,
+                'message' => 'success'
+            ));
+            $this->set('_serialize', 'result');
+        }else{
+            $website_url = $this->referer('/', true);
+            if ($this->request->query('app')){
+                $website_url = $this->Common->currentWebsite('url');
+                $website_url = 'http://' . $website_url ;
+            }
+            if($this->request->query('reditectTo')){
+                $website_url = $this->request->query('reditectTo');
+                $website_url = 'http://' . $website_url ;
+            }
+            $this->redirect($website_url);
+        }
 	}
 
 	protected function _setCookie($options = array(), $cookieKey = 'User')
