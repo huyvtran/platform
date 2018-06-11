@@ -535,9 +535,12 @@ class PaymentsController extends AppController {
             $productId = $this->request->query('plf_product_id');
         }
 
+        CakeLog::info('check product id :' . $productId);
+
         $this->loadModel('Product');
         $this->Product->recursive = -1;
         $product = $this->Product->findById($productId);
+        CakeLog::info('check product obj :' . print_r($product, true));
 
         if (empty($product)) {
             if (!empty($this->request->params['ext']) && $this->request->params['ext'] == 'json') {
