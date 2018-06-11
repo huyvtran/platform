@@ -66,6 +66,15 @@ echo $this->Form->create('Game', array(
                     ?>
                 </div>
             </div>
+
+            <div class='span3'>
+                <a href="#" class='show-config-box'>Google IAB config</a>
+                <div class='config-box'>
+                    <?php
+                    echo $this->Form->input('Game.data.google_iab.hashkey', array('type' => 'textarea', 'class' => 'form-control'));
+                    ?>
+                </div>
+            </div>
         </div>
     </div>
 
