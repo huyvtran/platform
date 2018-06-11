@@ -1,9 +1,6 @@
 <div class="app-login">
 
 <div class="app-header">
-    <span class="btn-back">
-                <a href="#/"><i class="fa fa-chevron-left fa-lg"></i></a>
-            </span>
     <p class="app-title">{{ title }}</p>
 </div>
 <div class="clear-float"></div>
@@ -14,7 +11,7 @@
                 <div class="input-group-addon">
                     <i class="fa fa-fw fa-user"></i>
                 </div>
-                <input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" ng-model="formData.username" required="required">
+                <input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" ng-model="formData.user_name" required="required">
             </div>
         </div>
         <div class="form-group">
@@ -30,15 +27,7 @@
                 <div class="input-group-addon">
                     <i class="fa fa-fw fa-lock"></i>
                 </div>
-                <input type="password" name="password" class="form-control" placeholder="Mật khẩu" ng-model="formData.password" required="required">
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <div class="input-group-addon">
-                    <i class="fa fa-fw fa-lock"></i>
-                </div>
-                <input type="password" name="repeat-password" class="form-control" placeholder="Nhập lại mật khẩu" ng-model="formData.repass" required="required">
+                <input type="text" name="password" class="form-control" placeholder="Mật khẩu" ng-model="formData.password" required="required">
             </div>
         </div>
         <div class="form-group">

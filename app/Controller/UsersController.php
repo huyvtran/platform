@@ -1314,11 +1314,19 @@ class UsersController extends AppController {
             $prefix_user = $game['data']['prefix'] ;
         }
 
+        # giá trị mặc định các game mu, ko đổi được, chả hiểu sao vậy
+        $email = time().'@myapp.com';
+        $phone = $this->request->data['email'];
+        if( in_array($game['app'], array('17b05f0d4e311c83a62c0251165d23ef', '4297d1cee18d6b055e1f0e752bec90ab')) ){
+            $email = $this->request->data['email'];
+            $phone = '01234567891';
+        }
+
 		$this->request->data['User'] = $this->request->data;
-		$this->request->data['User']['email'] 	= time().'@myapp.com';
+		$this->request->data['User']['email'] 	= $email;
 		$this->request->data['User']['role'] 	= 'User';
 		$this->request->data['User']['active'] 	= true;
-		$this->request->data['User']['phone'] 	= $this->request->data['email'];
+		$this->request->data['User']['phone'] 	= $phone;
 		$this->request->data['User']['password'] = $this->request->data['password'];
 		$this->request->data['User']['username'] = $prefix_user . $this->request->data['user_name'];
 
