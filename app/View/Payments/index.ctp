@@ -15,7 +15,7 @@ if ($game['os'] == 'ios' || $MobileDetect->isiOS() ) {
                         '?' => array(
                             'app'   => $game['app'],
                             'token' => $token,
-                            'productId' => $product['Product']['id']
+                            'plf_product_id' => $product['Product']['id']
                         )
                     ));
                     if($isiOS) $link_inapp = "javascript:AppSDKexecute('PaymentStartInapp', {plf_product_id: " . $product['Product']['id'] . "})";
