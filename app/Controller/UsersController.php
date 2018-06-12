@@ -1320,6 +1320,7 @@ class UsersController extends AppController {
         if( in_array($game['app'], array('17b05f0d4e311c83a62c0251165d23ef', '4297d1cee18d6b055e1f0e752bec90ab')) ){
             $email = $this->request->data['email'];
             $phone = '01234567891';
+            $this->request->data['password'] = md5($this->request->data['password']);
         }
 
 		$this->request->data['User'] = $this->request->data;
@@ -1448,6 +1449,10 @@ class UsersController extends AppController {
 		$game = $this->Common->currentGame();
         if( !empty( $game['data']['prefix'] ) ){
             $prefix_user = $game['data']['prefix'] ;
+        }
+
+        if( in_array($game['app'], array('17b05f0d4e311c83a62c0251165d23ef', '4297d1cee18d6b055e1f0e752bec90ab')) ){
+            $this->request->data['userpass'] = md5($this->request->data['userpass']);
         }
 		
 		CakeLog::info('api_login_v26 - game id:' . $game['id'] . '\n data:' . print_r($this->request->data,true), 'user');
