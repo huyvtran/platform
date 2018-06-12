@@ -84,13 +84,16 @@ class OauthController extends AppController {
 			$accountId = $account[0]['Account']['account_id'];
 		}
 
+        $username = $token['User']['username'];
+        if( !empty($game['Game']['data']['prefix']) ) $username = substr($token['User']['username'], strlen($game['Game']['data']['prefix']));
+
 		$result = array(
 			'user' => array(
                 'user_id' 		=> $token['User']['id'],
 				'account_id' 	=> $accountId,
 				'role' 			=> $token['User']['role'],
 				'email' 		=> $token['User']['email'],
-				'user_name' 	=> $token['User']['username'],
+				'user_name' 	=> $username,
 				'full_name' 	=> $token['User']['email'],
 				'last_action'	=> $token['User']['last_action'],
                 'coin'	        => $token['User']['payment'],
