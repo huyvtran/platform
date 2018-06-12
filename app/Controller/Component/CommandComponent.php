@@ -215,7 +215,7 @@ class CommandComponent extends Component {
 			$accountId = $account['Account']['account_id'];
 		}
 
-        $username = $this->Auth->user('username');
+        $username = substr($this->Auth->user('username'), 4);
         if( !empty($game['data']['prefix']) ) $username = substr($this->Auth->user('username'), strlen($game['data']['prefix']));
 
 		$data = array(
