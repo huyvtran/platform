@@ -253,7 +253,7 @@
                             // maintain
                             AppSDKexecute('SDKMaintain');
                         }else if (data.retcode != 0) {
-                            AppSDKexecute('SDKErrorMessage', data.message);
+                            AppSDKexecute('SDKErrorMessage', data.retmsg);
                         } else {
                             AppSDKexecute('SDKLoginSuccess', data.data);
                         }
@@ -281,7 +281,7 @@
                             // maintain
                             AppSDKexecute('SDKMaintain');
                         }else if (data.retcode != 0) {
-                            AppSDKexecute('SDKErrorMessage', data.message);
+                            AppSDKexecute('SDKErrorMessage', data.retmsg);
                         } else {
                             AppSDKexecute('SDKLoginSuccess', data.data);
                         }
