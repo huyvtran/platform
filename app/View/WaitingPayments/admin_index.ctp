@@ -235,6 +235,9 @@ $this->extend('/Common/blank');
                             case Payment::CHANEL_MANUAL :
                                 $chanel = 'Manual';
                                 break;
+                            case Payment::CHANEL_GOOGLE :
+                                $chanel = 'Google';
+                                break;
                         }
                     }
                     echo $this->Html->link($chanel, array(
