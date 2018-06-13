@@ -24,7 +24,7 @@ class PaymentShell extends AppShell
 			Payment::CHANEL_VIPPAY => 'Vippay',
 			Payment::CHANEL_HANOIPAY => 'Hanoipay',
 			Payment::CHANEL_PAYPAL => 'Paypal',
-			Payment::CHANEL_APPOTA => 'Appota',
+			Payment::CHANEL_GOOGLE => 'Error',
 			Payment::CHANEL_ONEPAY => 'OnePay',
 			Payment::CHANEL_PAYMENTWALL => 'PaymentWall',
             Payment::CHANEL_NL_ALE => 'Nl_Ale'
@@ -33,7 +33,7 @@ class PaymentShell extends AppShell
 		foreach ($chanels as $chanel => $name) {
 			if ( !in_array($chanel, array(
 			    Payment::CHANEL_PAYMENTWALL,
-                Payment::CHANEL_APPOTA,
+                Payment::CHANEL_GOOGLE,
                 Payment::CHANEL_NL_ALE
             ))) continue;
 
@@ -84,6 +84,11 @@ class PaymentShell extends AppShell
 		}
 	}
 
+	private function __Error($wating){
+        $this->WaitingPayment->id = $wating['id'];
+        $this->WaitingPayment->saveField('status', WaitingPayment::STATUS_ERROR, ['callbacks' => false]);
+    }
+
 	private function __PaymentWall($wating)
 	{
 		$this->WaitingPayment->id = $wating['id'];
@@ -91,7 +96,7 @@ class PaymentShell extends AppShell
 	}
 
 	private function __Appota($waiting){
-	    $this->__PaymentWall($waiting);
+	    $this->__Error($waiting);
     }
 
     private function __Nl_Ale(){
