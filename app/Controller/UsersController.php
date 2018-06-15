@@ -1557,13 +1557,15 @@ class UsersController extends AppController {
             }
 
             $prefix_user = ''; // client gọi sang vẫn có tiền tố, ko check
+            $game = $this->Common->currentGame();
+            if( !empty( $game['data']['prefix'] ) ){
+                $prefix_user = $game['data']['prefix'] ;
+            }
 
             $old_password = $this->request->data['password'];
 
             $this->request->data['User']['password'] = $this->request->data['new_password'];
             $this->request->data['User']['username'] = $prefix_user . $this->request->data['user_name'];
-
-            $game = $this->Common->currentGame();
 
             CakeLog::info('api_change_password_v26 - game id:' . $game['id'] . '\n data:' . print_r($this->request->data,true), 'user');
             $user = $this->User->findByUsername($this->request->data['User']['username']);
