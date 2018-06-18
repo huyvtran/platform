@@ -15,7 +15,7 @@ class AppSchema extends CakeSchema {
 		'token' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 80, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'comment' => '1', 'charset' => 'utf8'),
 		'type' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'comment' => '1', 'charset' => 'utf8'),
 		'created' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10),
-		'expired' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 10),
+		'expired' => array('type' => 'float', 'null' => false, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
 			'token' => array('column' => 'token', 'unique' => 0),
@@ -131,8 +131,8 @@ class AppSchema extends CakeSchema {
 		'status' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'chanel' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'note' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 50, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => 'current_timestamp()'),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => 'current_timestamp()'),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
@@ -345,6 +345,7 @@ class AppSchema extends CakeSchema {
 		'purchase_time' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 40, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'purchase_state' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 40, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'purchase_token' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 256, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'ip' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'indexes' => array(
@@ -384,8 +385,8 @@ class AppSchema extends CakeSchema {
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'model_foreign_key_original_link_type' => array('column' => array('model', 'foreign_key', 'original_link', 'type'), 'unique' => 0, 'length' => array('original_link' => '255')),
-			'convert_link' => array('column' => 'convert_link', 'unique' => 0, 'length' => array('convert_link' => '255'))
+			'model_foreign_key_original_link_type' => array('column' => array('model', 'foreign_key', 'original_link', 'type'), 'unique' => 0),
+			'convert_link' => array('column' => 'convert_link', 'unique' => 0)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
 	);
@@ -634,8 +635,8 @@ class AppSchema extends CakeSchema {
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'index'),
 		'game_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 5, 'key' => 'index'),
 		'status' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 4),
-		'card_code' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
-		'card_serial' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'card_code' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'card_serial' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'price' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'price_end' => array('type' => 'integer', 'null' => true, 'default' => '0'),
 		'time' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'index'),
@@ -871,8 +872,8 @@ class AppSchema extends CakeSchema {
 		'order_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 50, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'game_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 5, 'key' => 'index'),
-		'card_code' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
-		'card_serial' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'card_code' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'card_serial' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'price' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
 		'status' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 1),
 		'time' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'index'),
