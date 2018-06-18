@@ -13,18 +13,18 @@ class GoogleInappOrder extends AppModel {
         'ip'  => array('type' => 'value'),
         'game_id'   => array('type' => 'value'),
         'username'  => array('type' => 'like', 'field' => array('User.id', 'User.username', 'User.email')),
-        'from_time' => array('type' => 'expression', 'method' => 'fromTimeCond', 'field' => 'CardManual.time >= '),
-        'to_time'   => array('type' => 'expression', 'method' => 'toTimeCond', 'field' => 'CardManual.time <= '),
+        'from_time' => array('type' => 'expression', 'method' => 'fromTimeCond', 'field' => 'GoogleInappOrder.created >= '),
+        'to_time'   => array('type' => 'expression', 'method' => 'toTimeCond', 'field' => 'GoogleInappOrder.created <= '),
     );
 
     public function fromTimeCond($data = array())
     {
-        return date('U', strtotime(date('d-m-Y 0:0:0', $data['from_time'])));
+        return date('Y-m-d 00:00:00', $data['from_time']);
     }
 
     public function toTimeCond($data = array())
     {
-        return date('U', strtotime(date('d-m-Y 23:59:59', $data['to_time'])));
+        return date('Y-m-d 23:59:59', $data['to_time']);
     }
 
     function paginateCount($conditions = array(), $recursive = 0, $extra = array())
