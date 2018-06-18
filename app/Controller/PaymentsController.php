@@ -723,6 +723,7 @@ class PaymentsController extends AppController {
                 'purchase_state'    => $googleData->purchaseState,
                 'purchase_token'    => $googleData->purchaseToken,
                 'signature'         => $signature,
+                'ip'                => $this->Common->publicClientIp()
             ];
             CakeLog::info('google order:' . print_r($arrGoogleOrder, true), 'payment');
 
