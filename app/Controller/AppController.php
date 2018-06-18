@@ -70,6 +70,7 @@ class AppController extends Controller {
                 'Payment - All'	    => '/admin/WaitingPayments',
                 'Payment - Index'	=> '/admin/payments',
                 'Payment - Manual'  => '/admin/ManualPayments',
+                'Payment - Inapp'   => '/admin/WaitingPayments/google',
                 'Payment - compense'=> '/admin/CompensePayments',
                 'Payment - compense add' => '/admin/CompensePayments/add',
                 'Payment - bonus'       => '/admin/Bonuses',

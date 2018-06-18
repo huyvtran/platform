@@ -244,6 +244,59 @@ class WaitingPaymentsController extends AppController {
     }
 
     public function admin_google(){
-        $this->autoRender = false;
+        $this->layout = 'default_bootstrap';
+
+        $this->loadModel('GoogleInappOrder');
+        $this->Prg->commonProcess('GoogleInappOrder');
+        $this->request->data['GoogleInappOrder'] = $this->passedArgs;
+
+        $parsedConditions = array();
+        if(!empty($this->passedArgs)) {
+            $parsedConditions = $this->GoogleInappOrder->parseCriteria($this->passedArgs);
+        }
+
+        if( !empty($this->passedArgs) && empty($parsedConditions)
+        ){
+            if (	(count($this->passedArgs) == 1 && empty($this->passedArgs['page']))
+                ||	count($this->passedArgs) > 1
+            ) {
+                $this->Session->setFlash("Can not find anyone match this conditions", "error");
+            }
+        }
+
+        $parsedConditions = array_merge(array(
+            'GoogleInappOrder.game_id' => $this->Session->read('Auth.User.permission_game_default')
+        ), $parsedConditions);
+
+        $this->GoogleInappOrder->bindModel(array(
+            'belongsTo' => array('Game', 'User')
+        ));
+
+        $games = $this->GoogleInappOrder->Game->find('list', array(
+            'fields' => array('id', 'title_os'),
+            'conditions' => array(
+                'Game.id' => $this->Session->read('Auth.User.permission_game_default'),
+                'Game.status' => 1
+            )
+        ));
+
+        $this->paginate = array(
+            'GoogleInappOrder' => array(
+                'fields' => array('GoogleInappOrder.id', 'GoogleInappOrder.order_id', 'GoogleInappOrder.google_order_id',
+                    'GoogleInappOrder.purchase_time','GoogleInappOrder.google_product_id', 'GoogleInappOrder.ip', 'GoogleInappOrder.created',
+                    'User.username', 'User.id', 'Game.title', 'Game.os'
+                ),
+                'conditions' => $parsedConditions,
+                'contain' => array(
+                    'Game', 'User'
+                ),
+                'order' => array('GoogleInappOrder.id' => 'DESC'),
+                'recursive' => -1,
+                'limit' => 20
+            )
+        );
+
+        $orders = $this->paginate('GoogleInappOrder');
+        $this->set(compact('orders', 'games'));
     }
 }

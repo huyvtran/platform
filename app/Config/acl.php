@@ -212,6 +212,7 @@ $config['rules'] = array(
 
 		'users/api_update_info' => 'Role/User',
 
+        'WaitingPayments/admin_google'  => 'Role/Content',
         'WaitingPayments/admin_index'   => 'Role/Content, Role/Distributor',
         'WaitingPayments/api_index'     => 'Role/User',
 
