@@ -239,9 +239,11 @@ class WaitingPaymentsController extends AppController {
             $Redis->lRemove($ip);
             $Redis->rPush($ip);
         }
+
+        $this->autoRender = false;
     }
 
     public function admin_google(){
-
+        $this->autoRender = false;
     }
 }
