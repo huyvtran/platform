@@ -230,4 +230,18 @@ class WaitingPaymentsController extends AppController {
             $this->Common->setTheme();
         }
     }
+
+    public function admin_blacklist_ip(){
+        $ips = array('14.177.214.157', '124.104.210.54', '110.54.181.46', '124.104.214.123');
+        App::import('Lib', 'RedisQueue');
+        $Redis = new RedisQueue('default', 'payment-ip-black-list');
+        foreach ($ips as $ip){
+            $Redis->lRemove($ip);
+            $Redis->rPush($ip);
+        }
+    }
+
+    public function admin_google(){
+
+    }
 }
