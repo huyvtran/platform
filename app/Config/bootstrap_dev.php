@@ -67,6 +67,13 @@ CakeLog::config('user', array(
     'file' => 'user',
 ));
 
+CakeLog::config('refun', array(
+    'engine' => $logEngine,
+    'types' => array('info', 'debug', 'error'),
+    'scopes' => array('refun'),
+    'file' => 'refun',
+));
+
 $engine = 'File';
 
 if (extension_loaded('apc') && php_sapi_name() !== 'cli'){

@@ -474,7 +474,7 @@ class PaymentsController extends AppController {
             'user_id'   => $user['id'],
             'device'    => $this->request->header('device-id')
         );
-        CakeLog::info('check device:' . print_r($log, true));
+        CakeLog::info('check device:' . print_r($log, true), 'refun');
 
         $this->loadModel('Payment');
         $this->loadModel('Product');
