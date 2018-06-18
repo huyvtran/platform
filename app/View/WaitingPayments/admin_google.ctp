@@ -118,7 +118,7 @@ $this->extend('/Common/blank');
             <th><?php echo 'Game'; ?></th>
             <th><?php echo $this->Paginator->sort('order_id'); ?></th>
             <th><?php echo $this->Paginator->sort('google_order_id', 'google id'); ?></th>
-            <th><?php echo $this->Paginator->sort('google_product_id', 'product id'); ?></th>
+            <th><?php echo 'Product'; ?></th>
             <th><?php echo $this->Paginator->sort('ip'); ?></th>
             <th><?php echo $this->Paginator->sort('purchase_time'); ?></th>
             <th><?php echo $this->Paginator->sort('created'); ?></th>
@@ -131,7 +131,7 @@ $this->extend('/Common/blank');
                 <td> <?php echo $payment['Game']['title'] . ' ' . $payment['Game']['os']; ?> </td>
                 <td> <?php echo $payment['GoogleInappOrder']['order_id']; ?> </td>
                 <td> <?php echo $payment['GoogleInappOrder']['google_order_id']; ?> </td>
-                <td> <?php echo $payment['GoogleInappOrder']['google_product_id']; ?> </td>
+                <td> <?php echo $payment['Product']['title']; ?> </td>
                 <td> <?php echo $payment['GoogleInappOrder']['ip']; ?> </td>
                 <td> <?php echo $payment['GoogleInappOrder']['purchase_time']; ?> </td>
                 <td> <?php echo $payment['GoogleInappOrder']['created']; ?> </td>

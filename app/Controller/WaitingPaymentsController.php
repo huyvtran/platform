@@ -269,7 +269,14 @@ class WaitingPaymentsController extends AppController {
         ), $parsedConditions);
 
         $this->GoogleInappOrder->bindModel(array(
-            'belongsTo' => array('Game', 'User')
+            'belongsTo' => array('Game', 'User',
+                'Product' => array(
+                    'foreignKey' => false,
+                    'conditions' => array(
+                        array('GoogleInappOrder.google_product_id = Product.appleid')
+                    )
+                )
+            )
         ));
 
         $games = $this->GoogleInappOrder->Game->find('list', array(
@@ -284,11 +291,11 @@ class WaitingPaymentsController extends AppController {
             'GoogleInappOrder' => array(
                 'fields' => array('GoogleInappOrder.id', 'GoogleInappOrder.order_id', 'GoogleInappOrder.google_order_id',
                     'GoogleInappOrder.purchase_time','GoogleInappOrder.google_product_id', 'GoogleInappOrder.ip', 'GoogleInappOrder.created',
-                    'User.username', 'User.id', 'Game.title', 'Game.os'
+                    'User.username', 'User.id', 'Game.title', 'Game.os', 'Product.title'
                 ),
                 'conditions' => $parsedConditions,
                 'contain' => array(
-                    'Game', 'User'
+                    'Game', 'User', 'Product'
                 ),
                 'order' => array('GoogleInappOrder.id' => 'DESC'),
                 'recursive' => -1,
