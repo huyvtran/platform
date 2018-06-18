@@ -470,9 +470,11 @@ class PaymentsController extends AppController {
         $user = $this->Auth->user();
         $token = $this->request->header('token');
 
-        if(in_array($user['id'], array(289914, ))){
-            CakeLog::info('check device:' . print_r($this->request->header('device-id'), true));
-        }
+        $log = array(
+            'user_id'   => $user['id'],
+            'device'    => $this->request->header('device-id')
+        );
+        CakeLog::info('check device:' . print_r($log, true));
 
         $this->loadModel('Payment');
         $this->loadModel('Product');
