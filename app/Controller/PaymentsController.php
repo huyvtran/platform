@@ -811,6 +811,20 @@ class PaymentsController extends AppController {
                 'tran_id' => $transId,
                 'message' => __('Giao dịch thành công'),
             ];
+
+            if( Configure::read('Bot.Telegram') ) {
+                $text_telegram = "Type: Google - " . $unresolvedPayment['WaitingPayment']['type'] . "\n\r"
+                    . "Order Id: " . $transId . "\n\r"
+                    . "Google Order Id: " . $googleOderId . "\n\r"
+                    . "Price: " . number_format($product['Product']['platform_price'], 0, '.', ',') . ' vnđ' . "\n\r"
+                    . "User: " . $user['username'] . "\n\r"
+                    . "Game: " . $game['title_os'] . "\n\r";
+                $apiToken = "612122610:AAGf477qu8IX0erRw6Ci3D2qFenRGfoNTV8";
+                $chat_id  = '-288724321';
+                App::import('Lib', 'BotTelegram');
+                $bot = new BotTelegram($apiToken, $chat_id);
+                $bot->pushNotify($text_telegram);
+            }
         } catch (Exception $e) {
             $result = [
                 'status'  => 8,
