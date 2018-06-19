@@ -264,6 +264,19 @@ class OvsPaymentsController extends AppController {
                         if ($transaction_status) {
                             $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
                             $paymentLib->add($data_payment);
+
+                            if( Configure::read('Bot.Telegram') ) {
+                                $text_telegram = "Type: Paypal" . "\n\r"
+                                    . "Order Id: " . $orderId . "\n\r"
+                                    . "Price: " . number_format($wating_payment['WaitingPayment']['price'], 0, '.', ',') . ' vnđ' . "\n\r"
+                                    . "User: " . $user['username'] . "\n\r"
+                                    . "Game: " . $game['title_os'] . "\n\r";
+                                $apiToken = "612122610:AAGf477qu8IX0erRw6Ci3D2qFenRGfoNTV8";
+                                $chat_id  = '-290998992';
+                                App::import('Lib', 'BotTelegram');
+                                $bot = new BotTelegram($apiToken, $chat_id);
+                                $bot->pushNotify($text_telegram);
+                            }
                         } else {
                             $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
                         }

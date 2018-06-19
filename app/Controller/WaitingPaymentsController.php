@@ -232,15 +232,22 @@ class WaitingPaymentsController extends AppController {
     }
 
     public function admin_blacklist_ip(){
-        $ips = array('14.177.214.157', '124.104.210.54', '110.54.181.46', '124.104.214.123');
-        App::import('Lib', 'RedisQueue');
-        $Redis = new RedisQueue('default', 'payment-ip-black-list');
-        foreach ($ips as $ip){
+
+        if( !empty($this->passedArgs['ip']) ){
+            $ip = $this->passedArgs['ip'];
+
+            App::import('Lib', 'RedisQueue');
+            $Redis = new RedisQueue('default', 'payment-ip-black-list');
             $Redis->lRemove($ip);
             $Redis->rPush($ip);
         }
-
-        $this->autoRender = false;
+        $this->redirect( array(
+            'controller' => 'Administrators',
+            'action'    => 'admin_redis_detail',
+            'server'    => Configure::read('Queue.default.server'),
+            'key'       => 'payment-ip-black-list',
+            'type'      => 'lRange'
+        ) );
     }
 
     public function admin_google(){
