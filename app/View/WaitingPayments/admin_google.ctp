@@ -145,7 +145,7 @@ $this->extend('/Common/blank');
                     <?php
                     $status = '<span class="label label-success">OK</span>';
                     if ( !empty($payment['GoogleInappOrder']['status']) ) {
-                        $status = '<span class="label label-important">Refun</span>';
+                        $status = '<span class="label label-important">Refund</span>';
                     }
                     echo $status;
                     ?>
