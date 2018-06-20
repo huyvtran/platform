@@ -120,8 +120,10 @@ $this->extend('/Common/blank');
             <th><?php echo $this->Paginator->sort('google_order_id', 'google id'); ?></th>
             <th><?php echo 'Product'; ?></th>
             <th><?php echo $this->Paginator->sort('ip'); ?></th>
-            <th><?php echo $this->Paginator->sort('purchase_time'); ?></th>
+            <th><?php echo $this->Paginator->sort('device_id'); ?></th>
+            <th><?php echo $this->Paginator->sort('status'); ?></th>
             <th><?php echo $this->Paginator->sort('created'); ?></th>
+            <th class="actions">Actions</th>
         </tr>
 
         <?php foreach ($orders as $payment): ?>
@@ -133,8 +135,22 @@ $this->extend('/Common/blank');
                 <td> <?php echo $payment['GoogleInappOrder']['google_order_id']; ?> </td>
                 <td> <?php echo $payment['Product']['title']; ?> </td>
                 <td> <?php echo $payment['GoogleInappOrder']['ip']; ?> </td>
-                <td> <?php echo $payment['GoogleInappOrder']['purchase_time']; ?> </td>
+                <td> <?php if(!empty($payment['GoogleInappOrder']['device_id'])) echo $payment['GoogleInappOrder']['device_id'] ; ?> </td>
+                <td>
+                    <?php
+                    $status = '<span class="label label-success">OK</span>';
+                    if ( !empty($payment['GoogleInappOrder']['status']) ) {
+                        $status = '<span class="label label-important">Refun</span>';
+                    }
+                    echo $status;
+                    ?>
                 <td> <?php echo $payment['GoogleInappOrder']['created']; ?> </td>
+                <td class="actions btn-group">
+                    <?php
+                        if( empty($payment['GoogleInappOrder']['status']) )
+                        echo $this->Html->link('Block', array('action' => 'block', $payment['GoogleInappOrder']['order_id']), array('class' => 'btn btn-mini'));
+                    ?>
+                </td>
             </tr>
         <?php endforeach; ?>
     </table>

@@ -215,6 +215,7 @@ $config['rules'] = array(
         'WaitingPayments/admin_google'  => 'Role/Content',
         'WaitingPayments/admin_index'   => 'Role/Content, Role/Distributor',
         'WaitingPayments/api_index'     => 'Role/User',
+        'WaitingPayments/admin_block'   => 'Role/Content',
         'WaitingPayments/admin_blacklist_ip'    => 'Role/Content',
 
 		'websites/admin_setsession' => 'Role/Content, Role/Marketing, Role/Developer',

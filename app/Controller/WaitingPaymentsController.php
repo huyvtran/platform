@@ -296,8 +296,8 @@ class WaitingPaymentsController extends AppController {
 
         $this->paginate = array(
             'GoogleInappOrder' => array(
-                'fields' => array('GoogleInappOrder.id', 'GoogleInappOrder.order_id', 'GoogleInappOrder.google_order_id',
-                    'GoogleInappOrder.purchase_time','GoogleInappOrder.google_product_id', 'GoogleInappOrder.ip', 'GoogleInappOrder.created',
+                'fields' => array('GoogleInappOrder.id', 'GoogleInappOrder.order_id', 'GoogleInappOrder.google_order_id', 'GoogleInappOrder.status',
+                    'GoogleInappOrder.device_id','GoogleInappOrder.google_product_id', 'GoogleInappOrder.ip', 'GoogleInappOrder.created',
                     'User.username', 'User.id', 'Game.title', 'Game.os', 'Product.title'
                 ),
                 'conditions' => $parsedConditions,
@@ -312,5 +312,57 @@ class WaitingPaymentsController extends AppController {
 
         $orders = $this->paginate('GoogleInappOrder');
         $this->set(compact('orders', 'games'));
+    }
+
+    public function admin_block( $order_id ){
+        $this->loadModel('WaitingPayment');
+        $this->WaitingPayment->bindModel(array(
+            'hasOne' => array(
+                'Payment' => array(
+                    'foreignKey' => false,
+                    'conditions' => array_merge(
+                        array('WaitingPayment.order_id = Payment.order_id')
+                    )
+                ),
+                'GoogleInappOrder' => array(
+                    'foreignKey' => false,
+                    'conditions' => array_merge(
+                        array('WaitingPayment.order_id = GoogleInappOrder.order_id')
+                    )
+                ),
+            )
+        ));
+
+        $this->WaitingPayment->recursive = 0;
+        $order = $this->WaitingPayment->findByOrderId($order_id);
+        if (empty($order)) {
+            throw new NotFoundException('Invalid order');
+        }
+
+        if( !empty($order['GoogleInappOrder']['ip']) ){
+            $ip = $order['GoogleInappOrder']['ip'];
+            App::import('Lib', 'RedisQueue');
+            $Redis = new RedisQueue('default', 'payment-ip-black-list');
+            $Redis->lRemove($ip);
+            $Redis->rPush($ip);
+
+            $this->WaitingPayment->GoogleInappOrder->id = $order['GoogleInappOrder']['id'];
+            $this->WaitingPayment->GoogleInappOrder->saveField('status', WaitingPayment::STATUS_REFUN, array('callbacks' => false));
+        }
+
+        if( !empty($order['Payment']) ){
+            $this->WaitingPayment->Payment->id = $order['Payment']['id'];
+            $this->WaitingPayment->Payment->saveField('test', 2, array('callbacks' => false));
+        }
+
+        if( !empty($order['WaitingPayment']) ){
+            $this->WaitingPayment->id = $order['WaitingPayment']['id'];
+            $this->WaitingPayment->saveField('status', WaitingPayment::STATUS_REFUN, array('callbacks' => false));
+        }
+
+        $this->redirect( array(
+            'controller' => 'WaitingPayments',
+            'action'    => 'google'
+        ) );
     }
 }
