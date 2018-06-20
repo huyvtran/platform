@@ -1,5 +1,5 @@
 <?php $this->extend('/Common/blank'); ?>
-<h2>Redis detail</h2>
+<h2>Block ip</h2>
 <table cellpadding="0" cellspacing="0" class="table">
     <thead>
     <tr>
