@@ -335,12 +335,14 @@ class WaitingPaymentsController extends AppController {
             throw new NotFoundException('Invalid order');
         }
 
-        if( !empty($order['GoogleInappOrder']['ip']) ){
-            $ip = $order['GoogleInappOrder']['ip'];
-            App::import('Lib', 'RedisQueue');
-            $Redis = new RedisQueue('default', 'payment-ip-black-list');
-            $Redis->lRemove($ip);
-            $Redis->rPush($ip);
+        if( !empty($order['GoogleInappOrder']['id']) ){
+            if( !empty($order['GoogleInappOrder']['ip']) ) {
+                $ip = $order['GoogleInappOrder']['ip'];
+                App::import('Lib', 'RedisQueue');
+                $Redis = new RedisQueue('default', 'payment-ip-black-list');
+                $Redis->lRemove($ip);
+                $Redis->rPush($ip);
+            }
 
             $this->WaitingPayment->GoogleInappOrder->id = $order['GoogleInappOrder']['id'];
             $this->WaitingPayment->GoogleInappOrder->saveField('status', WaitingPayment::STATUS_REFUN, array('callbacks' => false));
