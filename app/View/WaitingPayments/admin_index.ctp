@@ -268,6 +268,9 @@ $this->extend('/Common/blank');
                             case WaitingPayment::STATUS_REVIEW:
                                 $status = '<span class="label label-important">Review</span>';
                                 break;
+                            case WaitingPayment::STATUS_REFUN:
+                                $status = '<span class="label label-important">Refun</span>';
+                                break;
                         }
 
                         echo $status;
