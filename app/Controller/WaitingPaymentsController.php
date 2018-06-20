@@ -345,7 +345,7 @@ class WaitingPaymentsController extends AppController {
             }
 
             $this->WaitingPayment->GoogleInappOrder->id = $order['GoogleInappOrder']['id'];
-            $this->WaitingPayment->GoogleInappOrder->saveField('status', WaitingPayment::STATUS_REFUN, array('callbacks' => false));
+            $this->WaitingPayment->GoogleInappOrder->saveField('status', WaitingPayment::STATUS_REFUND, array('callbacks' => false));
         }
 
         if( !empty($order['Payment']) ){
@@ -355,7 +355,7 @@ class WaitingPaymentsController extends AppController {
 
         if( !empty($order['WaitingPayment']) ){
             $this->WaitingPayment->id = $order['WaitingPayment']['id'];
-            $this->WaitingPayment->saveField('status', WaitingPayment::STATUS_REFUN, array('callbacks' => false));
+            $this->WaitingPayment->saveField('status', WaitingPayment::STATUS_REFUND, array('callbacks' => false));
         }
 
         $this->redirect( array(

@@ -11,7 +11,7 @@ class WaitingPayment extends AppModel {
 	const STATUS_COMPLETED  = 2; // xác nhận thành công
 	const STATUS_ERROR  	= 3; // cổng game trả về, thẻ lỗi hoặc đã sử dụng
     const STATUS_REVIEW  	= 4; // cổng game trả về, thẻ đã bị trừ tiền nhưng có khả năng hoàn trả
-    const STATUS_REFUN  	= 5; // user refun
+    const STATUS_REFUND  	= 5; // user refun
 
     public $actsAs = array(
         'Search.Searchable'
