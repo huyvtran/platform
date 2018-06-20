@@ -4,7 +4,12 @@ $this->extend('/Common/blank');
 
 <div class="row">
     <div class="span12">
-        <h3 class="page-header"> Payment Google Inapp Management </h3>
+        <div class='span8'><h3 class="page-header">Payment Google Inapp Management</h3></div>
+        <div class='span4'> <br/>
+            <?php
+            echo $this->Html->link("<button class='btn'>Block list</button>", array('controller' => 'WaitingPayments', 'admin' => true, 'action' => 'block_ip'), array('escape' => false));
+            ?>
+        </div>
     </div>
 </div>
 
