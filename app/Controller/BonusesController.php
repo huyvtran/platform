@@ -172,13 +172,28 @@ class BonusesController extends AppController
             'message' => 'error',
         ];
 
+        if ( $this->request->query('app') ) {
+            $appKey = $this->request->query('app');
+        }
+
+        if ( $this->request->query('token') ){
+            $accessToken = $this->request->query('token');
+        }
+
+        if (!isset($appKey, $accessToken)) {
+            $result = array(
+                'error_code'    => 2,
+                'message'    => 'empty token or appkey'
+            );
+            goto end;
+        }
+
         $game = $this->Common->currentGame();
-        if (empty($game) || !$this->Auth->loggedIn()) {
-            CakeLog::error('Vui lòng login', 'payment');
-            $result = [
-                'error_code' => 2,
-                'message' => 'Thiếu thông tin login',
-            ];
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            $result = array(
+                'error_code'    => 3,
+                'message'    => 'Invalid token or appkey'
+            );
             goto end;
         }
         $user = $this->Auth->user();
