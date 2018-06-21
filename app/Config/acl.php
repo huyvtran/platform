@@ -138,6 +138,7 @@ $config['rules'] = array(
 		'*' => 'Role/Admin',
 
         'Bonuses/*'             => 'Role/Content',
+        'Bonuses/api_index'     => 'Role/User',
 
         'CompensePayments/*'    => 'Role/Content',
 

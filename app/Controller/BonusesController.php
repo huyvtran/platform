@@ -165,4 +165,54 @@ class BonusesController extends AppController
         }
         $this->redirect($this->referer(array('action' => 'index'), true));
     }
+
+    public function api_index(){
+        $result = [
+            'error_code' => 1,
+            'message' => 'error',
+        ];
+
+        $game = $this->Common->currentGame();
+        if (empty($game) || !$this->Auth->loggedIn()) {
+            CakeLog::error('Vui lòng login', 'payment');
+            $result = [
+                'error_code' => 2,
+                'message' => 'Thiếu thông tin login',
+            ];
+            goto end;
+        }
+        $user = $this->Auth->user();
+
+        if ($this->request->is('post')) {
+            if( empty($this->request->data['coin']) ){
+                $result = [
+                    'error_code' => 3,
+                    'message' => 'Thiếu thông tin nhận coin',
+                ];
+                goto end;
+            }
+
+            try {
+                $this->loadModel('User');
+                $this->User->recursive = -1;
+                $updatePay = $user['payment'] + $this->request->data['coin'];
+                $this->User->id = $user['id'];
+                if ($this->User->saveField('payment', $updatePay, array('callbacks' => false))) {
+                    $result = [
+                        'error_code' => 0,
+                        'message' => 'Giao dịch thành công',
+                    ];
+                }
+            }catch (Exception $e){
+                $result = [
+                    'error_code' => $e->getCode(),
+                    'message' => $e->getMessage(),
+                ];
+            }
+        }
+
+        end:
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
+    }
 }
