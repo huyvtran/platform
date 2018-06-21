@@ -1471,7 +1471,7 @@ class UsersController extends AppController {
 			    if( !empty($user['User']) && $user['User']['active'] === false){
                     $result = array(
                         'retcode' => 99,
-                        'retmsg' => __('Tài khoản của bạn đã bị khóa, Vui lòng liên hệ admin!')
+                        'retmsg' => __('Your account has been locked, please contact admin!')
                     );
                     goto end;
                 }
