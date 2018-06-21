@@ -207,22 +207,48 @@ class BonusesController extends AppController
                 goto end;
             }
 
+            $this->loadModel('Bonus');
+            $dataSource = $this->Bonus->getDataSource();
+            $dataSource->begin();
+
             try {
-                $this->loadModel('User');
-                $this->User->recursive = -1;
+                # tạo giao dịch bonus
+                $data = array(
+                    'Bonus' => array(
+                        'order_id'  => microtime(true) * 10000,
+                        'user_id'   => $user['id'],
+                        'game_id'   => $game['id'],
+                        'price'     => 0,
+                        'bonus'     => $this->request->data['coin'],
+                        'status'    => 1, // 0 để duyệt tay
+                        'chanel'    => 10,
+                        'note'      => 'World Cup'
+                    )
+                );
+                $this->Bonus->save($data);
+
+                $this->Bonus->User->recursive = -1;
                 $updatePay = $user['payment'] + $this->request->data['coin'];
-                $this->User->id = $user['id'];
-                if ($this->User->saveField('payment', $updatePay, array('callbacks' => false))) {
+                $this->Bonus->User->id = $user['id'];
+                if( $this->Bonus->User->saveField('payment', $updatePay, array('callbacks' => false)) ){
                     $result = [
                         'error_code' => 0,
                         'message' => 'Giao dịch thành công',
                     ];
+                    $dataSource->commit();
+                }else{
+                    $result = [
+                        'error_code' => 3,
+                        'message' => 'lỗi lưu dữ liệu',
+                    ];
+                    $dataSource->rollback();
                 }
             }catch (Exception $e){
                 $result = [
                     'error_code' => $e->getCode(),
                     'message' => $e->getMessage(),
                 ];
+                $dataSource->rollback();
             }
         }
 
