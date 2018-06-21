@@ -1468,6 +1468,13 @@ class UsersController extends AppController {
 			$this->User->contain();
 			#login by username
 			if ($user = $this->User->findByUsername($this->request->data['User']['email'])) {
+			    if( !empty($user['User']) && $user['User']['active'] === false){
+                    $result = array(
+                        'retcode' => 99,
+                        'retmsg' => __('Tài khoản của bạn đã bị khóa, Vui lòng liên hệ admin!')
+                    );
+                    goto end;
+                }
 				$this->request->data['User']['email'] = $user['User']['email'];
 				$this->Auth->login();
 			}
