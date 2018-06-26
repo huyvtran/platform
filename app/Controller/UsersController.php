@@ -1959,6 +1959,7 @@ class UsersController extends AppController {
         $this->LogLogin->Behaviors->load('Search.Searchable');
         $this->LogLogin->filterArgs = array(
             array('name' => 'ip', 'type' => 'value'),
+            array('name' => 'username', 'type' => 'value', 'field' => 'User.username')
         );
 
         $this->Prg->commonProcess('LogLogin');

@@ -4,17 +4,24 @@ App::import('Lib', 'RedisCake');
 $Redis = new RedisCake('action_count');
 ?>
 <div class="users index">
-    <h2>Users</h2>
+    <?php
+    echo $this->Form->create('LogLogin', array(
+        'url' => array('controller' => 'Users', 'action' => 'searchip'),
+    ));
+    ?>
     <div class='span3'>
-        <?php
-        echo $this->Form->create('LogLogin', array(
-            'url' => array('controller' => 'Users', 'action' => 'searchip'),
-        ));
-        echo $this->Form->input('ip', array('type' => 'text','required' => false));
-        echo $this->Form->submit('Search', array('class' => 'btn'));
-        echo $this->Form->end();
-        ?>
+        <?php echo $this->Form->input('ip', array('type' => 'text','required' => false)); ?>
+        <?php echo $this->Form->submit('Search', array('class' => 'btn')); ?>
     </div>
+    <div class='span3'>
+    <?php echo $this->Form->input('username', array('type' => 'text','required' => false)); ?>
+    </div>
+    <?php echo $this->Form->end(); ?>
+</div>
+<div class="row-fluid"></div>
+
+<div class="col">
+    <br/><br/>
     <?php echo $this->element('paging'); ?>
     <table class = "table">
         <tr>
