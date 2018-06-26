@@ -20,4 +20,9 @@ class LogLogin extends AppModel {
 			'allowEmpty' => false
 		)
 	);
+
+    function paginateCount($conditions = array(), $recursive = 0, $extra = array())
+    {
+        return 10;
+    }
 }
