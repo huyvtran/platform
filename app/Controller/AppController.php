@@ -38,6 +38,7 @@ class AppController extends Controller {
 				'User - Index' 		=> '/admin/users/index',
 				'User - Staff' 		=> '/admin/users/index/staff:1',
 				'User - Add' 		=> '/admin/users/add',
+                'User - Search IP'  => '/admin/users/searchip',
 			),
 			'activeMenu' => array('users')
 		),
