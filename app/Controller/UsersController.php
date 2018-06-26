@@ -1950,29 +1950,50 @@ class UsersController extends AppController {
         }
         $this->layout = 'default_bootstrap';
     }
-	
-	public function test_sendmail(){
-        $options = array(
-            'from' => array('no-reply@plf.vntap.com' => 'VNTAP'),
-            'template' => 'default',
-            'subject' => __('Thay đổi mật khẩu tài khoản'),
-            'layout' => 'default'
-        );
-        try {
-            $Email = new CakeEmail('amazonses');
-            $email = $Email->to('quanhongvu@gmail.com')
-                ->subject($options['subject'])
-                ->viewVars(array(
-                    'content' => 'Test nội dung',
-                ))
-                ->template($options['template'], $options['layout'])
-                ->send();
 
-            debug($email);
-        }catch (Exception $e){
-            CakeLog::error($e->getMessage());
-            debug($e->getMessage());
+    public function admin_searchip(){
+        $this->layout = 'default_bootstrap';
+
+        $this->loadModel('LogLogin');
+
+        $this->LogLogin->Behaviors->load('Search.Searchable');
+        $this->LogLogin->filterArgs = array(
+            array('name' => 'ip', 'type' => 'value'),
+        );
+
+        $this->Prg->commonProcess('LogLogin');
+        $this->request->data['LogLogin'] = $this->passedArgs;
+
+        $parsedConditions = array();
+        if(!empty($this->passedArgs)) {
+            $parsedConditions = $this->LogLogin->parseCriteria($this->passedArgs);
         }
-        die;
+
+        $parsedConditions = array_merge(array(
+            'LogLogin.game_id' => $this->Session->read('Auth.User.permission_game_default')
+        ), $parsedConditions);
+
+        $this->LogLogin->bindModel(array(
+            'belongsTo' => array('Game', 'User')
+        ));
+
+        $this->paginate = array(
+            'LogLogin' => array(
+                'fields' => array(
+                    'LogLogin.*', 'Game.title', 'Game.os',
+                    'User.username', 'User.id', 'User.active', 'User.payment', 'User.role'
+                ),
+                'conditions' => $parsedConditions,
+                'contain' => array(
+                    'Game', 'User'
+                ),
+                'order' => array('LogLogin.id' => 'DESC'),
+                'recursive' => -1,
+                'limit' => 20
+            )
+        );
+
+        $users = $this->paginate('LogLogin');
+        $this->set(compact('users'));
     }
 }
