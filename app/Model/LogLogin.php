@@ -24,6 +24,6 @@ class LogLogin extends AppModel
 
     function paginateCount($conditions = array(), $recursive = 0, $extra = array())
     {
-        return 100;
+        if( empty($conditions['LogLogin.ip']) ) return 100;
     }
 }
