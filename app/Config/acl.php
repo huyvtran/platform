@@ -198,10 +198,6 @@ $config['rules'] = array(
         'OvsPayments/pay_paymentwall_card'      => 'Role/User',
         'OvsPayments/pay_paymentwall_visa'      => 'Role/User',
 
-        'OvsPayments/pay_quick_index'       => 'Role/User',
-        'OvsPayments/pay_quick_order'       => 'Role/User',
-        'OvsPayments/pay_quick_response'    => 'Role/User',
-
         'permissions/*' => 'Role/Developer',
         'permissions/admin_delete' => 'Role/Content',
 
