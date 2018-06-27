@@ -333,11 +333,20 @@ class OauthController extends AppController {
     }
 
     public function api_userList(){
+        $result = array(
+            'error_code' => 1,
+            'message' => 'error',
+        );
+
         if ($this->request->data('tokens'))
             $tokens = $this->request->data('tokens');
 
         if (!isset($tokens)) {
-            throw new BadRequestException();
+            $result = array(
+                'error_code' => 2,
+                'message' => 'token is not empty',
+            );
+            goto end;
         }
 
         $this->loadModel('AccessToken');
@@ -350,7 +359,11 @@ class OauthController extends AppController {
         ));
 
         if (empty($data) ) {
-            throw new BadRequestException('Invalid Token');
+            $result = array(
+                'error_code' => 3,
+                'message' => 'token is false',
+            );
+            goto end;
         }
 
         $users = [];
@@ -366,6 +379,7 @@ class OauthController extends AppController {
             'data' => $users
         );
 
+        end:
         $this->set('result', $result);
         $this->set('_serialize', 'result');
     }
