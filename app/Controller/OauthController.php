@@ -9,7 +9,7 @@ class OauthController extends AppController {
 		parent::beforeFilter();
 		$this->Auth->allow(array(
 			'userInfo', 'api_userAuthen', 'token', 'getGame',
-            'api_tracking_install', 'api_list_game'
+            'api_tracking_install', 'api_list_game', 'api_userList'
 		));
 	}
 
@@ -330,6 +330,44 @@ class OauthController extends AppController {
         $this->set('result', $result);
         $this->set('_serialize', 'result');
         return $result;
+    }
+
+    public function api_userList(){
+        if ($this->request->data('tokens'))
+            $tokens = $this->request->data('tokens');
+
+        if (!isset($tokens)) {
+            throw new BadRequestException();
+        }
+
+        $this->loadModel('AccessToken');
+        $this->AccessToken->contain(array('User'));
+        $data = $this->AccessToken->find('all', array(
+            'fields' => array('AccessToken.token', 'User.id', 'User.email', 'User.phone', 'User.username'),
+            'conditions' => array(
+                'token' => $tokens
+            )
+        ));
+
+        if (empty($data) ) {
+            throw new BadRequestException('Invalid Token');
+        }
+
+        $users = [];
+        foreach ($data as $user) {
+            $tmp = $user['User'];
+            $tmp['token'] = $user['AccessToken']['token'];
+            $users[] = $tmp;
+        }
+
+        $result = array(
+            'error_code' => 0,
+            'message' => 'success',
+            'data' => $users
+        );
+
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
     }
 }
 
