@@ -67,11 +67,11 @@ CakeLog::config('user', array(
     'file' => 'user',
 ));
 
-CakeLog::config('refun', array(
+CakeLog::config('refund', array(
     'engine' => $logEngine,
     'types' => array('info', 'debug', 'error'),
-    'scopes' => array('refun'),
-    'file' => 'refun',
+    'scopes' => array('refund'),
+    'file' => 'refund',
 ));
 
 $engine = 'File';

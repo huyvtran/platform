@@ -471,16 +471,29 @@ class PaymentsController extends AppController {
         $token = $this->request->header('token');
         $ip = $this->Common->publicClientIp();
 
-        $log = array(
+        CakeLog::info('check device:' . print_r(array(
             'user_id'   => $user['id'],
             'device'    => $this->request->header('device-id'),
             'ip'        => $ip
+        ), true), 'refund');
+
+        App::import('Lib', 'RedisQueue');
+
+        # lưu device
+        $Redis = new RedisQueue();
+        $redis_data = array(
+            'type' => 'ProfileDevice',
+            'data' => array(
+                'user_id' => $user['id'],
+                'device' => $this->request->header('device-id')
+            )
         );
-        CakeLog::info('check device:' . print_r($log, true), 'refun');
+        $Redis->lRemove($redis_data);
+        $Redis->rPush($redis_data);
+        unset($redis_data);
 
         # check ip
-        App::import('Lib', 'RedisQueue');
-        $Redis = new RedisQueue('default', 'payment-ip-black-list');
+        $Redis->key = 'payment-ip-black-list';
         $checkIp = $Redis->lRemove($ip);
         if($checkIp){
             $Redis->rPush($ip);

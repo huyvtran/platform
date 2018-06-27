@@ -110,6 +110,36 @@ class LogShell extends AppShell {
 		}
 	}
 
+	private function __typeProfileDevice( $data ){
+        try{
+            $device = $data['device'];
+            $devices = array($device);
+
+            $Profile = ClassRegistry::init('Profile');
+            $Profile->recursive = -1;
+            $profile = $Profile->findByUserId($data['user_id']);
+            if( empty($profile) ){
+                $Profile->save(array(
+                    'user_id'   => $data['user_id'],
+                    'devices'   => $devices
+                ), false);
+            }else{
+                unset($profile['Profile']['modified']);
+                if( !empty($profile['Profile']['devices']) ){
+                    if( !in_array($device, $profile['Profile']['devices'])) {
+                        $devices = array_merge($profile['Profile']['devices'], $devices);
+                    }else{
+                        $devices = $profile['Profile']['devices'];
+                    }
+                }
+                $profile['Profile']['devices'] = $devices;
+                $Profile->save($profile, false);
+            }
+        }catch (Exception $e){
+            CakeLog::error('cannot save profile device:' . $e->getMessage());
+        }
+    }
+
 	public function test(){
         CakeResque::enqueue(
             'default',
