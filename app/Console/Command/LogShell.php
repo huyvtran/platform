@@ -112,15 +112,15 @@ class LogShell extends AppShell {
 
 	private function __typeProfileDevice( $data ){
         try{
-            $device = $data['device'];
+            $device = $data['data']['device'];
             $devices = array($device);
 
             $Profile = ClassRegistry::init('Profile');
             $Profile->recursive = -1;
-            $profile = $Profile->findByUserId($data['user_id']);
+            $profile = $Profile->findByUserId($data['data']['user_id']);
             if( empty($profile) ){
                 $Profile->save(array(
-                    'user_id'   => $data['user_id'],
+                    'user_id'   => $data['data']['user_id'],
                     'devices'   => $devices
                 ), false);
             }else{
