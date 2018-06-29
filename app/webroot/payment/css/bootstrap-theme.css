@@ -1,0 +1,133 @@
+a, a:hover, a:visited {
+    text-decoration: none;
+}
+
+.wrapper {
+    max-width : 1280px;
+    margin    : auto;
+}
+
+.page-wrapper {
+    max-width : 550px;
+    margin    : auto;
+}
+
+/* Navigation Bar */
+.navbar-default {
+    background     : #00b0eb;
+    border         : none;
+    height         : 50px;
+    text-align     : center;
+    vertical-align : center;
+    line-height    : 50px;
+    color          : #fff;
+    font-weight    : bold;
+    font-size      : 18px;
+    margin-bottom  : 15px;
+}
+
+.nav {
+    padding-top : 8px;
+}
+
+.nav a {
+    color : #fff;
+}
+
+.navbar-left {
+    float : left;
+}
+
+.navbar-right {
+    float : right;
+}
+
+/* Breadcrumb */
+.crumbs {
+    max-width : 500px;
+    margin    : auto;
+    padding   : 0 5px;
+    white-space: nowrap;
+}
+
+.crumbs > li {
+    color : #00b0eb;
+    float         : left;
+    width         : 33%;
+    text-align    : center;
+    position      : relative;
+    height        : 35px;
+    line-height   : 33px;
+    font-size     : 15px;
+    border        : 1px solid #00b0eb;
+    margin-bottom : 15px;
+}
+
+.crumbs > .active {
+    color      : #fff;
+    background : #00b0eb;
+}
+
+/* Card Type */
+.card-type {
+    height          : 60px;
+    line-height     : 60px;
+    border-top      : 1px solid #ddd;
+    background      : url(../images/back.png) no-repeat 95%;
+    background-size : 20px;
+    display         : block;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.card-icon {
+    margin : 0 5px 0 15px;
+}
+
+.card-icon img {
+    width  : 40px;
+    height : 40px;
+}
+
+.card-type a {
+    color           : #005875;
+    font-size       : 20px;
+    text-decoration : none;
+}
+
+/* Coin Package */
+.package li {
+    background-color: #e0e2e2;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 2px;
+    margin-bottom: 10px;
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.package li img {
+    width: 35px;
+    height: 35px;
+}
+
+.package li a {
+    color : #868888;
+}
+
+.package li span {
+    display: inline-block;
+    float : right;
+    background: #00b0eb;
+    width : 120px;
+    text-align: center;
+    color : #FFF;
+}
+
+.btn-primary {
+    background: #00b0eb;
+    border: none;
+    border-radius: 0;
+    height: 40px;
+}

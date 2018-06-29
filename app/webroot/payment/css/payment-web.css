@@ -1,0 +1,275 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300&subset=vietnamese');
+
+* {
+    font-family : "Roboto", sans-serif;
+}
+
+a, a:hover, a:visited {
+    text-decoration: none;
+}
+
+.wrapper {
+    max-width : 1024px;
+    margin    : auto;
+}
+
+.navbar-default {
+    z-index       : 3;
+    color         : #fff;
+    font-weight   : bold;
+    font-size     : 14px;
+    background    : #00acd4;
+    height        : 50px;
+    line-height   : 50px;
+    border        : none;
+    border-radius : 0;
+    padding       : 0 15px;
+    max-width: 1024px;
+    margin: auto;
+}
+
+.navbar-default a {
+    color : #fff;
+}
+
+.nav-left {
+    float        : left;
+    margin-right : 10px;
+}
+
+.nav-right {
+    float : right;
+}
+
+.sidebar {
+    width        : 45px;
+    position     : fixed;
+    background   : #fff;
+    z-index      : 3;
+    top          : 50px;
+    bottom       : 0;
+    text-align   : center;
+    border-left  : 1px solid #c1c1c1;
+    border-right : 1px solid #c1c1c1;
+}
+
+.sidebar > .sidebar-btn {
+    color     : #607d8b;
+    font-size : 25px;
+}
+
+.sidebar-popup {
+    top         : 50px;
+    bottom      : 0;
+    width       : 200px;
+    background  : #fff;
+    z-index     : 3;
+    position    : fixed;
+    margin-left : 45px;
+    display     : none;
+}
+
+.sidebar-item {
+    color : #98a0a9;
+    font-size: 15px;
+    display: block;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+.sidebar-item-active {
+    background: #f5f5f5;
+}
+
+.overlay {
+    position         : fixed;
+    display          : none;
+    max-width        : 1024px;
+    margin           : auto;
+    top              : 0;
+    left             : 0;
+    right            : 0;
+    bottom           : 0;
+    background-color : rgba(0, 0, 0, 0.7);
+    z-index          : 2;
+}
+
+.page-wrapper {
+    margin-top: 55px;
+    margin-left : 50px;
+}
+
+.menu {
+    border-bottom : 1px solid #c1c1c1;
+    margin-bottom : 10px;
+}
+
+.media {
+    color       : #898989;
+    line-height : 15px;
+}
+
+.media span {
+    color       : #fd9d3c;
+    font-weight : bold;
+}
+
+.media .media-heading {
+    font-weight : bold;
+}
+
+.slot {
+    background    : url("../images/next.png") no-repeat 95% center;
+    display       : inline-block;
+    line-height   : 15px;
+    border-bottom : 1px solid #e0e0e0;
+    padding       : 0 5px;
+    width: 95%;
+    margin-bottom : 15px;
+    cursor: pointer;
+}
+
+.slot:hover {
+    text-decoration: none;
+}
+
+.slot .icon {
+    font-size    : 20px;
+    margin-right : 10px;
+}
+
+.slot > .title {
+    color       : #fd9124;
+    font-weight : bold;
+}
+
+.slot > .info {
+    color : #2196f3;
+}
+
+/* Card Type */
+.card-type {
+    color           : #005875;
+    font-size       : 20px;
+    text-decoration : none;
+    height          : 60px;
+    line-height     : 60px;
+    border-bottom   : 1px solid #ddd;
+    background      : url(../images/back.png) no-repeat 95%;
+    background-size : 20px;
+    display         : block;
+    margin-bottom: 10px;
+}
+
+.card-type:hover {
+    text-decoration : none;
+}
+
+.card-icon {
+    margin : 0 5px 0 15px;
+}
+
+.card-icon img {
+    width  : 40px;
+    height : 40px;
+}
+
+/* Coin Package */
+.package li {
+    background-color : #fff;
+    height           : 60px;
+    line-height      : 50px;
+    padding-left     : 20px;
+    margin-bottom    : 10px;
+    display          : block;
+    font-size        : 15px;
+    font-weight      : bold;
+    border-bottom    : 1px solid #adadad;
+}
+
+.package li img {
+    width  : 40px;
+    height : 40px;
+}
+
+.package li a {
+    color : #868888;
+}
+
+.package li span {
+    display    : inline-block;
+    float      : right;
+    background : #00b0eb;
+    width: 100px;
+    text-align : center;
+    color      : #fff;
+}
+
+.btn-primary {
+    background    : #00b0eb;
+    border        : none;
+    border-radius : 0;
+    height        : 40px;
+}
+
+.login-form {
+    color     : #868587;
+    max-width : 400px;
+    margin    : auto;
+}
+
+.page-header {
+    color       : #fc9511;
+    font-weight : bold;
+}
+
+.btn_login {
+    background-color : #fb9511;
+    border-color     : #fb9511;
+    width            : 100%;
+    padding          : 9px 12px;
+}
+
+.icon-style {
+    margin-left : 3px;
+    z-index     : 900;
+    left        : 0;
+    background  : transparent;
+    position    : absolute;
+    border      : 0;
+    top         : 9px;
+}
+
+.text-style {
+    height        : 43px;
+    border-radius : 0 !important;
+    padding-left  : 45px;
+}
+
+.form-group {
+    width : 100%;
+}
+
+.forget-cls a {
+    color      : #868383;
+    font-style : italic;
+    font-size  : 14px;
+}
+
+.text-right {
+    text-align : right;
+}
+
+.cls-social {
+    background : url("../images/social.png") left top no-repeat;
+    height     : 33px;
+    width      : 32px;
+    display    : inline-block;
+}
+
+.cls-gg {
+    background-position : -42px 0;
+}
