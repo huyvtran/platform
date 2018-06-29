@@ -363,4 +363,22 @@ class WaitingPaymentsController extends AppController {
             'action'    => 'google'
         ) );
     }
+
+    public function api_gift(){
+        $this->Common->setTheme();
+        $this->layout = 'payment';
+
+        $game = $this->Common->currentGame();
+        if (empty($game) || !$this->Auth->loggedIn()) {
+            CakeLog::error('Invalid token or appkey', 'payment');
+            throw new NotFoundException('Vui lòng login');
+        }
+        $user = $this->Auth->user();
+
+        #check giao dịch, nếu có show giftcode
+        $this->loadModel('Payment');
+        $this->Payment->recursive = -1;
+        $order = $this->Payment->findByUserId($user['id'], array('id', 'user_id'));
+        $this->set(compact('order'));
+    }
 }
