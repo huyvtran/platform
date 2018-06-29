@@ -14,7 +14,7 @@
             <?php if(!empty($order)){ ?>
                 <img src="https://cms.gamekunlun.com/img/gift.png" width="100%" alt="">
             <?php }else{ ?>
-                Để nhận được giftcode, tài khoản phải phát sinh giao dịch
+                If you want giftcode, you need have transaction
             <?php } ?>
         </div>
     </div>
