@@ -1160,6 +1160,10 @@ class OvsPaymentsController extends AppController {
     }
 
     public function pay_ale_index(){
+        $this->Common->currentGame();
+        $this->Common->setTheme();
+        $this->layout = 'payment';
+
         $this->loadModel('Payment');
         $this->pay_index(Payment::CHANEL_PAYPAL, 'USD');
         $this->set('title_for_app', 'Banking (visa, master)');
@@ -1265,6 +1269,7 @@ class OvsPaymentsController extends AppController {
             end:
         }
 
+        $this->Common->setTheme();
         $this->set('title_for_app', 'Banking (visa, master)');
         $this->layout = 'payment';
     }

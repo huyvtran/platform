@@ -511,31 +511,42 @@ class PaymentsController extends AppController {
             'recursive' => -1
         ));
 
-        # tìm token và game phù hợp
-        # sử lý web, không dùng chuyển sang cms
-//        if (!$token) {
-//            $appkeys = $this->Payment->Game->getSimilarGameAppkey($game);
-//            $this->loadModel('AccessToken');
-//            $this->AccessToken->recursive = -1;
-//            $accessToken = $this->AccessToken->find('first', [
-//                'conditions' => [
-//                    'AccessToken.user_id' => $user['id'],
-//                    'AccessToken.app'     => $appkeys,
-//                ],
-//                'order'      => ['AccessToken.id' => 'desc'],
-//            ]);
-//
-//            if (!empty($accessToken['AccessToken'])) {
-//                $token = $accessToken['AccessToken']['token'];
-//                if ($accessToken['AccessToken']['app'] != $game['app']) {
-//                    $this->Product->Game->recursive = -1;
-//                    $game = $this->Product->Game->findByApp($accessToken['AccessToken']['app']);
-//                    if (!empty($game['Game'])) $game = $game['Game'];
-//                }
-//            }
-//        }
-
         $this->set(compact('user','token', 'game', 'products'));
+    }
+
+    public function inapp($chanel = false)
+    {
+        $this->Common->setTheme();
+        $this->layout = 'payment';
+
+        $game = $this->Common->currentGame();
+        if (empty($game) || !$this->Auth->loggedIn()) {
+            CakeLog::error('Vui lòng login', 'payment');
+            throw new NotFoundException(__('Vui lòng login'));
+        }
+
+        if (!empty($this->request->query('role_id'))) $role_id = $this->request->query('role_id');
+        if (!empty($this->request->query('area_id'))) $area_id = $this->request->query('area_id');
+
+        if (!isset($role_id, $area_id)) {
+            throw new NotFoundException(__('Không tìm thấy nhân vật hoặc server'));
+        }
+
+        $this->loadModel('Payment');
+        if (!$chanel) $chanel = Payment::CHANEL_PAYPAL;
+        # lấy gói xu
+        $this->loadModel('Product');
+        $products = $this->Product->find('all', [
+            'conditions' => [
+                'Product.game_id' => $game['id'],
+                'Product.chanel'  => $chanel,
+            ],
+            'order'      => ['Product.platform_price' => 'asc'],
+            'recursive'  => -1,
+        ]);
+
+        $token = $this->request->header('token');
+        $this->set(compact('token', 'products', 'role_id', 'area_id'));
     }
 
     public function order()
