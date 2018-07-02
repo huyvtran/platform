@@ -1,0 +1,629 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2018-07-02 16:24+0700\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: Controller/OauthController.php:172
+msgid "Email/Tên đăng nhập và/hoặc mật khẩu không đúng"
+msgstr ""
+
+#: Controller/OvsPaymentsController.php:150;406;1006
+msgid "Giao dịch thất bại."
+msgstr ""
+
+#: Controller/OvsPaymentsController.php:164;288
+msgid "Lỗi giao dịch paypal"
+msgstr ""
+
+#: Controller/OvsPaymentsController.php:213
+#: Controller/PaymentsController.php:731
+msgid "Giao dịch đã tồn tại"
+msgstr ""
+
+#: Controller/OvsPaymentsController.php:249;469;1076
+msgid "Giao dịch thành công."
+msgstr ""
+
+#: Controller/OvsPaymentsController.php:1186
+msgid "Chưa chọn gói xu"
+msgstr ""
+
+#: Controller/OvsPaymentsController.php:1194
+#: Controller/PaymentsController.php:800
+msgid "Không có gói xu phù hợp"
+msgstr ""
+
+#: Controller/OvsPaymentsController.php:1201
+msgid "Thiếu thông tin nạp coin"
+msgstr ""
+
+#: Controller/OvsPaymentsController.php:1202
+msgid "Vui lòng điền họ tên"
+msgstr ""
+
+#: Controller/OvsPaymentsController.php:1203
+msgid "Vui lòng điền thông tin email"
+msgstr ""
+
+#: Controller/OvsPaymentsController.php:1204
+msgid "Vui lòng điền thông tin điện thoại"
+msgstr ""
+
+#: Controller/OvsPaymentsController.php:1205
+msgid "Vui lòng điền thông tin nơi ở"
+msgstr ""
+
+#: Controller/OvsPaymentsController.php:1206
+msgid "Vui lòng điền thông tin city"
+msgstr ""
+
+#: Controller/OvsPaymentsController.php:1207
+msgid "Vui lòng điền thông tin country"
+msgstr ""
+
+#: Controller/OvsPaymentsController.php:1214
+msgid "Thông tin email không chính xác"
+msgstr ""
+
+#: Controller/OvsPaymentsController.php:1254
+msgid "Lỗi tạo giao dịch, vui lòng thử lại"
+msgstr ""
+
+#: Controller/PaymentsController.php:525;565;570
+msgid "Vui lòng login"
+msgstr ""
+
+#: Controller/PaymentsController.php:532
+msgid "Không tìm thấy nhân vật hoặc server"
+msgstr ""
+
+#: Controller/PaymentsController.php:587;592
+msgid "Không có gói xu inapp phù hợp"
+msgstr ""
+
+#: Controller/PaymentsController.php:615;620
+msgid "Lỗi tạo giao dịch"
+msgstr ""
+
+#: Controller/PaymentsController.php:632
+msgid "Tạo giao dịch thành công"
+msgstr ""
+
+#: Controller/PaymentsController.php:666
+msgid "Token hoặc appkey không hợp lệ"
+msgstr ""
+
+#: Controller/PaymentsController.php:693
+msgid "Giao dịch không hợp lệ"
+msgstr ""
+
+#: Controller/PaymentsController.php:783
+msgid "Giao dịch không tồn tại"
+msgstr ""
+
+#: Controller/PaymentsController.php:836
+msgid "Giao dịch thành công"
+msgstr ""
+
+#: Controller/PermissionsController.php:313
+msgid "Không có quyền xoá."
+msgstr ""
+
+#: Controller/UsersController.php:87
+msgid "%s, bạn đã login thành công"
+msgstr ""
+
+#: Controller/UsersController.php:105
+msgid "Email/Tên đăng nhập và/hoặc mật khẩu không đúng!"
+msgstr ""
+
+#: Controller/UsersController.php:266;392;951;1079;1303;1443;1761
+msgid "Thiếu thông tin đăng ký"
+msgstr ""
+
+#: Controller/UsersController.php:291;974;1338
+msgid "tài khoản đã tồn tại"
+msgstr ""
+
+#: Controller/UsersController.php:303;314;338;987;999;1025;1351;1363;1389;1872
+msgid "đăng kí thành công"
+msgstr ""
+
+#: Controller/UsersController.php:346;1033;1397
+msgid "lỗi đăng ký"
+msgstr ""
+
+#: Controller/UsersController.php:459;1147;1523;1802;1833
+msgid "đăng nhập thành công"
+msgstr ""
+
+#: Controller/UsersController.php:468;907;1156;1532
+msgid "Tên đăng nhập và/hoặc mật khẩu không đúng!"
+msgstr ""
+
+#: Controller/UsersController.php:498;1170;1551;1669
+msgid "lỗi"
+msgstr ""
+
+#: Controller/UsersController.php:508;1180;1561
+msgid "Thiếu thông tin đổi mật khẩu"
+msgstr ""
+
+#: Controller/UsersController.php:548;1242;1618
+msgid "Đổi mật khẩu thành công"
+msgstr ""
+
+#: Controller/UsersController.php:555;1249;1625
+msgid "Đổi mật khẩu không thành công, không lưu được dữ liệu"
+msgstr ""
+
+#: Controller/UsersController.php:571;1265;1641
+msgid "Mật khẩu cũ không chính xác"
+msgstr ""
+
+#: Controller/UsersController.php:578;1272;1648
+msgid "Không tìm thấy người chơi"
+msgstr ""
+
+#: Controller/UsersController.php:585;1279;1655
+msgid "Lỗi không xác định"
+msgstr ""
+
+#: Controller/UsersController.php:1474
+msgid "Your account has been locked, please contact admin!"
+msgstr ""
+
+#: Controller/UsersController.php:1676
+msgid "Vui lòng login hoặc truyền access token"
+msgstr ""
+
+#: Controller/UsersController.php:1706
+msgid "Cập nhật thông tin thành công"
+msgstr ""
+
+#: Controller/UsersController.php:1893
+msgid "Thay đổi mật khẩu tài khoản"
+msgstr ""
+
+#: Controller/UsersController.php:1920
+msgid "Địa chỉ email không tồn tại."
+msgstr ""
+
+#: Controller/UsersController.php:1924
+msgid "Mã xác nhận không đúng."
+msgstr ""
+
+#: Controller/Component/CommandComponent.php:77;139;209
+msgid "Xin lỗi, đã có lỗi xảy ra!"
+msgstr ""
+
+#: View/Categories/index.ctp:82
+msgid "Thêm"
+msgstr ""
+
+#: View/Errors/error400.ctp:48
+#: View/Errors/error500.ctp:49
+#: View/Errors/fatal_error.ctp:29
+msgid "Có lỗi trong quá trình xử lý!"
+msgstr ""
+
+#: View/Errors/error400.ctp:48
+#: View/Errors/error500.ctp:49
+#: View/Errors/fatal_error.ctp:29
+msgid "Xin vui lòng thử lại sau."
+msgstr ""
+
+#: View/Layouts/payment.ctp:7
+#: View/Themed/PaymentDashboard/Layouts/payment.ctp:7
+#: View/Themed/PaymentDashboard/Payments/index.ctp:11
+#: View/Themed/PaymentDashboard/Payments/pay.ctp:88
+msgid "Nạp thẻ"
+msgstr ""
+
+#: View/Layouts/Emails/html/default.ctp:41
+msgid "Email này được gửi tới %s"
+msgstr ""
+
+#: View/Layouts/Emails/html/default.ctp:42
+msgid "Vui lòng KHÔNG phản hồi mail này."
+msgstr ""
+
+#: View/OvsPayments/pay_ale_order.ctp:209
+#: View/OvsPayments/pay_quick_order.ctp:210
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:220
+msgid "Fullname"
+msgstr ""
+
+#: View/OvsPayments/pay_ale_order.ctp:286
+#: View/OvsPayments/pay_quick_order.ctp:244
+msgid "Send"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/OvsPayments/error.ctp:8
+#: View/Themed/PaymentDashboard/OvsPayments/success.ctp:7
+#: View/Themed/PaymentDashboard/OvsPayments/wait.ctp:7
+#: View/Themed/PaymentDashboard/Payments/error.ctp:16
+#: View/Themed/PaymentDashboard/Payments/pay.ctp:18
+#: View/Themed/PaymentDashboard/Payments/success.ctp:18
+#: View/Themed/PaymentDashboard/Payments/wait.ctp:18
+msgid "Nạp qua thẻ cào"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/OvsPayments/error.ctp:17
+#: View/Themed/PaymentDashboard/OvsPayments/success.ctp:16
+#: View/Themed/PaymentDashboard/OvsPayments/wait.ctp:16
+#: View/Themed/PaymentDashboard/Payments/error.ctp:25
+#: View/Themed/PaymentDashboard/Payments/inapp.ctp:33
+#: View/Themed/PaymentDashboard/Payments/index.ctp:20
+#: View/Themed/PaymentDashboard/Payments/pay.ctp:27
+#: View/Themed/PaymentDashboard/Payments/success.ctp:27
+#: View/Themed/PaymentDashboard/Payments/wait.ctp:27
+msgid "Cách nạp"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/OvsPayments/error.ctp:18
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_index.ctp:27
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:193
+#: View/Themed/PaymentDashboard/OvsPayments/success.ctp:17
+#: View/Themed/PaymentDashboard/OvsPayments/wait.ctp:17
+#: View/Themed/PaymentDashboard/Payments/error.ctp:26
+#: View/Themed/PaymentDashboard/Payments/inapp.ctp:34
+#: View/Themed/PaymentDashboard/Payments/index.ctp:21
+#: View/Themed/PaymentDashboard/Payments/pay.ctp:29
+#: View/Themed/PaymentDashboard/Payments/success.ctp:28
+#: View/Themed/PaymentDashboard/Payments/wait.ctp:28
+msgid "Chọn gói"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/OvsPayments/error.ctp:19
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_index.ctp:29
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:195
+#: View/Themed/PaymentDashboard/OvsPayments/success.ctp:18
+#: View/Themed/PaymentDashboard/OvsPayments/wait.ctp:18
+#: View/Themed/PaymentDashboard/Payments/error.ctp:27
+#: View/Themed/PaymentDashboard/Payments/inapp.ctp:35
+#: View/Themed/PaymentDashboard/Payments/index.ctp:22
+#: View/Themed/PaymentDashboard/Payments/pay.ctp:31
+#: View/Themed/PaymentDashboard/Payments/success.ctp:29
+#: View/Themed/PaymentDashboard/Payments/wait.ctp:29
+msgid "Hoàn thành"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/OvsPayments/error.ctp:26
+#: View/Themed/PaymentDashboard/Payments/error.ctp:34
+msgid "Giao dịch thất bại"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_index.ctp:16
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:182
+#: View/Themed/PaymentDashboard/Payments/index.ctp:63
+msgid "Nạp từ Visa/Master"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_index.ctp:25
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:191
+msgid "Phương thức nạp"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:296
+#: View/Users/reset_password_web.ctp:38
+msgid "Gửi"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/OvsPayments/success.ctp:24
+#: View/Themed/PaymentDashboard/Payments/success.ctp:35
+msgid "Mã giao dịch"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/OvsPayments/success.ctp:28
+#: View/Themed/PaymentDashboard/Payments/success.ctp:40
+msgid "Thanh toán hoàn tất chúc bạn chơi game vui vẻ !"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/OvsPayments/wait.ctp:25
+msgid "Giao dịch đang được xử lý ... Xin vui lòng đợi trong vài phút !"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/Payments/inapp.ctp:24
+#: View/Themed/PaymentDashboard/Payments/index.ctp:48
+msgid "Nạp từ store"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/Payments/pay.ctp:53
+msgid "Seri thẻ"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/Payments/pay.ctp:60
+msgid "Mã pin"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/Payments/pay.ctp:67
+msgid "Loại thẻ"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/Payments/pay.ctp:83
+msgid "Nếu có vấn đề về nạp thẻ, vui lòng liên hệ Facebook<br> Ghi rõ tên tài khoản, seri thẻ</p>"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/Payments/success.ctp:36
+msgid "Nạp"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/Payments/success.ctp:37
+msgid "Nhận"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/Payments/success.ctp:48
+msgid "Quay lại"
+msgstr ""
+
+#: View/Themed/PaymentDashboard/Payments/wait.ctp:35
+msgid "Giao dịch không hợp lệ ..! Thử lại sau vài phút hoặc liên hệ Admin."
+msgstr ""
+
+#: View/Themed/TakanDashboard/Games/dashboard.ctp:12
+msgid "Kết nối Facebook"
+msgstr ""
+
+#: View/Themed/TakanDashboard/Games/dashboard.ctp:13
+msgid "Upgrade account NOW!"
+msgstr ""
+
+#: View/Themed/TakanDashboard/Games/dashboard.ctp:20
+msgid "Xem thêm"
+msgstr ""
+
+#: View/Themed/TakanDashboard/Games/dashboard.ctp:49
+msgid "Tin tức & Sự Kiện"
+msgstr ""
+
+#: View/Themed/TakanDashboard/Games/dashboard.ctp:55
+msgid "Trang chủ"
+msgstr ""
+
+#: View/Themed/TakanDashboard/Games/dashboard.ctp:60
+msgid "Fanpage"
+msgstr ""
+
+#: View/Themed/TakanDashboard/Games/dashboard.ctp:75
+msgid "Thảo luận chung"
+msgstr ""
+
+#: View/Themed/TakanDashboard/Games/dashboard.ctp:84
+msgid "Mua xu"
+msgstr ""
+
+#: View/Themed/TakanDashboard/Games/dashboard.ctp:89
+msgid "Hướng dẫn"
+msgstr ""
+
+#: View/Themed/TakanDashboard/Games/dashboard.ctp:94
+msgid "Báo lỗi"
+msgstr ""
+
+#: View/Themed/TakanDashboard/Games/dashboard.ctp:99
+msgid "Liên hệ"
+msgstr ""
+
+#: View/Themed/TakanDashboard/Games/dashboard.ctp:104
+msgid "Giftcode"
+msgstr ""
+
+#: View/Themed/TakanDashboard/Games/dashboard.ctp:113
+msgid "Đổi thưởng"
+msgstr ""
+
+#: View/Themed/TakanDashboard/Games/dashboard.ctp:126
+msgid "Cá nhân"
+msgstr ""
+
+#: View/Users/reset_password_web.ctp:7
+msgid "Thay đổi mật khẩu"
+msgstr ""
+
+#: View/Users/reset_password_web.ctp:20
+msgid "Địa chỉ email"
+msgstr ""
+
+#: View/Users/reset_password_web.ctp:39
+msgid "Hủy"
+msgstr ""
+
+#: Model/Bonus.php:validation for field price
+#: Model/CompensePayment.php:validation for field card_code;validation for field card_serial;validation for field price;validation for field type;validation for field chanel
+#: Model/Genre.php:validation for field title
+#: Model/Website.php:validation for field url;validation for field title
+msgid "notEmpty"
+msgstr ""
+
+#: Model/CardManual.php:validation for field card_serial
+msgid "Please enter a card seria"
+msgstr ""
+
+#: Model/CardManual.php:validation for field card_code
+msgid "Please enter a card code"
+msgstr ""
+
+#: Model/CardManual.php:validation for field card_price;validation for field price
+msgid "Please chose a price"
+msgstr ""
+
+#: Model/CardManual.php:validation for field type
+msgid "Please chose a type"
+msgstr ""
+
+#: Model/Profile.php:validation for field birthday
+msgid "Ngày sinh không được để trống."
+msgstr ""
+
+#: Model/Profile.php:validation for field birthday
+msgid "Ngày sinh không hợp lệ"
+msgstr ""
+
+#: Model/Profile.php:validation for field birthday
+msgid "Bạn phải nhập đúng định dạng YYYY-MM-DD."
+msgstr ""
+
+#: Model/User.php:validation for field email
+msgid "Email này không hợp lệ."
+msgstr ""
+
+#: Model/User.php:validation for field email
+msgid "Địa chỉ email này đã được sử dụng."
+msgstr ""
+
+#: Model/User.php:validation for field email;validation for field username
+msgid "Tên đăng nhập tồn tại từ khóa xấu."
+msgstr ""
+
+#: Model/User.php:validation for field username
+msgid "Bạn chưa điền tên đăng nhập."
+msgstr ""
+
+#: Model/User.php:validation for field username
+msgid "Tên đăng nhập (username) viết liền và chỉ gồm chữ số và chữ cái."
+msgstr ""
+
+#: Model/User.php:validation for field username
+msgid "Tên đăng nhập này đã được sử dụng."
+msgstr ""
+
+#: Model/User.php:validation for field username
+msgid "Tên đăng nhập phải ít nhất 5 kí tự."
+msgstr ""
+
+#: Model/User.php:validation for field username
+msgid "Tên đăng nhập không được dài quá 20 kí tự."
+msgstr ""
+
+#: Model/User.php:validation for field password
+msgid "Hãy nhập mật khẩu."
+msgstr ""
+
+#: Model/User.php:validation for field password
+msgid "Mật khẩu dài ít nhất 6 ký tự."
+msgstr ""
+
+#: Model/User.php:validation for field password
+msgid "Mật khẩu (dài 6-50 ký tự)"
+msgstr ""
+
+#: Model/User.php:validation for field password;validation for field temppassword
+msgid "Mật khẩu không trùng khớp."
+msgstr ""
+
+#: Model/User.php:validation for field facebook_uid
+msgid "Địa chỉ Facebook này đã được sử dụng!"
+msgstr ""
+
+#: Model/User.php:validation for field phone
+msgid "Số điện thoại không được để trống."
+msgstr ""
+
+#: Model/User.php:validation for field phone
+msgid "Số điện thoại này đã được sử dụng."
+msgstr ""
+
+#: Model/User.php:validation for field phone
+msgid "Số điện thoại không hợp lệ."
+msgstr ""
+
+#: Lib/Cache/Engine/MemcachedEngine.php:126
+msgid "Memcached extension is not build with SASL support"
+msgstr ""
+
+#: Lib/Cache/Engine/MemcachedEngine.php:147
+msgid "%s is not a valid serializer engine for Memcached"
+msgstr ""
+
+#: Lib/Cache/Engine/MemcachedEngine.php:153
+msgid "Memcached extension is not compiled with %s support"
+msgstr ""
+
+#: Testsuite/Reporter/CakeHtmlReporter.php:267;305
+msgid "Test case: %s"
+msgstr ""
+
+#: Testsuite/Reporter/CakeHtmlReporter.php:268;306
+msgid "Stack trace:"
+msgstr ""
+
+#: Testsuite/Reporter/CakeHtmlReporter.php:380
+msgid "Running  %s"
+msgstr ""
+
+#: View/Elements/sql_dump.ctp:95
+msgid "Encountered unexpected %s. Cannot generate SQL log."
+msgstr ""
+
+#: View/Helper/LessHelper.php:39;62
+msgid "\"%s\" directory is NOT writable."
+msgstr ""
+
+#: View/Helper/LessHelper.php:43
+msgid "File: \"%s\" not found."
+msgstr ""
+
+#: View/Helper/LessHelper.php:64
+msgid "Failed to write \"%s\""
+msgstr ""
+
+#: webroot/test.php:95
+msgid "Debug setting does not allow access to this url."
+msgstr ""
+
+#: Lib/Error/AppExceptionRenderer.php:30
+msgid "Not Found"
+msgstr ""
+
+#: Lib/Error/AppExceptionRenderer.php:57
+msgid "An Internal Error Has Occurred."
+msgstr ""
+
+#: Model/Article.php:validation for field title
+msgid "Bạn chưa nhập tiêu đề"
+msgstr ""
+
+#: Model/Article.php:validation for field body
+msgid "Nột dung phải có ít nhất 30 kí tự"
+msgstr ""
+
+#: Model/Article.php:validation for field body
+msgid "Nội dung không thể dài quá 60000 kí tự"
+msgstr ""
+
+#: Model/EmailMarketing.php:validation for field title
+msgid "The title is empty"
+msgstr ""
+
+#: Model/EmailMarketing.php:validation for field game_id
+msgid "Please choose a game."
+msgstr ""
+
+#: Model/Game.php:validation for field os
+msgid "rule"
+msgstr ""
+
+#: Model/Game.php:validation for field os
+msgid "required"
+msgstr ""
+
+#: Model/Game.php:validation for field os
+msgid "allowEmpty"
+msgstr ""
+
+#: Model/Website.php:validation for field url;validation for field title
+msgid "unique"
+msgstr ""
+
