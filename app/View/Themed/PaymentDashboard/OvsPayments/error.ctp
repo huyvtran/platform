@@ -1,3 +1,4 @@
+<?php $role_id = $area_id = 1; ?>
 <div class="wrapper">
     <nav class="navbar navbar-default">
         <div class="container">

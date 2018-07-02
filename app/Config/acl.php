@@ -153,6 +153,7 @@ $config['rules'] = array(
 
         'payments/api_pay'      => 'Role/User',
         'payments/index'        => 'Role/User',
+        'payments/inapp'        => 'Role/User',
         'payments/order'        => 'Role/User',
         'payments/pay'          => 'Role/User',
         'payments/api_charge'   => 'Role/User',

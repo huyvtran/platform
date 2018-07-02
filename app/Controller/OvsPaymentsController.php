@@ -27,6 +27,7 @@ class OvsPaymentsController extends AppController {
     }
 
     public function pay_error(){
+        $this->Common->setTheme();
         $this->layout = 'payment';
         $this->view = 'error';
     }
