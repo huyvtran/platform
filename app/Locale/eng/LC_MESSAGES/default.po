@@ -336,6 +336,12 @@ msgstr "Transaction is being processed ... Please wait for a few minutes!"
 
 #: View/Themed/PaymentDashboard/Payments/inapp.ctp:24
 #: View/Themed/PaymentDashboard/Payments/index.ctp:48
+msgid "Nạp từ Banking"
+msgstr "Recharge via Banking"
+
+msgid "Nạp từ Card/SMS"
+msgstr "Recharge via Card/SMS"
+
 msgid "Nạp từ store"
 msgstr "Recharge via store inapp"
 

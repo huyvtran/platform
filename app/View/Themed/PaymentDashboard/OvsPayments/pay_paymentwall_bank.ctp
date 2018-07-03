@@ -40,7 +40,7 @@
         <?php if( !empty($products) ){ ?>
             <?php foreach ($products as $product){?>
                 <li>
-                    <img src="/payment/images/sms.png" alt="">
+                    <img src="/payment/images/bank.png" alt="">
                     <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paymentwall_order',
                         '?' => array(
                             'app'   => $game['app'],
