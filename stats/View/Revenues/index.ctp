@@ -31,6 +31,17 @@ if (!$this->request->is('ajax')) {
                 ));
 				echo $this->element('date_ranger_picker');
 				echo $this->Form->submit('Submit', array('class' => 'btn btn-default', 'div' => false));
+
+				if($this->Session->read('Auth.User.role') == 'Admin'){
+				    $rate = 0;
+				    if( !empty($this->request->params['named']['rate']) ) $rate = $this->request->params['named']['rate'];
+                    echo $this->Form->input('rate', array(
+                        'type' => 'checkbox',
+                        'checked' => $rate,
+                        'style' => "float:right;"
+                    ));
+				}
+
 				echo $this->Form->end();
 				?>
 		</div>
