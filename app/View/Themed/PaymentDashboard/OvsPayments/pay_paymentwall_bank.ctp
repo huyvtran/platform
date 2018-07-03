@@ -13,7 +13,7 @@
                 )); ?>"><i class="fa fa-chevron-left fa-2x"></i></a>
             </div>
 
-            <?php echo __('Nạp từ Visa/Master'); ?>
+            <?php echo __('Nạp từ Banking'); ?>
 
             <div class="nav navbar-right">
             </div>
@@ -30,16 +30,18 @@
     </ul>
     <div class="clearfix"></div>
 
-    <ul class="crumbs list-unstyled">
-    </ul>
 
     <div class="container page-wrapper">
+        <div class="row" align="center" >
+    <!--        &nbsp;&nbsp;<span style="color: red;">Note: payment via Banking will reduce 15% coins</span>
+            <span style="color: red;">Note: get 100% coins when recharge via Banking</span>-->
+        </div><br/>
         <ul class="package list-unstyled">
         <?php if( !empty($products) ){ ?>
             <?php foreach ($products as $product){?>
                 <li>
-                    <img src="/payment/images/credit-card.png" alt="">
-                    <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_ale_order',
+                    <img src="/payment/images/sms.png" alt="">
+                    <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paymentwall_order',
                         '?' => array(
                             'app'   => $game['app'],
                             'token' => $token,
@@ -53,5 +55,11 @@
             <?php } ?>
         <?php } ?>
         </ul>
+    </div>
+    <footer class="container-fluid text-center bg-lightgray">
+        <div class="copyrights" style="margin-top:25px;">
+            COPYRIGHT FunGame Inc. Global Digital Entertainment Leader<br/>
+        </div>
+    </footer>
     </div>
 </div>

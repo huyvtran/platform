@@ -62,6 +62,34 @@ $role_id = $area_id = 1;
                 </span>
                 <span> <?php echo __('Nạp từ Visa/Master'); ?> </span>
             </a>
+
+            <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paymentwall_bank',
+                '?' => array(
+                    'app'   => $currentGame['app'],
+                    'token' => $token,
+                    'role_id'   => $role_id,
+                    'area_id'   => $area_id
+                )
+            )); ?>" class="card-type">
+                <span class="card-icon">
+                    <img src="/payment/images/bank.png" alt="Mobile Card">
+                </span>
+                <span> <?php echo __('Nạp từ Banking'); ?> </span>
+            </a>
+
+            <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paymentwall_card',
+                '?' => array(
+                    'app'   => $currentGame['app'],
+                    'token' => $token,
+                    'role_id'   => $role_id,
+                    'area_id'   => $area_id
+                )
+            )); ?>" class="card-type">
+                <span class="card-icon">
+                    <img src="/payment/images/sms.png" alt="Mobile Card">
+                </span>
+                <span> <?php echo __('Nạp từ Card/SMS'); ?> </span>
+            </a>
         <?php } ?>
     </div>
 </div>

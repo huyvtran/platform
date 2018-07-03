@@ -499,6 +499,7 @@ class OvsPaymentsController extends AppController {
     }
 
     public function pay_paymentwall_bank(){
+	    $this->Common->setTheme();
         $this->loadModel('Payment');
         $this->pay_index(Payment::CHANEL_PAYPAL, 'USD');
         $this->set('title_for_app', 'Banking (visa, master ...)');
