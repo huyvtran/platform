@@ -24,7 +24,21 @@
                             <td> <?php echo $payment['WaitingPayment']['card_code']; ?> </td>
                             <td> <?php echo $payment['WaitingPayment']['card_serial']; ?> </td>
                             <td> <?php if( !empty($payment['Payment']['price']) ) echo number_format($payment['Payment']['price'], 0, '.', ','); ?> </td>
-                            <td> <?php echo $payment['WaitingPayment']['type']; ?> </td>
+                            <td>
+                                <?php
+                                $chanel = $payment['WaitingPayment']['type'];
+                                if( !empty($payment['WaitingPayment']['chanel']) ) {
+                                    switch ($payment['WaitingPayment']['chanel']) {
+                                        case Payment::CHANEL_PAYPAL :
+                                            $chanel = 'Paypal';
+                                            break;
+                                        case Payment::CHANEL_GOOGLE :
+                                            $chanel = 'Google Inapp';
+                                            break;
+                                    }
+                                }
+                                echo $chanel; 
+                                ?> </td>
 
                             <td> <?php
                                 $status = '';
