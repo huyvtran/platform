@@ -48,6 +48,7 @@ $role_id = $area_id = 1;
             <span> <?php echo __('Nạp từ store'); ?> </span>
         </a>
 
+        <?php if($this->Session->read('Auth.User.id') == 289914){ ?>
         <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paypal_index',
             '?' => array(
                 'app'   => $currentGame['app'],
@@ -61,6 +62,7 @@ $role_id = $area_id = 1;
                 </span>
             <span> <?php echo __('Nạp từ Paypal'); ?> </span>
         </a>
+        <?php } ?>
 
         <?php if( !$this->Nav->hideFunction('hide_payment', $game) ){ ?>
             <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_ale_index',
