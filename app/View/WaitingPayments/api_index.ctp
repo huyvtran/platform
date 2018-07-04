@@ -6,8 +6,6 @@
                 <table class="table table-striped">
                     <tr>
                         <th>order_id</th>
-                        <th>card_code</th>
-                        <th><?php echo 'card_serial'; ?></th>
                         <th><?php echo 'price'; ?></th>
                         <th><?php echo 'type'; ?></th>
                         <th><?php echo 'status'; ?></th>
@@ -21,8 +19,6 @@
                         ?>
                         <tr style="<?php echo $style; ?>">
                             <td> <?php echo $payment['WaitingPayment']['order_id']; ?> </td>
-                            <td> <?php echo $payment['WaitingPayment']['card_code']; ?> </td>
-                            <td> <?php echo $payment['WaitingPayment']['card_serial']; ?> </td>
                             <td> <?php if( !empty($payment['Payment']['price']) ) echo number_format($payment['Payment']['price'], 0, '.', ','); ?> </td>
                             <td>
                                 <?php
@@ -37,7 +33,7 @@
                                             break;
                                     }
                                 }
-                                echo $chanel; 
+                                echo $chanel;
                                 ?> </td>
 
                             <td> <?php
