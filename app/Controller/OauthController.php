@@ -9,7 +9,8 @@ class OauthController extends AppController {
 		parent::beforeFilter();
 		$this->Auth->allow(array(
 			'userInfo', 'api_userAuthen', 'token', 'getGame',
-            'api_tracking_install', 'api_list_game', 'api_userList'
+            'api_tracking_install', 'api_list_game', 'api_userList',
+            'api_registerDeviceNotify'
 		));
 	}
 
@@ -380,6 +381,16 @@ class OauthController extends AppController {
         );
 
         end:
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
+    }
+
+    public function api_registerDeviceNotify(){
+        $result = array(
+            'error_code' => 1,
+            'message' => 'error',
+        );
+
         $this->set('result', $result);
         $this->set('_serialize', 'result');
     }
