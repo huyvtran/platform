@@ -843,11 +843,18 @@ class PaymentsController extends AppController {
                     . "Price: " . number_format($product['Product']['platform_price'], 0, '.', ',') . ' vnđ' . "\n\r"
                     . "User: " . $user['username'] . "\n\r"
                     . "Game: " . $game['title_os'] . "\n\r";
-                $apiToken = "612122610:AAGf477qu8IX0erRw6Ci3D2qFenRGfoNTV8";
-                $chat_id  = '-288724321';
-                App::import('Lib', 'BotTelegram');
-                $bot = new BotTelegram($apiToken, $chat_id);
-                $bot->pushNotify($text_telegram);
+                App::import('Lib', 'RedisQueue');
+                $Redis = new RedisQueue();
+                $redis_data = array(
+                    'type' => 'TelegramSendNotify',
+                    'data' => array(
+                        'chat_id' => '-288724321',
+                        'message' => $text_telegram
+                    )
+                );
+                $Redis->rPush($redis_data);
+                unset($text_telegram);
+                unset($redis_data);
             }
         } catch (Exception $e) {
             $result = [

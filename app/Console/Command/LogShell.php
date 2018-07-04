@@ -140,6 +140,15 @@ class LogShell extends AppShell {
         }
     }
 
+    private function __typeTelegramSendNotify( $data ){
+        $chat_id = $data['data']['chat_id'];
+        $message = $data['data']['message'];
+
+        App::import('Lib', 'BotTelegram');
+        $bot = new BotTelegram($chat_id);
+        $bot->pushNotify($message);
+    }
+
 	public function test(){
         CakeResque::enqueue(
             'default',

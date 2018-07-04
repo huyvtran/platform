@@ -275,11 +275,20 @@ class OvsPaymentsController extends AppController {
                                     . "Price: " . number_format($wating_payment['WaitingPayment']['price'], 0, '.', ',') . ' vnđ' . "\n\r"
                                     . "User: " . $user['username'] . "\n\r"
                                     . "Game: " . $game['title_os'] . "\n\r";
-                                $apiToken = "612122610:AAGf477qu8IX0erRw6Ci3D2qFenRGfoNTV8";
-                                $chat_id  = '-290998992';
-                                App::import('Lib', 'BotTelegram');
-                                $bot = new BotTelegram($apiToken, $chat_id);
-                                $bot->pushNotify($text_telegram);
+
+                                # lưu device
+                                App::import('Lib', 'RedisQueue');
+                                $Redis = new RedisQueue();
+                                $redis_data = array(
+                                    'type' => 'TelegramSendNotify',
+                                    'data' => array(
+                                        'chat_id' => '-290998992',
+                                        'message' => $text_telegram
+                                    )
+                                );
+                                $Redis->rPush($redis_data);
+                                unset($text_telegram);
+                                unset($redis_data);
                             }
                         } else {
                             $paymentLib->setResolvedPayment($wating_payment['WaitingPayment']['id'], WaitingPayment::STATUS_ERROR);
