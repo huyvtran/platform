@@ -12,7 +12,7 @@
                 <div class="input-group-addon">
                     <i class="fa fa-fw fa-user"></i>
                 </div>
-                <input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" ng-model="formData.username" required>
+                <input type="text" name="username" class="form-control" placeholder="Username" ng-model="formData.username" required>
             </div>
         </div>
         <div class="form-group">
@@ -20,20 +20,20 @@
                 <div class="input-group-addon">
                     <i class="fa fa-fw fa-lock"></i>
                 </div>
-                <input type="password" name="userpass" class="form-control" placeholder="Mật khẩu" ng-model="formData.userpass" required>
+                <input type="password" name="userpass" class="form-control" placeholder="Password" ng-model="formData.userpass" required>
             </div>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
         </div>
     </form>
 
     <div class="app-or">
         <hr class="hr-or">
-        <span class="span-or">Hoặc</span>
+        <span class="span-or">Or</span>
     </div>
     <div class="app-ext">
-        <a href="#register" class="btn btn-warning btn-block" role="button">Đăng kí</a>
+        <a href="#register" class="btn btn-warning btn-block" role="button">Register</a>
     </div>
 </div>
 

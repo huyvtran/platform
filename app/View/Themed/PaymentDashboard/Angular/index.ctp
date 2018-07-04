@@ -234,7 +234,7 @@
 
             // Register Controller
             vntapAuth.controller('loginController', ['$scope', '$http', function($scope, $http) {
-                $scope.title = 'ĐĂNG NHẬP';
+                $scope.title = 'Login';
                 $scope.sdk_version  = APP_VERSION;
                 $scope.game_version = GAME_VERSION;
 
@@ -262,7 +262,7 @@
             }]);
 
             vntapAuth.controller('registerController', ['$scope', '$http', function($scope, $http) {
-                $scope.title = 'ĐĂNG KÝ';
+                $scope.title = 'Register';
                 $scope.sdk_version  = APP_VERSION;
                 $scope.game_version = GAME_VERSION;
 
