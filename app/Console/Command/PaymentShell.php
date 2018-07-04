@@ -20,122 +20,59 @@ class PaymentShell extends AppShell
 		set_time_limit(60 * 60 * 24);
 		ini_set('memory_limit', '384M');
 
-		$chanels = [
-			Payment::CHANEL_VIPPAY => 'Vippay',
-			Payment::CHANEL_HANOIPAY => 'Hanoipay',
-			Payment::CHANEL_PAYPAL => 'Paypal',
-			Payment::CHANEL_GOOGLE => 'Error',
-			Payment::CHANEL_ONEPAY => 'OnePay',
-			Payment::CHANEL_PAYMENTWALL => 'PaymentWall',
-            Payment::CHANEL_NL_ALE => 'Nl_Ale'
-		];
+        $chanels = array(
+            Payment::CHANEL_GOOGLE      => 'Error',
+            Payment::CHANEL_PAYPAL      => 'Error',
+            Payment::CHANEL_PAYMENTWALL => 'Error',
+            Payment::CHANEL_NL_ALE      => 'Error',
+        );
 
-		foreach ($chanels as $chanel => $name) {
-			if ( !in_array($chanel, array(
-			    Payment::CHANEL_PAYMENTWALL,
-                Payment::CHANEL_GOOGLE,
-                Payment::CHANEL_NL_ALE
-            ))) continue;
-
-			if( $chanel == Payment::CHANEL_NL_ALE){
-			    $this->__Nl_Ale();
-			    continue;
+        foreach($chanels as $chanel => $name) {
+            if (method_exists($this, '__' . $name)) {
+                $time = strtotime('-15 minute');
+                if( $chanel == Payment::CHANEL_NL_ALE) $time = strtotime('-1 week');
+                call_user_func(array($this, '__' . $name), $chanel, $time );
             }
-
-			$lastPid = $this->Variable->getVar('payment_last_pid_checked_by_chanel_' . $chanel);
-			if (!$lastPid) $lastPid = 0;
-
-			$this->out($this->nl(0));
-			$this->out("chanel: " . $chanel . ' - lastPid: ' . $lastPid);
-
-			$this->WaitingPayment->bindModel([
-				'belongsTo' => ['Game', 'User'],
-			]);
-			$watingPayments = $this->WaitingPayment->find('all', [
-				'conditions' => [
-					'WaitingPayment.id >' => $lastPid,
-					'WaitingPayment.chanel' => $chanel,
-					'WaitingPayment.status <>' => WaitingPayment::STATUS_COMPLETED,
-					'WaitingPayment.time >= ' => strtotime('-1 hour'),
-					'WaitingPayment.time < ' => strtotime('-15 minute'),
-				],
-				'contain' => ["User", "Game"],
-			]);
-
-			if (empty($watingPayments)) {
-				continue;
-			}
-
-			# check từng giao dịch trong trạng thái chờ
-			foreach ($watingPayments as $wating) {
-				# this WatingPayment was checked
-				if (!empty($wating['WaitingPayment']['id']) && $lastPid >= $wating['WaitingPayment']['id']) {
-					$this->out("Checked pid: " . $wating['WaitingPayment']['id']);
-					continue;
-				} else {
-					$this->out("saved pid: " . $wating['WaitingPayment']['id']);
-					$this->Variable->setVar("payment_last_pid_checked_by_chanel_" . $chanel, $wating['WaitingPayment']['id']);
-				}
-
-				if (method_exists($this, '__' . $name)) {
-					call_user_func([$this, '__' . $name], $wating['WaitingPayment']);
-				}
-			}
-		}
+        }
 	}
 
-	private function __Error($wating){
-        $this->WaitingPayment->id = $wating['id'];
-        $this->WaitingPayment->saveField('status', WaitingPayment::STATUS_ERROR, ['callbacks' => false]);
-    }
-
-	private function __PaymentWall($wating)
-	{
-		$this->WaitingPayment->id = $wating['id'];
-		$this->WaitingPayment->saveField('status', WaitingPayment::STATUS_ERROR, ['callbacks' => false]);
-	}
-
-	private function __Appota($waiting){
-	    $this->__Error($waiting);
-    }
-
-    private function __Nl_Ale(){
-        $lastPid = $this->Variable->getVar('payment_last_pid_checked_by_chanel_' . Payment::CHANEL_NL_ALE);
-        if (!$lastPid) $lastPid = 0;
+    private function __Error($chanel, $time){
+        $lastPid = $this->Variable->getVar('payment_last_pid_checked_by_chanel_' . $chanel);
+        if( !$lastPid ) $lastPid = 0;
 
         $this->out($this->nl(0));
-        $this->out("chanel: " . Payment::CHANEL_NL_ALE . ' - lastPid: ' . $lastPid);
+        $this->out("chanel: " . $chanel . ' - lastPid: ' . $lastPid);
 
-        $this->WaitingPayment->bindModel([
-            'belongsTo' => ['Game', 'User'],
-        ]);
-        $watingPayments = $this->WaitingPayment->find('all', [
-            'conditions' => [
-                'WaitingPayment.id >' => $lastPid,
-                'WaitingPayment.chanel' => Payment::CHANEL_NL_ALE,
-                'WaitingPayment.status <>' => WaitingPayment::STATUS_COMPLETED,
-                #'WaitingPayment.time >= ' => strtotime('-1 hour'),
-                'WaitingPayment.time < ' => strtotime('-1 week'),
-            ],
-            'contain' => ["User", "Game"],
-        ]);
+        $this->WaitingPayment->bindModel(array(
+            'belongsTo' => array('Game', 'User')
+        ));
+        $watingPayments = $this->WaitingPayment->find('all', array(
+            'conditions' => array(
+                'WaitingPayment.id >'  => $lastPid,
+                'WaitingPayment.chanel'  => $chanel,
+                'WaitingPayment.status <>'  => WaitingPayment::STATUS_COMPLETED,
+                'WaitingPayment.time < '  => $time
+            ),
+            'contain' => array("User", "Game")
+        ));
 
-        if (empty($watingPayments)) {
-            return;
+        if( empty($watingPayments) ) {
+            return false;
         }
 
         # check từng giao dịch trong trạng thái chờ
-        foreach ($watingPayments as $wating) {
+        foreach ($watingPayments as $wating){
             # this WatingPayment was checked
             if (!empty($wating['WaitingPayment']['id']) && $lastPid >= $wating['WaitingPayment']['id']) {
                 $this->out("Checked pid: " . $wating['WaitingPayment']['id']);
                 continue;
             } else {
                 $this->out("saved pid: " . $wating['WaitingPayment']['id']);
-                $this->Variable->setVar("payment_last_pid_checked_by_chanel_" . Payment::CHANEL_NL_ALE, $wating['WaitingPayment']['id']);
+                $this->Variable->setVar("payment_last_pid_checked_by_chanel_" . $chanel, $wating['WaitingPayment']['id']);
             }
 
-            $this->__PaymentWall($wating['WaitingPayment']);
+            $this->WaitingPayment->id = $wating['WaitingPayment']['id'];
+            $this->WaitingPayment->saveField('status', WaitingPayment::STATUS_ERROR, array('callbacks' => false));
         }
     }
 
