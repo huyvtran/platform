@@ -210,8 +210,8 @@ Configure::write('Bot', array(
 ));
 
 Configure::write('Paypal', array(
-    'clientId'  => 'AQABty31Og7hvOFBKn_6BCgaqxXwIhLs2SR8Y_wXI8W73X10ytu8RgwlDFztnVHR0rx_WvuAqWG7AK_o',
-    'secret'    => 'ELev0jfpIly5cj4qtKbGqQX4wh4KLqOLXnkRe8SFmJKPrRLkMvYRbyPfj73QAhSmBxbjj3SPNiU4IFxo',
+    'clientId'  => 'AThBLU4IzeV4Vgv2lUdQ-urPAyuEKlw5Q4zoOyjTELC29QOcK60K6jI3TjXsYXQtQ9ps8uR1LXDQEnFd',
+    'secret'    => 'EFkSRzFeF4fCfrj_LEFSOgGnVzanrIpdXy4k7Rp2v-UsfynOrTpma5w4OhrOHsMtQxdJ9g0OcDq4BfBF',
     'ReturnUrl' => 'http://admin.muplf.local/OvsPayments/pay_paypal_response',
     'CancelUrl' => 'http://admin.muplf.local/OvsPayments/pay_error',
     'TokenUrl'  => 'https://api.sandbox.paypal.com/v1/oauth2/token',

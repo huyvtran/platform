@@ -345,6 +345,9 @@ msgstr "Recharge via Card/SMS"
 msgid "Nạp từ store"
 msgstr "Recharge via store inapp"
 
+msgid "Nạp từ Paypal"
+msgstr "Recharge via Paypal"
+
 #: View/Themed/PaymentDashboard/Payments/pay.ctp:53
 msgid "Seri thẻ"
 msgstr "Seri card"

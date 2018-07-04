@@ -63,12 +63,13 @@ class OvsPaymentsController extends AppController {
     public function pay_paypal_index(){
         $this->loadModel('Payment');
         $this->pay_index(Payment::CHANEL_PAYPAL, 'USD');
-        $this->set('title_for_app', 'Banking (visa, master)');
+        $this->set('title_for_app', 'Paypal');
+        $this->Common->setTheme();
 
-        App::import('Lib', 'RedisCake');
-        $Redis = new RedisCake('action_count');
-        $redis_price = $Redis->get('paypal_key_' . Configure::read('Paypal.clientId'));
-        if( $redis_price > 490 ) $this->view = 'maintain';
+//        App::import('Lib', 'RedisCake');
+//        $Redis = new RedisCake('action_count');
+//        $redis_price = $Redis->get('paypal_key_' . Configure::read('Paypal.clientId'));
+//        if( $redis_price > 490 ) $this->view = 'maintain';
     }
 
     public function pay_paypal_order(){

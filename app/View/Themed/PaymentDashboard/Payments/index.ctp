@@ -48,6 +48,20 @@ $role_id = $area_id = 1;
             <span> <?php echo __('Nạp từ store'); ?> </span>
         </a>
 
+        <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paypal_index',
+            '?' => array(
+                'app'   => $currentGame['app'],
+                'token' => $token,
+                'role_id'   => $role_id,
+                'area_id'   => $area_id
+            )
+        )); ?>" class="card-type">
+                <span class="card-icon">
+                    <img src="/payment/images/paypal.png" alt="Mobile Card">
+                </span>
+            <span> <?php echo __('Nạp từ Paypal'); ?> </span>
+        </a>
+
         <?php if( !$this->Nav->hideFunction('hide_payment', $game) ){ ?>
             <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_ale_index',
                 '?' => array(

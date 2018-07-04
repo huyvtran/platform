@@ -210,8 +210,8 @@ Configure::write('Bot', array(
 ));
 
 Configure::write('Paypal', array(
-    'clientId'  => 'AYFmk4DUu7GPimCAQEruxB7By-bvQQnNgW_avHQ1S0snZ2w0A0DO8BKE2W-YeoC1dFIpUuk2O4DvdoRN',
-    'secret'    => 'EB71qDxidp6kFjXOY9uTyEtR6S5QgBdveKCubGMYXuLO3GYkAlPYhxpyrFVn9k8qL2MNt4K5FEKjwZTd',
+    'clientId'  => 'AY8pkoq8IuKfO3Yyr3ro5jC8cr3DsE4SkWoNMHNWSYlikOTFTiJJ8WMyFmM6G-WTmQN4T8pPSbEVf15C', // quanvuhong.riotgame@gmail.com
+    'secret'    => 'ECRdyAAuy3_FaOzNltZB5UX4CqJN0ldmE93RTh2RZASllxAoQKqz-MozihTiweVjiWhAS4KhOX6xeLJK',
     'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paypal_response',
     'CancelUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_error',
     'TokenUrl'  => 'https://api.paypal.com/v1/oauth2/token',
