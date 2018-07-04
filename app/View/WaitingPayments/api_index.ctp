@@ -31,6 +31,9 @@
                                         case Payment::CHANEL_GOOGLE :
                                             $chanel = 'Google Inapp';
                                             break;
+                                        case Payment::CHANEL_PAYMENTWALL :
+                                            $chanel .= ' Paymentwall';
+                                            break;
                                     }
                                 }
                                 echo $chanel;
