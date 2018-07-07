@@ -29,7 +29,7 @@ $this->extend('/Common/blank');
 			?>
 			<tr>
 				<td> <?php echo $value['type']; ?> </td>
-				<td> <?php if( !is_array($value['count']) ) echo $value['count']; ?> </td>
+				<td> <?php if( is_string($value['count']) ) echo $value['count']; ?> </td>
 				<td>
 					<?php if($link){?>
 						<a href="<?php echo $link; ?>" target="_blank"> <?php echo $key; ?> </a>
