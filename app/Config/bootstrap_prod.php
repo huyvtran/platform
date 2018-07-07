@@ -128,7 +128,7 @@ Configure::write("Redis_Configs", array(
 	'action_count' => array(
 		'engine' => 'Redis',
 		'prefix' => 'action_count',
-		'server' => '127.0.0.1',
+		'server' => '45.117.77.98',
 		'port' => 6379,
 		'duration' => '+48 hours',
 		'timeout' => 1,
@@ -137,7 +137,7 @@ Configure::write("Redis_Configs", array(
 	'fullpage_clearcache' => array(  # use for pubsub to clear cache
 		'engine' => 'Redis',
 		'prefix' => 'fullpage_clearcache',
-		'server' => '127.0.0.1',
+		'server' => '45.117.77.98',
 		'port' => 6379,
 		'duration' => '+1 hours',
 		'timeout' => 3600, # a long time connection for pub sub
@@ -149,7 +149,7 @@ Configure::write('Queue', array(
 	'default' => array(
 		'engine' => 'Redis',
 		'prefix' => 'queue_default',
-		'server' => '127.0.0.1',
+		'server' => '45.117.77.98',
 		'port' => 6379,
 		'duration' => '+48 hours',
 		'timeout' => 1,
@@ -161,7 +161,7 @@ Configure::write('LinkTracking', array(
     'default' => array(
         'engine' => 'Redis',
         'prefix' => 'link_tracking_default',
-        'server' => '127.0.0.1',
+        'server' => '45.117.77.98',
         'port' => 6379,
         'duration' => '+48 hours',
         'timeout' => 1,
@@ -173,7 +173,7 @@ Configure::write('EmailMarketing', array(
     'default' => array(
         'engine' => 'Redis',
         'prefix' => 'email_marketing_default',
-        'server' => '127.0.0.1',
+        'server' => '45.117.77.98',
         'port' => 6379,
         'duration' => '+48 hours',
         'timeout' => 1,
