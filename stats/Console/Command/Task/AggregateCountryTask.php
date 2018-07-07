@@ -97,7 +97,7 @@ class AggregateCountryTask extends Shell {
 	{
 
 		$payments = $this->Payment->find('all', array(
-			'fields' => array('user_id', 'game_id', 'SUM(0.8*price) as sum'),
+			'fields' => array('user_id', 'game_id', 'SUM(price_end) as sum'),
 			'conditions' => array(
 				'time >= ' => strtotime($date),
 				'time <= ' => strtotime($date) + 86399,
@@ -132,7 +132,7 @@ class AggregateCountryTask extends Shell {
 			} catch (GeoIp2\Exception\AddressNotFoundException $e) {
 				$country = 'Unknown';
 			}  catch (Exception $e) {
-				continue;
+				$country = 'Unknown 2';
 			}
 
 			$gameId = $order['Payment']['game_id'];
