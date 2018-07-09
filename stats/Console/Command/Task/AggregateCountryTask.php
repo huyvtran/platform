@@ -121,18 +121,17 @@ class AggregateCountryTask extends Shell {
 		));
 
 		foreach($payments as $order) {
-			if (empty($logLogins[$order['Payment']['user_id']])) {
-                $country = 'Unknown';
-			}
-			$ip = $logLogins[$order['Payment']['user_id']];
-
-			try {
-				$record = $this->Reader->country($ip);
-				$country = $record->country->names['en'];
-			} catch (GeoIp2\Exception\AddressNotFoundException $e) {
-				$country = 'Unknown';
-			}  catch (Exception $e) {
-				$country = 'Unknown';
+            $country = 'Unknown';
+			if ( !empty($logLogins[$order['Payment']['user_id']])) {
+                $ip = $logLogins[$order['Payment']['user_id']];
+                try {
+                    $record = $this->Reader->country($ip);
+                    $country = $record->country->names['en'];
+                } catch (GeoIp2\Exception\AddressNotFoundException $e) {
+                    $country = 'Unknown';
+                } catch (Exception $e) {
+                    $country = 'Unknown';
+                }
 			}
 
 			$gameId = $order['Payment']['game_id'];
