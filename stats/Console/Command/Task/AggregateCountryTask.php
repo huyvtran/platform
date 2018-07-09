@@ -108,6 +108,7 @@ class AggregateCountryTask extends Shell {
 		));
 		if (empty($payments))
 			return true;
+		CakeLog::info('check rev execute:' . print_r($payments, true));
 
 		$userIds = Hash::extract($payments, '{n}.Payment.user_id');
 
