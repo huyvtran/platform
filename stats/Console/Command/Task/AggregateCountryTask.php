@@ -122,7 +122,7 @@ class AggregateCountryTask extends Shell {
 
 		foreach($payments as $order) {
 			if (empty($logLogins[$order['Payment']['user_id']])) {
-				continue;
+                $country = 'Unknown';
 			}
 			$ip = $logLogins[$order['Payment']['user_id']];
 
@@ -132,7 +132,7 @@ class AggregateCountryTask extends Shell {
 			} catch (GeoIp2\Exception\AddressNotFoundException $e) {
 				$country = 'Unknown';
 			}  catch (Exception $e) {
-				$country = 'Unknown 2';
+				$country = 'Unknown';
 			}
 
 			$gameId = $order['Payment']['game_id'];
