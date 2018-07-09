@@ -133,6 +133,11 @@ class AggregateCountryTask extends Shell {
                     $country = 'Unknown';
                 }
 			}
+			if($country == 'Unknown'){
+                $this->Payment->User->recursive = -1;
+                $user = $this->Payment->User->findById($order['Payment']['user_id'], array('country_code'));
+                if(!empty($user['User']['country_code'])) $country = $user['User']['country_code'];
+            }
 
 			$gameId = $order['Payment']['game_id'];
 			if (empty($logs[$gameId][$country])) {
