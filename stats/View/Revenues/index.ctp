@@ -149,7 +149,7 @@ if (!$this->request->is('ajax')) {
 
 			# print data to table
 			echo '<tr>';
-			echo '<td class="total">Total</td>';
+			echo '<td class="total">' . $this->Html->link('All Games', array('controller' => 'Revenues', 'action' => 'country', 'game_id' => 999999999) ) . '</td>';
 			foreach($totals as $val) {
 				echo '<td class="total int">' . n($val) . '</td>';
 			}
