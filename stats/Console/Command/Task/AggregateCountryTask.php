@@ -149,7 +149,6 @@ class AggregateCountryTask extends Shell {
 		if (empty($logs)) {
 			return true;
 		}
-		CakeLog::info('check rev execute:' . print_r($logs, true));
 
 		foreach ($logs as $gameId => $log) {
 			foreach($log as $country => $count) {
