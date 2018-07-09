@@ -95,7 +95,6 @@ class AggregateCountryTask extends Shell {
 
 	public function Revenue($date)
 	{
-
 		$payments = $this->Payment->find('all', array(
 			'fields' => array('user_id', 'game_id', 'SUM(price_end) as sum'),
 			'conditions' => array(
@@ -144,7 +143,13 @@ class AggregateCountryTask extends Shell {
 				$logs[$gameId][$country] = 0;
 			}
 
+			# xử lý all game
+            if (empty($logs[999999999][$country])) {
+                $logs[999999999][$country] = 0;
+            }
+
 			$logs[$gameId][$country] += $order[0]['sum'];
+			$logs[999999999][$country]  += $order[0]['sum'];
 		}
 		if (empty($logs)) {
 			return true;
