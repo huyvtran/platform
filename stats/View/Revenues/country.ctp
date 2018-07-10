@@ -17,7 +17,6 @@ echo $this->extend('/Common/fluid');
 
 			echo $this->Form->input('game_id', array(
 				'id' => 'games-select',
-				'empty' => '--All Games--', 'data-placeholder' => '--All Games--',
 				'value' => empty($this->request->params['named']['game_id']) ? '': $this->request->params['named']['game_id']
 			));
 			// echo $this->Form->input('server_id', array('empty' => '--All Servers--', 'data-placeholder' => '--All Servers--'));

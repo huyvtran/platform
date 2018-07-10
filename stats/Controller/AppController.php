@@ -40,7 +40,7 @@ class AppController extends Controller {
 		'Revenue' => array(
 			'categories' => array(
 				'Revenue (Daily)' => '/Revenues/index',
-                'Revenue (Countries)' => '/Revenues/country',
+                'Revenue (Countries)' => '/Revenues/country/game_id:999999999',
 		 	),
 			'activeMenu' => array('revenues')
 		),
@@ -481,7 +481,7 @@ class AppController extends Controller {
             'fields' => array('id', 'title_os'),
             'conditions' => array('Game.id' => $this->Auth->user('permission_game_stats'), 'Game.status' => 1)
         ));
-        if( $model == 'LogPaymentsCountryByDay') $games[999999999] = 'All Games';
+        if( $model == 'LogPaymentsCountryByDay') $games = array(999999999 => 'All Games') + $games;
 
         if (!empty($this->request->named['game_id'])) {
             $gamesCond = array($model . '.game_id' => $ids);
