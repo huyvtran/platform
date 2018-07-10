@@ -287,8 +287,8 @@ class OauthController extends AppController {
     }
 
     public function api_tracking_install(){
-        CakeLog::info('checking install header:' . print_r($this->request->query,true));
-        CakeLog::info('checking install query:' . print_r($this->request->header('*'),true));
+        CakeLog::info('checking install query:' . print_r($this->request->query,true));
+        CakeLog::info('checking install header:' . print_r($this->request->header('X-Umeng-Sdk'),true));
 
         $result = array();
         $this->set('result', $result);
