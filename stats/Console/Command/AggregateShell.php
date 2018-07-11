@@ -7,6 +7,13 @@ class AggregateShell extends AppShell {
 
 	public $tasks = array('AggregateBase', 'AggregateCountry');
 
+    public function initialize()
+    {
+        set_time_limit(60 * 60 * 24);
+        ini_set('memory_limit', '384M');
+        parent::initialize();
+    }
+
 	public function DAU(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate DAU");
 
@@ -219,5 +226,25 @@ class AggregateShell extends AppShell {
             $this->out('date: ' . $date . " - Start run aggregate NIU by country");
             $this->AggregateCountry->Revenue($date);
         }
+    }
+
+    # run install
+    public function install(){
+        $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Install");
+
+        if( date('H') < 2 ){
+            $this->out(date('Y-m-d H:i:s') . " - disable run aggregate Install");
+            return ;
+        }
+
+        $date = date('d-m-Y');
+        if (isset($this->args[0])) {
+            $date = $this->args[0];
+        }
+
+        $this->AggregateBase->_aggreateByDay(
+            "LogInstall", "LogInstallByDay", "COUNT_DISTINCT", "device_id",
+            array("game_id"), array('day' => $date)
+        );
     }
 }
