@@ -39,44 +39,50 @@ class AppController extends Controller {
 	public $menu = array(
 		'Revenue' => array(
 			'categories' => array(
-				'Revenue (Daily)' => '/Revenues/index',
-                'Revenue (Countries)' => '/Revenues/country/game_id:999999999',
+				'Revenue (Daily)' => 'Revenues/index',
+                'Revenue (Countries)' => 'Revenues/country/game_id:999999999',
 		 	),
 			'activeMenu' => array('revenues')
 		),
 		'DAU' => array(
 			'categories' => array(
-				'DAU (Daily)' => '/daus/index',
-				'MAU (Monthly)' => '/daus/monthly',
-				'QAU (Quarter)' => '/daus/quarter',
-				'DAU By Countries' => '/daus/country',
+				'DAU (Daily)' => 'daus/index',
+				'MAU (Monthly)' => 'daus/monthly',
+				'QAU (Quarter)' => 'daus/quarter',
+				'DAU By Countries' => 'daus/country',
 			),
 			'activeMenu' => array('daus')
 		),
 		'NRU' => array(
 			'categories' => array(
-				'NRU (Daily)' => '/nius/index',
-                'NRU (Countries)' => '/nius/country',
+				'NRU (Daily)' => 'nius/index',
+                'NRU (Countries)' => 'nius/country',
 			),
 			'activeMenu' => array('nius')
 		),
 		'Retention' => array(
 			'categories' => array(
-				'Retention' => '/Retentions/index',
+				'Retention' => 'Retentions/index',
 			),
 			'activeMenu' => array('Retentions')
 		),
         'Arpu' => array(
             'categories' => array(
-                'Arpu (Daily)'  => '/Arpu/index',
-                'Arppu (Daily)' => '/Arppu/index',
+                'Arpu (Daily)'  => 'Arpu/index',
+                'Arppu (Daily)' => 'Arppu/index',
             ),
             'activeMenu' => array('Arpu')
         ),
+        'Install' => array(
+            'categories' => array(
+                'Install (Daily)' => 'installs/index',
+            ),
+            'activeMenu' => array('Install')
+        ),
         'Debug' => array(
             'categories' => array(
-                'Logs - Local'			=> '/admin/Administrators/readLog',
-                'Logs - Clear'			=> '/admin/Administrators/clearLogs',
+                'Logs - Local'			=> 'admin/Administrators/readLog',
+                'Logs - Clear'			=> 'admin/Administrators/clearLogs',
             ),
             'activeMenu' => array('debug')
         ),
