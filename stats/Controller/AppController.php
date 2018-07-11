@@ -109,10 +109,6 @@ class AppController extends Controller {
 			$this->request->data = $this->__trimData($this->request->data);
 		}
 		if ($this->Auth->loggedIn()) {
-            if($this->Auth->user('username') == 'quanvh'){
-                Configure::write('debug', 2);
-            }
-
 			if (	in_array($this->Auth->user('role'), array('Admin'))
 				||  (	in_array($this->Auth->user('role'), array('Developer')) 
 					&&	!in_array(strtolower($this->request->params['controller']), array('revenues'))
