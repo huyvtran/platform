@@ -13,10 +13,9 @@
 if (!$this->request->is('ajax')) {
     echo $this->extend('/Common/fluid');
     ?>
-    <div class='row'>
-        <div class="col-md-11 offset1">
-            <div>
-                <?php
+    <div class='box'>
+        <div class="box-body">
+            <?php
                 echo $this->Form->create('LogInstallByDay', array('inputDefaults' => array('div' => false, 'label' => false), 'class' => 'form-inline'));
                 echo '<div class="form-group">';
 
@@ -29,8 +28,7 @@ if (!$this->request->is('ajax')) {
 
                 echo '</div>';
                 echo $this->Form->end()
-                ?>
-            </div>
+            ?>
         </div>
     </div>
     <?php
@@ -58,98 +56,100 @@ if (!$this->request->is('ajax')) {
         )), array_reverse($data2));
 }
 ?>
-<div class='row'>
-    <div class='md-col-12' >
-        <table class='table table-striped table-bordered table-data'>
-            <thead>
-            <th>Games</th>
-            <?php
-            for($i=0 ;$i < count($rangeDates); $i++){
-                echo "<th>" . date('d/m', strtotime($rangeDates[$i])) . "</th>";
-            }
-            ?>
-            <th class="int">AVG</th>
-            <th class='int'>Total</th>
-            </thead>
-            <tbody>
-
-            <?php
-            # Calculate totals
-            $totals = array();
-            foreach($data as $v) {
-                foreach($v['data'] as $kk => $count) {
-                    if (isset($totals[$kk])) {
-                        $totals[$kk] += $count;
-                    } else {
-                        $totals[$kk] = $count;
-                    }
+<div class='box'>
+    <div class='box-body' >
+        <div style="padding-left: 10px;" class="table-responsive">
+            <table class='table table-striped table-bordered table-data'>
+                <thead>
+                <th>Games</th>
+                <?php
+                for($i=0 ;$i < count($rangeDates); $i++){
+                    echo "<th>" . date('d/m', strtotime($rangeDates[$i])) . "</th>";
                 }
-            }
+                ?>
+                <th class="int">AVG</th>
+                <th class='int'>Total</th>
+                </thead>
+                <tbody>
 
-            # print data to table
-            echo '<tr>';
-            echo '<td class="total">Total</td>';
-            foreach($totals as $val) {
-                echo '<td class="total int">' . n($val) . '</td>';
-            }
-            echo '<td class="total int">' . n(array_sum($totals) / count($rangeDates)) . '</td>';
-            echo '<td class="total int">' . n(array_sum($totals)) . '</td>';
-            echo '</tr>';
-
-            foreach($data as $v) {
-                $range = 0;
-                echo '<tr>';
-
-                echo '<td class="name1">' . $v['name'] . '</td>';
-                foreach($v['data'] as $kk => $count) {
-                    $range += $count;
-                    echo '<td class="int data">' . n($count) . '</td>';
-                }
-                $class = '';
-                $rate = '';
-                if (isset($total) && !empty($total)) {
-                    foreach ($total as $value) {
-                        if ($value['game_id'] == $v['game_id']) {
-                            if ($range > $value['sum']) {
-                                $rate = round((abs($range - $value['sum']) / $range) * 100, 1) . '%';
-                                $class = 'glyphicon glyphicon-arrow-up';
-                            } else if ($range < $value['sum']) {
-                                $rate = round((abs($range - $value['sum']) / $range) * 100, 1) . '%';
-                                $class = 'glyphicon glyphicon-arrow-down';
-                            } else if ($range == $value['sum']) {
-                                $rate = '&nbsp;<span title="no change">0%</span>';
-                            }
-                            if ($rate > 10000) $rate = '<b>&infin;</b>';
+                <?php
+                # Calculate totals
+                $totals = array();
+                foreach($data as $v) {
+                    foreach($v['data'] as $kk => $count) {
+                        if (isset($totals[$kk])) {
+                            $totals[$kk] += $count;
+                        } else {
+                            $totals[$kk] = $count;
                         }
                     }
                 }
-                $a = n($range / count($rangeDates));
-                switch (strlen($a)) {
-                    case 1 :
-                        $a = $a . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
-                        break;
-                    case 2 :
-                        $a = $a . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
-                        break;
-                    case 3 :
-                        $a = $a . "&nbsp;&nbsp;&nbsp;&nbsp; ";
-                        break;
-                    case 4 :
-                        $a = $a . "&nbsp;&nbsp;&nbsp;  ";
-                        break;
-                    case 5 :
-                        $a = $a . "&nbsp; ";
-                        break;
+
+                # print data to table
+                echo '<tr>';
+                echo '<td class="total">Total</td>';
+                foreach($totals as $val) {
+                    echo '<td class="total int">' . n($val) . '</td>';
+                }
+                echo '<td class="total int">' . n(array_sum($totals) / count($rangeDates)) . '</td>';
+                echo '<td class="total int">' . n(array_sum($totals)) . '</td>';
+                echo '</tr>';
+
+                foreach($data as $v) {
+                    $range = 0;
+                    echo '<tr>';
+
+                    echo '<td class="name1">' . $v['name'] . '</td>';
+                    foreach($v['data'] as $kk => $count) {
+                        $range += $count;
+                        echo '<td class="int data">' . n($count) . '</td>';
+                    }
+                    $class = '';
+                    $rate = '';
+                    if (isset($total) && !empty($total)) {
+                        foreach ($total as $value) {
+                            if ($value['game_id'] == $v['game_id']) {
+                                if ($range > $value['sum']) {
+                                    $rate = round((abs($range - $value['sum']) / $range) * 100, 1) . '%';
+                                    $class = 'glyphicon glyphicon-arrow-up';
+                                } else if ($range < $value['sum']) {
+                                    $rate = round((abs($range - $value['sum']) / $range) * 100, 1) . '%';
+                                    $class = 'glyphicon glyphicon-arrow-down';
+                                } else if ($range == $value['sum']) {
+                                    $rate = '&nbsp;<span title="no change">0%</span>';
+                                }
+                                if ($rate > 10000) $rate = '<b>&infin;</b>';
+                            }
+                        }
+                    }
+                    $a = n($range / count($rangeDates));
+                    switch (strlen($a)) {
+                        case 1 :
+                            $a = $a . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+                            break;
+                        case 2 :
+                            $a = $a . "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+                            break;
+                        case 3 :
+                            $a = $a . "&nbsp;&nbsp;&nbsp;&nbsp; ";
+                            break;
+                        case 4 :
+                            $a = $a . "&nbsp;&nbsp;&nbsp;  ";
+                            break;
+                        case 5 :
+                            $a = $a . "&nbsp; ";
+                            break;
+                    }
+                    ?>
+                    <td class="int total total_data"><?php echo $a;?><?php echo ($class != '') ? '<label class="' . $class . '"></label>' : '';?><?php echo ($rate != '') ? $rate : '&nbsp;<span title="no data">--</span>';?></td>
+                    <?php
+                    echo '<td class="total int">' . n($range) . '</td>';
+                    echo '</tr>';
                 }
                 ?>
-                <td class="int total total_data"><?php echo $a;?><?php echo ($class != '') ? '<label class="' . $class . '"></label>' : '';?><?php echo ($rate != '') ? $rate : '&nbsp;<span title="no data">--</span>';?></td>
-                <?php
-                echo '<td class="total int">' . n($range) . '</td>';
-                echo '</tr>';
-            }
-            ?>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <?php
