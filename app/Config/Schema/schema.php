@@ -483,6 +483,7 @@ class AppSchema extends CakeSchema {
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			'game_id_device_id' => array('column' => array('game_id', 'device_id'), 'unique' => 1),
 			'created_game_id' => array('column' => array('created', 'game_id'), 'unique' => 0),
 			'game_id' => array('column' => 'game_id', 'unique' => 0),
 			'country' => array('column' => 'country', 'unique' => 0),

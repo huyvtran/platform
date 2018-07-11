@@ -289,9 +289,33 @@ class OauthController extends AppController {
     public function api_tracking_install(){
         CakeLog::info('checking install data:' . print_r($this->request->data,true));
         CakeLog::info('checking install query:' . print_r($this->request->query,true));
-        CakeLog::info('checking install header:' . print_r($this->request->header('X-Umeng-Sdk'),true));
 
-        $result = array();
+        $game = $this->Common->currentGame();
+        if (empty($game) || empty($this->request->data['device_id']) ) {
+            $result = array(
+                'error_code'    => 1,
+                'message'       => 'missing data'
+            );
+            goto end;
+        }
+
+        try {
+            $this->request->data['game_id'] = $game['id'];
+            $this->loadModel('LogInstall');
+            $this->LogInstall->save($this->request->data);
+            $result = array(
+                'error_code'    => 0,
+                'message'       => 'success'
+            );
+        }catch (Exception $e){
+            $result = array(
+                'error_code'    => $e->getCode(),
+                'message'       => $e->getMessage()
+            );
+            CakeLog::error('loginstall error:' . $e->getMessage());
+        }
+
+        end:
         $this->set('result', $result);
         $this->set('_serialize', 'result');
         return $result;
