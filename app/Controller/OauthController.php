@@ -287,9 +287,6 @@ class OauthController extends AppController {
     }
 
     public function api_tracking_install(){
-        CakeLog::info('checking install data:' . print_r($this->request->data,true));
-        CakeLog::info('checking install query:' . print_r($this->request->query,true));
-
         $game = $this->Common->currentGame();
         if (empty($game) || empty($this->request->data['device_id']) ) {
             $result = array(
@@ -297,6 +294,10 @@ class OauthController extends AppController {
                 'message'       => 'missing data'
             );
             goto end;
+        }
+
+        if($game['os'] == 'ios'){
+            CakeLog::info('checking install data:' . print_r($this->request->data,true));
         }
 
         try {
