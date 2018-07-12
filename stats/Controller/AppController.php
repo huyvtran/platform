@@ -76,6 +76,7 @@ class AppController extends Controller {
         'Install' => array(
             'categories' => array(
                 'Install (Daily)' => 'installs/index',
+                'Install By Countries' => 'installs/country',
             ),
             'activeMenu' => array('Install')
         ),
