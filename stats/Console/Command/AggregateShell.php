@@ -247,4 +247,20 @@ class AggregateShell extends AppShell {
             array("game_id"), array('day' => $date)
         );
     }
+
+    public function cInstall(){
+        $this->out(date('Y-m-d H:i:s') . " - Start run aggregate install by country");
+
+        if( date('H') < 2 ){
+            $this->out(date('Y-m-d H:i:s') . " - disable run aggregate install by country");
+            return ;
+        }
+
+        $date = date('d-m-Y');
+        if (isset($this->args[0])) {
+            $date = $this->args[0];
+        }
+
+        $this->AggregateCountry->Install($date);
+    }
 }
