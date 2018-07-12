@@ -12,7 +12,7 @@ echo $this->extend('/Common/fluid');
 <div class="box">
     <div class="box-body">
 			<?php
-			echo $this->Form->create('LogLoginsCountryByDay', array('inputDefaults' => array('div' => false, 'label' => false), 'class' => 'form-inline'));
+			echo $this->Form->create('LogInstallCountryByDay', array('inputDefaults' => array('div' => false, 'label' => false), 'class' => 'form-inline'));
 			echo '<div class="form-group">';
 
 			echo $this->Form->input('game_id', array(
@@ -56,9 +56,9 @@ $pointStart = '____Date.UTC(' . date('Y', $fromTime) . ', ' . $m . ', ' . date('
 
 $this->Highchart->render(array(
 	'chart' => array('type' => 'area'),
-	'title' => array('text' => 'Dau by Countries - ' . $games[$this->request->params['named']['game_id']]),
+	'title' => array('text' => 'Install by Countries - ' . $games[$this->request->params['named']['game_id']]),
 	'xAxis' => array('title' => array('text' => 'Dates')),
-	'yAxis' => array('title' => array('text' => 'Active Users')),
+	'yAxis' => array('title' => array('text' => 'Installs')),
 	'tooltip' => array('shared' => true, 'formatter' => ""),
 	'plotOptions' => array(
         'area' => array(

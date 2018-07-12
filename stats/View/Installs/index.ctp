@@ -130,7 +130,7 @@ $this->Highchart->render(array(
 			$range = 0;
 			echo '<tr>';
 
-            echo '<td class="name1">' . $this->Html->link($v['name'], array('controller' => 'daus', 'action' => 'country', 'game_id' => $v['game_id']) ) . '</td>';
+            echo '<td class="name1">' . $this->Html->link($v['name'], array('controller' => 'installs', 'action' => 'country', 'game_id' => $v['game_id']) ) . '</td>';
 			foreach($v['data'] as $kk => $count) {
 				$range += $count;
 				echo '<td class="int data">' . n($count) . '</td>';

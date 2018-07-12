@@ -22,4 +22,10 @@ class InstallsController extends AppController {
 	{
 		$this->indexDefault();
 	}
+
+    public function country()
+    {
+        $this->modelClass = 'LogInstallCountryByDay';
+        $this->indexCountry();
+    }
 }
