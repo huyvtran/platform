@@ -880,7 +880,7 @@ class OvsPaymentsController extends AppController {
 
                         $type = $wating_payment['WaitingPayment']['type'];
                         if( isset($this->request->query['PAYMENT_SYSTEM']) && $this->request->query['PAYMENT_SYSTEM'] == 'Mobiamo' ){
-                            $price = ($price)/2;
+                            #$price = ($price)/2;
 
                             $type = Payment::TYPE_NETWORK_SMS;
                             $this->WaitingPayment->id = $wating_payment['WaitingPayment']['id'];
