@@ -886,7 +886,7 @@ class OvsPaymentsController extends AppController {
                             $this->WaitingPayment->id = $wating_payment['WaitingPayment']['id'];
                             $this->WaitingPayment->saveField('type', $type, array('callbacks' => false));
                         }else{
-						   $price = ($price)*0.75;
+						   $price += ($price)*0.5;
 						}
 
 
