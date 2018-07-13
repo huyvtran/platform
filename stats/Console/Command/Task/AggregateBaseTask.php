@@ -186,7 +186,7 @@ class AggregateBaseTask extends Shell {
 
     public function _retention($date)
     {
-        $this->out('Start Retention ' . $date);
+        $this->out('Retention date:' . $date);
         set_time_limit(1000);
         ini_set('memory_limit', '512M');
 
@@ -270,7 +270,7 @@ class AggregateBaseTask extends Shell {
 
     public function _arpu($date)
     {
-        $this->out('Start Arpu ' . $date);
+        $this->out('Arpu date: ' . $date);
         App::import('Model', 'Game');
         App::import('Model', 'Payment');
         App::import('Model', 'LogArpuByDay');
@@ -342,7 +342,7 @@ class AggregateBaseTask extends Shell {
 
     public function _arppu($date)
     {
-        $this->out('Start Arppu ' . $date);
+        $this->out('Arppu date: ' . $date);
 
         App::import('Model', 'Game');
         App::import('Model', 'Payment');

@@ -26,6 +26,7 @@ class AggregateShell extends AppShell {
 		if ( !empty($this->args[0])) {
 			$date = $this->args[0];
 		}
+        $this->out('DAU run date: ' . $date);
 
 		$this->AggregateBase->_aggreateByDay(
 		    "LogLogin", "LogLoginsByDay", "COUNT_DISTINCT", "user_id",
@@ -45,6 +46,7 @@ class AggregateShell extends AppShell {
         if (isset($this->args[0])) {
             $date = $this->args[0];
         }
+        $this->out('cDAU run date: ' . $date);
 
         $this->AggregateCountry->Dau($date);
     }
@@ -61,6 +63,7 @@ class AggregateShell extends AppShell {
         if (isset($this->args[0])) {
             $month = $this->args[0];
         }
+        $this->out('cDAU run month: ' . $month);
 
         $model = array(
             'name' => 'LogLogin',
@@ -87,6 +90,8 @@ class AggregateShell extends AppShell {
         if (isset($this->args[0])) {
             $date = $this->args[0];
         }
+        $this->out('Niu run date: ' . $date);
+
         $this->AggregateBase->_aggreateByDay("Account", "LogAccountsByDay", "COUNT", "user_id", array("game_id"), array('day' => $date));
     }
 
@@ -102,6 +107,7 @@ class AggregateShell extends AppShell {
         if (isset($this->args[0])) {
             $date = $this->args[0];
         }
+        $this->out('cNiu run date: ' . $date);
 
         $this->AggregateCountry->Niu($date);
     }
@@ -118,6 +124,7 @@ class AggregateShell extends AppShell {
         if (isset($this->args[0])) {
             $date = $this->args[0];
         }
+
         $this->AggregateBase->_retention($date);
     }
 
@@ -190,6 +197,7 @@ class AggregateShell extends AppShell {
         if (isset($this->args[0])) {
             $date = $this->args[0];
         }
+        $this->out('install run date: ' . $date);
 
         $this->AggregateBase->_aggreateByDay(
             "LogInstall", "LogInstallByDay", "COUNT_DISTINCT", "device_id",

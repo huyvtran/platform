@@ -21,7 +21,7 @@ class AggregateCountryTask extends Shell {
 
 	public function Dau($date)
 	{
-        $this->out('Aggregating ...' . $date);
+        $this->out('Dau run date:' . $date);
 		# don't use "group by" to avoid mysql bad performance , just for now
 		$logLogins = $this->LogLogin->find('all', array(
 			'fields' => array('DISTINCT user_id', 'game_id', 'ip'),
@@ -96,6 +96,7 @@ class AggregateCountryTask extends Shell {
 
 	public function Revenue($date)
 	{
+        $this->out('Revenue run date: ' . $date);
 		$payments = $this->Payment->find('all', array(
 			'fields' => array('user_id', 'game_id', 'SUM(price_end) as sum'),
 			'conditions' => array(
@@ -272,7 +273,8 @@ class AggregateCountryTask extends Shell {
 
     public function Install($date)
     {
-        $this->out('Aggregating ...' . $date);
+        $this->out('Install run date: ' . $date);
+
         # don't use "group by" to avoid mysql bad performance , just for now
         $logInstalls = $this->LogInstall->find('all', array(
             'fields' => array('DISTINCT device_id', 'game_id', 'ip'),
