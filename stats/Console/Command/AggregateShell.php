@@ -17,13 +17,13 @@ class AggregateShell extends AppShell {
 	public function DAU(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate DAU");
 
-        if( date('H') < 2 ){
+        if( date('H') < 2 && empty($this->args[0]) ){
             $this->out(date('Y-m-d H:i:s') . " - disable run aggregate DAU");
             return ;
         }
 
 		$date = date('d-m-Y');
-		if (isset($this->args[0])) {
+		if ( !empty($this->args[0])) {
 			$date = $this->args[0];
 		}
 
@@ -33,19 +33,10 @@ class AggregateShell extends AppShell {
         );
 	}
 
-	public function yesterdayDAU(){
-        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate DAU");
-        $yesterday = date('d-m-Y', strtotime('yesterday'));
-        $this->AggregateBase->_aggreateByDay(
-            "LogLogin", "LogLoginsByDay", "COUNT_DISTINCT", "user_id",
-            array("game_id"), array('day' => $yesterday)
-        );
-    }
-
 	public function cDAU(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate DAU by country");
 
-        if( date('H') < 2 ){
+        if( date('H') < 2 && empty($this->args[0]) ){
             $this->out(date('Y-m-d H:i:s') . " - disable run aggregate DAU by country");
             return ;
         }
@@ -58,16 +49,10 @@ class AggregateShell extends AppShell {
         $this->AggregateCountry->Dau($date);
     }
 
-    public function yesterdayCDAU(){
-        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate DAU by country");
-        $yesterday = date('d-m-Y', strtotime('yesterday'));
-        $this->AggregateCountry->Dau($yesterday);
-    }
-
     public function MAU(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate MAU");
 
-        if( date('H') < 2 ){
+        if( date('H') < 2 && empty($this->args[0])){
             $this->out(date('Y-m-d H:i:s') . " - disable run aggregate MAU");
             return ;
         }
@@ -93,7 +78,7 @@ class AggregateShell extends AppShell {
     {
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate NIU");
 
-        if( date('H') < 2 ){
+        if( date('H') < 2 && empty($this->args[0]) ){
             $this->out(date('Y-m-d H:i:s') . " - disable run aggregate NIU");
             return ;
         }
@@ -105,16 +90,10 @@ class AggregateShell extends AppShell {
         $this->AggregateBase->_aggreateByDay("Account", "LogAccountsByDay", "COUNT", "user_id", array("game_id"), array('day' => $date));
     }
 
-    public function yesterdayNiu(){
-        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate NIU");
-        $yesterday = date('d-m-Y', strtotime('yesterday'));
-        $this->AggregateBase->_aggreateByDay("Account", "LogAccountsByDay", "COUNT", "user_id", array("game_id"), array('day' => $yesterday));
-    }
-
     public function cNiu(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate NIU by country");
 
-        if( date('H') < 2 ){
+        if( date('H') < 2 && empty($this->args[0]) ){
             $this->out(date('Y-m-d H:i:s') . " - disable run aggregate NIU by country");
             return ;
         }
@@ -127,16 +106,10 @@ class AggregateShell extends AppShell {
         $this->AggregateCountry->Niu($date);
     }
 
-    public function yesterdayCNiu(){
-        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate NIU by country");
-        $yesterday = date('d-m-Y', strtotime('yesterday'));
-        $this->AggregateCountry->Niu($yesterday);
-    }
-
     public function Retention(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Retention");
 
-        if( date('H') < 2 ){
+        if( date('H') < 2 && empty($this->args[0]) ){
             $this->out(date('Y-m-d H:i:s') . " - disable run aggregate Retention");
             return ;
         }
@@ -148,16 +121,10 @@ class AggregateShell extends AppShell {
         $this->AggregateBase->_retention($date);
     }
 
-    public function yesterdayRetention(){
-        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate Retention");
-        $yesterday = date('d-m-Y', strtotime('yesterday'));
-        $this->AggregateBase->_retention($yesterday);
-    }
-
     public function Arpu(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Arpu");
 
-        if( date('H') < 2 ){
+        if( date('H') < 2 && empty($this->args[0]) ){
             $this->out(date('Y-m-d H:i:s') . " - disable run aggregate Arpu");
             return ;
         }
@@ -169,16 +136,10 @@ class AggregateShell extends AppShell {
         $this->AggregateBase->_arpu($date);
     }
 
-    public function yesterdayArpu(){
-        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate Arpu");
-        $yesterday = date('d-m-Y', strtotime('yesterday'));
-        $this->AggregateBase->_arpu($yesterday);
-    }
-
     public function Arppu(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Arppu");
 
-        if( date('H') < 2 ){
+        if( date('H') < 2 && empty($this->args[0]) ){
             $this->out(date('Y-m-d H:i:s') . " - disable run aggregate Arppu");
             return ;
         }
@@ -190,16 +151,10 @@ class AggregateShell extends AppShell {
         $this->AggregateBase->_arppu($date);
     }
 
-    public function yesterdayArppu(){
-        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate Arppu");
-        $yesterday = date('d-m-Y', strtotime('yesterday'));
-        $this->AggregateBase->_arppu($yesterday);
-    }
-
     public function cRevenues(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Revenues by country");
 
-        if( date('H') < 2 ){
+        if( date('H') < 2 && empty($this->args[0]) ){
             $this->out(date('Y-m-d H:i:s') . " - disable run aggregate Revenues by country");
             return ;
         }
@@ -210,12 +165,6 @@ class AggregateShell extends AppShell {
         }
 
         $this->AggregateCountry->Revenue($date);
-    }
-
-    public function yesterdayCRevenues(){
-        $this->out("Yesterday " . date('Y-m-d') ." - Start run aggregate Revenues by country");
-        $yesterday = date('d-m-Y', strtotime('yesterday'));
-        $this->AggregateCountry->Revenue($yesterday);
     }
 
     # run start
@@ -232,7 +181,7 @@ class AggregateShell extends AppShell {
     public function install(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Install");
 
-        if( date('H') < 2 ){
+        if( date('H') < 2 && empty($this->args[0]) ){
             $this->out(date('Y-m-d H:i:s') . " - disable run aggregate Install");
             return ;
         }
@@ -251,7 +200,7 @@ class AggregateShell extends AppShell {
     public function cInstall(){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate install by country");
 
-        if( date('H') < 2 ){
+        if( date('H') < 2 && empty($this->args[0]) ){
             $this->out(date('Y-m-d H:i:s') . " - disable run aggregate install by country");
             return ;
         }
