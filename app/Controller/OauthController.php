@@ -10,7 +10,7 @@ class OauthController extends AppController {
 		$this->Auth->allow(array(
 			'userInfo', 'api_userAuthen', 'token', 'getGame',
             'api_tracking_install', 'api_list_game', 'api_userList',
-            'api_registerDeviceNotify'
+            'api_registerDeviceNotify', 'api_tokenByUser'
 		));
 	}
 
@@ -418,6 +418,75 @@ class OauthController extends AppController {
             'message' => 'error',
         );
 
+        $this->set('result', $result);
+        $this->set('_serialize', 'result');
+    }
+
+    public function api_tokenByUser()
+    {
+        if( empty($this->request->data('user')) || empty($this->request->data('sign')) ){
+            $result = array(
+                'status' => 1,
+                'message' => 'Necessary data is missing'
+            );
+            goto end;
+        }
+        $secret_key = 'MU-ADYhG93b0qyJfIxfs1232guVoUubWwvaniR2G0FgaC9mi';
+        $username = $this->request->data('user');
+        $sign_input = $this->request->data('sign');
+        $sign = md5( $username . $secret_key );
+        if( $sign != $sign_input ){
+            $result = array(
+                'status'    => 2,
+                'message'   => 'The sign is incorrect'
+            );
+            goto end;
+        }
+
+        $this->loadModel('User');
+        $this->User->bindModel(array(
+            'hasOne' => array(
+                'AccessToken' => array(
+                    'foreignKey' => false,
+                    'conditions' => array_merge(
+                        array('User.id = AccessToken.user_id')
+                    )
+                ),
+            )
+        ));
+
+        $this->User->recursive = -1;
+        $users = $this->User->find('all', [
+            'fields'     => ['AccessToken.token', 'User.id', 'User.username'],
+            'conditions' => [
+                'username LIKE' => '%'.$this->request->data('user'),
+            ],
+            'contain'   => ['AccessToken'],
+            'order'     => ['User.id DESC'],
+            'limit'     => 20,
+            'recursive' => -1
+        ]);
+
+        if( empty($users) ){
+            $result = array(
+                'status'    => 3,
+                'message'   => $username . ' is empty'
+            );
+            goto end;
+        }
+
+        $data = [];
+        foreach ($users as $user) {
+            $data[] = $user['AccessToken']['token'];
+        }
+
+        $result = [
+            'error_code' => 0,
+            'message'    => 'success',
+            'data'       => $data,
+        ];
+
+        end:
         $this->set('result', $result);
         $this->set('_serialize', 'result');
     }
