@@ -288,6 +288,10 @@ class OauthController extends AppController {
 
     public function api_tracking_install(){
         $game = $this->Common->currentGame();
+        if($game['id'] == 144){
+            CakeLog::info('install data 144:' . print_r($this->request->data,true));
+        }
+
         if (empty($game) || empty($this->request->data['device_id']) ) {
             $result = array(
                 'error_code'    => 1,
@@ -313,7 +317,7 @@ class OauthController extends AppController {
                 'error_code'    => $e->getCode(),
                 'message'       => $e->getMessage()
             );
-            CakeLog::error('loginstall error:' . $e->getMessage());
+            #CakeLog::error('loginstall error:' . $e->getMessage());
         }
 
         end:
