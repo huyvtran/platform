@@ -288,9 +288,6 @@ class OauthController extends AppController {
 
     public function api_tracking_install(){
         $game = $this->Common->currentGame();
-        if($game['id'] == 144){
-            CakeLog::info('install data 144:' . print_r($this->request->data,true));
-        }
 
         if (empty($game) || empty($this->request->data['device_id']) ) {
             $result = array(
