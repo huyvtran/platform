@@ -55,6 +55,12 @@ class AggregateCountryTask extends Shell {
 					$logs[$gameId][$country] = 0;
 				}
 				$logs[$gameId][$country]++;
+
+                # xử lý all game
+                if (empty($logs[999999999][$country])) {
+                    $logs[999999999][$country] = 0;
+                }
+                $logs[999999999][$country]++;
 			}
 		}
 
@@ -234,6 +240,12 @@ class AggregateCountryTask extends Shell {
                 $logs[$account['Account']['game_id']][$country] = 0;
             }
             $logs[$account['Account']['game_id']][$country]++;
+
+            # xử lý all game
+            if (empty($logs[999999999][$country])) {
+                $logs[999999999][$country] = 0;
+            }
+            $logs[999999999][$country]++;
         }
         if (empty($logs)) {
             return true;
@@ -307,6 +319,12 @@ class AggregateCountryTask extends Shell {
                     $logs[$gameId][$country] = 0;
                 }
                 $logs[$gameId][$country]++;
+
+                # xử lý all game
+                if (empty($logs[999999999][$country])) {
+                    $logs[999999999][$country] = 0;
+                }
+                $logs[999999999][$country]++;
             }
         }
 
