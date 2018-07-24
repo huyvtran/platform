@@ -176,4 +176,44 @@ class PaymentShell extends AppShell
 			}
 		}
 	}
+
+	public function processPaypal(){
+        App::import('Lib', 'RedisQueue');
+        $Redis = new RedisQueue();
+        $Redis->key = 'payment_job_process_paypal';
+        $Redis->expire(1*10); // 10s
+        $pay_id = $Redis->get();
+
+        if( empty($pay_id) ) $pay_id = 142351;
+
+        $Payment = ClassRegistry::init('Payment');
+        $Payment->recursive = -1;
+        $paypals = $Payment->find('all', array(
+            'fields'    => array('Payment.id', 'Payment.price', 'Payment.price_end'),
+            'conditions' => array(
+                'Payment.id >'      => $pay_id,
+                'Payment.chanel'    => Payment::CHANEL_PAYPAL,
+            ),
+            'order' => array('Payment.id' => 'asc'),
+            'limit' => 200
+        ));
+
+        if( !empty($paypals)){
+            foreach ($paypals as $paypal){
+                $price_org = ($paypal['Payment']['price']/(1.2)) ;
+                $price_end = $price_org - (6801 + ($price_org*0.04) ) ;
+
+                $Payment->id = $paypal['Payment']['id'];
+                $Payment->saveField('price_end', $price_end, array('callbacks' => false));
+                $pay_id_tmp = $paypal['Payment']['id'];
+
+                $this->out('<success>Pid: ' . $pay_id_tmp . ' - Saved</success>');
+            }
+
+            $Redis->set($pay_id_tmp);
+
+        }else{
+            $this->out('<warning>No record was found</warning>');
+        }
+    }
 }
