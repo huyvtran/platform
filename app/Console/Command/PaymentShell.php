@@ -180,11 +180,11 @@ class PaymentShell extends AppShell
 	public function processPaypal(){
         App::import('Lib', 'RedisQueue');
         $Redis = new RedisQueue();
-        $Redis->key = 'payment_job_process_paypal';
-        $Redis->expire(1*10); // 10s
+        $Redis->key = 'payment_job_process_ale';
+        $Redis->expire(5*60); // 10s
         $pay_id = $Redis->get();
 
-        if( empty($pay_id) ) $pay_id = 142351;
+        if( empty($pay_id) ) $pay_id = 277172;
 
         $Payment = ClassRegistry::init('Payment');
         $Payment->recursive = -1;
@@ -192,7 +192,7 @@ class PaymentShell extends AppShell
             'fields'    => array('Payment.id', 'Payment.price', 'Payment.price_end'),
             'conditions' => array(
                 'Payment.id >'      => $pay_id,
-                'Payment.chanel'    => Payment::CHANEL_PAYPAL,
+                'Payment.chanel'    => Payment::CHANEL_NL_ALE,
             ),
             'order' => array('Payment.id' => 'asc'),
             'limit' => 200
@@ -200,8 +200,8 @@ class PaymentShell extends AppShell
 
         if( !empty($paypals)){
             foreach ($paypals as $paypal){
-                $price_org = ($paypal['Payment']['price']/(1.2)) ;
-                $price_end = $price_org - (6801 + ($price_org*0.04) ) ;
+                $price_org = ($paypal['Payment']['price']/(1.3)) ;
+                $price_end = 0.965*$price_org - 7700;
 
                 $Payment->id = $paypal['Payment']['id'];
                 $Payment->saveField('price_end', $price_end, array('callbacks' => false));
