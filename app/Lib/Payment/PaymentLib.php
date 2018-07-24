@@ -199,7 +199,7 @@ class PaymentLib {
 
             }elseif ( in_array( $data['chanel'] , array(
                 Payment::CHANEL_ONEPAY, Payment::CHANEL_ONEPAY_2,
-                Payment::CHANEL_PAYMENTWALL,
+                Payment::CHANEL_PAYMENTWALL, Payment::CHANEL_PAYPAL,
                 Payment::CHANEL_GOOGLE
             ))){
                 return ;
