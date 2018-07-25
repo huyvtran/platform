@@ -80,7 +80,7 @@ class AggregateShell extends AppShell {
         );
     }
 
-    public function Niu()
+    public function Niu($input = false)
     {
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate NIU");
 
@@ -93,6 +93,9 @@ class AggregateShell extends AppShell {
         if (isset($this->args[0])) {
             $date = $this->args[0];
         }
+
+        if(!empty($input)) $date = $input;
+
         $this->out('Niu run date: ' . $date);
 
         $this->AggregateBase->_aggreateByDay("Account", "LogAccountsByDay", "COUNT", "user_id", array("game_id"), array('day' => $date));
@@ -192,7 +195,7 @@ class AggregateShell extends AppShell {
     }
 
     # run install
-    public function install(){
+    public function install($input = false){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Install");
 
         if( date('H') < 2 && empty($this->args[0]) ){
@@ -204,6 +207,9 @@ class AggregateShell extends AppShell {
         if (isset($this->args[0])) {
             $date = $this->args[0];
         }
+
+        if(!empty($input)) $date = $input;
+
         $this->out('install run date: ' . $date);
 
         $this->AggregateBase->_aggreateByDay(
