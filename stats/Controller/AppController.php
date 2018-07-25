@@ -484,7 +484,7 @@ class AppController extends Controller {
             'fields' => array('id', 'title_os'),
             'conditions' => array('Game.id' => $this->Auth->user('permission_game_stats'), 'Game.status' => 1)
         ));
-        if( $model == 'LogPaymentsCountryByDay') $games = array(999999999 => 'All Games') + $games;
+        $games = array(999999999 => 'All Games') + $games;
 
         if (!empty($this->request->named['game_id'])) {
             $gamesCond = array($model . '.game_id' => $ids);
