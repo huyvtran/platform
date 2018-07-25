@@ -48,7 +48,7 @@ class AggregateCountryTask extends Shell {
 				} catch (GeoIp2\Exception\AddressNotFoundException $e) {
 					$country = 'Unknown';
 				}  catch (Exception $e) {
-					continue;
+                    $country = 'Unknown';
 				}
 
 				if (empty($logs[$gameId][$country])) {
@@ -232,7 +232,7 @@ class AggregateCountryTask extends Shell {
                 } catch (GeoIp2\Exception\AddressNotFoundException $e) {
                     $country = 'Unknown';
                 } catch (Exception $e) {
-                    continue;
+                    $country = 'Unknown';
                 }
             }
 
