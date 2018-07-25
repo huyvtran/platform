@@ -101,7 +101,7 @@ class AggregateShell extends AppShell {
         $this->AggregateBase->_aggreateByDay("Account", "LogAccountsByDay", "COUNT", "user_id", array("game_id"), array('day' => $date));
     }
 
-    public function cNiu(){
+    public function cNiu($input = false){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate NIU by country");
 
         if( date('H') < 2 && empty($this->args[0]) ){
@@ -113,6 +113,7 @@ class AggregateShell extends AppShell {
         if (isset($this->args[0])) {
             $date = $this->args[0];
         }
+        if(!empty($input)) $date = $input;
         $this->out('cNiu run date: ' . $date);
 
         $this->AggregateCountry->Niu($date);
@@ -164,7 +165,7 @@ class AggregateShell extends AppShell {
         $this->AggregateBase->_arppu($date);
     }
 
-    public function cRevenues(){
+    public function cRevenues($input = false){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate Revenues by country");
 
         if( date('H') < 2 && empty($this->args[0]) ){
@@ -176,6 +177,7 @@ class AggregateShell extends AppShell {
         if (isset($this->args[0])) {
             $date = $this->args[0];
         }
+        if(!empty($input)) $date = $input;
 
         $this->AggregateCountry->Revenue($date);
     }
@@ -218,7 +220,7 @@ class AggregateShell extends AppShell {
         );
     }
 
-    public function cInstall(){
+    public function cInstall($input = false){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate install by country");
 
         if( date('H') < 2 && empty($this->args[0]) ){
@@ -230,6 +232,7 @@ class AggregateShell extends AppShell {
         if (isset($this->args[0])) {
             $date = $this->args[0];
         }
+        if(!empty($input)) $date = $input;
 
         $this->AggregateCountry->Install($date);
     }
