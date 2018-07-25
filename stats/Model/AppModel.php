@@ -316,4 +316,13 @@ class AppModel extends Model {
     function date_quarter($day){
         return ceil(date('n', strtotime($day)) / 3);
     }
+
+    // show query
+    function getLastQuery()
+    {
+        $dbo = $this->getDatasource();
+        $logs = $dbo->getLog();
+        $lastLog = end($logs['log']);
+        return $lastLog['query'];
+    }
 }

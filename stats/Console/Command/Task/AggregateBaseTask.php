@@ -49,9 +49,10 @@ class AggregateBaseTask extends Shell {
 		$results = $Model->find('all', compact('fields', 'conditions', 'group'));
 
 		if (!empty($results)) {
+		    $value_total = 0;
 			foreach ($results as $k => $v) {
-
 				$value = current($v['0']);
+                $value_total += $value;
 				$temp = $v[$modelName];
 
 				unset($temp[$field]);
@@ -74,11 +75,34 @@ class AggregateBaseTask extends Shell {
 					print_r($Model2->validationErrors);
 					$this->error("Unable to save data.");
 				}
+				unset($data);unset($existed);
 			}
+
+			# save all game: 999999999
+            $existed = $Model2->find('first', array(
+                'conditions' => array(
+                    'game_id'   => 999999999
+                ),
+                'recursive' => -1
+            ));
+
+            $data = am(array('game_id' => 999999999), array('day' => date('Y-m-d', $currentTime), 'value' => $value_total));
+
+            if (!empty($existed)) {
+                $Model2->id = $existed[$modelSave]['id'];
+            } else {
+                $Model2->create();
+            }
+
+            if (!$Model2->save($data)) {
+                print_r($data);
+                print_r($Model2->validationErrors);
+                $this->error("Unable to save data.");
+            }
+            $this->out('<success>Date:' . date('Y-m-d', $currentTime) . ' - Saved</success>');
 		} else {
 			$this->out('<warning>No record was found</warning>');
 		}
-		$this->out('Done!');
 	}
 
     /**

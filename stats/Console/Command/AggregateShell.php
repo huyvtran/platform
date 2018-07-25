@@ -175,12 +175,16 @@ class AggregateShell extends AppShell {
     }
 
     # run start
-    public function setCRevenue(){
-        $this->out(date('Y-m-d H:i:s') . " run all NIU by country");
+    public function setAggregate(){
+        $method = 'DAU';
+        if ( !empty($this->args[0])) {
+            $method = $this->args[0];
+        }
+
         for ($i = 30; $i >= 0; $i--){
             $date = date('Y-m-d', strtotime("-$i days"));
-            $this->out('date: ' . $date . " - Start run aggregate NIU by country");
-            $this->AggregateCountry->Revenue($date);
+            $this->{$method}($date);
+            $this->out($this->nl(0));
         }
     }
 
