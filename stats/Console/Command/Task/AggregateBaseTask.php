@@ -81,7 +81,8 @@ class AggregateBaseTask extends Shell {
 			# save all game: 999999999
             $existed = $Model2->find('first', array(
                 'conditions' => array(
-                    'game_id'   => 999999999
+                    'game_id'   => 999999999,
+                    'day'       => date('Y-m-d', $currentTime)
                 ),
                 'recursive' => -1
             ));
@@ -99,6 +100,7 @@ class AggregateBaseTask extends Shell {
                 print_r($Model2->validationErrors);
                 $this->error("Unable to save data.");
             }
+            unset($data);unset($existed);
             $this->out('<success>Date:' . date('Y-m-d', $currentTime) . ' - Saved</success>');
 		} else {
 			$this->out('<warning>No record was found</warning>');

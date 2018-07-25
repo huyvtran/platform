@@ -14,7 +14,7 @@ class AggregateShell extends AppShell {
         parent::initialize();
     }
 
-	public function DAU(){
+	public function DAU($input = false){
         $this->out(date('Y-m-d H:i:s') . " - Start run aggregate DAU");
 
         if( date('H') < 2 && empty($this->args[0]) ){
@@ -26,6 +26,9 @@ class AggregateShell extends AppShell {
 		if ( !empty($this->args[0])) {
 			$date = $this->args[0];
 		}
+
+		if(!empty($input)) $date = $input;
+
         $this->out('DAU run date: ' . $date);
 
 		$this->AggregateBase->_aggreateByDay(
