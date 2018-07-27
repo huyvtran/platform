@@ -212,7 +212,7 @@ class PaymentShell extends AppShell
             }
 
             $Redis->set($pay_id_tmp);
-
+            unset($pay_id_tmp);
         }else{
             $this->out('<warning>No record was found</warning>');
         }
