@@ -169,7 +169,8 @@ $this->extend('/Common/blank');
             <th><?php echo $this->Paginator->sort('order_id'); ?></th>
             <th><?php echo $this->Paginator->sort('card_code'); ?></th>
             <th><?php echo $this->Paginator->sort('card_serial'); ?></th>
-            <th><?php echo $this->Paginator->sort('price'); ?></th>
+            <th><?php echo $this->Paginator->sort('price', 'Price Total'); ?></th>
+            <th><?php echo $this->Paginator->sort('price_org', "Price"); ?></th>
             <th><?php echo $this->Paginator->sort('time'); ?></th>
             <th><?php echo $this->Paginator->sort('type'); ?></th>
             <th><?php echo $this->Paginator->sort('chanel'); ?></th>
@@ -192,6 +193,7 @@ $this->extend('/Common/blank');
                 <td> <?php echo $payment['WaitingPayment']['card_code']; ?> </td>
                 <td> <?php echo $payment['WaitingPayment']['card_serial']; ?> </td>
                 <td> <?php if( !empty($payment['Payment']['price']) ) echo number_format($payment['Payment']['price'], 0, '.', ','); ?> </td>
+                <td> <?php if( !empty($payment['Payment']['price_org']) ) echo number_format($payment['Payment']['price_org'], 0, '.', ','); ?> </td>
                 <td> <?php echo $payment['WaitingPayment']['time']; ?> </td>
                 <td> <?php echo $payment['WaitingPayment']['type']; ?> </td>
                 <td>
