@@ -804,8 +804,8 @@ class PaymentsController extends AppController {
             }
 
             $price = $product['Product']['platform_price'] ;
-            # tăng 30%;
-            $price += 0.3 * $price;
+            # tăng 20%;
+            $price += 0.2 * $price;
             # trạng thái thành công, lưu dữ liệu payment
             $paymentLib = new PaymentLib();
             $data_payment = [
@@ -824,6 +824,7 @@ class PaymentsController extends AppController {
                 'product_id' => $product['Product']['productid'],
 
                 'price'      => $price,
+                'price_org'  => $product['Product']['platform_price'],
                 'price_end'  => ($product['Product']['platform_price']) * 0.7,
                 'price_game' => $product['Product']['game_price'],
             ];

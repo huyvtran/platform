@@ -228,7 +228,7 @@ class OvsPaymentsController extends AppController {
                             && $data_paypal['sale_state'] == 'completed'
                         ) {
                             $price = $wating_payment['WaitingPayment']['price'];
-                            $price += 0.2*$price;
+                            $price += 0.3*$price;
                             $price_end = $wating_payment['WaitingPayment']['price'] - (6801 + ($wating_payment['WaitingPayment']['price'])*0.045);
                             $data_payment = array(
                                 'order_id'  => $orderId,
@@ -236,6 +236,7 @@ class OvsPaymentsController extends AppController {
                                 'game_id'   => $game['id'],
                                 'price'     => $price,
                                 'price_end'     => $price_end,
+                                'price_org'     => $wating_payment['WaitingPayment']['price'],
                                 'time' => $wating_payment['WaitingPayment']['time'],
                                 'type' => $wating_payment['WaitingPayment']['type'],
                                 'chanel' => $wating_payment['WaitingPayment']['chanel'],
@@ -770,6 +771,7 @@ class OvsPaymentsController extends AppController {
                             'chanel' => $wating_payment['WaitingPayment']['chanel'],
                             'waiting_id' => $wating_payment['WaitingPayment']['id'],
                             'test'	=> $test_type,
+                            'price_org'  => $wating_payment['WaitingPayment']['price'],
                             'price_end' => $price_end
                         );
 
@@ -865,7 +867,7 @@ class OvsPaymentsController extends AppController {
 
                 $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
                 if ($pingback->validate()) {
-                    $price = $pingback->getVirtualCurrencyAmount();
+                    $price = $price_org = $pingback->getVirtualCurrencyAmount();
                     if ($pingback->isDeliverable()) {
                         $price_end = 0;
                         if( !empty($this->request->query['REVENUE']) ) {
@@ -901,6 +903,7 @@ class OvsPaymentsController extends AppController {
                             'chanel' => $wating_payment['WaitingPayment']['chanel'],
                             'waiting_id' => $wating_payment['WaitingPayment']['id'],
                             'test'	=> $test_type,
+                            'price_org'  => $price_org,
                             'price_end' => $price_end
                         );
 
@@ -1387,6 +1390,7 @@ class OvsPaymentsController extends AppController {
                     'game_id'       => $game['id'],
 
                     'price'         => $price,
+                    'price_org'     => $wating_payment['WaitingPayment']['price'],
                     'price_end'     => ($wating_payment['WaitingPayment']['price'])*0.965 - 7700,
                 );
 
