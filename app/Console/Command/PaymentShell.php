@@ -180,7 +180,7 @@ class PaymentShell extends AppShell
 	public function processPaypal(){
         App::import('Lib', 'RedisQueue');
         $Redis = new RedisQueue();
-        $Redis->key = 'payment_job_process_google';
+        $Redis->key = 'payment_job_process_paypal';
         $Redis->expire(5*60); // 10s
         $pay_id = $Redis->get();
 
@@ -192,7 +192,7 @@ class PaymentShell extends AppShell
             'fields'    => array('Payment.id', 'Payment.price', 'Payment.price_org'),
             'conditions' => array(
                 'Payment.id >'      => $pay_id,
-                'Payment.chanel'    => Payment::CHANEL_GOOGLE,
+                'Payment.chanel'    => Payment::CHANEL_PAYPAL,
             ),
             'order' => array('Payment.id' => 'asc'),
             'limit' => 200
@@ -202,7 +202,7 @@ class PaymentShell extends AppShell
             foreach ($paypals as $paypal){
                 if( !empty($paypal['Payment']['price_org']) ) continue;
 
-                $price_org = ($paypal['Payment']['price']/(1.3)) ;
+                $price_org = ($paypal['Payment']['price']/(1.2)) ;
 
                 $Payment->id = $paypal['Payment']['id'];
                 $Payment->saveField('price_org', $price_org, array('callbacks' => false));
