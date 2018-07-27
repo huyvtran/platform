@@ -184,7 +184,7 @@ class PaymentShell extends AppShell
         $Redis->expire(5*60); // 10s
         $pay_id = $Redis->get();
 
-        if( empty($pay_id) ) $pay_id = 129984;
+        if( empty($pay_id) ) $pay_id = 147191;
 
         $Payment = ClassRegistry::init('Payment');
         $Payment->recursive = -1;
