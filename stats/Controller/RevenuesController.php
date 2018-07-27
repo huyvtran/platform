@@ -45,8 +45,8 @@ class RevenuesController extends AppController {
         $fields_total = array('SUM(price_end) as sum', 'game_id', 'type');
 
 	    if( !empty($this->passedArgs['rate']) ){
-            $fields_revenues = array('SUM(price) as sum', 'game_id', 'FROM_UNIXTIME(time, "%Y-%m-%d") as day', 'type');
-            $fields_total = array('SUM(price) as sum', 'game_id', 'type');
+            $fields_revenues = array('SUM(price_org) as sum', 'game_id', 'FROM_UNIXTIME(time, "%Y-%m-%d") as day', 'type');
+            $fields_total = array('SUM(price_org) as sum', 'game_id', 'type');
         }
 
         $revenues = $this->Payment->find('all', array(
