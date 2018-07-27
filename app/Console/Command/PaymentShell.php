@@ -189,7 +189,7 @@ class PaymentShell extends AppShell
         $Payment = ClassRegistry::init('Payment');
         $Payment->recursive = -1;
         $paypals = $Payment->find('all', array(
-            'fields'    => array('Payment.id', 'Payment.price', 'Payment.price_end'),
+            'fields'    => array('Payment.id', 'Payment.price', 'Payment.price_org'),
             'conditions' => array(
                 'Payment.id >'      => $pay_id,
                 'Payment.chanel'    => Payment::CHANEL_NL_ALE,
@@ -200,6 +200,8 @@ class PaymentShell extends AppShell
 
         if( !empty($paypals)){
             foreach ($paypals as $paypal){
+                if( !empty($paypal['Payment']['price_org']) ) continue;
+
                 $price_org = ($paypal['Payment']['price']/(1.3)) ;
 
                 $Payment->id = $paypal['Payment']['id'];
