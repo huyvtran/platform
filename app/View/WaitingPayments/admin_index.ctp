@@ -163,7 +163,6 @@ $this->extend('/Common/blank');
 <div class='span12'>
     <table class="table table-striped">
         <tr>
-            <th><?php echo $this->Paginator->sort('id'); ?></th>
             <th><?php echo 'Username'; ?></th>
             <th><?php echo 'Game'; ?></th>
             <th><?php echo $this->Paginator->sort('order_id'); ?></th>
@@ -171,7 +170,6 @@ $this->extend('/Common/blank');
             <th><?php echo $this->Paginator->sort('card_serial'); ?></th>
             <th><?php echo $this->Paginator->sort('price', 'Price Total'); ?></th>
             <th><?php echo $this->Paginator->sort('price_org', "Price"); ?></th>
-            <th><?php echo $this->Paginator->sort('time'); ?></th>
             <th><?php echo $this->Paginator->sort('type'); ?></th>
             <th><?php echo $this->Paginator->sort('chanel'); ?></th>
             <th><?php echo $this->Paginator->sort('note'); ?></th>
@@ -186,7 +184,6 @@ $this->extend('/Common/blank');
                 if( !empty($payment['Payment']['test']) ) $style = "color: red;"
             ?>
             <tr style="<?php echo $style; ?>">
-                <td><?php echo h($payment['WaitingPayment']['id']); ?>&nbsp;</td>
                 <td> <?php echo $this->Html->link(substr($payment['User']['username'], 4), array('controller' => 'users', 'action' => 'view', $payment['User']['id'])); ?> </td>
                 <td> <?php echo $payment['Game']['title'] . ' ' . $payment['Game']['os']; ?> </td>
                 <td> <?php echo $payment['WaitingPayment']['order_id']; ?> </td>
@@ -194,7 +191,6 @@ $this->extend('/Common/blank');
                 <td> <?php echo $payment['WaitingPayment']['card_serial']; ?> </td>
                 <td> <?php if( !empty($payment['Payment']['price']) ) echo number_format($payment['Payment']['price'], 0, '.', ','); ?> </td>
                 <td> <?php if( !empty($payment['Payment']['price_org']) ) echo number_format($payment['Payment']['price_org'], 0, '.', ','); ?> </td>
-                <td> <?php echo $payment['WaitingPayment']['time']; ?> </td>
                 <td> <?php echo $payment['WaitingPayment']['type']; ?> </td>
                 <td>
                     <?php
