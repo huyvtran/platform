@@ -180,19 +180,19 @@ class PaymentShell extends AppShell
 	public function processPaypal(){
         App::import('Lib', 'RedisQueue');
         $Redis = new RedisQueue();
-        $Redis->key = 'payment_job_process_paypal';
+        $Redis->key = 'payment_job_process_paymentwall_card';
         $Redis->expire(5*60); // 10s
         $pay_id = $Redis->get();
 
-        if( empty($pay_id) ) $pay_id = 147191;
+        if( empty($pay_id) ) $pay_id = 142311;
 
         $Payment = ClassRegistry::init('Payment');
         $Payment->recursive = -1;
         $paypals = $Payment->find('all', array(
-            'fields'    => array('Payment.id', 'Payment.price', 'Payment.price_org'),
+            'fields'    => array('Payment.id', 'Payment.price', 'Payment.price_org', 'Payment.price_end'),
             'conditions' => array(
                 'Payment.id >'      => $pay_id,
-                'Payment.chanel'    => Payment::CHANEL_PAYPAL,
+                'Payment.chanel'    => Payment::CHANEL_PAYMENTWALL
             ),
             'order' => array('Payment.id' => 'asc'),
             'limit' => 200
@@ -202,7 +202,7 @@ class PaymentShell extends AppShell
             foreach ($paypals as $paypal){
                 if( !empty($paypal['Payment']['price_org']) ) continue;
 
-                $price_org = ($paypal['Payment']['price']/(1.2)) ;
+                $price_org = ($paypal['Payment']['price']) ;
 
                 $Payment->id = $paypal['Payment']['id'];
                 $Payment->saveField('price_org', $price_org, array('callbacks' => false));
