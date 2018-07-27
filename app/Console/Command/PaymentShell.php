@@ -201,10 +201,9 @@ class PaymentShell extends AppShell
         if( !empty($paypals)){
             foreach ($paypals as $paypal){
                 $price_org = ($paypal['Payment']['price']/(1.3)) ;
-                $price_end = 0.965*$price_org - 7700;
 
                 $Payment->id = $paypal['Payment']['id'];
-                $Payment->saveField('price_end', $price_end, array('callbacks' => false));
+                $Payment->saveField('price_org', $price_org, array('callbacks' => false));
                 $pay_id_tmp = $paypal['Payment']['id'];
 
                 $this->out('<success>Pid: ' . $pay_id_tmp . ' - Saved</success>');
