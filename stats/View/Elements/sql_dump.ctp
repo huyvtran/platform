@@ -27,6 +27,7 @@ if (!class_exists('ConnectionManager') || Configure::read('debug') < 2) {
 		border:0;
 	}
 </style>
+<div class="table-responsive">
 <div id='sqldump'>
 <?php
 require_once ROOT. DS . 'vendors' . DS . 'SqlFormatter.php';
@@ -95,4 +96,5 @@ else:
 	printf('<p>%s</p>', __d('cake_dev', 'Encountered unexpected %s. Cannot generate SQL log.', '$logs'));
 endif;
 ?>
+</div>
 </div>
