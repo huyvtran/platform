@@ -65,16 +65,10 @@ class RevenuesController extends AppController {
 //        debug($revenues);die;
 
         $chanels = array(
-            1 => 'Vippay 1',
-            7 => 'Vippay 2',
-            9 => 'Vippay 3',
-            2 => 'Hanoipay',
             3 => 'Paypal',
             5 => '1Pay 1',
-            8 => '1Pay 2',
             6 => 'Paymentwall',
-            11 => 'Appota',
-            12 => 'Inpay',
+            18 => 'Google',
             14 => 'Ale/NL'
         );
 
