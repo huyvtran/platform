@@ -27,6 +27,7 @@ if (!class_exists('ConnectionManager') || Configure::read('debug') < 2) {
 		border:0;
 	}
 </style>
+<footer class="main-footer">
 <div class="table-responsive">
 <div id='sqldump'>
 <?php
@@ -98,3 +99,4 @@ endif;
 ?>
 </div>
 </div>
+</footer>
