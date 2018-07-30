@@ -35,7 +35,7 @@ class RevenuesController extends AppController {
 
 	    $addGroupBy = array();
 	    if (!empty($this->request->params['named']['game_id']) && !$this->request->is('ajax')) {
-		    $addGroupBy = array('chanel');
+		    #$addGroupBy = array('chanel');
 	    }
 
         # END PERMISSIONS
