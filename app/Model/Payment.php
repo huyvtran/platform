@@ -24,6 +24,8 @@ class Payment extends AppModel
 	const CHANEL_VIPPAY = 1;
 	const CHANEL_HANOIPAY = 2;
 	const CHANEL_PAYPAL = 3;
+    const CHANEL_PAYPAL2 = 32;
+
 	const CHANEL_MOLIN = 4;
 	const CHANEL_ONEPAY = 5;
 	const CHANEL_PAYMENTWALL = 6;

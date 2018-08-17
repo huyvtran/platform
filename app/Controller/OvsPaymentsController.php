@@ -111,6 +111,19 @@ class OvsPaymentsController extends AppController {
         $chanel = Payment::CHANEL_PAYPAL;
         $type = Payment::TYPE_NETWORK_BANKING;
 
+        if( !empty($game['group']) && $game['group'] == Game::GROUP_R02 ) {
+            $chanel = Payment::CHANEL_PAYPAL2;
+            Configure::write('Paypal', array(
+                'clientId'  => 'Ac56pz3p7V9ZjoOR4E6pdFX9gi8BjyBsfSwLZYhjMVUrA9yvM4zNNN6ilX70tOnVAFx68rk9G8J9NdMx', // abunguyen.com@gmail.com
+                'secret'    => 'ECT3M4j6AgopanCNCVh-v-6CW70J1Rdenh3a7Lo70y-jOhxhoGdpsMyfiPeEpSE4ZAf28YtJzzkfQgL1',
+                'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paypal_response',
+                'CancelUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_error',
+                'TokenUrl'  => 'https://api.paypal.com/v1/oauth2/token',
+                'PaymentUrl'=> 'https://api.paypal.com/v1/payments/payment/',
+                'mode'      => 'live',
+            ));
+        }
+
         # tạo giao dịch waiting_payment
         $data = array(
             'order_id'  => $order_id,
@@ -164,6 +177,18 @@ class OvsPaymentsController extends AppController {
         if( empty($payment_id) || empty($payer_id) ){
             CakeLog::error(__('Lỗi giao dịch paypal') , 'payment');
             goto end;
+        }
+
+        if( !empty($game['group']) && $game['group'] == Game::GROUP_R02 ) {
+            Configure::write('Paypal', array(
+                'clientId'  => 'Ac56pz3p7V9ZjoOR4E6pdFX9gi8BjyBsfSwLZYhjMVUrA9yvM4zNNN6ilX70tOnVAFx68rk9G8J9NdMx', // abunguyen.com@gmail.com
+                'secret'    => 'ECT3M4j6AgopanCNCVh-v-6CW70J1Rdenh3a7Lo70y-jOhxhoGdpsMyfiPeEpSE4ZAf28YtJzzkfQgL1',
+                'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paypal_response',
+                'CancelUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_error',
+                'TokenUrl'  => 'https://api.paypal.com/v1/oauth2/token',
+                'PaymentUrl'=> 'https://api.paypal.com/v1/payments/payment/',
+                'mode'      => 'live',
+            ));
         }
 
         # xử lý mua hàng qua paypal
