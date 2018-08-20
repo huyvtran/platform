@@ -102,6 +102,7 @@ class OvsPaymentsController extends AppController {
             throw new NotFoundException('Không có gói xu phù hợp');
         }
 
+        $this->loadModel('Game');
         $this->loadModel('Payment');
         $this->loadModel('WaitingPayment');
 
@@ -179,6 +180,7 @@ class OvsPaymentsController extends AppController {
             goto end;
         }
 
+        $this->loadModel('Game');
         if( !empty($game['group']) && $game['group'] == Game::GROUP_R02 ) {
             Configure::write('Paypal', array(
                 'clientId'  => 'Ac56pz3p7V9ZjoOR4E6pdFX9gi8BjyBsfSwLZYhjMVUrA9yvM4zNNN6ilX70tOnVAFx68rk9G8J9NdMx', // abunguyen.com@gmail.com
