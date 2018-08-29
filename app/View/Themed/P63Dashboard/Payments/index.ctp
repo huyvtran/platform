@@ -32,23 +32,6 @@ $role_id = $area_id = 1;
             <center><span style="color: red;"><?= $this->Session->flash('payment'); ?></span></center><br/>
         <?php } ?>
 
-        <a href="<?php echo $this->Html->url([
-            'controller' => 'Payments',
-            'action' => 'inapp',
-            '?' => [
-                'app'   => $game['app'],
-                'token' => $token,
-                'role_id'   => $role_id,
-                'area_id'   => $area_id
-            ]
-        ]); ?>" class="card-type">
-        <span class="card-icon">
-            <img src="/payment/images/apple-store.png" alt="Apple Store">
-        </span>
-            <span> <?php echo __('Nạp từ store'); ?> </span>
-        </a>
-
-
         <?php if( !$this->Nav->hideFunction('hide_payment', $game) ){ ?>
 			<a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paypal_index',
 				'?' => array(
