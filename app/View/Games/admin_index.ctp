@@ -152,7 +152,7 @@ $this->extend('/Common/blank');
                     }
                     ?>
                 </td>
-                <td><?php echo h($game['Game']['data']['prefix']); ?></td>
+                <td><?php if( !empty($game['Game']['data']['prefix']) ) echo h($game['Game']['data']['prefix']); ?></td>
                 <td><?php echo h($game['Game']['language_default']); ?></td>
                 <td>
                     <?php
