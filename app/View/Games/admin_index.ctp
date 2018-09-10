@@ -76,6 +76,7 @@ $this->extend('/Common/blank');
 			<th><?php echo $this->Paginator->sort('slug'); ?></th>
 			<th><?php echo $this->Paginator->sort('alias'); ?></th>
             <th><?php echo 'top'; ?></th>
+            <th><?php echo 'prefix'; ?></th>
             <th><?php echo 'language'; ?></th>
             <th><?php echo 'status'; ?></th>
 			<th><?php echo 'Missing' ?></th>
@@ -151,6 +152,7 @@ $this->extend('/Common/blank');
                     }
                     ?>
                 </td>
+                <td><?php echo h($game['Game']['data']['prefix']); ?></td>
                 <td><?php echo h($game['Game']['language_default']); ?></td>
                 <td>
                     <?php
