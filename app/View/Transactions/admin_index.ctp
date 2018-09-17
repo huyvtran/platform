@@ -140,8 +140,11 @@ $this->extend('/Common/blank');
                 <?php foreach ($orders as $payment): ?>
                     <tr>
                         <td><?php echo h($payment['Transaction']['id']); ?>&nbsp;</td>
-                        <td> <?php echo $this->Html->link($payment['User']['username'], array('controller' => 'users', 'action' => 'view', $payment['User']['id'])); ?> </td>
-                        <td> <?php echo $payment['Game']['title'] . ' ' . $payment['Game']['os']; ?> </td>
+                        <td> <?php echo $this->Html->link(substr($payment['User']['username'], 4), array('controller' => 'users', 'action' => 'view', $payment['User']['id'])); ?> </td>
+                        <td> <?php if(!empty($this->request->params['named']['game_id'])) echo $payment['Transaction']['game_id'];
+                            else echo $payment['Game']['title'] . ' ' . $payment['Game']['os'];
+                            ?>
+                        </td>
                         <td> <?php echo $payment['Transaction']['order_id']; ?> </td>
                         <td> <?php if( !empty($payment['Transaction']['price']) ) echo number_format($payment['Transaction']['price'], 0, '.', ','); ?> </td>
                         <td> <?php
