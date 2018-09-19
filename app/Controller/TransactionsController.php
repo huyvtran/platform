@@ -49,6 +49,7 @@ class TransactionsController extends AppController {
                 'contain' => array(
                     'Game', 'User'
                 ),
+				'order' => array('Transaction.id' => 'DESC'),
                 'recursive' => -1,
                 'limit' => 20
             )
