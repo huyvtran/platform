@@ -8,10 +8,12 @@ class Payment extends AppModel
 	public $useTable = 'payments';
 
 	# thanh toán trong nước
-	const TYPE_NETWORK_VIETTEL = 'VTT';
-	const TYPE_NETWORK_VINAPHONE = 'VNP';
-	const TYPE_NETWORK_MOBIFONE = 'VMS';
-	const TYPE_NETWORK_GATE = 'GATE';
+	const TYPE_NETWORK_VIETTEL      = 'VTT';
+	const TYPE_NETWORK_VINAPHONE    = 'VNP';
+	const TYPE_NETWORK_MOBIFONE     = 'VMS';
+	const TYPE_NETWORK_GATE         = 'GATE';
+	const TYPE_NETWORK_VCOIN        = 'VCOIN';
+	const TYPE_NETWORK_ZING         = 'ZIG';
 
 	# thanh toán quốc tế
     const TYPE_NETWORK_VISA = 'Visa';
@@ -50,6 +52,8 @@ class Payment extends AppModel
     const CHANEL_APPLE = 17;
 
     const CHANEL_GOOGLE = 18;
+
+    const CHANEL_SHOPCARD = 19;
 
 	public $belongsTo = [
 		'User', 'Game',

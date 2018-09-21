@@ -166,6 +166,7 @@ $config['rules'] = array(
         'payments/pay_paypal_response'  => 'Role/User',
 
         'ManualPayments/index'          => 'Role/User',
+        'ManualPayments/shopcard'       => 'Role/User',
         'ManualPayments/admin_index'    => 'Role/Content',
 
         'OvsPayments/pay_list'      => 'Role/User',

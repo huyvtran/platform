@@ -36,9 +36,13 @@ class CardManual extends AppModel {
             )
         ),
         'type' => array(
-            'notEmpty' => array(
+            'required' => array(
                 'rule' => 'notEmpty',
                 'message' => 'Please chose a type'
+            ),
+            'confirmSeri' => array(
+                'rule' => 'confirmSeri',
+                'message' => 'Serial or cardcode is not format.'
             )
         ),
     );
@@ -86,5 +90,50 @@ class CardManual extends AppModel {
         }
 
         return $this->find('count', array_merge($parameters, $extra));
+    }
+
+    public function confirmSeri($type = null) {
+        if ( isset($type['type'])
+            && isset($this->data[$this->alias]['card_serial'])
+            && isset($this->data[$this->alias]['card_code'])
+        ) {
+            if (strpos($this->data[$this->alias]['card_code'], '-') !== false
+                || strpos($this->data[$this->alias]['card_code'], ' ') !== false
+            ) {
+                return false;
+            }
+
+            if (strpos($this->data[$this->alias]['card_serial'], '-') !== false
+                || strpos($this->data[$this->alias]['card_serial'], ' ') !== false
+            ) {
+                return false;
+            }
+
+            ClassRegistry::init('Payment');
+            if($type['type'] == Payment::TYPE_NETWORK_ZING) return true;
+            if($type['type'] == Payment::TYPE_NETWORK_GATE) return true;
+            if($type['type'] == Payment::TYPE_NETWORK_VCOIN) return true;
+
+            # verify vinaphone
+            if($type['type'] == Payment::TYPE_NETWORK_VINAPHONE){
+                if( strlen($this->data[$this->alias]['card_serial']) == 14
+                    && ( strlen($this->data[$this->alias]['card_code']) == 12 || strlen($this->data[$this->alias]['card_code']) == 14)
+                ) {
+                    return true;
+                }
+            }
+
+            # verify mobifone
+            if($type['type'] == Payment::TYPE_NETWORK_MOBIFONE){
+                if( strlen($this->data[$this->alias]['card_serial']) == 15 && strlen($this->data[$this->alias]['card_code']) == 12 ) return true;
+            }
+
+            # verify viettel
+            if($type['type'] == Payment::TYPE_NETWORK_VIETTEL){
+                if( strlen($this->data[$this->alias]['card_serial']) == 11 && strlen($this->data[$this->alias]['card_code']) == 13 ) return true;
+                if( strlen($this->data[$this->alias]['card_serial']) == 14 && strlen($this->data[$this->alias]['card_code']) == 15 ) return true;
+            }
+        }
+        return false;
     }
 }

@@ -217,4 +217,142 @@ class PaymentShell extends AppShell
             $this->out('<warning>No record was found</warning>');
         }
     }
+
+    public function shopcard(){
+        $this->out('payment shopcard starting  ...');
+        set_time_limit(60 * 60);
+        ini_set('memory_limit', '384M');
+
+        try {
+            $waiting_id = false;
+            $starttime = time();
+            while (true) {
+                # run this command 60s only
+                if ((time() - $starttime) > 60) {
+                    goto end;
+                }
+
+                $this->WaitingPayment->bindModel(array(
+                    'hasOne' => array(
+                        'CardManual' => array(
+                            'foreignKey' => false,
+                            'conditions' => array_merge(
+                                array('WaitingPayment.order_id = CardManual.order_id')
+                            )
+                        ),
+                    )
+                ));
+
+                $conditions = array(
+                    'WaitingPayment.time >= ' => strtotime('-1 day'),
+                    'WaitingPayment.time <= ' => strtotime('-1 minutes'),
+                    'WaitingPayment.chanel' => Payment::CHANEL_SHOPCARD,
+                    'WaitingPayment.status' => WaitingPayment::STATUS_QUEUEING,
+                );
+                if( !empty($waiting_id) ){
+                    $conditions = array_merge(array( 'WaitingPayment.id >' => $waiting_id), $conditions);
+                }
+
+                $watingPayments = $this->WaitingPayment->find('first', array(
+                    'conditions' => $conditions,
+                    'contain' => array("CardManual"),
+                    'recursive' => -1
+                ));
+
+                if( empty($watingPayments['CardManual']['id']) ) goto end;
+
+                $waiting_id = $watingPayments['WaitingPayment']['id'];
+
+                # ktra seri và cardcode đã thành công ko, tránh trùng thẻ
+                $watingCheck = $this->WaitingPayment->find('first', array(
+                    'fields' => array('id', 'order_id'),
+                    'conditions' => array(
+                        'WaitingPayment.card_serial' => $watingPayments['CardManual']['card_serial'],
+                        'WaitingPayment.card_code' => $watingPayments['CardManual']['card_code'],
+                        'WaitingPayment.status' => WaitingPayment::STATUS_COMPLETED,
+                    ),
+                    'recursive' => -1
+                ));
+
+                if ( !empty($watingCheck['WaitingPayment']['id']) ) {
+                    $this->WaitingPayment->id = $watingPayments['WaitingPayment']['id'];
+                    $this->WaitingPayment->saveField('status', WaitingPayment::STATUS_ERROR, array('callbacks' => false));
+
+                    $this->WaitingPayment->CardManual->id = $watingPayments['CardManual']['id'];
+                    $this->WaitingPayment->CardManual->saveField('status', WaitingPayment::STATUS_ERROR, array('callbacks' => false));
+
+                    continue;
+                }
+
+                App::uses('ShopCard', 'Payment');
+                $LibPay = new ShopCard();
+                $data_pay = array(
+                    'merchant_id'       => (int)$LibPay->getMerchantId(),
+                    'merchant_user'     => $LibPay->getMerchantUser(),
+                    'merchant_password' => $LibPay->getMerchantPassword(),
+                    'transaction_id'    => $watingPayments['CardManual']['trans_gate']
+                );
+                $result = $LibPay->getTransaction($data_pay);
+                CakeLog::info('Shopcard - cronjob get transaction:' . print_r(
+                        array( $watingPayments['WaitingPayment']['order_id'],
+                            $watingPayments['CardManual']['trans_gate'],
+                            $result
+                        ), true), 'payment');
+
+                if ( !empty($result['amount']) && !empty($result['status']) && $result['status'] == 1 ) {
+                    $rate = 1.2;
+                    if( $watingPayments['WaitingPayment']['type'] == Payment::TYPE_NETWORK_VIETTEL ){
+                        $rate = 1.2;
+                    }
+
+                    App::uses('PaymentLib', 'Payment');
+                    $paymentLib = new PaymentLib();
+                    $data_payment = array(
+                        'waiting_id' => $watingPayments['WaitingPayment']['id'],
+                        'time' => $watingPayments['WaitingPayment']['time'],
+                        'chanel' => $watingPayments['WaitingPayment']['chanel'],
+                        'type' => $watingPayments['WaitingPayment']['type'],
+
+                        'order_id' => $watingPayments['WaitingPayment']['order_id'],
+                        'user_id' => $watingPayments['WaitingPayment']['user_id'],
+                        'game_id' => $watingPayments['WaitingPayment']['game_id'],
+
+                        'price'     => ($result['amount']) * ($rate),
+                        'price_org' => $result['amount'],
+                        'price_end' => ($result['amount']) * (0.65),
+                    );
+
+                    $this->WaitingPayment->CardManual->save(array(
+                        'CardManual' => array(
+                            'id' => $watingPayments['CardManual']['id'],
+                            'status' => WaitingPayment::STATUS_COMPLETED,
+                            'price' => $result['amount']
+                        )
+                    ));
+
+                    $paymentLib->setResolvedPayment($watingPayments['WaitingPayment']['id'], WaitingPayment::STATUS_COMPLETED);
+                    $paymentLib->add($data_payment);
+
+                    unset($paymentLib); unset($data_payment);
+                    goto end;
+                }elseif ( $result['status'] == -69 || $result['status'] == 999 ){
+                    continue;
+                } else {
+                    $this->WaitingPayment->id = $watingPayments['WaitingPayment']['id'];
+                    $this->WaitingPayment->saveField('status', WaitingPayment::STATUS_ERROR, array('callbacks' => false));
+
+                    $this->WaitingPayment->CardManual->id = $watingPayments['CardManual']['id'];
+                    $this->WaitingPayment->CardManual->saveField('status', WaitingPayment::STATUS_ERROR, array('callbacks' => false));
+                }
+
+                unset($conditions); unset($watingPayments); unset($watingCheck);
+                unset($LibPay); unset($data_pay); unset($result);
+            }
+        }catch (Exception $e){
+            CakeLog::error('error run shopcard:' . $e->getMessage());
+        }
+
+        end:
+        $this->out('End..');
+    }
 }
