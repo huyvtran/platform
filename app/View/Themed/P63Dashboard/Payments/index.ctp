@@ -34,6 +34,7 @@ $role_id = $area_id = 1;
 
         <?php if( !$this->Nav->hideFunction('hide_payment', $game) ){ ?>
             <?php
+            $Redis = new RedisQueue('default');
             $Redis->key = 'payment-shop-card-status-' . Payment::TYPE_NETWORK_GATE;
             $mobi_data = $Redis->lRange(0, -1);
             if( !empty($mobi_data[0]['status']) ){ // cổng shopcard
