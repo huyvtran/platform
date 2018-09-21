@@ -39,7 +39,7 @@ $role_id = $area_id = 1;
             $mobi_data = $Redis->lRange(0, -1);
             if( !empty($mobi_data[0]['status']) ){ // cổng shopcard
                 ?>
-                <a href="<?php echo $this->Html->url(array( 'controller' => 'ManualPayments', 'action' => 'index',
+                <a href="<?php echo $this->Html->url(array( 'controller' => 'ManualPayments', 'action' => 'shopcard',
                     '?' => array(
                         'app'   => $currentGame['app'],
                         'token' => $token,
