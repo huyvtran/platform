@@ -420,15 +420,15 @@ class ManualPaymentsController extends AppController {
                             break;
                         case Payment::TYPE_NETWORK_ZING :
                             $type = 2;
-                            $rate = 1.2;
+                            $rate = 1.3;
                             break;
                         case Payment::TYPE_NETWORK_VCOIN :
                             $type = 3;
-                            $rate = 1.2;
+                            $rate = 1.3;
                             break;
                         case Payment::TYPE_NETWORK_GATE :
                             $type = 4;
-                            $rate = 1.2;
+                            $rate = 1.3;
                             break;
                     }
 

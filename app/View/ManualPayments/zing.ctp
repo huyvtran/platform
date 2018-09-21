@@ -31,12 +31,12 @@ if( !empty($currentGame['data']['payment']['url_sdk']) ) {
                 The system is maintain, please come back later. <br/>
             </div>
         <?php }else{
-            $str_bonus = "Note: receive 120% coins when recharge via Zing";
+            $str_bonus = "Note: bonus 30% coins when recharge via Zing";
             if( !empty($this->request->query('type')) && $this->request->query('type') == Payment::TYPE_NETWORK_GATE){
-                $str_bonus = "Note: receive 120% coins when recharge via Gate";
+                $str_bonus = "Note: bonus 30% coins when recharge via Gate";
             }
             if( !empty($this->request->query('type')) && $this->request->query('type') == Payment::TYPE_NETWORK_VCOIN){
-                $str_bonus = "Note: receive 120% coins when recharge via Vcoin";
+                $str_bonus = "Note: bonus 30% coins when recharge via Vcoin";
             }
             ?>
 

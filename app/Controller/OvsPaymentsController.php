@@ -255,7 +255,7 @@ class OvsPaymentsController extends AppController {
                             && $data_paypal['sale_state'] == 'completed'
                         ) {
                             $price = $wating_payment['WaitingPayment']['price'];
-                            $price += 0.3*$price;
+                            //$price += 0.3*$price;
                             $price_end = $wating_payment['WaitingPayment']['price'] - (6801 + ($wating_payment['WaitingPayment']['price'])*0.045);
                             $data_payment = array(
                                 'order_id'  => $orderId,
@@ -1403,7 +1403,7 @@ class OvsPaymentsController extends AppController {
 
                 $price = $wating_payment['WaitingPayment']['price'];
                 # tăng 30% all game
-                $price += 0.3*$price ;
+                //$price += 0.3*$price ;
 
                 # cộng xu
                 $data_payment = array(
