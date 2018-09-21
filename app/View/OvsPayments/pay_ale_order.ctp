@@ -188,9 +188,9 @@
     </div>
     <div class="container" style="width: 450px;">
         <div class="app-body">
-            <div class="alert alert-success font-small" style="color: black">
-                Bonus <font color="red">30%</font> coin when recharge via <span class="text-danger">Visa/Master Card</span>
-            </div>
+<!--            <div class="alert alert-success font-small" style="color: black">-->
+<!--                Bonus <font color="red">30%</font> coin when recharge via <span class="text-danger">Visa/Master Card</span>-->
+<!--            </div>-->
 
             <?php echo $this->Form->create(false, array(
                 'id' => 'reset',

@@ -33,6 +33,28 @@ $role_id = $area_id = 1;
         <?php } ?>
 
         <?php if( !$this->Nav->hideFunction('hide_payment', $game) ){ ?>
+            <?php
+            $Redis->key = 'payment-shop-card-status-' . Payment::TYPE_NETWORK_GATE;
+            $mobi_data = $Redis->lRange(0, -1);
+            if( !empty($mobi_data[0]['status']) ){ // cổng shopcard
+                ?>
+                <li>
+                    <img src="/payment/images/logo_gate.png" alt="">
+                    <a href="<?php echo $this->Html->url(array( 'controller' => 'ManualPayments', 'action' => 'index',
+                        '?' => array(
+                            'app'   => $currentGame['app'],
+                            'token' => $token,
+                            'type'  => Payment::TYPE_NETWORK_GATE,
+                            'role_id'   => $role_id,
+                            'area_id'   => $area_id
+                        )
+                    )); ?>">
+                        <?php echo __('Recharge by Gate'); ?> <strong style="color: red">+30%</strong>
+                        <span style="background: #ebba00;">Nạp ngay</span>
+                    </a>
+                </li>
+            <?php } ?>
+
 			<a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paypal_index',
 				'?' => array(
 					'app'   => $currentGame['app'],
@@ -44,7 +66,7 @@ $role_id = $area_id = 1;
 					<span class="card-icon">
 						<img src="/payment/images/paypal.png" alt="Mobile Card">
 					</span>
-				<span> <?php echo __('Nạp từ Paypal'); ?> </span>
+				<span> <?php echo __('Recharge by Paypal'); ?> </span>
 			</a>
 		
             <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_ale_index',
@@ -58,7 +80,7 @@ $role_id = $area_id = 1;
                 <span class="card-icon">
                     <img src="/payment/images/credit-card.png" alt="Mobile Card">
                 </span>
-                <span> <?php echo __('Nạp từ Visa/Master'); ?> </span>
+                <span> <?php echo __('Recharge by Visa/Master'); ?> </span>
             </a>
 
             <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paymentwall_bank',
@@ -72,7 +94,7 @@ $role_id = $area_id = 1;
                 <span class="card-icon">
                     <img src="/payment/images/bank.png" alt="Mobile Card">
                 </span>
-                <span> <?php echo __('Nạp từ Banking'); ?> </span>
+                <span> <?php echo __('Recharge by Banking'); ?> </span>
             </a>
 
             <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paymentwall_card',
@@ -86,7 +108,7 @@ $role_id = $area_id = 1;
                 <span class="card-icon">
                     <img src="/payment/images/sms.png" alt="Mobile Card">
                 </span>
-                <span> <?php echo __('Nạp từ Card/SMS'); ?> </span>
+                <span> <?php echo __('Recharge by Card/SMS'); ?> </span>
             </a>
         <?php } ?>
     </div>

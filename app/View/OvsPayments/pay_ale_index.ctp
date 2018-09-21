@@ -39,9 +39,9 @@
 
                 <!--      mở cổng thanh toán 1pay          -->
                 <?php if( $is_open ){ ?>
-                <div class="alert alert-success font-small" style="color: black">
-                    Bonus <font color="red">30%</font> coin when recharge via <span class="text-danger">Visa/Master Card</span>
-                </div>
+<!--                <div class="alert alert-success font-small" style="color: black">-->
+<!--                    Bonus <font color="red">30%</font> coin when recharge via <span class="text-danger">Visa/Master Card</span>-->
+<!--                </div>-->
 
                 <?php foreach ($products as $product){?>
                     <div class="col-xs-4">
