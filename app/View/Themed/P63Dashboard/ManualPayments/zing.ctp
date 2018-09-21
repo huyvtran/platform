@@ -85,6 +85,7 @@
             ));
             ?>
             <div class="form-group">
+                <p class="help-block" id="help-card"><a href="https://www.seagm.com/fpt-gate-card-vn">Buy Gate</a></p>
                 <div class="col-md-offset-2 col-md-9">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>

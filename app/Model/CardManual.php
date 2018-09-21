@@ -111,8 +111,15 @@ class CardManual extends AppModel {
 
             ClassRegistry::init('Payment');
             if($type['type'] == Payment::TYPE_NETWORK_ZING) return true;
-            if($type['type'] == Payment::TYPE_NETWORK_GATE) return true;
             if($type['type'] == Payment::TYPE_NETWORK_VCOIN) return true;
+
+            if($type['type'] == Payment::TYPE_NETWORK_GATE){
+                if( strlen($this->data[$this->alias]['card_serial']) > 8
+                    && strlen($this->data[$this->alias]['card_code']) > 8
+                ) {
+                    return true;
+                }
+            }
 
             # verify vinaphone
             if($type['type'] == Payment::TYPE_NETWORK_VINAPHONE){
