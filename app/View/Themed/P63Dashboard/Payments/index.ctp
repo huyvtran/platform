@@ -51,7 +51,7 @@ $role_id = $area_id = 1;
 					<span class="card-icon">
 						<img src="/payment/images/logo_gate.png" alt="Mobile Card">
 					</span>
-                    <span> <?php echo __('Recharge by Paypal'); ?> <strong style="color: red">+30%</strong> </span>
+                    <span> <?php echo __('Recharge by Gate'); ?> <strong style="color: red">+30%</strong> </span>
                 </a>
             <?php } ?>
 
