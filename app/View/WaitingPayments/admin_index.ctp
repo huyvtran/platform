@@ -194,7 +194,7 @@ $this->extend('/Common/blank');
                 <td> <?php echo $payment['WaitingPayment']['type']; ?> </td>
                 <td>
                     <?php
-                    $chanel = '';
+                    $chanel = $payment['WaitingPayment']['chanel'];
                     if( !empty($payment['WaitingPayment']['chanel']) ) {
                         switch ($payment['WaitingPayment']['chanel']) {
                             case Payment::CHANEL_VIPPAY :
@@ -235,6 +235,12 @@ $this->extend('/Common/blank');
                                 break;
                             case Payment::CHANEL_GOOGLE :
                                 $chanel = 'Google';
+                                break;
+                            case Payment::CHANEL_SWEB :
+                                $chanel = 'Sweb';
+                                break;
+                            case Payment::CHANEL_SHOPCARD :
+                                $chanel = 'Shopcard';
                                 break;
                         }
                     }
