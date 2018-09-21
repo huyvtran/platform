@@ -39,21 +39,20 @@ $role_id = $area_id = 1;
             $mobi_data = $Redis->lRange(0, -1);
             if( !empty($mobi_data[0]['status']) ){ // cổng shopcard
                 ?>
-                <li>
-                    <img src="/payment/images/logo_gate.png" alt="">
-                    <a href="<?php echo $this->Html->url(array( 'controller' => 'ManualPayments', 'action' => 'index',
-                        '?' => array(
-                            'app'   => $currentGame['app'],
-                            'token' => $token,
-                            'type'  => Payment::TYPE_NETWORK_GATE,
-                            'role_id'   => $role_id,
-                            'area_id'   => $area_id
-                        )
-                    )); ?>">
-                        <?php echo __('Recharge by Gate'); ?> <strong style="color: red">+30%</strong>
-                        <span style="background: #ebba00;">Nạp ngay</span>
-                    </a>
-                </li>
+                <a href="<?php echo $this->Html->url(array( 'controller' => 'ManualPayments', 'action' => 'index',
+                    '?' => array(
+                        'app'   => $currentGame['app'],
+                        'token' => $token,
+                        'type'  => Payment::TYPE_NETWORK_GATE,
+                        'role_id'   => $role_id,
+                        'area_id'   => $area_id
+                    )
+                )); ?>" class="card-type">
+					<span class="card-icon">
+						<img src="/payment/images/logo_gate.png" alt="Mobile Card">
+					</span>
+                    <span> <?php echo __('Recharge by Paypal'); ?> <strong style="color: red">+30%</strong> </span>
+                </a>
             <?php } ?>
 
 			<a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paypal_index',
