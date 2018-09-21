@@ -1,5 +1,5 @@
 <?php $role_id = $area_id = 1; ?>
-<div class="wrapper">
+<div class="wrapper" style="padding-left: 20px; padding-right: 20px;">
     <nav class="navbar navbar-default">
         <div class="container">
             <div class="nav navbar-left">
@@ -85,7 +85,7 @@
             ));
             ?>
             <div class="form-group">
-                <p class="help-block" id="help-card"><a href="https://www.seagm.com/fpt-gate-card-vn">Buy Gate</a></p>
+<!--                <p class="help-block" id="help-card"><a href="https://www.seagm.com/fpt-gate-card-vn">Buy Gate</a></p>-->
                 <div class="col-md-offset-2 col-md-9">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
