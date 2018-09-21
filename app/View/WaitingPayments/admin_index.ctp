@@ -236,9 +236,6 @@ $this->extend('/Common/blank');
                             case Payment::CHANEL_GOOGLE :
                                 $chanel = 'Google';
                                 break;
-                            case Payment::CHANEL_SWEB :
-                                $chanel = 'Sweb';
-                                break;
                             case Payment::CHANEL_SHOPCARD :
                                 $chanel = 'Shopcard';
                                 break;
