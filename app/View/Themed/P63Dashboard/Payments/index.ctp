@@ -55,19 +55,26 @@ $role_id = $area_id = 1;
                 </a>
             <?php } ?>
 
-			<a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paypal_index',
-				'?' => array(
-					'app'   => $currentGame['app'],
-					'token' => $token,
-					'role_id'   => $role_id,
-					'area_id'   => $area_id
-				)
-			)); ?>" class="card-type">
-					<span class="card-icon">
-						<img src="/payment/images/paypal.png" alt="Mobile Card">
-					</span>
-				<span> <?php echo __('Recharge by Paypal'); ?> </span>
-			</a>
+            <?php
+            App::import('Lib', 'RedisCake');
+            $Redis2 = new RedisCake('action_count');
+            $paypal_enable = $Redis2->get('payment-paypal-enable');
+            if( !empty($paypal_enable) ){ // cổng paypal
+            ?>
+                <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paypal_index',
+                    '?' => array(
+                        'app'   => $currentGame['app'],
+                        'token' => $token,
+                        'role_id'   => $role_id,
+                        'area_id'   => $area_id
+                    )
+                )); ?>" class="card-type">
+                        <span class="card-icon">
+                            <img src="/payment/images/paypal.png" alt="Mobile Card">
+                        </span>
+                    <span> <?php echo __('Recharge by Paypal'); ?> </span>
+                </a>
+            <?php } ?>
 		
             <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_ale_index',
                 '?' => array(
