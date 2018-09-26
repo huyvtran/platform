@@ -33,6 +33,7 @@ $Redis = new RedisCake('action_count');
             <th><small><?php echo $this->Paginator->sort('role', 'Role'); ?></small></th>
             <th><small>IP</small></th>
             <th><small><?php echo $this->Paginator->sort('created'); ?></small></th>
+            <th><small>Action</small></th>
         </tr>
         <?php
         if(!empty($users))
@@ -60,10 +61,10 @@ $Redis = new RedisCake('action_count');
                 <td><?php echo $user['User']['payment'] ?></td>
                 <td><?php echo $user['User']['role'] ?></td>
 
-
                 <td><?php echo $user['LogLogin']['ip'] ?></td>
 
                 <td> <?php echo $this->Time->timeAgoInWords($user['LogLogin']['created']); ?> </td>
+                <td> <?php echo $this->Html->link('Block', '/admin/users/blockip/' . $user['LogLogin']['ip']); ?> </td>
             </tr>
             <?php } ?>
     </table>

@@ -2027,4 +2027,19 @@ class UsersController extends AppController {
         $users = $this->paginate('LogLogin');
         $this->set(compact('users'));
     }
+
+    public function admin_blockip(){
+        if( !empty($this->request->params['pass'][0]) ) {
+            $ip = $this->request->params['pass'][0];
+
+            App::import('Lib', 'RedisQueue');
+            $Redis = new RedisQueue('default', 'payment-ip-black-list');
+            $Redis->lRemove($ip);
+            $Redis->rPush($ip);
+
+            $this->Session->setFlash('Ip ' . $ip . ' has been blocked.');
+        }
+
+        $this->redirect($this->referer());
+    }
 }

@@ -209,6 +209,7 @@ $config['rules'] = array(
         'users/admin_deactive' => 'Role/Content',
 		'users/admin_reset_password' => 'Role/Content',
         'users/admin_searchip'  => 'Role/Content',
+		'users/admin_blockip'   => 'Role/Content',
 
 		'users/api_update_info' => 'Role/User',
 
