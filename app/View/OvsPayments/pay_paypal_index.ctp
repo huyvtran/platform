@@ -13,7 +13,12 @@
     </div>
 </div>
 <div class="container">
-    <?php if( !empty($products) ){ ?>
+    <?php
+    App::import('Lib', 'RedisCake');
+    $Redis2 = new RedisCake('action_count');
+    $paypal_enable = $Redis2->get('payment-paypal-enable');
+    ?>
+    <?php if( !empty($products) && !empty($paypal_enable) ){ ?>
         <div class="row" align="center">
             <!-- <div class="alert alert-success font-small" style="color: black">
                 Note: receive 120% coins when recharge via Paypal
@@ -33,6 +38,10 @@
                     </a>
                 </div>
             <?php } ?>
+        </div>
+    <?php }else{ ?>
+        <div class="alert alert-success font-small" style="color: black">
+            The recharge system is maintaining
         </div>
     <?php } ?>
 </div>

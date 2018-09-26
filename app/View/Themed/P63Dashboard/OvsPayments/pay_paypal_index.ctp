@@ -32,7 +32,12 @@
 
     <div class="container page-wrapper">
         <ul class="package list-unstyled">
-            <?php if( !empty($products) ){ ?>
+            <?php
+            App::import('Lib', 'RedisCake');
+            $Redis2 = new RedisCake('action_count');
+            $paypal_enable = $Redis2->get('payment-paypal-enable');
+            ?>
+            <?php if( !empty($products) && !empty($paypal_enable) ){ ?>
                 <?php foreach ($products as $product){?>
                 <li>
                     <img src="/payment/images/paypal.png" alt="">
@@ -48,6 +53,10 @@
                     </a>
                 </li>
                 <?php } ?>
+            <?php }else{ ?>
+                <div class="alert alert-success font-small" style="color: black">
+                    The recharge system is maintaining
+                </div>
             <?php } ?>
         </ul>
     </div>
