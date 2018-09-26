@@ -1305,6 +1305,20 @@ class UsersController extends AppController {
 			goto end;
 		}
 
+        App::import('Lib', 'RedisQueue');
+        $Redis = new RedisQueue('default', 'payment-ip-black-list');
+        $ip = $this->Common->publicClientIp();
+        $check_blacklist = $Redis->lRemove($ip);
+        if( $check_blacklist ){
+            $Redis->rPush($ip);
+
+            $result = array(
+                'retcode' 	=> 9,
+                'retmsg' 	=> __('This IP: %s has been block', $ip)
+            );
+            goto end;
+        }
+
 		$prefix_user = '';
 		$game = $this->Common->currentGame();
 
@@ -1444,6 +1458,20 @@ class UsersController extends AppController {
 			);
 			goto end;
 		}
+
+        App::import('Lib', 'RedisQueue');
+        $Redis = new RedisQueue('default', 'payment-ip-black-list');
+        $ip = $this->Common->publicClientIp();
+        $check_blacklist = $Redis->lRemove($ip);
+        if( $check_blacklist ){
+            $Redis->rPush($ip);
+
+            $result = array(
+                'retcode' 	=> 9,
+                'retmsg' 	=> __('This IP: %s has been block', $ip)
+            );
+            goto end;
+        }
 
 		$prefix_user = '';
 		$game = $this->Common->currentGame();
