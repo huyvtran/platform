@@ -2029,8 +2029,8 @@ class UsersController extends AppController {
     }
 
     public function admin_blockip(){
-        if( !empty($this->request->params['pass'][0]) ) {
-            $ip = $this->request->params['pass'][0];
+        if( !empty($this->request->query['ip']) ) {
+            $ip = $this->request->query['ip'];
 
             App::import('Lib', 'RedisQueue');
             $Redis = new RedisQueue('default', 'payment-ip-black-list');

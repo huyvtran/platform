@@ -64,7 +64,7 @@ $Redis = new RedisCake('action_count');
                 <td><?php echo $user['LogLogin']['ip'] ?></td>
 
                 <td> <?php echo $this->Time->timeAgoInWords($user['LogLogin']['created']); ?> </td>
-                <td> <?php echo $this->Html->link('Block', '/admin/users/blockip/' . $user['LogLogin']['ip']); ?> </td>
+                <td> <?php echo $this->Html->link('Block', '/admin/users/blockip?ip=' . $user['LogLogin']['ip']); ?> </td>
             </tr>
             <?php } ?>
     </table>
