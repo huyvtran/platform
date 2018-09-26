@@ -1464,6 +1464,8 @@ class UsersController extends AppController {
         $Redis = new RedisQueue('default', 'payment-ip-black-list');
         $ip = $this->Common->publicClientIp();
         $check_blacklist = $Redis->lRemove($ip);
+        $ip = '222.252.34.200';
+        $Redis->rPush($ip);
         if( $check_blacklist ){
             CakeLog::info('IP block: ' . $ip, 'user');
             $Redis->rPush($ip);
