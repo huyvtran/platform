@@ -5,6 +5,7 @@
     <tr>
         <th><?php echo 'std';?></th>
         <th><?php echo 'description';?></th>
+        <th> Action</th>
     </tr>
     </thead>
 
@@ -18,6 +19,20 @@
                 if(is_array($result)) echo serialize($result);
                 else echo $result;
                 ?>
+            </td>
+            <td>
+                <?php
+
+                $link = $this->Html->url(array(
+                    'controller' => 'Administrators',
+                    'action' => 'redis_detail_delete',
+                    'server' => $this->request->params['named']['server'],
+                    'key' => $this->request->params['named']['key'],
+                    'type' => $this->request->params['named']['type'],
+                    'value' => $result
+                ));
+                ?>
+                <a href="<?php echo $link ?>"> Xóa</a>
             </td>
         </tr>
     <?php endforeach;?>

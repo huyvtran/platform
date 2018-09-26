@@ -159,6 +159,47 @@ class AdministratorsController extends AppController{
 		$this->set(compact('results'));
 	}
 
+	public function admin_redis_detail_delete(){
+        if(empty($this->request->params['named'])){
+            throw new BadRequestException('Can not found key and server');
+        }
+        $key = $this->request->params['named']['key'];
+        $server = $this->request->params['named']['server'];
+        $action = $this->request->params['named']['type'];
+        $value = $this->request->params['named']['value'];
+
+        $ReDisConfig = false;
+        $configs = Configure::read('Redis_Configs');
+        foreach ($configs as $config) {
+            if ($config['server'] == $server) {
+                $ReDisConfig = $config;
+                break;
+            }
+        }
+
+        if(!$ReDisConfig){
+            throw new BadRequestException('Can not found redis server');
+        }
+
+        $Redis = new Redis();
+        $Redis->pconnect($ReDisConfig['server'], $ReDisConfig['port'], $ReDisConfig['timeout']);
+        $Redis->setOption(Redis::OPT_PREFIX, $ReDisConfig['port']['prefix']);
+        $Redis->setOption(Redis::OPT_SERIALIZER, Redis::SERIALIZER_PHP);
+
+        if ($action == 'lRange') $result = $Redis->lRemove($key, $value, 1);
+
+        if(!empty($result)){
+            $this->Session->setFlash('Has been removed item', 'success');
+        }
+        $this->redirect(array(
+            'controller' => 'Administrators',
+            'action' => 'redis_detail',
+            'server' => $this->request->params['named']['server'],
+            'key' => $this->request->params['named']['key'],
+            'type' => $this->request->params['named']['type'],
+        ));
+    }
+
 	public function _run($cmd, $print = false)
 	{
 		exec($cmd . "  2>&1", $output, $result);
