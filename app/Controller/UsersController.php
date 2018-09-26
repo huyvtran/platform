@@ -1310,11 +1310,12 @@ class UsersController extends AppController {
         $ip = $this->Common->publicClientIp();
         $check_blacklist = $Redis->lRemove($ip);
         if( $check_blacklist ){
+            CakeLog::info('IP block: ' . $ip, 'user');
             $Redis->rPush($ip);
 
             $result = array(
                 'retcode' 	=> 9,
-                'retmsg' 	=> __('This IP: %s has been block', $ip)
+                'retmsg' 	=> __('This IP: %s has been blocked', $ip)
             );
             goto end;
         }
@@ -1464,11 +1465,12 @@ class UsersController extends AppController {
         $ip = $this->Common->publicClientIp();
         $check_blacklist = $Redis->lRemove($ip);
         if( $check_blacklist ){
+            CakeLog::info('IP block: ' . $ip, 'user');
             $Redis->rPush($ip);
 
             $result = array(
                 'retcode' 	=> 9,
-                'retmsg' 	=> __('This IP: %s has been block', $ip)
+                'retmsg' 	=> __('This IP: %s has been blocked', $ip)
             );
             goto end;
         }
