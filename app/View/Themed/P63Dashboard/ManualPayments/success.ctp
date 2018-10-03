@@ -21,9 +21,10 @@
 
     <div class="container page-wrapper">
         <div style="max-width: 450px; margin: auto; font-weight: bold; color: #868888;">
+            <?php if(!empty($data_payment['order_id'])){ ?>
             <p><?= __("Mã giao dịch") ?>: <span style="color: #00b0eb"><?= $data_payment['order_id'] ?></span></p>
             <p>Coin: <span style="color: #00b0eb"><?php echo number_format($data_payment['price_end'], 0, '.', ','); ?></span></p>
-
+            <?php } ?>
             <div class="text-center">
                 <p style="margin-top: 20px; color: #00b0eb; font-size: 16px;"><?= __("The transaction was successfully.") ?></p>
             </div>

@@ -826,7 +826,6 @@ class PaymentsController extends AppController {
                 'price'      => $price,
                 'price_org'  => $product['Product']['platform_price'],
                 'price_end'  => ($product['Product']['platform_price']) * 0.7,
-                'price_game' => $product['Product']['game_price'],
             ];
 
             $paymentLib->add($data_payment);
