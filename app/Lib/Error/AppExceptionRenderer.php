@@ -9,6 +9,7 @@ class AppExceptionRenderer extends ExceptionRenderer {
 		if (Configure::read('debug') != 0 || !empty($this->controller->request->params['admin'])) {
 			$this->controller->layout = 'default_bootstrap';
 		}
+		CakeLog::error('IP error:' . print_r($_SERVER['REMOTE_ADDR'], true) );
 		parent::_outputMessage($template);
 	}
 
