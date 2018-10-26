@@ -48,6 +48,10 @@
             if( !empty($this->request->query('type')) && $this->request->query('type') == Payment::TYPE_NETWORK_VCOIN){
                 $str_bonus = "Note: bonus 30% coins when recharge via Vcoin";
             }
+
+            if( !empty($this->request->params['action']) && $this->request->params['action'] == 'sweb' ) {
+                $str_bonus = 'Note: bonus 10% coins when recharge via Gate';
+            }
             ?>
 
             <center> <span style="color: green"> <?php echo $str_bonus; ?> </span></center>

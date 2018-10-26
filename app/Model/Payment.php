@@ -45,7 +45,7 @@ class Payment extends AppModel
 
     const CHANEL_NL_ALE = 14;
 
-    const CHANEL_QUICKPAY  = 15;
+    const CHANEL_SWEB = 15;
 
     const CHANEL_MANUAL  = 16;
 
