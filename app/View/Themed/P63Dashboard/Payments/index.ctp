@@ -5,7 +5,7 @@ $role_id = $area_id = 1;
     <nav class="navbar navbar-default">
         <div class="container">
             <div class="nav navbar-left">
-                <a href="#"><i class="fa fa-home fa-2x"></i></a>
+                <a href="#" onclick="document.location = 'js-oc:kunlunClose:null';return false"><i class="fa fa-home fa-2x"></i></a>
             </div>
 
             <?php echo __('Nạp thẻ'); ?>
