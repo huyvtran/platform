@@ -16,6 +16,7 @@
             <?php echo __('Nạp từ Visa/Master'); ?>
 
             <div class="nav navbar-right">
+                <a href="#" onclick="document.location = 'js-oc:kunlunClose:null';return false"><i class="fa fa-close fa-2x"></i></a>
             </div>
         </div>
     </nav>
