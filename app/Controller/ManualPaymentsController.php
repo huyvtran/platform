@@ -518,21 +518,6 @@ class ManualPaymentsController extends AppController {
         end:
     }
 
-    public function admin_shopcard_status(){
-        $this->loadModel('Payment');
-        $this->layout = 'default_bootstrap';
-
-        App::import('Lib', 'RedisQueue');
-        $Redis = new RedisQueue('default');
-
-        $Redis->key = 'payment-shop-card-status-' . $this->request->query('type');
-        $Redis->delete();
-        $Redis->rPush( array('status' => $this->request->query('status')) );
-
-        echo 'success';
-        $this->autoRender = false;
-    }
-
     public function sweb(){
         # load for view
         $this->loadModel('Payment');
@@ -742,27 +727,177 @@ class ManualPaymentsController extends AppController {
         end:
     }
 
-    public function admin_sweb_status(){
+    public function mobo(){
+        # load for view
+        $this->loadModel('Payment');
+        $this->loadModel('WaitingPayment');
+        $this->loadModel('CardManual');
+
+        $this->layout = 'payment';
+        $this->view = 'zing';
+
+        $this->Common->setTheme();
+        $game = $this->Common->currentGame();
+        if( empty($game) || !$this->Auth->loggedIn() ){
+            throw new NotFoundException('Vui lòng login');
+        }
+        $user = $this->Auth->user();
+
+        $role_id = $area_id = 1;
+        if (!empty($this->request->query('role_id'))) $role_id = $this->request->query('role_id');
+        if (!empty($this->request->query('area_id'))) $area_id = $this->request->query('area_id');
+
+        # check đóng mở thẻ
+        App::import('Lib', 'RedisQueue');
+        $Redis = new RedisQueue('default');
+
+        $Redis->key = 'payment-mobo-status-' . Payment::TYPE_NETWORK_GATE;
+        $gate_data = $Redis->lRange(0, -1);
+
+        $disable = array(
+            Payment::TYPE_NETWORK_GATE			=> $gate_data
+        );
+
+        $token = $this->request->header('token');
+        $this->set(compact('disable', 'token', 'role_id', 'area_id'));
+
+        if ($this->request->is('post')) {
+            if( !empty($this->request->query('type'))){
+                $this->request->data['type'] = $this->request->query('type');
+            }
+
+            if( empty($this->request->data['type']) ){
+                $this->request->data['type'] = '';
+            }
+
+            $chanel = Payment::CHANEL_MOBO; // default
+            $order_id = microtime(true) * 10000;
+
+            $data = $this->request->data;
+            $data = array_merge($data, array(
+                'order_id'  => $order_id,
+                'user_id'   => $user['id'],
+                'game_id'   => $game['id'],
+                'chanel'    => $chanel,
+                'type'      => Payment::TYPE_NETWORK_GATE,
+                'status'    => WaitingPayment::STATUS_WAIT,
+                'time'      => time(),
+            ));
+
+            if( $this->Common->bruteForce(array(
+                'card_serial'   => $data['card_serial'],
+                'card_code'     => $data['card_code'],
+            ), 5*60, 3, true)
+            ){
+                $this->Session->setFlash(__("Giao dịch đang được xử lý"), 'error', false, 'error');
+                goto end;
+            }
+
+            try {
+                $fee = 0.75;
+                $rate = 1.3;
+
+                $orderManual = $this->CardManual->save($data);
+                if( !empty($orderManual) ){
+                    $waiting = $this->WaitingPayment->save($data);
+                    # gọi lên cổng check trạng thái và chờ callback
+                    App::uses('MoboPay', 'Payment');
+                    $LibPay = new MoboPay();
+                    $data_pay = array(
+                        'card_seri'         => $data['card_serial'],
+                        'card_code'         => $data['card_code'],
+                        'transid'           => $order_id
+                    );
+                    $result = $LibPay->checkout($data_pay);
+                    CakeLog::info('mobo - checkout:' . print_r(array($data['order_id'] => $result), true) , 'payment');
+                    $this->view = 'order';
+                    if( !empty($result) && $result['code'] == 0 && !empty($result['data']['result']['amount']) ){
+                        $this->WaitingPayment->id = $waiting['WaitingPayment']['id'];
+                        $this->WaitingPayment->saveField('status', WaitingPayment::STATUS_COMPLETED, array('callbacks' => false));
+
+                        App::uses('PaymentLib', 'Payment');
+                        $paymentLib = new PaymentLib();
+                        $data_payment = [
+                            'waiting_id' => $waiting['WaitingPayment']['id'],
+                            'time'       => time(),
+                            'type'       => $waiting['WaitingPayment']['type'],
+                            'test'       => 0,
+                            'chanel'     => $waiting['WaitingPayment']['chanel'],
+                            'order_id'   => $order_id,
+                            'user_id'    => $user['id'],
+                            'game_id'    => $game['id'],
+
+                            'role_id' => $role_id,
+                            'area_id' => $area_id,
+
+                            'price'      => ($result['data']['result']['amount']) * ($rate),
+                            'price_org'  => $result['data']['result']['amount'],
+                            'price_end'  => ($result['data']['result']['amount']) * ($fee),
+                        ];
+                        $paymentLib->add($data_payment);
+
+                        $this->view = 'success';
+
+                        # push notify telegrame
+                        if( Configure::read('Bot.Telegram') ) {
+                            $text_telegram = "Type: Mobo - " . $waiting['WaitingPayment']['type'] . "\n\r"
+                                . "Order Id: " . $order_id . "\n\r"
+                                . "Price: " . number_format($result['data']['result']['amount'], 0, '.', ',') . ' vnđ' . "\n\r"
+                                . "User: " . $user['username'] . "\n\r"
+                                . "Game: " . $game['title_os'] . "\n\r";
+                            App::import('Lib', 'RedisQueue');
+                            $Redis2 = new RedisQueue();
+                            $redis_data = array(
+                                'type' => 'TelegramSendNotify',
+                                'data' => array(
+                                    'chat_id' => '-302159231',
+                                    'message' => $text_telegram
+                                )
+                            );
+                            $Redis2->rPush($redis_data);
+                            unset($text_telegram);
+                            unset($redis_data);
+                        }
+                    }else{
+                        $this->view = 'error';
+
+                        $this->WaitingPayment->id = $waiting['WaitingPayment']['id'];
+                        $this->WaitingPayment->saveField('status', WaitingPayment::STATUS_ERROR, array('callbacks' => false));
+
+                        $this->CardManual->id = $orderManual['CardManual']['id'];
+                        $this->CardManual->saveField('status', WaitingPayment::STATUS_ERROR, array('callbacks' => false));
+                    }
+                }else{
+                    $msgFlash = $this->CardManual->validationErrors;
+                    $this->Session->setFlash($msgFlash, 'error', false, 'error');
+                }
+            } catch (Exception $e) {
+                CakeLog::error($e->getMessage());
+                $this->view = 'error';
+            }
+        }
+
+        end:
+    }
+
+    public function admin_status(){
         $this->loadModel('Payment');
         $this->layout = 'default_bootstrap';
 
-        # ktra sign
-        App::uses('SwebPay', 'Payment');
-        $Sweb = new SwebPay();
-        $data = $Sweb->status();
+        App::import('Lib', 'RedisQueue');
+        $Redis = new RedisQueue('default');
 
-        # check giao dịch
+        $message = array();
 
-        if( !empty($data[0]) ){
-            App::import('Lib', 'RedisQueue');
-            $Redis = new RedisQueue('default');
+        $key = 'payment-manual-sweb-status-';
+        if( $this->request->query('channel') == 'mobo') $key = 'payment-mobo-status-';
+        if( $this->request->query('channel') == 'shopcard') $key = 'payment-shop-card-status-';
 
-            $Redis->key = 'payment-manual-sweb-status-' . $this->request->query('type');
-            $Redis->delete();
-            $Redis->rPush( array('status' => $this->request->query('status')) );
+        $Redis->key = $key . $this->request->query('type');
+        $Redis->delete();
+        $Redis->rPush( array('status' => $this->request->query('status')) );
 
-            echo 'success';
-            $this->autoRender = false;
-        }
+        $this->set('message', $message);
+        $this->view = 'admin_sweb_status';
     }
 }

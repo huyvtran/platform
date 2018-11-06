@@ -78,6 +78,28 @@ $role_id = $area_id = 1;
             <?php } ?>
 
             <?php
+            $Redis = new RedisQueue('default');
+            $Redis->key = 'payment-mobo-status-' . Payment::TYPE_NETWORK_GATE;
+            $mobi_data = $Redis->lRange(0, -1);
+            if( !empty($mobi_data[0]['status']) ){ // cổng mobo
+                ?>
+                <a href="<?php echo $this->Html->url(array( 'controller' => 'ManualPayments', 'action' => 'mobo',
+                    '?' => array(
+                        'app'   => $currentGame['app'],
+                        'token' => $token,
+                        'type'  => Payment::TYPE_NETWORK_GATE,
+                        'role_id'   => $role_id,
+                        'area_id'   => $area_id
+                    )
+                )); ?>" class="card-type">
+					<span class="card-icon">
+						<img src="/payment/images/logo_gate.png" alt="Mobile Card">
+					</span>
+                    <span> <?php echo __('Recharge by Gate'); ?> <strong style="color: red">+30%</strong> </span>
+                </a>
+            <?php } ?>
+
+            <?php
             App::import('Lib', 'RedisCake');
             $Redis2 = new RedisCake('action_count');
             $paypal_enable = $Redis2->get('payment-paypal-enable');

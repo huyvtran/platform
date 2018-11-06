@@ -55,6 +55,8 @@ class Payment extends AppModel
 
     const CHANEL_SHOPCARD = 19;
 
+    const CHANEL_MOBO = 200;
+
 	public $belongsTo = [
 		'User', 'Game',
 	];

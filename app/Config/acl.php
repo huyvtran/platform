@@ -168,6 +168,7 @@ $config['rules'] = array(
         'ManualPayments/index'          => 'Role/User',
         'ManualPayments/shopcard'       => 'Role/User',
         'ManualPayments/sweb'           => 'Role/User',
+        'ManualPayments/mobo'           => 'Role/User',
         'ManualPayments/admin_index'    => 'Role/Content',
 
         'OvsPayments/pay_list'      => 'Role/User',

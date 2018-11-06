@@ -201,7 +201,7 @@ class PaymentLib {
                 Payment::CHANEL_ONEPAY, Payment::CHANEL_ONEPAY_2,
                 Payment::CHANEL_PAYMENTWALL, Payment::CHANEL_PAYPAL,
                 Payment::CHANEL_GOOGLE, Payment::CHANEL_NL_ALE,
-                Payment::CHANEL_SHOPCARD, Payment::CHANEL_SWEB
+                Payment::CHANEL_SHOPCARD, Payment::CHANEL_SWEB, Payment::CHANEL_MOBO
             ))){
                 return ;
             }elseif ( $data['chanel'] == Payment::CHANEL_APPOTA ){
