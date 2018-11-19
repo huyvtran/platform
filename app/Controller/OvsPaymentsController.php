@@ -114,14 +114,14 @@ class OvsPaymentsController extends AppController {
 
         if( !empty($game['group']) && $game['group'] == Game::GROUP_R02 ) {
             $chanel = Payment::CHANEL_PAYPAL2;
-            Configure::write('Paypal', array(
-                'clientId'  => 'Ac56pz3p7V9ZjoOR4E6pdFX9gi8BjyBsfSwLZYhjMVUrA9yvM4zNNN6ilX70tOnVAFx68rk9G8J9NdMx', // abunguyen.com@gmail.com
-                'secret'    => 'ECT3M4j6AgopanCNCVh-v-6CW70J1Rdenh3a7Lo70y-jOhxhoGdpsMyfiPeEpSE4ZAf28YtJzzkfQgL1',
-                'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paypal_response',
-                'CancelUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_error',
-                'TokenUrl'  => 'https://api.paypal.com/v1/oauth2/token',
-                'PaymentUrl'=> 'https://api.paypal.com/v1/payments/payment/',
-                'mode'      => 'live',
+             Configure::write('Paypal', array(
+                 'clientId' => 'AVY70KpdjbpdjwPz7KzaDNVhqg8Pp4s4fQaSUnkLs0SILzo9SFSA5OGT8KTtTX4HODHywyR-OzeCg1Pn', // quanvuhong.riotgame@gmail.com
+                 'secret'    => 'EE3-3itBPi4LrkTugXvgWGaj-SSHI8f2N6INY4wOWikPP6y71SLLStSvDsZ0GFZvMp-GvCvJxkQe2-T3',
+                 'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paypal_response',
+                 'CancelUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_error',
+                 'TokenUrl'  => 'https://api.paypal.com/v1/oauth2/token',
+                 'PaymentUrl'=> 'https://api.paypal.com/v1/payments/payment/',
+                 'mode'      => 'live',
             ));
         }
 
@@ -183,8 +183,8 @@ class OvsPaymentsController extends AppController {
         $this->loadModel('Game');
         if( !empty($game['group']) && $game['group'] == Game::GROUP_R02 ) {
             Configure::write('Paypal', array(
-                'clientId'  => 'Ac56pz3p7V9ZjoOR4E6pdFX9gi8BjyBsfSwLZYhjMVUrA9yvM4zNNN6ilX70tOnVAFx68rk9G8J9NdMx', // abunguyen.com@gmail.com
-                'secret'    => 'ECT3M4j6AgopanCNCVh-v-6CW70J1Rdenh3a7Lo70y-jOhxhoGdpsMyfiPeEpSE4ZAf28YtJzzkfQgL1',
+                'clientId' => 'AVY70KpdjbpdjwPz7KzaDNVhqg8Pp4s4fQaSUnkLs0SILzo9SFSA5OGT8KTtTX4HODHywyR-OzeCg1Pn', // quanvuhong.riotgame@gmail.com
+                'secret'    => 'EE3-3itBPi4LrkTugXvgWGaj-SSHI8f2N6INY4wOWikPP6y71SLLStSvDsZ0GFZvMp-GvCvJxkQe2-T3',
                 'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paypal_response',
                 'CancelUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_error',
                 'TokenUrl'  => 'https://api.paypal.com/v1/oauth2/token',
