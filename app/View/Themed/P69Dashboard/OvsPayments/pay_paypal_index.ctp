@@ -18,7 +18,7 @@
     $Redis2 = new RedisCake('action_count');
     $paypal_enable = $Redis2->get('payment-paypal-enable');
     ?>
-    <?php if( !empty($products) && !empty($paypal_enable) ){ ?>
+    <?php if( !empty($products) ){ ?>
         <div class="row" align="center">
             <!-- <div class="alert alert-success font-small" style="color: black">
                 Note: receive 120% coins when recharge via Paypal
