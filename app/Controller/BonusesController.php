@@ -47,6 +47,10 @@ class BonusesController extends AppController
 			}
 		}
 
+        $parsedConditions = array_merge(array(
+            'Bonus.game_id' => $this->Session->read('Auth.User.permission_game_default')
+        ), $parsedConditions);
+
 		$games = $this->Bonus->Game->find('list', array(
 			'fields' => array('id', 'title_os'),
 			'conditions' => array(

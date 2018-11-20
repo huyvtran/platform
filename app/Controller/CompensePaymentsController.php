@@ -37,6 +37,10 @@ class CompensePaymentsController extends AppController {
             }
         }
 
+        $parsedConditions = array_merge(array(
+            'CompensePayment.game_id' => $this->Session->read('Auth.User.permission_game_default')
+        ), $parsedConditions);
+
         $games = $this->CompensePayment->Game->find('list', array(
             'fields' => array('id', 'title_os'),
             'conditions' => array(
