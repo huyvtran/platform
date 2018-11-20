@@ -72,7 +72,7 @@ class AppController extends Controller {
                 'Payment - Index'	=> '/admin/payments',
                 'Payment - Manual'  => '/admin/ManualPayments',
                 'Payment - Inapp'   => '/admin/WaitingPayments/google',
-                'Payment - Compense'=> '/admin/CompensePayments',
+                'Payment - Compense'=> '/admin/CompensePayments/index',
                 'Payment - Compense add' => '/admin/CompensePayments/add',
                 'Payment - Bonus'       => '/admin/Bonuses',
                 'Payment - Bonus add'   => '/admin/Bonuses/add',
