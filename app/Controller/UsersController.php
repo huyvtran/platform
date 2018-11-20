@@ -237,6 +237,10 @@ class UsersController extends AppController {
 							'Game.title',
 							'Game.os',
 						),
+                        'conditions' => array(
+                            'Game.id' => $this->Auth->user('permission_game_default'),
+                            'Account.game_id' => $this->Auth->user('permission_game_default'),
+                        ),
 					),
 				),
 			));

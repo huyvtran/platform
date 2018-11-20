@@ -205,7 +205,7 @@ $config['rules'] = array(
         'permissions/*' => 'Role/Developer',
         'permissions/admin_delete' => 'Role/Content',
 
-		'users/admin_index' => 'Role/Content, Role/Marketing, Role/Developer',
+		'users/admin_index' => 'Role/Content, Role/Distributor, Role/Developer',
 		'users/admin_editContent' => 'Role/Content',
         'users/admin_view' => 'Role/Content, Role/Distributor',
         'users/admin_deactive' => 'Role/Content, Role/Distributor',
