@@ -167,51 +167,12 @@ class PaymentLib {
             ClassRegistry::init('Payment');
             $price_end = $data['price'];
 
-            if( $data['chanel'] == Payment::CHANEL_VIPPAY
-                || $data['chanel'] == Payment::CHANEL_VIPPAY_2
-                || $data['chanel'] == Payment::CHANEL_VIPPAY_3
-            ){
-                switch ( $data['type'] ){
-                    case Payment::TYPE_NETWORK_VIETTEL:
-                    case Payment::TYPE_NETWORK_MOBIFONE:
-                    case Payment::TYPE_NETWORK_VINAPHONE:
-                        $price_end = 0.74 * $data['price'];
-                        break;
-                    case Payment::TYPE_NETWORK_GATE:
-                        $price_end = 0.79 * $data['price'];
-                        break;
-                }
-            }elseif ( $data['chanel'] == Payment::CHANEL_HANOIPAY ){
-                switch ( $data['type'] ){
-                    case Payment::TYPE_NETWORK_VIETTEL:
-                        $price_end = 0.8 * $data['price'];
-                        break;
-                    case Payment::TYPE_NETWORK_MOBIFONE:
-                        $price_end = 0.815 * $data['price'];
-                        break;
-                    case Payment::TYPE_NETWORK_VINAPHONE:
-                        $price_end = 0.81 * $data['price'];
-                        break;
-                    case Payment::TYPE_NETWORK_GATE:
-                        $price_end = 0.82 * $data['price'];
-                        break;
-                }
-
-            }elseif ( in_array( $data['chanel'] , array(
-                Payment::CHANEL_ONEPAY, Payment::CHANEL_ONEPAY_2,
-                Payment::CHANEL_PAYMENTWALL, Payment::CHANEL_PAYPAL,
-                Payment::CHANEL_GOOGLE, Payment::CHANEL_NL_ALE,
-                Payment::CHANEL_SHOPCARD, Payment::CHANEL_SWEB, Payment::CHANEL_MOBO
-            ))){
-                return ;
-            }elseif ( $data['chanel'] == Payment::CHANEL_APPOTA ){
-                $price_end = $data['price'] * 0.94 - 7150;
-            }elseif ( $data['chanel'] == Payment::CHANEL_PAYPAL ){
-                $price_end = $data['price'] - (6801 + ($data['price']*0.045) ) ;
-            }elseif ( $data['chanel'] == Payment::CHANEL_NL_ALE ){
+            if ( $data['chanel'] == Payment::CHANEL_NL_ALE ){
                 $price_end = $data['price'] - (7700 + ($data['price']*0.035) ) ;
             }elseif ( $data['chanel'] == Payment::CHANEL_MANUAL ){
                 $price_end = 0.65 * $data['price'];
+            }else{
+                return;
             }
 
             $data['price_end'] = $price_end;
