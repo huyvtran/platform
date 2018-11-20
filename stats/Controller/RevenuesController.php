@@ -43,7 +43,23 @@ class RevenuesController extends AppController {
         #$fields_total = array('SUM(0.8*price) as sum', 'game_id', 'type');
         $fields_revenues = array('SUM(price_end) as sum', 'game_id', 'FROM_UNIXTIME(time, "%Y-%m-%d") as day', 'type');
         $fields_total = array('SUM(price_end) as sum', 'game_id', 'type');
-        CakeLog::info('admin info'. print_r($this->Auth->user(),true));
+
+        $chanels = array(
+            3 => 'Paypal',
+            5 => '1Pay 1',
+            6 => 'Paymentwall',
+            18 => 'Google',
+            14 => 'Ale/NL'
+        );
+
+        if($this->Auth->user('role') == 'Distributor'){
+            $chanels = array(
+                32 => 'Paypal',
+            );
+
+            $fields_revenues = array('SUM(0.0000431*price_org) as sum', 'game_id', 'FROM_UNIXTIME(time, "%Y-%m-%d") as day', 'type');
+            $fields_total = array('SUM(0.0000431*price_org) as sum', 'game_id', 'type');
+        }
 
 	    if( !empty($this->passedArgs['rate']) ){
             $fields_revenues = array('SUM(price_org) as sum', 'game_id', 'FROM_UNIXTIME(time, "%Y-%m-%d") as day', 'type');
@@ -65,13 +81,7 @@ class RevenuesController extends AppController {
 //        debug($this->Payment->getLastQuery());
 //        debug($revenues);die;
 
-        $chanels = array(
-            3 => 'Paypal',
-            5 => '1Pay 1',
-            6 => 'Paymentwall',
-            18 => 'Google',
-            14 => 'Ale/NL'
-        );
+
 
         # tính cho lượt trước để so sánh tỉ lệ tăng hay giảm với hiện tại
 		$total = $this->Payment->find('all', array(
