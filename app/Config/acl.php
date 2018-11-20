@@ -207,9 +207,9 @@ $config['rules'] = array(
 
 		'users/admin_index' => 'Role/Content, Role/Marketing, Role/Developer',
 		'users/admin_editContent' => 'Role/Content',
-        'users/admin_view' => 'Role/Content',
-        'users/admin_deactive' => 'Role/Content',
-		'users/admin_reset_password' => 'Role/Content',
+        'users/admin_view' => 'Role/Content, Role/Distributor',
+        'users/admin_deactive' => 'Role/Content, Role/Distributor',
+		'users/admin_reset_password' => 'Role/Content, Role/Distributor',
         'users/admin_searchip'  => 'Role/Content',
 		'users/admin_blockip'   => 'Role/Content',
 
