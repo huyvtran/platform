@@ -110,8 +110,6 @@ $Redis = new RedisCake('action_count');
 						Others <span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li><?php echo $this->Html->link('Add Permissions', '/admin/permissions/add?user_id=' . $user['User']['id']); ?></li>
-
                         <li>
                         <?php
                             $key = 'reset_password_' . $user['User']['id'];
