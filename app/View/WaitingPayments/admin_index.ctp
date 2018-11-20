@@ -198,11 +198,11 @@ $this->extend('/Common/blank');
                 <td> <?php echo $payment['WaitingPayment']['card_code']; ?> </td>
                 <td> <?php echo $payment['WaitingPayment']['card_serial']; ?> </td>
                 <td> <?php if( !empty($payment['Payment']['price']) ) {
-                    echo number_format($rate*$payment['Payment']['price'], 0, '.', ',') . ' ' . $current;
+                    echo number_format($rate*$payment['Payment']['price'], 0, '.', ',') . $current;
                     } ?>
                 </td>
                 <td> <?php if( !empty($payment['Payment']['price_org']) ){
-                    echo number_format($rate*$payment['Payment']['price_org'], 0, '.', ',') . ' ' . $current;
+                    echo number_format($rate*$payment['Payment']['price_org'], 0, '.', ',') . $current;
                 } ?>
                 </td>
                 <td> <?php echo $payment['WaitingPayment']['type']; ?> </td>
