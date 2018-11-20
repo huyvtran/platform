@@ -13,7 +13,7 @@
 
 	<div class="nav-collapse navbar-collapse collapse" aria-expanded="true">
 		<ul class="nav">
-            <?php if ($this->Session->read('Auth.User') && !in_array($this->Session->read('Auth.User.role'), array('Distributor', 'Stats', 'User', 'Guest')) ) { ?>
+            <?php if ($this->Session->read('Auth.User') && !in_array($this->Session->read('Auth.User.role'), array('Stats', 'User', 'Guest')) ) { ?>
 			<li class="dropdown" >
 				<a href="#" onclick="return false">
 				<i title="Admin Home" class="fa fa-home" style="color: white" onclick=";window.location.href=this.getAttribute('href');return false;" href="<?php echo $this->Html->url("/admin") ?>"></i>
