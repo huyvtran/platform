@@ -178,6 +178,14 @@ $this->extend('/Common/blank');
             <th><?php echo $this->Paginator->sort('modified'); ?></th>
         </tr>
 
+        <?php
+            $rate = 1;
+            $current = '';
+            if( $this->Session->read('Auth.User.role') == 'Distributor'){
+                $rate = 0.0000431;
+                $current = '$';
+            }
+        ?>
         <?php foreach ($orders as $payment): ?>
             <?php
                 $style = "";
@@ -189,43 +197,31 @@ $this->extend('/Common/blank');
                 <td> <?php echo $payment['WaitingPayment']['order_id']; ?> </td>
                 <td> <?php echo $payment['WaitingPayment']['card_code']; ?> </td>
                 <td> <?php echo $payment['WaitingPayment']['card_serial']; ?> </td>
-                <td> <?php if( !empty($payment['Payment']['price']) ) echo number_format($payment['Payment']['price'], 0, '.', ','); ?> </td>
-                <td> <?php if( !empty($payment['Payment']['price_org']) ) echo number_format($payment['Payment']['price_org'], 0, '.', ','); ?> </td>
+                <td> <?php if( !empty($payment['Payment']['price']) ) {
+                    echo number_format($rate*$payment['Payment']['price'], 0, '.', ',') . ' ' . $current;
+                    } ?>
+                </td>
+                <td> <?php if( !empty($payment['Payment']['price_org']) ){
+                    echo number_format($rate*$payment['Payment']['price_org'], 0, '.', ',') . ' ' . $current;
+                } ?>
+                </td>
                 <td> <?php echo $payment['WaitingPayment']['type']; ?> </td>
                 <td>
                     <?php
                     $chanel = $payment['WaitingPayment']['chanel'];
                     if( !empty($payment['WaitingPayment']['chanel']) ) {
                         switch ($payment['WaitingPayment']['chanel']) {
-                            case Payment::CHANEL_VIPPAY :
-                                $chanel = 'Vippay';
-                                break;
-                            case Payment::CHANEL_VIPPAY_2 :
-                                $chanel = 'Vippay 2';
-                                break;
-                            case Payment::CHANEL_VIPPAY_3 :
-                                $chanel = 'Vippay 3';
-                                break;
-                            case Payment::CHANEL_HANOIPAY :
-                                $chanel = 'Hanoipay';
-                                break;
                             case Payment::CHANEL_PAYPAL :
-                                $chanel = 'Paypal';
+                                $chanel = 'Paypal 1';
                                 break;
-                            case Payment::CHANEL_ONEPAY :
-                                $chanel = '1Pay';
+                            case Payment::CHANEL_PAYPAL2 :
+                                $chanel = 'Paypal';
                                 break;
                             case Payment::CHANEL_ONEPAY_2 :
                                 $chanel = '1Pay 2';
                                 break;
                             case Payment::CHANEL_PAYMENTWALL :
                                 $chanel = 'PayWall';
-                                break;
-                            case Payment::CHANEL_APPOTA :
-                                $chanel = 'Appota';
-                                break;
-                            case Payment::CHANEL_INPAY :
-                                $chanel = 'Inpay';
                                 break;
                             case Payment::CHANEL_NL_ALE :
                                 $chanel = 'Ale/NL';
