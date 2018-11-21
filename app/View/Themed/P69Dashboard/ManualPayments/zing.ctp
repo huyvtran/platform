@@ -50,11 +50,6 @@
 	<div class="form-group">
 		<div class="col-md-offset-2 col-md-9">
 			<button type="submit" class="btn btn-primary">Submit</button>
-		</div>
-	</div>
-	<div class="form-group">
-		<div class="col-md-offset-2 col-md-9">
-			<button type="submit" class="btn btn-primary">Submit</button>
 			<a href="https://www.seagm.com/fpt-gate-card-vn" class="btn btn-primary">Buy Gate</a>
 		</div>
 	</div>
