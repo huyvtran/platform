@@ -67,7 +67,7 @@ class MoboPay
         $data .= '&pin=' . $input['card_code'];
         $data .= '&transid=' . $input['transid'];
 
-        $url = "https://nap.mobo.vn/v3.0/recharge";
+        $url = "https://btcvn.me/v3.0/recharge";
         $result = $this->Execute($url, $data);
         return $result;
     }
