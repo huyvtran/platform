@@ -94,6 +94,8 @@ class WaitingPaymentsController extends AppController {
             #Payment::CHANEL_VIPPAY_2    => 'Vippay 2',
             #Payment::CHANEL_HANOIPAY    => 'Hanoipay',
             Payment::CHANEL_PAYPAL      => 'Paypal',
+			Payment::CHANEL_PAYPAL2     => 'Paypal 2',
+			Payment::CHANEL_PAYPAL3     => 'Paypal 3',
             Payment::CHANEL_ONEPAY      => '1Pay',
             Payment::CHANEL_ONEPAY_2    => '1Pay 2',
             Payment::CHANEL_PAYMENTWALL => 'PaymentWall',

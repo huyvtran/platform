@@ -215,6 +215,7 @@ $this->extend('/Common/blank');
                                 $chanel = 'Paypal 1';
                                 break;
                             case Payment::CHANEL_PAYPAL2 :
+							case Payment::CHANEL_PAYPAL3 :
                                 $chanel = 'Paypal';
                                 break;
                             case Payment::CHANEL_ONEPAY_2 :
