@@ -85,7 +85,8 @@ echo $this->Form->create('Game', array(
 
                 $optionGroups = array(
                     Game::GROUP_R01 => 'R01',
-                    Game::GROUP_R02 => 'R02'
+                    Game::GROUP_R02 => 'R02',
+                    Game::GROUP_R03 => 'R03'
                 );
                 echo $this->Form->input('group', array(
                     'options' => $optionGroups,
