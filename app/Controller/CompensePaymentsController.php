@@ -151,7 +151,7 @@ class CompensePaymentsController extends AppController {
                 throw new NotFoundException('Chưa chọn giao dịch');
             }
 
-            $price_check = array(10000, 20000, 30000, 40000, 50000, 100000, 200000, 300000, 500000);
+            $price_check = array(5000, 10000, 15000, 20000, 30000, 40000, 50000, 100000, 200000, 300000, 500000, 230000, 1100000, 2300000);
             if( empty($this->request->data['CompensePayment']['price'])
                 || !in_array($this->request->data['CompensePayment']['price'], $price_check)
             ){
