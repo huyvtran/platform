@@ -138,6 +138,19 @@ class OvsPaymentsController extends AppController {
             ));
         }
 
+        if( !empty($game['group']) && $game['group'] == Game::GROUP_R04 ) {
+            $chanel = Payment::CHANEL_PAYPAL4;
+            Configure::write('Paypal', array(
+                'clientId' => 'AVY70KpdjbpdjwPz7KzaDNVhqg8Pp4s4fQaSUnkLs0SILzo9SFSA5OGT8KTtTX4HODHywyR-OzeCg1Pn', // firestork@vntap.vn
+                'secret'    => 'EE3-3itBPi4LrkTugXvgWGaj-SSHI8f2N6INY4wOWikPP6y71SLLStSvDsZ0GFZvMp-GvCvJxkQe2-T3',
+                'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paypal_response',
+                'CancelUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_error',
+                'TokenUrl'  => 'https://api.paypal.com/v1/oauth2/token',
+                'PaymentUrl'=> 'https://api.paypal.com/v1/payments/payment/',
+                'mode'      => 'live',
+            ));
+        }
+
         # tạo giao dịch waiting_payment
         $data = array(
             'order_id'  => $order_id,
@@ -210,6 +223,18 @@ class OvsPaymentsController extends AppController {
             Configure::write('Paypal', array(
                 'clientId' => 'AftIrAtqeHDYnX66uLhPwWT9lziNVFVAzFgDjnFKve_5WRUX821M4hRoTPratsbFnElZOuHK-TjoTEeU', // quanvuhong.riotgame@gmail.com
                 'secret'    => 'EH6ObLOY6wdoQAXRKdWIWritT7iTMO7aeMtIMhAbFKoURSpkkPgqmxD23GEX34qy84fUllyWMvTmY9bc',
+                'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paypal_response',
+                'CancelUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_error',
+                'TokenUrl'  => 'https://api.paypal.com/v1/oauth2/token',
+                'PaymentUrl'=> 'https://api.paypal.com/v1/payments/payment/',
+                'mode'      => 'live',
+            ));
+        }
+
+        if( !empty($game['group']) && $game['group'] == Game::GROUP_R04 ) {
+            Configure::write('Paypal', array(
+                'clientId' => 'AVY70KpdjbpdjwPz7KzaDNVhqg8Pp4s4fQaSUnkLs0SILzo9SFSA5OGT8KTtTX4HODHywyR-OzeCg1Pn', // firestork@vntap.vn
+                'secret'    => 'EE3-3itBPi4LrkTugXvgWGaj-SSHI8f2N6INY4wOWikPP6y71SLLStSvDsZ0GFZvMp-GvCvJxkQe2-T3',
                 'ReturnUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_paypal_response',
                 'CancelUrl' => 'http://admin.muoriginfree.com:8880/OvsPayments/pay_error',
                 'TokenUrl'  => 'https://api.paypal.com/v1/oauth2/token',

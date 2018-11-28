@@ -212,10 +212,9 @@ $this->extend('/Common/blank');
                     if( !empty($payment['WaitingPayment']['chanel']) ) {
                         switch ($payment['WaitingPayment']['chanel']) {
                             case Payment::CHANEL_PAYPAL :
-                                $chanel = 'Paypal 1';
-                                break;
                             case Payment::CHANEL_PAYPAL2 :
 							case Payment::CHANEL_PAYPAL3 :
+                            case Payment::CHANEL_PAYPAL4 :
                                 $chanel = 'Paypal';
                                 break;
                             case Payment::CHANEL_ONEPAY_2 :

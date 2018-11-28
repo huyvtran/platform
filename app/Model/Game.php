@@ -7,6 +7,7 @@ class Game extends AppModel {
     const GROUP_R01 = 1;
     const GROUP_R02 = 2;
     const GROUP_R03 = 3;
+    const GROUP_R04 = 4;
 
 	public $validationDomain = 'not_translate';
 

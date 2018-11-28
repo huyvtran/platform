@@ -89,27 +89,16 @@ class WaitingPaymentsController extends AppController {
         );
 
         $chanels = array(
-            #Payment::CHANEL_INPAY       => 'Inpay',
-            #Payment::CHANEL_VIPPAY      => 'Vippay',
-            #Payment::CHANEL_VIPPAY_2    => 'Vippay 2',
-            #Payment::CHANEL_HANOIPAY    => 'Hanoipay',
             Payment::CHANEL_PAYPAL      => 'Paypal',
 			Payment::CHANEL_PAYPAL2     => 'Paypal 2',
 			Payment::CHANEL_PAYPAL3     => 'Paypal 3',
+            Payment::CHANEL_PAYPAL4     => 'Paypal 4',
             Payment::CHANEL_ONEPAY      => '1Pay',
             Payment::CHANEL_ONEPAY_2    => '1Pay 2',
             Payment::CHANEL_PAYMENTWALL => 'PaymentWall',
-            #Payment::CHANEL_APPOTA      => 'Appota',
             Payment::CHANEL_NL_ALE      => 'Ale/NL',
             Payment::CHANEL_GOOGLE      => 'Google',
         );
-
-        if($this->Auth->User('username') == 'cskh1pay'){
-            $chanels = array(
-                Payment::CHANEL_ONEPAY      => '1Pay',
-                Payment::CHANEL_ONEPAY_2    => '1Pay 2',
-            );
-        }
 
         $types = array(
             Payment::TYPE_NETWORK_VIETTEL       => 'Viettel',
@@ -120,6 +109,21 @@ class WaitingPaymentsController extends AppController {
             Payment::TYPE_NETWORK_CARD          => 'Card',
             Payment::TYPE_NETWORK_SMS           => 'Sms',
         );
+
+        if($this->Auth->User('role') == 'Distributor'){
+            $chanels = array(
+                Payment::CHANEL_PAYPAL      => 'Paypal',
+                Payment::CHANEL_PAYPAL2     => 'Paypal 2',
+                Payment::CHANEL_PAYPAL3     => 'Paypal 3',
+                Payment::CHANEL_PAYPAL4     => 'Paypal 4'
+            );
+
+            $types = array(
+                Payment::TYPE_NETWORK_GATE          => 'Gate',
+                Payment::TYPE_NETWORK_BANKING       => 'Banking',
+                Payment::TYPE_NETWORK_CARD          => 'Card',
+            );
+        }
 
         $this->set(compact('orders', 'games', 'status', 'chanels', 'types'));
     }
