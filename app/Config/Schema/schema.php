@@ -121,6 +121,31 @@ class AppSchema extends CakeSchema {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
 	);
 
+	public $bank_manuals = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'order_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 50, 'key' => 'index', 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'game_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 5, 'key' => 'index'),
+		'user_id' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'buyer_name' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'buyer_phone' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 15, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'buyer_email' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'role_id' => array('type' => 'string', 'null' => true, 'default' => '1', 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'area_id' => array('type' => 'string', 'null' => true, 'default' => '1', 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'price' => array('type' => 'string', 'null' => true, 'default' => '0', 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'status' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 1),
+		'detail' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'type' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 45, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
+		'chanel' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 2),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			'game_id' => array('column' => 'game_id', 'unique' => 0),
+			'order_id' => array('column' => 'order_id', 'unique' => 0)
+		),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_unicode_ci', 'engine' => 'InnoDB')
+	);
+
 	public $bonuses = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
 		'order_id' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'charset' => 'utf8'),
