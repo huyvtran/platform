@@ -84,10 +84,10 @@ echo $this->Form->create('Game', array(
                 echo $this->Form->input('Game.data.prefix',array('type'=>'text', 'label'=> '<strong>Prefix (không thay đổi)</strong>'));
 
                 $optionGroups = array(
-                    Game::GROUP_R01 => 'R01',
-                    Game::GROUP_R02 => 'R02',
-                    Game::GROUP_R03 => 'R03',
-                    Game::GROUP_R04 => 'R04'
+                    Game::GROUP_R01 => 'R01 (Vương)',
+                    Game::GROUP_R02 => 'R02 (Hồng)',
+                    Game::GROUP_R03 => 'R03 (Quân)',
+                    Game::GROUP_R04 => 'R04 (Thắng)'
                 );
                 echo $this->Form->input('group', array(
                     'options' => $optionGroups,
