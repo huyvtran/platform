@@ -118,7 +118,7 @@ class PaymentWall {
         ClassRegistry::init('WaitingPayment');
 
         $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
-        if ($pingback->validate()) {
+        if ($pingback->validate(true)) {
             if ($pingback->isDeliverable()) {
                 // deliver the product
                 return WaitingPayment::STATUS_COMPLETED;
