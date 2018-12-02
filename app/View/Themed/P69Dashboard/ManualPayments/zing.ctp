@@ -13,7 +13,6 @@
     </div>
 </div>
 <div class="container">
-	<center> <span style="color: green"> <?php echo $str_bonus; ?> </span></center>
 	<center> <span style="color: red"><?= $this->Session->flash('error'); ?> </span></center>
 	<br/>
 	<?php
