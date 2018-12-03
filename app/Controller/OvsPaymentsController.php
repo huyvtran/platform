@@ -816,7 +816,7 @@ class OvsPaymentsController extends AppController {
                 Paymentwall_Base::setSecretKey($secret);
 
                 $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
-                if ($pingback->validate()) {
+                if ($pingback->validate(true)) {
                     if ($pingback->isDeliverable()) {
                         $price_end = 0;
                         if( !empty($this->request->query['REVENUE']) ) {
@@ -943,7 +943,7 @@ class OvsPaymentsController extends AppController {
                 Paymentwall_Base::setSecretKey($secret);
 
                 $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
-                if ($pingback->validate()) {
+                if ($pingback->validate(true)) {
                     $price = $price_org = $pingback->getVirtualCurrencyAmount();
                     if ($pingback->isDeliverable()) {
                         $price_end = 0;
