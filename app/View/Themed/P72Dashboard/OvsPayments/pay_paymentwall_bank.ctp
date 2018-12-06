@@ -49,7 +49,7 @@
                         )
                     )); ?>">
                         <?php echo $product['Product']['price']; ?> $
-                        <span><?php echo number_format($product['Product']['description'], 0, '.', ','); ?> Diamond</span>
+                        <span><?php echo number_format($product['Product']['description'], 0, '.', ','); ?> <i class="fa fa-1x fa-fw fa-diamond"></i></span>
                     </a>
                 </li>
             <?php } ?>
