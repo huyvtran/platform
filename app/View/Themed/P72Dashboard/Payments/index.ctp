@@ -33,27 +33,6 @@ $role_id = $area_id = 1;
         <?php } ?>
 
         <?php if( !$this->Nav->hideFunction('hide_payment', $game) ){ ?>
-            <?php
-            $Redis = new RedisQueue('default');
-            $Redis->key = 'payment-shop-card-status-' . Payment::TYPE_NETWORK_GATE;
-            $mobi_data = $Redis->lRange(0, -1);
-            if( !empty($mobi_data[0]['status']) ){ // cổng shopcard
-                ?>
-                <a href="<?php echo $this->Html->url(array( 'controller' => 'ManualPayments', 'action' => 'shopcard',
-                    '?' => array(
-                        'app'   => $currentGame['app'],
-                        'token' => $token,
-                        'type'  => Payment::TYPE_NETWORK_GATE,
-                        'role_id'   => $role_id,
-                        'area_id'   => $area_id
-                    )
-                )); ?>" class="card-type">
-					<span class="card-icon">
-						<img src="/payment/images/logo_gate.png" alt="Mobile Card">
-					</span>
-                    <span> <?php echo __('Recharge by Gate'); ?> <strong style="color: red">+30%</strong> </span>
-                </a>
-            <?php } ?>
 
             <?php
             $Redis = new RedisQueue('default');
@@ -147,20 +126,6 @@ $role_id = $area_id = 1;
                     <img src="/payment/images/bank.png" alt="Mobile Card">
                 </span>
                 <span> <?php echo __('Recharge by Banking'); ?> </span>
-            </a>
-
-            <a href="<?php echo $this->Html->url(array( 'controller' => 'OvsPayments', 'action' => 'pay_paymentwall_card',
-                '?' => array(
-                    'app'   => $currentGame['app'],
-                    'token' => $token,
-                    'role_id'   => $role_id,
-                    'area_id'   => $area_id
-                )
-            )); ?>" class="card-type">
-                <span class="card-icon">
-                    <img src="/payment/images/sms.png" alt="Mobile Card">
-                </span>
-                <span> <?php echo __('Recharge by Card/SMS'); ?> </span>
             </a>
         <?php } ?>
     </div>
