@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2018-07-02 16:24+0700\n"
+"POT-Creation-Date: 2018-11-30 11:16+0700\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,74 +14,83 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Controller/OauthController.php:172
+#: Controller/BankmanualPaymentsController.php:33
+#: Controller/PaymentsController.php:525;565;570
+msgid "Vui lòng login"
+msgstr ""
+
+#: Controller/ManualPaymentsController.php:406;614;792
+msgid "Giao dịch đang được xử lý"
+msgstr ""
+
+#: Controller/ManualPaymentsController.php:605
+msgid "Nhà mạng đang bảo trì"
+msgstr ""
+
+#: Controller/OauthController.php:173
 msgid "Email/Tên đăng nhập và/hoặc mật khẩu không đúng"
 msgstr ""
 
-#: Controller/OvsPaymentsController.php:150;406;1006
+#: Controller/OvsPaymentsController.php:191;496;1098
 msgid "Giao dịch thất bại."
 msgstr ""
 
-#: Controller/OvsPaymentsController.php:164;288
+#: Controller/OvsPaymentsController.php:205;378
 msgid "Lỗi giao dịch paypal"
 msgstr ""
 
-#: Controller/OvsPaymentsController.php:213
+#: Controller/OvsPaymentsController.php:291
 #: Controller/PaymentsController.php:731
 msgid "Giao dịch đã tồn tại"
 msgstr ""
 
-#: Controller/OvsPaymentsController.php:249;469;1076
+#: Controller/OvsPaymentsController.php:330;559;1168
 msgid "Giao dịch thành công."
 msgstr ""
 
-#: Controller/OvsPaymentsController.php:1186
+#: Controller/OvsPaymentsController.php:1278
 msgid "Chưa chọn gói xu"
 msgstr ""
 
-#: Controller/OvsPaymentsController.php:1194
+#: Controller/OvsPaymentsController.php:1286
 #: Controller/PaymentsController.php:800
 msgid "Không có gói xu phù hợp"
 msgstr ""
 
-#: Controller/OvsPaymentsController.php:1201
+#: Controller/OvsPaymentsController.php:1293
 msgid "Thiếu thông tin nạp coin"
 msgstr ""
 
-#: Controller/OvsPaymentsController.php:1202
+#: Controller/OvsPaymentsController.php:1294
 msgid "Vui lòng điền họ tên"
 msgstr ""
 
-#: Controller/OvsPaymentsController.php:1203
+#: Controller/OvsPaymentsController.php:1295
 msgid "Vui lòng điền thông tin email"
 msgstr ""
 
-#: Controller/OvsPaymentsController.php:1204
+#: Controller/OvsPaymentsController.php:1296
 msgid "Vui lòng điền thông tin điện thoại"
 msgstr ""
 
-#: Controller/OvsPaymentsController.php:1205
+#: Controller/OvsPaymentsController.php:1297
 msgid "Vui lòng điền thông tin nơi ở"
 msgstr ""
 
-#: Controller/OvsPaymentsController.php:1206
+#: Controller/OvsPaymentsController.php:1298
 msgid "Vui lòng điền thông tin city"
 msgstr ""
 
-#: Controller/OvsPaymentsController.php:1207
+#: Controller/OvsPaymentsController.php:1299
 msgid "Vui lòng điền thông tin country"
 msgstr ""
 
-#: Controller/OvsPaymentsController.php:1214
+#: Controller/OvsPaymentsController.php:1306
 msgid "Thông tin email không chính xác"
 msgstr ""
 
-#: Controller/OvsPaymentsController.php:1254
+#: Controller/OvsPaymentsController.php:1346
 msgid "Lỗi tạo giao dịch, vui lòng thử lại"
-msgstr ""
-
-#: Controller/PaymentsController.php:525;565;570
-msgid "Vui lòng login"
 msgstr ""
 
 #: Controller/PaymentsController.php:532
@@ -128,84 +137,104 @@ msgstr ""
 msgid "Email/Tên đăng nhập và/hoặc mật khẩu không đúng!"
 msgstr ""
 
-#: Controller/UsersController.php:266;392;951;1079;1303;1443;1761
+#: Controller/UsersController.php:270;396;955;1083;1307;1462;1795
 msgid "Thiếu thông tin đăng ký"
 msgstr ""
 
-#: Controller/UsersController.php:291;974;1338
+#: Controller/UsersController.php:295;978;1357
 msgid "tài khoản đã tồn tại"
 msgstr ""
 
-#: Controller/UsersController.php:303;314;338;987;999;1025;1351;1363;1389;1872
+#: Controller/UsersController.php:307;318;342;991;1003;1029;1370;1382;1408;1906
 msgid "đăng kí thành công"
 msgstr ""
 
-#: Controller/UsersController.php:346;1033;1397
+#: Controller/UsersController.php:350;1037;1416
 msgid "lỗi đăng ký"
 msgstr ""
 
-#: Controller/UsersController.php:459;1147;1523;1802;1833
+#: Controller/UsersController.php:463;1151;1557;1836;1867
 msgid "đăng nhập thành công"
 msgstr ""
 
-#: Controller/UsersController.php:468;907;1156;1532
+#: Controller/UsersController.php:472;911;1160;1566
 msgid "Tên đăng nhập và/hoặc mật khẩu không đúng!"
 msgstr ""
 
-#: Controller/UsersController.php:498;1170;1551;1669
+#: Controller/UsersController.php:502;1174;1585;1703
 msgid "lỗi"
 msgstr ""
 
-#: Controller/UsersController.php:508;1180;1561
+#: Controller/UsersController.php:512;1184;1595
 msgid "Thiếu thông tin đổi mật khẩu"
 msgstr ""
 
-#: Controller/UsersController.php:548;1242;1618
+#: Controller/UsersController.php:552;1246;1652
 msgid "Đổi mật khẩu thành công"
 msgstr ""
 
-#: Controller/UsersController.php:555;1249;1625
+#: Controller/UsersController.php:559;1253;1659
 msgid "Đổi mật khẩu không thành công, không lưu được dữ liệu"
 msgstr ""
 
-#: Controller/UsersController.php:571;1265;1641
+#: Controller/UsersController.php:575;1269;1675
 msgid "Mật khẩu cũ không chính xác"
 msgstr ""
 
-#: Controller/UsersController.php:578;1272;1648
+#: Controller/UsersController.php:582;1276;1682
 msgid "Không tìm thấy người chơi"
 msgstr ""
 
-#: Controller/UsersController.php:585;1279;1655
+#: Controller/UsersController.php:589;1283;1689
 msgid "Lỗi không xác định"
 msgstr ""
 
-#: Controller/UsersController.php:1474
+#: Controller/UsersController.php:1322;1477
+msgid "This IP: %s has been blocked"
+msgstr ""
+
+#: Controller/UsersController.php:1508
 msgid "Your account has been locked, please contact admin!"
 msgstr ""
 
-#: Controller/UsersController.php:1676
+#: Controller/UsersController.php:1710
 msgid "Vui lòng login hoặc truyền access token"
 msgstr ""
 
-#: Controller/UsersController.php:1706
+#: Controller/UsersController.php:1740
 msgid "Cập nhật thông tin thành công"
 msgstr ""
 
-#: Controller/UsersController.php:1893
+#: Controller/UsersController.php:1927
 msgid "Thay đổi mật khẩu tài khoản"
 msgstr ""
 
-#: Controller/UsersController.php:1920
+#: Controller/UsersController.php:1954
 msgid "Địa chỉ email không tồn tại."
 msgstr ""
 
-#: Controller/UsersController.php:1924
+#: Controller/UsersController.php:1958
 msgid "Mã xác nhận không đúng."
 msgstr ""
 
 #: Controller/Component/CommandComponent.php:77;139;209
 msgid "Xin lỗi, đã có lỗi xảy ra!"
+msgstr ""
+
+#: View/BankmanualPayments/create.ctp:14
+msgid "Nạp tiền"
+msgstr ""
+
+#: View/BankmanualPayments/create.ctp:15
+msgid "Lịch sử"
+msgstr ""
+
+#: View/BankmanualPayments/create.ctp:30
+msgid "Tên liên lạc"
+msgstr ""
+
+#: View/BankmanualPayments/create.ctp:53
+msgid "Xác nhận"
 msgstr ""
 
 #: View/Categories/index.ctp:82
@@ -225,6 +254,12 @@ msgid "Xin vui lòng thử lại sau."
 msgstr ""
 
 #: View/Layouts/payment.ctp:7
+#: View/Themed/P63Dashboard/Layouts/payment.ctp:7
+#: View/Themed/P63Dashboard/Payments/index.ctp:11
+#: View/Themed/P63Dashboard/Payments/pay.ctp:88
+#: View/Themed/P65Dashboard/Layouts/payment.ctp:7
+#: View/Themed/P65Dashboard/Payments/index.ctp:11
+#: View/Themed/P65Dashboard/Payments/pay.ctp:88
 #: View/Themed/PaymentDashboard/Layouts/payment.ctp:7
 #: View/Themed/PaymentDashboard/Payments/index.ctp:11
 #: View/Themed/PaymentDashboard/Payments/pay.ctp:88
@@ -239,17 +274,31 @@ msgstr ""
 msgid "Vui lòng KHÔNG phản hồi mail này."
 msgstr ""
 
-#: View/OvsPayments/pay_ale_order.ctp:209
-#: View/OvsPayments/pay_quick_order.ctp:210
-#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:220
-msgid "Fullname"
+#: View/ManualPayments/index.ctp:149
+msgid "Chú ý"
 msgstr ""
 
-#: View/OvsPayments/pay_ale_order.ctp:286
-#: View/OvsPayments/pay_quick_order.ctp:244
-msgid "Send"
-msgstr ""
-
+#: View/ManualPayments/success.ctp:7
+#: View/Themed/P63Dashboard/ManualPayments/error.ctp:8
+#: View/Themed/P63Dashboard/ManualPayments/order.ctp:7
+#: View/Themed/P63Dashboard/ManualPayments/success.ctp:7
+#: View/Themed/P63Dashboard/OvsPayments/error.ctp:8
+#: View/Themed/P63Dashboard/OvsPayments/success.ctp:7
+#: View/Themed/P63Dashboard/OvsPayments/wait.ctp:7
+#: View/Themed/P63Dashboard/Payments/error.ctp:16
+#: View/Themed/P63Dashboard/Payments/pay.ctp:18
+#: View/Themed/P63Dashboard/Payments/success.ctp:18
+#: View/Themed/P63Dashboard/Payments/wait.ctp:18
+#: View/Themed/P65Dashboard/ManualPayments/error.ctp:8
+#: View/Themed/P65Dashboard/ManualPayments/order.ctp:7
+#: View/Themed/P65Dashboard/ManualPayments/success.ctp:7
+#: View/Themed/P65Dashboard/OvsPayments/error.ctp:8
+#: View/Themed/P65Dashboard/OvsPayments/success.ctp:7
+#: View/Themed/P65Dashboard/OvsPayments/wait.ctp:7
+#: View/Themed/P65Dashboard/Payments/error.ctp:16
+#: View/Themed/P65Dashboard/Payments/pay.ctp:18
+#: View/Themed/P65Dashboard/Payments/success.ctp:18
+#: View/Themed/P65Dashboard/Payments/wait.ctp:18
 #: View/Themed/PaymentDashboard/OvsPayments/error.ctp:8
 #: View/Themed/PaymentDashboard/OvsPayments/success.ctp:7
 #: View/Themed/PaymentDashboard/OvsPayments/wait.ctp:7
@@ -260,6 +309,31 @@ msgstr ""
 msgid "Nạp qua thẻ cào"
 msgstr ""
 
+#: View/ManualPayments/success.ctp:17
+#: View/Themed/P63Dashboard/ManualPayments/error.ctp:18
+#: View/Themed/P63Dashboard/ManualPayments/order.ctp:17
+#: View/Themed/P63Dashboard/ManualPayments/success.ctp:17
+#: View/Themed/P63Dashboard/OvsPayments/error.ctp:18
+#: View/Themed/P63Dashboard/OvsPayments/success.ctp:17
+#: View/Themed/P63Dashboard/OvsPayments/wait.ctp:17
+#: View/Themed/P63Dashboard/Payments/error.ctp:25
+#: View/Themed/P63Dashboard/Payments/inapp.ctp:33
+#: View/Themed/P63Dashboard/Payments/index.ctp:21
+#: View/Themed/P63Dashboard/Payments/pay.ctp:27
+#: View/Themed/P63Dashboard/Payments/success.ctp:27
+#: View/Themed/P63Dashboard/Payments/wait.ctp:27
+#: View/Themed/P65Dashboard/ManualPayments/error.ctp:18
+#: View/Themed/P65Dashboard/ManualPayments/order.ctp:17
+#: View/Themed/P65Dashboard/ManualPayments/success.ctp:17
+#: View/Themed/P65Dashboard/OvsPayments/error.ctp:18
+#: View/Themed/P65Dashboard/OvsPayments/success.ctp:17
+#: View/Themed/P65Dashboard/OvsPayments/wait.ctp:17
+#: View/Themed/P65Dashboard/Payments/error.ctp:25
+#: View/Themed/P65Dashboard/Payments/inapp.ctp:33
+#: View/Themed/P65Dashboard/Payments/index.ctp:20
+#: View/Themed/P65Dashboard/Payments/pay.ctp:27
+#: View/Themed/P65Dashboard/Payments/success.ctp:27
+#: View/Themed/P65Dashboard/Payments/wait.ctp:27
 #: View/Themed/PaymentDashboard/OvsPayments/error.ctp:17
 #: View/Themed/PaymentDashboard/OvsPayments/success.ctp:16
 #: View/Themed/PaymentDashboard/OvsPayments/wait.ctp:16
@@ -272,9 +346,47 @@ msgstr ""
 msgid "Cách nạp"
 msgstr ""
 
+#: View/ManualPayments/success.ctp:18
+#: View/ManualPayments/zing.ctp:27
+#: View/Themed/P63Dashboard/ManualPayments/error.ctp:19
+#: View/Themed/P63Dashboard/ManualPayments/order.ctp:18
+#: View/Themed/P63Dashboard/ManualPayments/success.ctp:18
+#: View/Themed/P63Dashboard/ManualPayments/zing.ctp:28
+#: View/Themed/P63Dashboard/OvsPayments/error.ctp:19
+#: View/Themed/P63Dashboard/OvsPayments/pay_ale_index.ctp:28
+#: View/Themed/P63Dashboard/OvsPayments/pay_ale_order.ctp:193
+#: View/Themed/P63Dashboard/OvsPayments/pay_paymentwall_bank.ctp:27
+#: View/Themed/P63Dashboard/OvsPayments/pay_paypal_index.ctp:27
+#: View/Themed/P63Dashboard/OvsPayments/success.ctp:18
+#: View/Themed/P63Dashboard/OvsPayments/wait.ctp:18
+#: View/Themed/P63Dashboard/Payments/error.ctp:26
+#: View/Themed/P63Dashboard/Payments/inapp.ctp:34
+#: View/Themed/P63Dashboard/Payments/index.ctp:22
+#: View/Themed/P63Dashboard/Payments/pay.ctp:29
+#: View/Themed/P63Dashboard/Payments/success.ctp:28
+#: View/Themed/P63Dashboard/Payments/wait.ctp:28
+#: View/Themed/P65Dashboard/ManualPayments/error.ctp:19
+#: View/Themed/P65Dashboard/ManualPayments/order.ctp:18
+#: View/Themed/P65Dashboard/ManualPayments/success.ctp:18
+#: View/Themed/P65Dashboard/ManualPayments/zing.ctp:27
+#: View/Themed/P65Dashboard/OvsPayments/error.ctp:19
+#: View/Themed/P65Dashboard/OvsPayments/pay_ale_index.ctp:27
+#: View/Themed/P65Dashboard/OvsPayments/pay_ale_order.ctp:193
+#: View/Themed/P65Dashboard/OvsPayments/pay_paymentwall_bank.ctp:27
+#: View/Themed/P65Dashboard/OvsPayments/pay_paypal_index.ctp:27
+#: View/Themed/P65Dashboard/OvsPayments/success.ctp:18
+#: View/Themed/P65Dashboard/OvsPayments/wait.ctp:18
+#: View/Themed/P65Dashboard/Payments/error.ctp:26
+#: View/Themed/P65Dashboard/Payments/inapp.ctp:34
+#: View/Themed/P65Dashboard/Payments/index.ctp:21
+#: View/Themed/P65Dashboard/Payments/pay.ctp:29
+#: View/Themed/P65Dashboard/Payments/success.ctp:28
+#: View/Themed/P65Dashboard/Payments/wait.ctp:28
 #: View/Themed/PaymentDashboard/OvsPayments/error.ctp:18
 #: View/Themed/PaymentDashboard/OvsPayments/pay_ale_index.ctp:27
 #: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:193
+#: View/Themed/PaymentDashboard/OvsPayments/pay_paymentwall_bank.ctp:27
+#: View/Themed/PaymentDashboard/OvsPayments/pay_paypal_index.ctp:27
 #: View/Themed/PaymentDashboard/OvsPayments/success.ctp:17
 #: View/Themed/PaymentDashboard/OvsPayments/wait.ctp:17
 #: View/Themed/PaymentDashboard/Payments/error.ctp:26
@@ -286,9 +398,47 @@ msgstr ""
 msgid "Chọn gói"
 msgstr ""
 
+#: View/ManualPayments/success.ctp:19
+#: View/ManualPayments/zing.ctp:29
+#: View/Themed/P63Dashboard/ManualPayments/error.ctp:20
+#: View/Themed/P63Dashboard/ManualPayments/order.ctp:19
+#: View/Themed/P63Dashboard/ManualPayments/success.ctp:19
+#: View/Themed/P63Dashboard/ManualPayments/zing.ctp:30
+#: View/Themed/P63Dashboard/OvsPayments/error.ctp:20
+#: View/Themed/P63Dashboard/OvsPayments/pay_ale_index.ctp:30
+#: View/Themed/P63Dashboard/OvsPayments/pay_ale_order.ctp:195
+#: View/Themed/P63Dashboard/OvsPayments/pay_paymentwall_bank.ctp:29
+#: View/Themed/P63Dashboard/OvsPayments/pay_paypal_index.ctp:29
+#: View/Themed/P63Dashboard/OvsPayments/success.ctp:19
+#: View/Themed/P63Dashboard/OvsPayments/wait.ctp:19
+#: View/Themed/P63Dashboard/Payments/error.ctp:27
+#: View/Themed/P63Dashboard/Payments/inapp.ctp:35
+#: View/Themed/P63Dashboard/Payments/index.ctp:23
+#: View/Themed/P63Dashboard/Payments/pay.ctp:31
+#: View/Themed/P63Dashboard/Payments/success.ctp:29
+#: View/Themed/P63Dashboard/Payments/wait.ctp:29
+#: View/Themed/P65Dashboard/ManualPayments/error.ctp:20
+#: View/Themed/P65Dashboard/ManualPayments/order.ctp:19
+#: View/Themed/P65Dashboard/ManualPayments/success.ctp:19
+#: View/Themed/P65Dashboard/ManualPayments/zing.ctp:29
+#: View/Themed/P65Dashboard/OvsPayments/error.ctp:20
+#: View/Themed/P65Dashboard/OvsPayments/pay_ale_index.ctp:29
+#: View/Themed/P65Dashboard/OvsPayments/pay_ale_order.ctp:195
+#: View/Themed/P65Dashboard/OvsPayments/pay_paymentwall_bank.ctp:29
+#: View/Themed/P65Dashboard/OvsPayments/pay_paypal_index.ctp:29
+#: View/Themed/P65Dashboard/OvsPayments/success.ctp:19
+#: View/Themed/P65Dashboard/OvsPayments/wait.ctp:19
+#: View/Themed/P65Dashboard/Payments/error.ctp:27
+#: View/Themed/P65Dashboard/Payments/inapp.ctp:35
+#: View/Themed/P65Dashboard/Payments/index.ctp:22
+#: View/Themed/P65Dashboard/Payments/pay.ctp:31
+#: View/Themed/P65Dashboard/Payments/success.ctp:29
+#: View/Themed/P65Dashboard/Payments/wait.ctp:29
 #: View/Themed/PaymentDashboard/OvsPayments/error.ctp:19
 #: View/Themed/PaymentDashboard/OvsPayments/pay_ale_index.ctp:29
 #: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:195
+#: View/Themed/PaymentDashboard/OvsPayments/pay_paymentwall_bank.ctp:29
+#: View/Themed/PaymentDashboard/OvsPayments/pay_paypal_index.ctp:29
 #: View/Themed/PaymentDashboard/OvsPayments/success.ctp:18
 #: View/Themed/PaymentDashboard/OvsPayments/wait.ctp:18
 #: View/Themed/PaymentDashboard/Payments/error.ctp:27
@@ -300,76 +450,205 @@ msgstr ""
 msgid "Hoàn thành"
 msgstr ""
 
-#: View/Themed/PaymentDashboard/OvsPayments/error.ctp:26
-#: View/Themed/PaymentDashboard/Payments/error.ctp:34
-msgid "Giao dịch thất bại"
-msgstr ""
-
-#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_index.ctp:16
-#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:182
-#: View/Themed/PaymentDashboard/Payments/index.ctp:63
-msgid "Nạp từ Visa/Master"
-msgstr ""
-
-#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_index.ctp:25
-#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:191
-msgid "Phương thức nạp"
-msgstr ""
-
-#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:296
-#: View/Users/reset_password_web.ctp:38
-msgid "Gửi"
-msgstr ""
-
+#: View/ManualPayments/success.ctp:26
+#: View/Themed/P63Dashboard/ManualPayments/success.ctp:26
+#: View/Themed/P63Dashboard/Payments/success.ctp:35
+#: View/Themed/P65Dashboard/ManualPayments/success.ctp:26
+#: View/Themed/P65Dashboard/Payments/success.ctp:35
 #: View/Themed/PaymentDashboard/OvsPayments/success.ctp:24
 #: View/Themed/PaymentDashboard/Payments/success.ctp:35
 msgid "Mã giao dịch"
 msgstr ""
 
-#: View/Themed/PaymentDashboard/OvsPayments/success.ctp:28
-#: View/Themed/PaymentDashboard/Payments/success.ctp:40
-msgid "Thanh toán hoàn tất chúc bạn chơi game vui vẻ !"
+#: View/ManualPayments/success.ctp:30
+#: View/Themed/P63Dashboard/ManualPayments/success.ctp:30
+#: View/Themed/P63Dashboard/OvsPayments/success.ctp:29
+#: View/Themed/P65Dashboard/ManualPayments/success.ctp:30
+#: View/Themed/P65Dashboard/OvsPayments/success.ctp:29
+msgid "The transaction was successfully."
 msgstr ""
 
+#: View/ManualPayments/zing.ctp:16
+#: View/Themed/P63Dashboard/ManualPayments/zing.ctp:16
+#: View/Themed/P63Dashboard/OvsPayments/pay_ale_index.ctp:16
+#: View/Themed/P63Dashboard/OvsPayments/pay_ale_order.ctp:182
+#: View/Themed/P65Dashboard/ManualPayments/zing.ctp:16
+#: View/Themed/P65Dashboard/OvsPayments/pay_ale_index.ctp:16
+#: View/Themed/P65Dashboard/OvsPayments/pay_ale_order.ctp:182
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_index.ctp:16
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:182
+#: View/Themed/PaymentDashboard/Payments/index.ctp:78
+msgid "Nạp từ Visa/Master"
+msgstr ""
+
+#: View/ManualPayments/zing.ctp:25
+#: View/Themed/P63Dashboard/ManualPayments/zing.ctp:26
+#: View/Themed/P63Dashboard/OvsPayments/pay_ale_index.ctp:26
+#: View/Themed/P63Dashboard/OvsPayments/pay_ale_order.ctp:191
+#: View/Themed/P63Dashboard/OvsPayments/pay_paymentwall_bank.ctp:25
+#: View/Themed/P63Dashboard/OvsPayments/pay_paypal_index.ctp:25
+#: View/Themed/P65Dashboard/ManualPayments/zing.ctp:25
+#: View/Themed/P65Dashboard/OvsPayments/pay_ale_index.ctp:25
+#: View/Themed/P65Dashboard/OvsPayments/pay_ale_order.ctp:191
+#: View/Themed/P65Dashboard/OvsPayments/pay_paymentwall_bank.ctp:25
+#: View/Themed/P65Dashboard/OvsPayments/pay_paypal_index.ctp:25
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_index.ctp:25
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:191
+#: View/Themed/PaymentDashboard/OvsPayments/pay_paymentwall_bank.ctp:25
+#: View/Themed/PaymentDashboard/OvsPayments/pay_paypal_index.ctp:25
+msgid "Phương thức nạp"
+msgstr ""
+
+#: View/OvsPayments/pay_ale_order.ctp:209
+#: View/OvsPayments/pay_quick_order.ctp:210
+#: View/Themed/P63Dashboard/OvsPayments/pay_ale_order.ctp:220
+#: View/Themed/P65Dashboard/OvsPayments/pay_ale_order.ctp:220
+#: View/Themed/P69Dashboard/OvsPayments/pay_ale_order.ctp:209
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:220
+msgid "Fullname"
+msgstr ""
+
+#: View/OvsPayments/pay_ale_order.ctp:286
+#: View/OvsPayments/pay_quick_order.ctp:244
+#: View/Themed/P69Dashboard/OvsPayments/pay_ale_order.ctp:286
+msgid "Send"
+msgstr ""
+
+#: View/Themed/P63Dashboard/ManualPayments/error.ctp:27
+#: View/Themed/P63Dashboard/OvsPayments/error.ctp:27
+#: View/Themed/P65Dashboard/ManualPayments/error.ctp:27
+#: View/Themed/P65Dashboard/OvsPayments/error.ctp:27
+msgid "Transaction failed."
+msgstr ""
+
+#: View/Themed/P63Dashboard/OvsPayments/pay_ale_order.ctp:296
+#: View/Themed/P65Dashboard/OvsPayments/pay_ale_order.ctp:296
+#: View/Themed/PaymentDashboard/OvsPayments/pay_ale_order.ctp:296
+#: View/Users/reset_password_web.ctp:38
+msgid "Gửi"
+msgstr ""
+
+#: View/Themed/P63Dashboard/OvsPayments/pay_paymentwall_bank.ctp:16
+#: View/Themed/P65Dashboard/OvsPayments/pay_paymentwall_bank.ctp:16
+#: View/Themed/PaymentDashboard/OvsPayments/pay_paymentwall_bank.ctp:16
+#: View/Themed/PaymentDashboard/Payments/index.ctp:92
+msgid "Nạp từ Banking"
+msgstr ""
+
+#: View/Themed/P63Dashboard/OvsPayments/pay_paypal_index.ctp:16
+#: View/Themed/P65Dashboard/OvsPayments/pay_paypal_index.ctp:16
+#: View/Themed/PaymentDashboard/OvsPayments/pay_paypal_index.ctp:16
+#: View/Themed/PaymentDashboard/Payments/index.ctp:64
+msgid "Nạp từ Paypal"
+msgstr ""
+
+#: View/Themed/P63Dashboard/OvsPayments/success.ctp:25
+#: View/Themed/P65Dashboard/OvsPayments/success.ctp:25
+msgid "Transaction code"
+msgstr ""
+
+#: View/Themed/P63Dashboard/OvsPayments/wait.ctp:26
+#: View/Themed/P65Dashboard/OvsPayments/wait.ctp:26
 #: View/Themed/PaymentDashboard/OvsPayments/wait.ctp:25
 msgid "Giao dịch đang được xử lý ... Xin vui lòng đợi trong vài phút !"
 msgstr ""
 
+#: View/Themed/P63Dashboard/Payments/error.ctp:34
+#: View/Themed/P65Dashboard/Payments/error.ctp:34
+#: View/Themed/PaymentDashboard/OvsPayments/error.ctp:26
+#: View/Themed/PaymentDashboard/Payments/error.ctp:34
+msgid "Giao dịch thất bại"
+msgstr ""
+
+#: View/Themed/P63Dashboard/Payments/inapp.ctp:24
+#: View/Themed/P65Dashboard/Payments/inapp.ctp:24
 #: View/Themed/PaymentDashboard/Payments/inapp.ctp:24
 #: View/Themed/PaymentDashboard/Payments/index.ctp:48
 msgid "Nạp từ store"
 msgstr ""
 
+#: View/Themed/P63Dashboard/Payments/index.ctp:55;77;99
+#: View/Themed/P65Dashboard/Payments/index.ctp:54;76;98
+msgid "Recharge by Gate"
+msgstr ""
+
+#: View/Themed/P63Dashboard/Payments/index.ctp:120
+#: View/Themed/P65Dashboard/Payments/index.ctp:120
+msgid "Recharge by Paypal"
+msgstr ""
+
+#: View/Themed/P63Dashboard/Payments/index.ctp:135
+#: View/Themed/P65Dashboard/Payments/index.ctp:135
+msgid "Recharge by Visa/Master"
+msgstr ""
+
+#: View/Themed/P63Dashboard/Payments/index.ctp:149
+#: View/Themed/P65Dashboard/Payments/index.ctp:149
+msgid "Recharge by Banking"
+msgstr ""
+
+#: View/Themed/P63Dashboard/Payments/index.ctp:163
+#: View/Themed/P65Dashboard/Payments/index.ctp:163
+msgid "Recharge by Card/SMS"
+msgstr ""
+
+#: View/Themed/P63Dashboard/Payments/pay.ctp:53
+#: View/Themed/P65Dashboard/Payments/pay.ctp:53
 #: View/Themed/PaymentDashboard/Payments/pay.ctp:53
 msgid "Seri thẻ"
 msgstr ""
 
+#: View/Themed/P63Dashboard/Payments/pay.ctp:60
+#: View/Themed/P65Dashboard/Payments/pay.ctp:60
 #: View/Themed/PaymentDashboard/Payments/pay.ctp:60
 msgid "Mã pin"
 msgstr ""
 
+#: View/Themed/P63Dashboard/Payments/pay.ctp:67
+#: View/Themed/P65Dashboard/Payments/pay.ctp:67
 #: View/Themed/PaymentDashboard/Payments/pay.ctp:67
 msgid "Loại thẻ"
 msgstr ""
 
+#: View/Themed/P63Dashboard/Payments/pay.ctp:83
+#: View/Themed/P65Dashboard/Payments/pay.ctp:83
 #: View/Themed/PaymentDashboard/Payments/pay.ctp:83
 msgid "Nếu có vấn đề về nạp thẻ, vui lòng liên hệ Facebook<br> Ghi rõ tên tài khoản, seri thẻ</p>"
 msgstr ""
 
+#: View/Themed/P63Dashboard/Payments/success.ctp:36
+#: View/Themed/P65Dashboard/Payments/success.ctp:36
 #: View/Themed/PaymentDashboard/Payments/success.ctp:36
 msgid "Nạp"
 msgstr ""
 
+#: View/Themed/P63Dashboard/Payments/success.ctp:37
+#: View/Themed/P65Dashboard/Payments/success.ctp:37
 #: View/Themed/PaymentDashboard/Payments/success.ctp:37
 msgid "Nhận"
 msgstr ""
 
+#: View/Themed/P63Dashboard/Payments/success.ctp:40
+#: View/Themed/P65Dashboard/Payments/success.ctp:40
+#: View/Themed/PaymentDashboard/OvsPayments/success.ctp:28
+#: View/Themed/PaymentDashboard/Payments/success.ctp:40
+msgid "Thanh toán hoàn tất chúc bạn chơi game vui vẻ !"
+msgstr ""
+
+#: View/Themed/P63Dashboard/Payments/success.ctp:48
+#: View/Themed/P65Dashboard/Payments/success.ctp:48
 #: View/Themed/PaymentDashboard/Payments/success.ctp:48
 msgid "Quay lại"
 msgstr ""
 
+#: View/Themed/P63Dashboard/Payments/wait.ctp:35
+#: View/Themed/P65Dashboard/Payments/wait.ctp:35
 #: View/Themed/PaymentDashboard/Payments/wait.ctp:35
 msgid "Giao dịch không hợp lệ ..! Thử lại sau vài phút hoặc liên hệ Admin."
+msgstr ""
+
+#: View/Themed/PaymentDashboard/Payments/index.ctp:106
+msgid "Nạp từ Card/SMS"
 msgstr ""
 
 #: View/Themed/TakanDashboard/Games/dashboard.ctp:12
@@ -440,10 +719,25 @@ msgstr ""
 msgid "Hủy"
 msgstr ""
 
+#: Model/BankManual.php:validation for field buyer_name
+msgid "Please enter full name"
+msgstr ""
+
+#: Model/BankManual.php:validation for field buyer_phone
+msgid "Please enter phone"
+msgstr ""
+
+#: Model/BankManual.php:validation for field buyer_email
+msgid "Please enter email"
+msgstr ""
+
+#: Model/BankManual.php:validation for field price
+#: Model/CardManual.php:validation for field card_price;validation for field price
+msgid "Please chose a price"
+msgstr ""
+
 #: Model/Bonus.php:validation for field price
 #: Model/CompensePayment.php:validation for field card_code;validation for field card_serial;validation for field price;validation for field type;validation for field chanel
-#: Model/Genre.php:validation for field title
-#: Model/Website.php:validation for field url;validation for field title
 msgid "notEmpty"
 msgstr ""
 
@@ -455,12 +749,12 @@ msgstr ""
 msgid "Please enter a card code"
 msgstr ""
 
-#: Model/CardManual.php:validation for field card_price;validation for field price
-msgid "Please chose a price"
+#: Model/CardManual.php:validation for field type
+msgid "Please chose a type"
 msgstr ""
 
 #: Model/CardManual.php:validation for field type
-msgid "Please chose a type"
+msgid "Serial or cardcode is not format."
 msgstr ""
 
 #: Model/Profile.php:validation for field birthday
@@ -537,93 +831,5 @@ msgstr ""
 
 #: Model/User.php:validation for field phone
 msgid "Số điện thoại không hợp lệ."
-msgstr ""
-
-#: Lib/Cache/Engine/MemcachedEngine.php:126
-msgid "Memcached extension is not build with SASL support"
-msgstr ""
-
-#: Lib/Cache/Engine/MemcachedEngine.php:147
-msgid "%s is not a valid serializer engine for Memcached"
-msgstr ""
-
-#: Lib/Cache/Engine/MemcachedEngine.php:153
-msgid "Memcached extension is not compiled with %s support"
-msgstr ""
-
-#: Testsuite/Reporter/CakeHtmlReporter.php:267;305
-msgid "Test case: %s"
-msgstr ""
-
-#: Testsuite/Reporter/CakeHtmlReporter.php:268;306
-msgid "Stack trace:"
-msgstr ""
-
-#: Testsuite/Reporter/CakeHtmlReporter.php:380
-msgid "Running  %s"
-msgstr ""
-
-#: View/Elements/sql_dump.ctp:95
-msgid "Encountered unexpected %s. Cannot generate SQL log."
-msgstr ""
-
-#: View/Helper/LessHelper.php:39;62
-msgid "\"%s\" directory is NOT writable."
-msgstr ""
-
-#: View/Helper/LessHelper.php:43
-msgid "File: \"%s\" not found."
-msgstr ""
-
-#: View/Helper/LessHelper.php:64
-msgid "Failed to write \"%s\""
-msgstr ""
-
-#: webroot/test.php:95
-msgid "Debug setting does not allow access to this url."
-msgstr ""
-
-#: Lib/Error/AppExceptionRenderer.php:30
-msgid "Not Found"
-msgstr ""
-
-#: Lib/Error/AppExceptionRenderer.php:57
-msgid "An Internal Error Has Occurred."
-msgstr ""
-
-#: Model/Article.php:validation for field title
-msgid "Bạn chưa nhập tiêu đề"
-msgstr ""
-
-#: Model/Article.php:validation for field body
-msgid "Nột dung phải có ít nhất 30 kí tự"
-msgstr ""
-
-#: Model/Article.php:validation for field body
-msgid "Nội dung không thể dài quá 60000 kí tự"
-msgstr ""
-
-#: Model/EmailMarketing.php:validation for field title
-msgid "The title is empty"
-msgstr ""
-
-#: Model/EmailMarketing.php:validation for field game_id
-msgid "Please choose a game."
-msgstr ""
-
-#: Model/Game.php:validation for field os
-msgid "rule"
-msgstr ""
-
-#: Model/Game.php:validation for field os
-msgid "required"
-msgstr ""
-
-#: Model/Game.php:validation for field os
-msgid "allowEmpty"
-msgstr ""
-
-#: Model/Website.php:validation for field url;validation for field title
-msgid "unique"
 msgstr ""
 

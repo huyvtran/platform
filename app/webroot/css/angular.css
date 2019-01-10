@@ -1,0 +1,166 @@
+* {
+    font-family: SF UI Text, Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.form-control,
+.input-group-addon {
+    border: #E3E3E3 1px solid;
+    border-radius: 0;
+    -webkit-appearance: none;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.input-group-addon {
+    background: #DADADA;
+    color: #B4B4B4;
+    padding: 1px 1px;
+}
+
+.btn {
+    border-radius: 0;
+    -webkit-appearance: none;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: #13b94e;
+    border: none;
+}
+
+.btn-warning {
+    background: #f0ba00;
+    border: none;
+}
+
+.app-login {
+    background: #fff;
+    position: absolute;
+    left: 50%;
+    top: 27%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    min-width: 300px;
+}
+
+.app-header {
+    color: #13b94e;
+    font-size: 12.5pt;
+    font-weight: bold;
+}
+
+.app-title {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.btn-back a {
+    color: #13b94e;
+    position: absolute;
+    float: left;
+    padding-left: 25px;
+}
+
+.app-body {
+    margin: 0 25px;
+}
+
+.app-helper a {
+    color: #014258;
+    font-size: 12px;
+    text-decoration: underline;
+    margin-bottom: 0;
+}
+
+.app-plugins {
+    margin-top: 5px;
+}
+
+.app-ext {
+    margin-bottom: 10px;
+}
+
+.app-ext a {
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.app-info {
+    color: #DADADA;
+    font-size: 10px;
+    margin-top: 10px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.app-or {
+    position: relative;
+    font-size: 12px;
+    color: #000;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.hr-or {
+    background: #000;
+    height: 0.1px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+
+.span-or {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: -1px;
+    margin-left: -25px;
+    background-color: #fff;
+    width: 50px;
+    text-align: center;
+}
+
+.btn-facebook {
+    background: #3c5a9a;
+    border: none;
+}
+
+.btn-google {
+    background: #d44837;
+    border: none;
+}
+
+.btn-facebook,
+.btn-google {
+    width: 120px;
+    height: 30px;
+    line-height: 20px;
+    margin-bottom: 0;
+}
+
+.btn-facebook a,
+.btn-google a {
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 0 10px;
+}
+
+.text-right {
+    float: right;
+}
+
+.clear-float {
+    clear: both;
+}
+
+.crumbs > li { width : 50%; }
